@@ -1,4 +1,6 @@
 import { users, swapEvents, poolStats, type User, type InsertUser, type SwapEvent, type InsertSwapEvent, type PoolStats, type InsertPoolStats } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -16,91 +18,88 @@ export interface IStorage {
   createPoolStats(stats: InsertPoolStats): Promise<PoolStats>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private swapEvents: Map<number, SwapEvent>;
-  private poolStats: Map<string, PoolStats>;
-  private currentUserId: number;
-  private currentSwapEventId: number;
-  private currentPoolStatsId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.swapEvents = new Map();
-    this.poolStats = new Map();
-    this.currentUserId = 1;
-    this.currentSwapEventId = 1;
-    this.currentPoolStatsId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async createSwapEvent(event: InsertSwapEvent): Promise<SwapEvent> {
-    const id = this.currentSwapEventId++;
-    const swapEvent: SwapEvent = { ...event, id };
-    this.swapEvents.set(id, swapEvent);
+    const [swapEvent] = await db
+      .insert(swapEvents)
+      .values(event)
+      .returning();
     return swapEvent;
   }
 
   async getSwapEvents(poolAddress?: string, limit = 50, offset = 0): Promise<SwapEvent[]> {
-    let events = Array.from(this.swapEvents.values());
+    let query = db.select().from(swapEvents);
     
     if (poolAddress) {
-      events = events.filter(event => event.poolAddress.toLowerCase() === poolAddress.toLowerCase());
+      query = query.where(eq(swapEvents.poolAddress, poolAddress.toLowerCase()));
     }
     
-    // Sort by timestamp descending (newest first)
-    events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    const events = await query
+      .orderBy(swapEvents.timestamp)
+      .limit(limit)
+      .offset(offset);
     
-    return events.slice(offset, offset + limit);
+    return events;
   }
 
   async getSwapEventsByTimeRange(poolAddress: string, fromBlock: number, toBlock: number): Promise<SwapEvent[]> {
-    const events = Array.from(this.swapEvents.values()).filter(
-      event => 
-        event.poolAddress.toLowerCase() === poolAddress.toLowerCase() &&
-        event.blockNumber >= fromBlock &&
-        event.blockNumber <= toBlock
-    );
+    const events = await db
+      .select()
+      .from(swapEvents)
+      .where(eq(swapEvents.poolAddress, poolAddress.toLowerCase()));
     
-    return events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    return events
+      .filter(event => event.blockNumber >= fromBlock && event.blockNumber <= toBlock)
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }
 
   async getPoolStats(poolAddress: string): Promise<PoolStats | undefined> {
-    return this.poolStats.get(poolAddress.toLowerCase());
+    const [stats] = await db
+      .select()
+      .from(poolStats)
+      .where(eq(poolStats.poolAddress, poolAddress.toLowerCase()));
+    return stats || undefined;
   }
 
   async updatePoolStats(poolAddress: string, statsUpdate: Partial<InsertPoolStats>): Promise<PoolStats> {
-    const existing = this.poolStats.get(poolAddress.toLowerCase());
-    if (existing) {
-      const updated: PoolStats = { ...existing, ...statsUpdate };
-      this.poolStats.set(poolAddress.toLowerCase(), updated);
-      return updated;
+    const [updated] = await db
+      .update(poolStats)
+      .set(statsUpdate)
+      .where(eq(poolStats.poolAddress, poolAddress.toLowerCase()))
+      .returning();
+    
+    if (!updated) {
+      throw new Error('Pool stats not found');
     }
-    throw new Error('Pool stats not found');
+    
+    return updated;
   }
 
   async createPoolStats(stats: InsertPoolStats): Promise<PoolStats> {
-    const id = this.currentPoolStatsId++;
-    const poolStat: PoolStats = { ...stats, id };
-    this.poolStats.set(stats.poolAddress.toLowerCase(), poolStat);
+    const [poolStat] = await db
+      .insert(poolStats)
+      .values(stats)
+      .returning();
     return poolStat;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
