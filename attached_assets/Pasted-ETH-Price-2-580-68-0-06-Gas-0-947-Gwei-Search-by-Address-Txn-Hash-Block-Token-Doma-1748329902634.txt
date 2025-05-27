@@ -1,0 +1,317 @@
+ETH Price: $2,580.68 (-0.06%)
+ Gas: 0.947 Gwei
+Search by Address / Txn Hash / Block / Token / Domain Name
+/
+Etherscan Logo
+Home
+Blockchain
+Transactions
+Pending Transactions
+Contract Internal Transactions
+Beacon Deposits
+Beacon Withdrawals
+View Blobs
+AA Transactions Beta
+View Blocks
+Forked Blocks (Reorgs)
+Uncles
+Top Accounts
+Verified Contracts
+Tokens
+Top Tokens (ERC-20)
+Token Transfers (ERC-20)
+NFTs
+Top NFTs
+Top Mints
+Latest Trades
+Latest Transfers
+Latest Mints
+Resources
+Charts And Stats
+Top Statistics
+Leaderboard
+Directory
+Newsletter
+Knowledge Base
+Developers
+API Plans
+API Documentation
+Code Reader Beta
+Verify Contract
+Similar Contract Search
+Smart Contract Search
+Contract Diff Checker
+Vyper Online Compiler
+Bytecode to Opcode
+Broadcast Transaction
+More
+Tools & Services
+Discover more of Etherscan's tools and services in one place.
+
+Sponsored
+
+
+Tools
+Input Data Decoder Beta
+Unit Converter
+CSV Export
+Account Balance Checker
+Explore
+Gas Tracker
+DEX Tracker
+Node Tracker
+Label Cloud
+Domain Name Lookup
+Services
+Token Approvals Beta
+Verified Signature
+Input Data Messages (IDM) Beta
+Advanced Filter Beta
+Blockscan Chat  Beta
+|
+ Sign In
+
+Contract
+0x4e68Ccd3E89f51C3074ca5072bbAC773960dFa36 
+Sponsored:   MetaWin: Win Daily Crypto Prizes! $1000's in BTC, SOL, ETH, PEPE & more. ENTER NOW!
+ 
+Uniswap V3: USDT
+Source Code
+Uniswap
+Overview
+ETH Balance
+0 ETH
+Eth Value
+$0.00
+Token Holdings
+More Info
+Private Name Tags
+ContractCreator
+0xE14722B5...8Ec1B3bC0
+|
+4 years 21 days ago
+Multichain Info
+No addresses found
+Ad
+Transactions
+Internal Transactions
+Token Transfers (ERC-20)
+NFT Transfers
+Contract
+Events
+Analytics
+Assets
+Cards
+New
+Info
+ Latest 25 from a total of 102 transactions
+
+Transaction Hash	
+Method 
+Block
+Age
+From
+To
+Amount
+Txn Fee
+0x8101c2a16fb152567135f6bb9977568854f8c2d298e0b30390d76d3667ae6c22
+0x68747470
+22548516	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0x545fdc8a8772ba26dc88c8432bd33e83ff05e317c6b9a62db249d3fbde30e596
+0x68747470
+22548398	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0xc530f423d9f22e4d8a724bdaa991e5a82ac2574b997bd1717532667e5274f77a
+0x68747470
+22548143	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0x700db3873f9288abc6bc86f264fc2b1ced8b9912dd09ae445fd810a1effa21d2
+0x68747470
+22547773	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0xc8eafb0d5175deb4f7296c378d1f00d6e0202bd6c0247807d455066870384fb9
+0x68747470
+22547659	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0xcf2db289e66fdc071a2725d5a99127506c71a4fc7c2b097da0d256f5e3c10aeb
+0x68747470
+22547404	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0x5b2aeac1b958d79ef454eba18e3d017a6278c4e51699f1679c565ac9d930c954
+0x68747470
+22547286	3 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00005296
+0x3d8a817036b8ee4b64520b7e15b0d060f75d8ca335fd69bd27084e9368e212c5
+0x68747470
+22413359	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x857281f5d177fb5807860d95a812d693ae103be173f0d2eeb971feefce2a7442
+0x68747470
+22413251	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0xf8fcd37003e43735d7b94609ddd501aef8baf04fa09ba8576c4375f1011f6f62
+0x68747470
+22412982	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x5716ae4efd1e586775d43db07fd17b1da3973bf132ffc4bf3b2af00b3b9607c5
+0x68747470
+22412866	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x67888ac2590637e55f22d45b2ded2bca6f20f079969ad61fb8a472ba5f7b7fba
+0x68747470
+22412587	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x51ee5d372e4cbd043f8798947089f2ae2448d0ac1744e6fdd5429fdb7438b6e5
+0x68747470
+22412468	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x59ca40155d642d283b60fb51d2b4bc4db03a4a3151f5a2dca925d3623d251de9
+0x68747470
+22411804	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x002cd00aeb71bfac82ce2948b6e84803d70f563b4060bd2979b811cd36d171fd
+0x68747470
+22411696	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x9c8bced9582d9c131be1a761d0468c1d10abda057f5d74a17bd8b908763cf680
+0x68747470
+22411437	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x97f24adc42628df35f4d3210717dd2f73bf4d30cac4e35fffb355257b3e779de
+0x68747470
+22411329	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x8a3b845d6ad65963db968d6e52f6dd36eee02e54e5f4bfce2f93800fcd14a519
+0x68747470
+22411061	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x94a181fca41f9f7c423fd47ef7973388bd840a1ab6f29ed22dd8dac557e6ca1f
+0x68747470
+22410950	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x8aad08ca2d6feb9577174b5ab5482e3e5e7f69e45672490974959f957bf5f247
+0x68747470
+22410689	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0xf8ef4bdb88ab02c016486cf3fd5865c76fa47b5412232240b8ddcfa3c70545f5
+0x68747470
+22410581	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x415d9322fd249f9bef4b9b2878bffbae3cc351cd4afc6013d83528c0539ed926
+0x68747470
+22410319	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x1ef0dcaa37583a79e01afb72c11b530a21f791a201aff579b22692947de6d5d6
+0x68747470
+22410214	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0xf5fc0cccc6c5e6248079f63a77e6ed89d6596cfcb20e0b925975aea82a0fefe8
+0x68747470
+22409952	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+0x79073171d33ee237886bf21c1300fafc1be8f349742c9127d8c172d8ad2b9506
+0x68747470
+22409844	22 days ago	
+ENS Name
+hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid-hyperliquid.eth
+IN	
+Uniswap V3: USDT
+0 ETH	0.00002296
+View all transactions 
