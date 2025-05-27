@@ -22,6 +22,8 @@ export default function DexPlatformSelector({
 
   const { data: platforms = [] } = useQuery<DexPlatform[]>({
     queryKey: ["/api/dex/platforms"],
+    refetchInterval: false, // Stop automatic refreshing
+    staleTime: Infinity, // Keep data fresh without refetching
   });
 
   // Initialize DEX platforms on first load
