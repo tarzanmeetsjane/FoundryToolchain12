@@ -1,0 +1,41 @@
+(""); const isWETHContract = contractAddress.toLowerCase() === "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"; const availableFunctions: FunctionCall[] = [ { name: "balanceOf", inputs: [{"name": "owner", "type": "address"}], outputs: [{"name": "", "type": "uint256"}], stateMutability: "view", description: "Check token balance of any address" }, { name: "allowance", inputs: [{"name": "owner", "type": "address"}, {"name": "spender", "type": "address"}], outputs: [{"name": "", "type": "uint256"}], stateMutability: "view", description: "Check approved spending allowance" }, { name: "totalSupply", inputs: [], outputs: [{"name": "", "type": "uint256"}], stateMutability: "view", description: "Get total token supply" }, { name: "name", inputs: [], outputs: [{"name": "", "type": "string"}], stateMutability: "view", description: "Get token name" }, { name: "symbol", inputs: [], outputs: [{"name": "", "type": "string"}], stateMutability: "view", description: "Get token symbol" }, { name: "decimals", inputs: [], outputs: [{"name": "", "type": "uint8"}], stateMutability: "view", description: "Get token decimal places" } ]; const copyToClipboard = async (text: string) => { try { await navigator.clipboard.writeText(text); } catch (err) { console.error('Failed to copy:', err); } }; const formatABI = () => { return JSON.stringify(WETH_ABI, null, 2); }; const generateFunctionCall = (funcName: string) => { const func = WETH_ABI.find(f => f.name === funcName && f.type === 'function'); if (!func) return ''; const inputs = func.inputs.map(input => `${input.type} ${input.name}`).join(', '); return `${func.name}(${inputs})`; }; const generateWeb3Code = () => { return `// Web3.js Example for WETH Contract import Web3 from 'web3'; const web3 = new Web3('YOUR_RPC_ENDPOINT'); const contractAddress = '${contractAddress}'; const abi = ${JSON.stringify(WETH_ABI, null, 2)}; const contract = new web3.eth.Contract(abi, contractAddress); // Example: Check WETH balance async function checkBalance(walletAddress) { try { const balance = await contract.methods.balanceOf(walletAddress).call(); const decimals = await contract.methods.decimals().call(); const formattedBalance = balance / Math.pow(10, decimals); console.log(\`WETH Balance: \${formattedBalance} WETH\`); return formattedBalance; } catch (error) { console.error('Error:', error); } } // Example: Get token info async function getTokenInfo() { const name = await contract.methods.name().call(); const symbol = await contract.methods.symbol().call(); const decimals = await contract.methods.decimals().call(); const totalSupply = await contract.methods.totalSupply().call(); return { name, symbol, decimals, totalSupply }; }`; }; const generateEthersCode = () => { return `// Ethers.js Example for WETH Contract import { ethers } from 'ethers'; const provider = new ethers.providers.JsonRpcProvider('YOUR_RPC_ENDPOINT'); const contractAddress = '${contractAddress}'; const abi = ${JSON.stringify(WETH_ABI, null, 2)}; const contract = new ethers.Contract(contractAddress, abi, provider); // Example: Check WETH balance async function checkBalance(walletAddress) { try { const balance = await contract.balanceOf(walletAddress); const decimals = await contract.decimals(); const formattedBalance = ethers.utils.formatUnits(balance, decimals); console.log(\`WETH Balance: \${formattedBalance} WETH\`); return formattedBalance; } catch (error) { console.error('Error:', error); } } // Example: Get token info async function getTokenInfo() { const [name, symbol, decimals, totalSupply] = await Promise.all([ contract.name(), contract.symbol(), contract.decimals(), contract.totalSupply() ]); return { name, symbol, decimals, totalSupply: ethers.utils.formatUnits(totalSupply, decimals) }; }`; }; return (
+Token Contract Analyzer
+Contract Address
+{contractAddress}
+ setContractAddress(e.target.value)} className="flex-1 font-mono" /> window.open(`https://etherscan.io/address/${contractAddress}`, '_blank')} >
+{isWETHContract && (
+✓ WETH Contract Detected ABI loaded and ready
+)}
+Contract Functions ABI Data Integration Code
+Available Functions
+{availableFunctions.map((func, index) => (
+{func.stateMutability === 'view' ? 'READ' : 'WRITE'} {func.name}
+copyToClipboard(generateFunctionCall(func.name))} >
+{func.description}
+
+{generateFunctionCall(func.name)}
+))}
+Contract ABI copyToClipboard(formatABI())} > Copy ABI
+Contract Details
+Address: {contractAddress}
+
+Type: ERC-20 Token Contract
+
+Functions: {WETH_ABI.filter(item => item.type === 'function').length}
+
+Events: {WETH_ABI.filter(item => item.type === 'event').length}
+
+                  {formatABI()}
+                
+Integration Examples Web3.js Ethers.js
+Web3.js Implementation
+copyToClipboard(generateWeb3Code())} > Copy Code
+                      {generateWeb3Code()}
+                    
+Ethers.js Implementation
+copyToClipboard(generateEthersCode())} > Copy Code
+                      {generateEthersCode()}
+                    
+); }'>
+Added on: 2025-04-08
+LiquidityScanner Token	

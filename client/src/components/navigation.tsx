@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -23,6 +23,17 @@ export default function Navigation() {
               >
                 <BarChart3 className="h-4 w-4 mr-2" />
                 Trading Dashboard
+              </Button>
+            </Link>
+            
+            <Link href="/liquidity-scanner">
+              <Button 
+                variant={location === "/liquidity-scanner" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <Search className="h-4 w-4 mr-2" />
+                Liquidity Scanner
               </Button>
             </Link>
             
