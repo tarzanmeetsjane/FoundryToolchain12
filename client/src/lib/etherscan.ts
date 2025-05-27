@@ -1,4 +1,4 @@
-export const ETHERSCAN_API_URL = "https://api.etherscan.io/v2/api";
+export const ETHERSCAN_V2_API_URL = "https://api.etherscan.io/v2/api";
 export const ETHERSCAN_API_KEY = import.meta.env.VITE_ETHERSCAN_API_KEY || "YourApiKeyToken";
 
 // Uniswap V3 Swap event signature
@@ -26,10 +26,11 @@ export interface EtherscanResponse<T> {
 export async function fetchLogs(
   address: string,
   fromBlock: number,
-  toBlock: number
+  toBlock: number,
+  chainId: number = 1
 ): Promise<EtherscanLog[]> {
-  const url = new URL(ETHERSCAN_API_URL);
-  url.searchParams.append("chainid", "1");
+  const url = new URL(ETHERSCAN_V2_API_URL);
+  url.searchParams.append("chainid", chainId.toString());
   url.searchParams.append("module", "logs");
   url.searchParams.append("action", "getLogs");
   url.searchParams.append("address", address);
@@ -50,9 +51,9 @@ export async function fetchLogs(
   return data.result;
 }
 
-export async function fetchContractABI(address: string): Promise<string> {
-  const url = new URL(ETHERSCAN_API_URL);
-  url.searchParams.append("chainid", "1");
+export async function fetchContractABI(address: string, chainId: number = 1): Promise<string> {
+  const url = new URL(ETHERSCAN_V2_API_URL);
+  url.searchParams.append("chainid", chainId.toString());
   url.searchParams.append("module", "contract");
   url.searchParams.append("action", "getabi");
   url.searchParams.append("address", address);

@@ -75,32 +75,11 @@ export const DEX_CONFIGS: DexConfig[] = [
 ];
 
 export const getExplorerApiUrl = (chainId: number): string => {
-  const config = DEX_CONFIGS.find(c => c.chainId === chainId);
-  if (!config) {
-    throw new Error(`Unsupported chain ID: ${chainId}`);
-  }
-  
-  switch (chainId) {
-    case 1: // Ethereum
-      return "https://api.etherscan.io/v2/api";
-    case 56: // BSC
-      return "https://api.bscscan.com/api";
-    case 137: // Polygon
-      return "https://api.polygonscan.com/api";
-    default:
-      throw new Error(`No API endpoint configured for chain ID: ${chainId}`);
-  }
+  // Etherscan V2 API supports all chains with a single endpoint!
+  return "https://api.etherscan.io/v2/api";
 };
 
 export const getApiKeyForChain = (chainId: number): string => {
-  switch (chainId) {
-    case 1: // Ethereum
-      return process.env.ETHERSCAN_API_KEY || "YourApiKeyToken";
-    case 56: // BSC
-      return process.env.BSCSCAN_API_KEY || process.env.ETHERSCAN_API_KEY || "YourApiKeyToken";
-    case 137: // Polygon
-      return process.env.POLYGONSCAN_API_KEY || process.env.ETHERSCAN_API_KEY || "YourApiKeyToken";
-    default:
-      return process.env.ETHERSCAN_API_KEY || "YourApiKeyToken";
-  }
+  // Etherscan V2 API uses a single API key for all 50+ supported chains!
+  return process.env.ETHERSCAN_API_KEY || "YourApiKeyToken";
 };
