@@ -1,5 +1,6 @@
 import WalletValidationPanel from "@/components/wallet-validation-panel";
 import WalletPortfolioAnalyzer from "@/components/wallet-portfolio-analyzer";
+import TokenContractAnalyzer from "@/components/token-contract-analyzer";
 
 export default function WalletSecurity() {
   return (
@@ -15,6 +16,7 @@ export default function WalletSecurity() {
         <div className="space-y-8">
           <WalletValidationPanel />
           <WalletPortfolioAnalyzer />
+          <TokenContractAnalyzer />
         </div>
       </div>
     </div>
