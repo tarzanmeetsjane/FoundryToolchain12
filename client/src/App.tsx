@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Dashboard from "@/pages/dashboard";
 import WalletSecurity from "@/pages/wallet-security";
+import WidgetPage from "@/pages/widget";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 
@@ -15,6 +16,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/wallet-security" component={WalletSecurity} />
+        <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
     </div>
