@@ -33,7 +33,7 @@ const defaultSettings: WidgetSettings = {
   poolAddress: "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
   dexPlatform: "uniswap",
   chainId: 1,
-  refreshInterval: 30000, // 30 seconds
+  refreshInterval: 0, // Manual refresh only
   showVolume: true,
   showPrice: true,
   showTrends: true,
@@ -55,17 +55,17 @@ export default function CryptoWidget({
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Fetch pool stats with auto-refresh
+  // Fetch pool stats with manual refresh only
   const { data: poolStats, refetch, isLoading } = useQuery({
     queryKey: ["/api/pools", settings.poolAddress, "stats"],
-    refetchInterval: settings.refreshInterval,
+    refetchInterval: settings.refreshInterval > 0 ? settings.refreshInterval : false,
     enabled: isVisible,
   });
 
   // Fetch recent swaps for trend analysis
   const { data: recentSwaps } = useQuery({
     queryKey: ["/api/pools", settings.poolAddress, "swaps"],
-    refetchInterval: settings.refreshInterval * 2, // Refresh swaps less frequently
+    refetchInterval: settings.refreshInterval > 0 ? settings.refreshInterval * 2 : false,
     enabled: isVisible && settings.showTrends,
   });
 
