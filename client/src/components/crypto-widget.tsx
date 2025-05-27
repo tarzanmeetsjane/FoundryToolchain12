@@ -71,7 +71,7 @@ export default function CryptoWidget({
 
   // Calculate price trend from recent swaps
   const getPriceTrend = () => {
-    if (!recentSwaps || recentSwaps.length < 2) return 0;
+    if (!recentSwaps || !Array.isArray(recentSwaps) || recentSwaps.length < 2) return 0;
     const recent = recentSwaps.slice(0, 5);
     const prices = recent.map((swap: any) => parseFloat(swap.price0));
     if (prices.length < 2) return 0;
@@ -233,7 +233,7 @@ export default function CryptoWidget({
                   )}
                 </div>
                 <div className="text-lg font-bold">
-                  ${formatPrice(poolStats.currentPrice)}
+                  ${formatPrice((poolStats as any).currentPrice)}
                 </div>
               </div>
             )}
@@ -243,7 +243,7 @@ export default function CryptoWidget({
               <div className="space-y-1">
                 <span className="text-xs text-muted-foreground">24h Volume</span>
                 <div className="text-sm font-semibold text-blue-400">
-                  {formatVolume(poolStats.totalVolume)}
+                  {formatVolume((poolStats as any).totalVolume)}
                 </div>
               </div>
             )}
@@ -252,12 +252,12 @@ export default function CryptoWidget({
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground">Trades (24h)</span>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">{poolStats?.dailyTrades || 0}</span>
+                <span className="text-sm font-medium">{(poolStats as any)?.dailyTrades || 0}</span>
                 <div className="flex-1 bg-muted rounded-full h-1.5">
                   <div 
                     className="bg-gradient-to-r from-green-500 to-blue-500 h-1.5 rounded-full transition-all duration-300"
                     style={{ 
-                      width: `${Math.min((poolStats?.dailyTrades || 0) / 1000 * 100, 100)}%` 
+                      width: `${Math.min(((poolStats as any)?.dailyTrades || 0) / 1000 * 100, 100)}%` 
                     }}
                   />
                 </div>

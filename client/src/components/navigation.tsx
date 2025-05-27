@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Widgets } from "lucide-react";
+import { BarChart3, Shield, Monitor } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -43,7 +43,7 @@ export default function Navigation() {
                 size="sm"
                 className="h-9"
               >
-                <Widgets className="h-4 w-4 mr-2" />
+                <Monitor className="h-4 w-4 mr-2" />
                 Widget Builder
               </Button>
             </Link>
