@@ -19,7 +19,13 @@ interface SearchControlsProps {
   onDexChange: (dex: string, chainId: number) => void;
 }
 
-export default function SearchControls({ selectedPool, onPoolChange }: SearchControlsProps) {
+export default function SearchControls({ 
+  selectedPool, 
+  selectedDex, 
+  selectedChain, 
+  onPoolChange, 
+  onDexChange 
+}: SearchControlsProps) {
   const [poolAddress, setPoolAddress] = useState(selectedPool);
   const [fromBlock, setFromBlock] = useState("22057075");
   const [toBlock, setToBlock] = useState("22057085");
@@ -27,7 +33,7 @@ export default function SearchControls({ selectedPool, onPoolChange }: SearchCon
   const queryClient = useQueryClient();
 
   const { data: poolStats } = useQuery<PoolStats>({
-    queryKey: [`/api/pools/${selectedPool}/stats`],
+    queryKey: [`/api/pools/${selectedPool}/stats`, { dex: selectedDex, chainId: selectedChain }],
     enabled: !!selectedPool,
   });
 
@@ -36,6 +42,8 @@ export default function SearchControls({ selectedPool, onPoolChange }: SearchCon
       const response = await apiRequest("POST", `/api/pools/${poolAddress}/fetch-swaps`, {
         fromBlock: parseInt(fromBlock),
         toBlock: parseInt(toBlock),
+        dexPlatform: selectedDex,
+        chainId: selectedChain,
       });
       return response.json();
     },
@@ -80,13 +88,20 @@ export default function SearchControls({ selectedPool, onPoolChange }: SearchCon
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      {/* DEX Platform Selector */}
+      <DexPlatformSelector
+        selectedPlatform={selectedDex}
+        selectedChain={selectedChain}
+        onPlatformChange={onDexChange}
+      />
+
       {/* Token Pair Search */}
       <Card className="lg:col-span-2">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Search className="text-primary mr-2 h-5 w-5" />
-            Token Pair Lookup
+            Multi-DEX Token Pair Lookup
           </CardTitle>
         </CardHeader>
         <CardContent>

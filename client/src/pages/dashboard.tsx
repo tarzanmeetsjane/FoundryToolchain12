@@ -12,6 +12,13 @@ import ImplementationGuide from "@/components/implementation-guide";
 
 export default function Dashboard() {
   const [selectedPool, setSelectedPool] = useState("0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640");
+  const [selectedDex, setSelectedDex] = useState("uniswap");
+  const [selectedChain, setSelectedChain] = useState(1);
+
+  const handleDexChange = (dex: string, chainId: number) => {
+    setSelectedDex(dex);
+    setSelectedChain(chainId);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -20,9 +27,9 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <ChartLine className="text-primary h-8 w-8" />
-            <h1 className="text-xl font-bold">DeFi Trade Tracker</h1>
+            <h1 className="text-xl font-bold">Multi-DEX Trade Tracker</h1>
             <Badge variant="secondary" className="bg-primary/20 text-primary">
-              BETA
+              MULTI-DEX
             </Badge>
           </div>
           <div className="flex items-center space-x-6">
@@ -41,26 +48,52 @@ export default function Dashboard() {
 
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         {/* Search and Controls */}
-        <SearchControls selectedPool={selectedPool} onPoolChange={setSelectedPool} />
+        <SearchControls 
+          selectedPool={selectedPool} 
+          selectedDex={selectedDex}
+          selectedChain={selectedChain}
+          onPoolChange={setSelectedPool}
+          onDexChange={handleDexChange}
+        />
 
         {/* Real-time Data */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
-            <LiveFeed poolAddress={selectedPool} />
+            <LiveFeed 
+              poolAddress={selectedPool} 
+              dexPlatform={selectedDex}
+              chainId={selectedChain}
+            />
           </div>
           <div className="space-y-6">
-            <MarketMetrics poolAddress={selectedPool} />
+            <MarketMetrics 
+              poolAddress={selectedPool}
+              dexPlatform={selectedDex}
+              chainId={selectedChain}
+            />
           </div>
         </div>
 
         {/* Charts and Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <PriceChart poolAddress={selectedPool} />
-          <VolumeChart poolAddress={selectedPool} />
+          <PriceChart 
+            poolAddress={selectedPool}
+            dexPlatform={selectedDex}
+            chainId={selectedChain}
+          />
+          <VolumeChart 
+            poolAddress={selectedPool}
+            dexPlatform={selectedDex}
+            chainId={selectedChain}
+          />
         </div>
 
         {/* Transaction History */}
-        <TransactionHistory poolAddress={selectedPool} />
+        <TransactionHistory 
+          poolAddress={selectedPool}
+          dexPlatform={selectedDex}
+          chainId={selectedChain}
+        />
 
         {/* Implementation Guide */}
         <ImplementationGuide />
