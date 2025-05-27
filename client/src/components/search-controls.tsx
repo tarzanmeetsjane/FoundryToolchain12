@@ -4,14 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import DexPlatformSelector from "@/components/dex-platform-selector";
 import type { PoolStats } from "@shared/schema";
 
 interface SearchControlsProps {
   selectedPool: string;
+  selectedDex: string;
+  selectedChain: number;
   onPoolChange: (pool: string) => void;
+  onDexChange: (dex: string, chainId: number) => void;
 }
 
 export default function SearchControls({ selectedPool, onPoolChange }: SearchControlsProps) {
