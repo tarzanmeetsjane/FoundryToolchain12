@@ -27,6 +27,8 @@ export default function TransactionHistory({ poolAddress }: TransactionHistoryPr
   const { data: swapEvents = [], isLoading } = useQuery<SwapEvent[]>({
     queryKey: [`/api/pools/${poolAddress}/swaps`],
     enabled: !!poolAddress,
+    refetchInterval: false,
+    staleTime: Infinity,
   });
 
   const filteredEvents = swapEvents.filter((event) => {

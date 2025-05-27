@@ -11,6 +11,8 @@ export default function VolumeChart({ poolAddress }: VolumeChartProps) {
   const { data: swapEvents = [] } = useQuery<SwapEvent[]>({
     queryKey: [`/api/pools/${poolAddress}/swaps`],
     enabled: !!poolAddress,
+    refetchInterval: false,
+    staleTime: Infinity,
   });
 
   // Group data by hour and calculate buy/sell volumes

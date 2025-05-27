@@ -11,6 +11,8 @@ export default function MarketMetrics({ poolAddress }: MarketMetricsProps) {
   const { data: poolStats } = useQuery<PoolStats>({
     queryKey: [`/api/pools/${poolAddress}/stats`],
     enabled: !!poolAddress,
+    refetchInterval: false,
+    staleTime: Infinity,
   });
 
   return (

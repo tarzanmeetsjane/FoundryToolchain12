@@ -55,6 +55,8 @@ export default function SearchControls({
   const { data: poolStats } = useQuery<PoolStats>({
     queryKey: [`/api/pools/${selectedPool}/stats`, { dex: selectedDex, chainId: selectedChain }],
     enabled: !!selectedPool,
+    refetchInterval: false,
+    staleTime: Infinity,
   });
 
   const fetchSwapsMutation = useMutation({

@@ -15,6 +15,8 @@ export default function PriceChart({ poolAddress }: PriceChartProps) {
   const { data: swapEvents = [] } = useQuery<SwapEvent[]>({
     queryKey: [`/api/pools/${poolAddress}/swaps`],
     enabled: !!poolAddress,
+    refetchInterval: false,
+    staleTime: Infinity,
   });
 
   // Process data for chart
