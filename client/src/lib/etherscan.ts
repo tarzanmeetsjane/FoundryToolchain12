@@ -1,5 +1,5 @@
 export const ETHERSCAN_V2_API_URL = "https://api.etherscan.io/v2/api";
-export const ETHERSCAN_API_KEY = import.meta.env.VITE_ETHERSCAN_API_KEY || "YourApiKeyToken";
+export const ETHERSCAN_API_KEY = "IRSDN3CM3AMG2Y2S2SBAISZ3HF7SV6TAG3";
 
 // Uniswap V3 Swap event signature
 export const SWAP_EVENT_TOPIC = "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67";
