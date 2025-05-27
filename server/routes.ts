@@ -163,12 +163,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const abiResponse = await fetch(abiUrl.toString());
       const abiData = await abiResponse.json();
 
-      if (abiData.status !== "1") {
-        return res.status(400).json({ error: "Failed to fetch contract ABI" });
+      let abi;
+      if (abiData.status === "1" && abiData.result) {
+        try {
+          abi = JSON.parse(abiData.result);
+        } catch (error) {
+          // If parsing fails, use standard Uniswap V3 pool ABI
+          abi = [
+            {
+              "anonymous": false,
+              "inputs": [
+                {"indexed": true, "internalType": "address", "name": "sender", "type": "address"},
+                {"indexed": true, "internalType": "address", "name": "recipient", "type": "address"},
+                {"indexed": false, "internalType": "int256", "name": "amount0", "type": "int256"},
+                {"indexed": false, "internalType": "int256", "name": "amount1", "type": "int256"},
+                {"indexed": false, "internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
+                {"indexed": false, "internalType": "uint128", "name": "liquidity", "type": "uint128"},
+                {"indexed": false, "internalType": "int24", "name": "tick", "type": "int24"}
+              ],
+              "name": "Swap",
+              "type": "event"
+            }
+          ];
+        }
+      } else {
+        // Use standard Uniswap V3 pool ABI as fallback
+        abi = [
+          {
+            "anonymous": false,
+            "inputs": [
+              {"indexed": true, "internalType": "address", "name": "sender", "type": "address"},
+              {"indexed": true, "internalType": "address", "name": "recipient", "type": "address"},
+              {"indexed": false, "internalType": "int256", "name": "amount0", "type": "int256"},
+              {"indexed": false, "internalType": "int256", "name": "amount1", "type": "int256"},
+              {"indexed": false, "internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
+              {"indexed": false, "internalType": "uint128", "name": "liquidity", "type": "uint128"},
+              {"indexed": false, "internalType": "int24", "name": "tick", "type": "int24"}
+            ],
+            "name": "Swap",
+            "type": "event"
+          }
+        ];
       }
 
       // Parse ABI and decode logs
-      const contractInterface = new ethers.Interface(abiData.result);
+      const contractInterface = new ethers.Interface(abi);
       const decodedEvents = [];
 
       for (const log of logsData.result) {
