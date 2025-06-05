@@ -29,6 +29,7 @@ function Router() {
         <Route path="/address-analyzer" component={AddressAnalyzer} />
         <Route path="/token-discovery" component={TokenDiscovery} />
         <Route path="/funding-tracker" component={FundingTrackerPage} />
+        <Route path="/frequency-tuner" component={FrequencyTunerPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>

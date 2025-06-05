@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -100,6 +100,17 @@ export default function Navigation() {
               >
                 <DollarSign className="h-4 w-4 mr-2" />
                 Funding
+              </Button>
+            </Link>
+            
+            <Link href="/frequency-tuner">
+              <Button 
+                variant={location === "/frequency-tuner" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <Radio className="h-4 w-4 mr-2" />
+                Frequency Tuner
               </Button>
             </Link>
             
