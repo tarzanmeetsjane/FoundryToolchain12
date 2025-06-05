@@ -11,6 +11,8 @@ import AlertsPage from "@/pages/alerts";
 import LiquidityManagementPage from "@/pages/liquidity-management";
 import AddressAnalyzer from "@/pages/address-analyzer";
 import TokenDiscovery from "@/pages/token-discovery";
+import FundingTrackerPage from "@/pages/funding-tracker";
+import FrequencyTunerPage from "@/pages/frequency-tuner";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 
@@ -26,6 +28,7 @@ function Router() {
         <Route path="/liquidity-management" component={LiquidityManagementPage} />
         <Route path="/address-analyzer" component={AddressAnalyzer} />
         <Route path="/token-discovery" component={TokenDiscovery} />
+        <Route path="/funding-tracker" component={FundingTrackerPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
