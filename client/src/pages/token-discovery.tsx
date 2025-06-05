@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,39 +48,19 @@ export default function TokenDiscoveryPage() {
     return chains[chainId] || "Unknown Chain";
   };
 
-  // Demo data showing what the feature will provide
-  const demoTokens = [
-    {
-      symbol: "USDC",
-      name: "USD Coin",
-      address: "0xA0b86a33E6441b8435b662c1f8e7b3A8F9C9BF0f",
-      price: "$1.00",
-      change: "+0.01%",
-      volume: "$2.5B",
-      marketCap: "$32.1B",
-      verified: true
+  // Load real token data from server using authenticated CoinGecko API
+  const { data: topTokens = [], isLoading: tokensLoading } = useQuery({
+    queryKey: [`top-tokens`, selectedChain],
+    queryFn: async () => {
+      const response = await fetch(`/api/market/coins?limit=20&vs_currency=usd`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch token data');
+      }
+      return response.json();
     },
-    {
-      symbol: "WETH",
-      name: "Wrapped Ethereum",
-      address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-      price: "$2,615.50",
-      change: "+2.45%",
-      volume: "$856M",
-      marketCap: "$314B",
-      verified: true
-    },
-    {
-      symbol: "UNI",
-      name: "Uniswap",
-      address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-      price: "$8.42",
-      change: "-1.23%",
-      volume: "$125M",
-      marketCap: "$5.1B",
-      verified: true
-    }
-  ];
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">

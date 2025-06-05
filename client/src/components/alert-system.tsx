@@ -42,62 +42,23 @@ export default function AlertSystem() {
   });
   const { toast } = useToast();
 
-  // Demo data for immediate functionality
+  // Load alerts from server on component mount
   useEffect(() => {
-    const demoAlerts: Alert[] = [
-      {
-        id: '1',
-        type: 'price_above',
-        poolAddress: '0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640',
-        tokenSymbol: 'USDC/ETH',
-        threshold: 2600,
-        isActive: true,
-        createdAt: new Date(),
-        message: 'ETH price above $2,600'
-      },
-      {
-        id: '2',
-        type: 'volume_spike',
-        poolAddress: '0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640',
-        tokenSymbol: 'USDC/ETH',
-        threshold: 1000000,
-        isActive: true,
-        createdAt: new Date(),
-        message: 'Volume spike above $1M in 1 hour'
-      },
-      {
-        id: '3',
-        type: 'large_transaction',
-        poolAddress: '0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640',
-        tokenSymbol: 'USDC/ETH',
-        threshold: 100000,
-        isActive: false,
-        createdAt: new Date(),
-        message: 'Large transaction above $100K'
-      }
-    ];
-    setAlerts(demoAlerts);
-
-    const demoTriggers: AlertTrigger[] = [
-      {
-        id: '1',
-        alertId: '1',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-        currentValue: 2615.50,
-        threshold: 2600,
-        message: 'ETH price reached $2,615.50 (target: $2,600)'
-      },
-      {
-        id: '2',
-        alertId: '2',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-        currentValue: 1250000,
-        threshold: 1000000,
-        message: 'Volume spike: $1.25M in 1 hour (target: $1M)'
-      }
-    ];
-    setRecentTriggers(demoTriggers);
+    loadAlertsFromServer();
   }, []);
+
+  const loadAlertsFromServer = async () => {
+    try {
+      const response = await fetch('/api/alerts');
+      if (response.ok) {
+        const data = await response.json();
+        setAlerts(data.alerts || []);
+        setRecentTriggers(data.recentTriggers || []);
+      }
+    } catch (error) {
+      console.error('Failed to load alerts:', error);
+    }
+  };
 
   const createAlert = () => {
     if (!newAlert.threshold || !newAlert.message) {

@@ -38,74 +38,20 @@ export default function WalletPortfolioAnalyzer() {
   const [selectedChain, setSelectedChain] = useState(1);
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-  // Query wallet portfolio data using Moralis and CoinGecko APIs
+  // Query wallet portfolio data using server-side authenticated APIs
   const { data: portfolio, isLoading, error, refetch } = useQuery<WalletPortfolio>({
-    queryKey: [`moralis-wallet`, walletAddress, selectedChain, searchTrigger],
+    queryKey: [`wallet-portfolio`, walletAddress, selectedChain, searchTrigger],
     queryFn: async () => {
       if (!walletAddress) throw new Error('No wallet address provided');
       
-      try {
-        const moralisChain = getMoralisChain(selectedChain);
-        
-        // Get token balances from Moralis
-        const tokenBalances = await moralisAPI.getWalletTokenBalances(walletAddress, moralisChain);
-        
-        // Get native balance
-        const walletBalance = await moralisAPI.getWalletBalance(walletAddress, moralisChain);
-        
-        // Get prices from CoinGecko for tokens that have contract addresses
-        const contractAddresses = tokenBalances
-          .filter(token => !token.possible_spam && token.verified_contract)
-          .map(token => token.token_address);
-        
-        let tokenPrices: any = {};
-        if (contractAddresses.length > 0) {
-          try {
-            tokenPrices = await coinGeckoAPI.getTokenPrices(contractAddresses);
-          } catch (priceError) {
-            console.warn('CoinGecko price fetch failed, continuing without prices:', priceError);
-          }
-        }
-        
-        // Calculate total portfolio value
-        let totalValueUSD = parseFloat(walletBalance.wallet_balance.usd_value?.toString() || '0');
-        
-        // Transform to our interface
-        const transformedTokens: TokenBalance[] = tokenBalances
-          .filter(token => !token.possible_spam && token.verified_contract)
-          .map(token => {
-            const price = tokenPrices[token.token_address.toLowerCase()]?.usd || token.usd_price || 0;
-            const value = price * parseFloat(token.balance_formatted);
-            totalValueUSD += value;
-            
-            return {
-              contractAddress: token.token_address,
-              symbol: token.symbol,
-              name: token.name,
-              decimals: token.decimals,
-              balance: token.balance,
-              balanceFormatted: token.balance_formatted,
-              priceUSD: price.toString(),
-              valueUSD: value.toString(),
-              logo: token.logo || token.thumbnail,
-              verified: token.verified_contract
-            };
-          });
-        
-        const transformedPortfolio: WalletPortfolio = {
-          address: walletAddress,
-          totalValueUSD: totalValueUSD.toString(),
-          tokenCount: transformedTokens.length,
-          nativeBalance: walletBalance.wallet_balance.balance_formatted,
-          nativeValueUSD: walletBalance.wallet_balance.usd_value?.toString() || '0',
-          tokens: transformedTokens,
-          lastUpdated: new Date().toISOString()
-        };
-        
-        return transformedPortfolio;
-      } catch (apiError: any) {
-        throw new Error(`Unable to fetch wallet data: ${apiError?.message || 'Unknown error'}`);
+      const response = await fetch(`/api/wallet/${walletAddress}/portfolio?chainId=${selectedChain}`);
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.details || `HTTP ${response.status}: ${response.statusText}`);
       }
+      
+      return response.json();
     },
     enabled: !!walletAddress && AddressValidator.validateEthereumAddress(walletAddress) && searchTrigger > 0,
     refetchInterval: false,

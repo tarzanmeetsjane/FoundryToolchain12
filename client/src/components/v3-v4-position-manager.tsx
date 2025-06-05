@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,61 +73,23 @@ export default function V3V4PositionManager() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  // Demo V3 positions with authentic structure
-  const v3Positions: V3Position[] = [
-    {
-      tokenId: "12345",
-      poolAddress: "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
-      token0: { symbol: "USDC", address: "0xA0b86a33E6441b8435b662c1f8e7b3A8F9C9BF0f", amount: "5000.00", decimals: 6 },
-      token1: { symbol: "WETH", address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", amount: "1.9123", decimals: 18 },
-      tickLower: 201000,
-      tickUpper: 204000,
-      currentTick: 202500,
-      priceRange: {
-        lower: "2580.50",
-        upper: "2650.25",
-        current: "2615.75"
-      },
-      liquidity: "1234567890123456",
-      feeGrowth: {
-        token0: "123456789012345678901234567890",
-        token1: "987654321098765432109876543210"
-      },
-      fees: {
-        token0: "12.567",
-        token1: "0.00456",
-        totalValue: "$23.45"
-      },
-      inRange: true,
-      health: 'healthy'
+  // Load V3 positions from server using authenticated APIs
+  const { data: v3Positions = [], isLoading: positionsLoading, error: positionsError } = useQuery<V3Position[]>({
+    queryKey: [`v3-positions`, walletAddress, selectedVersion],
+    queryFn: async () => {
+      if (!walletAddress) return [];
+      
+      const response = await fetch(`/api/positions/v3/${walletAddress}?version=${selectedVersion}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch positions: ${response.statusText}`);
+      }
+      
+      return response.json();
     },
-    {
-      tokenId: "67890",
-      poolAddress: "0x5777d92f208679db4b9778590fa3cab3ac9e2168",
-      token0: { symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F", amount: "2500.00", decimals: 18 },
-      token1: { symbol: "USDC", address: "0xA0b86a33E6441b8435b662c1f8e7b3A8F9C9BF0f", amount: "2500.00", decimals: 6 },
-      tickLower: -276300,
-      tickUpper: -276290,
-      currentTick: -276320,
-      priceRange: {
-        lower: "0.9995",
-        upper: "1.0005",
-        current: "0.9992"
-      },
-      liquidity: "9876543210987654",
-      feeGrowth: {
-        token0: "456789012345678901234567890123",
-        token1: "321098765432109876543210987654"
-      },
-      fees: {
-        token0: "5.234",
-        token1: "5.189",
-        totalValue: "$10.42"
-      },
-      inRange: false,
-      health: 'out-of-range'
-    }
-  ];
+    enabled: !!walletAddress && selectedVersion === 'v3',
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+  });
 
   // V4 Hooks for enhanced functionality
   const v4Hooks: V4Hook[] = [

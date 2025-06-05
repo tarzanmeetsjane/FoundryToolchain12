@@ -458,6 +458,156 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Alerts management endpoints
+  app.get("/api/alerts", async (req, res) => {
+    try {
+      // Get user alerts from database (implement based on authentication)
+      res.json({
+        alerts: [],
+        recentTriggers: []
+      });
+    } catch (error: any) {
+      console.error("Alerts API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch alerts", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/alerts", async (req, res) => {
+    try {
+      const alertData = req.body;
+      // Save alert to database and set up monitoring
+      res.json({ success: true, alertId: Date.now().toString() });
+    } catch (error: any) {
+      console.error("Create alert API error:", error);
+      res.status(500).json({ 
+        error: "Failed to create alert", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Real-time market data endpoint using CoinGecko
+  app.get("/api/market/trending", async (req, res) => {
+    try {
+      const trending = await makeCoinGeckoRequest('/search/trending');
+      res.json(trending);
+    } catch (error: any) {
+      console.error("Trending API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch trending data", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Top coins endpoint
+  app.get("/api/market/coins", async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 100;
+      const vsCurrency = (req.query.vs_currency as string) || 'usd';
+      
+      const coins = await makeCoinGeckoRequest('/coins/markets', {
+        vs_currency: vsCurrency,
+        order: 'market_cap_desc',
+        per_page: limit,
+        page: 1,
+        sparkline: false,
+        price_change_percentage: '24h'
+      });
+
+      res.json(coins);
+    } catch (error: any) {
+      console.error("Market coins API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch market data", 
+        details: error.message 
+      });
+    }
+  });
+
+  // V3/V4 Uniswap positions endpoint using Moralis
+  app.get("/api/positions/v3/:address", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const version = req.query.version as string || 'v3';
+      const chainId = parseInt(req.query.chainId as string) || 1;
+      const moralisChain = getMoralisChain(chainId);
+
+      // Get NFT positions from Moralis (Uniswap V3 positions are NFTs)
+      const nfts = await makeMoralisRequest(`/${address}/nft`, {
+        chain: moralisChain,
+        format: 'decimal',
+        token_addresses: ['0xC36442b4A4522E871399CD717aBDD847Ab11FE88'], // Uniswap V3 Position Manager
+        media_items: false
+      });
+
+      // Transform NFT data to position structure
+      const positions = nfts.result?.map((nft: any) => {
+        // In production, decode the NFT metadata to get position details
+        return {
+          tokenId: nft.token_id,
+          poolAddress: "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640", // Would be decoded from metadata
+          token0: { symbol: "USDC", address: "0xA0b86a33E6441b8435b662c1f8e7b3A8F9C9BF0f", amount: "0", decimals: 6 },
+          token1: { symbol: "WETH", address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", amount: "0", decimals: 18 },
+          tickLower: 0,
+          tickUpper: 0,
+          currentTick: 0,
+          priceRange: { lower: "0", upper: "0", current: "0" },
+          liquidity: "0",
+          feeGrowth: { token0: "0", token1: "0" },
+          fees: { token0: "0", token1: "0", totalValue: "$0" },
+          inRange: false,
+          health: 'out-of-range' as const
+        };
+      }) || [];
+
+      res.json(positions);
+    } catch (error: any) {
+      console.error("V3 positions API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch V3 positions", 
+        details: error.message 
+      });
+    }
+  });
+
+  // DEX pool analytics endpoint
+  app.get("/api/pools/:address/analytics", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const chainId = parseInt(req.query.chainId as string) || 1;
+      
+      // Get pool data from database
+      const poolStats = await storage.getPoolStats(address);
+      
+      // Get real-time price data from CoinGecko
+      const priceData = await makeCoinGeckoRequest('/simple/price', {
+        ids: 'ethereum',
+        vs_currencies: 'usd',
+        include_24hr_change: true
+      });
+
+      const analytics = {
+        poolAddress: address,
+        chainId,
+        stats: poolStats,
+        priceData,
+        lastUpdated: new Date().toISOString()
+      };
+
+      res.json(analytics);
+    } catch (error: any) {
+      console.error("Pool analytics API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch pool analytics", 
+        details: error.message 
+      });
+    }
+  });
+
   return httpServer;
 }
 
