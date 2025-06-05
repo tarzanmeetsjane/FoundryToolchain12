@@ -22,25 +22,25 @@ export default function DexPlatformSelector({
 
   const { data: platforms = [] } = useQuery<DexPlatform[]>({
     queryKey: ["/api/dex/platforms"],
+    enabled: false, // Disable automatic loading
     refetchInterval: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     staleTime: Infinity,
   });
 
-  // Initialize DEX platforms on first load
-  useEffect(() => {
-    if (!initialized && platforms.length === 0) {
-      initializePlatforms();
-    }
-  }, [initialized, platforms.length]);
+  // DISABLED: No automatic initialization to prevent page jumping
+  // useEffect(() => {
+  //   if (!initialized && platforms.length === 0) {
+  //     initializePlatforms();
+  //   }
+  // }, [initialized, platforms.length]);
 
   const initializePlatforms = async () => {
     try {
       await fetch("/api/dex/initialize", { method: "POST" });
       setInitialized(true);
-      // Refetch platforms after initialization
-      window.location.reload();
+      // REMOVED: window.location.reload() to prevent page jumping
     } catch (error) {
       console.error("Failed to initialize DEX platforms:", error);
     }
