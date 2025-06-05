@@ -608,6 +608,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Address information endpoint
+  app.get("/api/address/:address/info", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const chainId = parseInt(req.query.chainId as string) || 1;
+      const moralisChain = getMoralisChain(chainId);
+
+      // Check if address is a contract using Moralis
+      const contractInfo = await makeMoralisRequest(`/${address}`, {
+        chain: moralisChain
+      });
+
+      res.json({
+        address,
+        type: contractInfo.is_contract ? 'contract' : 'wallet',
+        name: contractInfo.name || null,
+        symbol: contractInfo.symbol || null,
+        chainId
+      });
+    } catch (error: any) {
+      console.error("Address info API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch address info", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Multi-chain token analysis endpoint
+  app.get("/api/analyze/:address", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const chainId = parseInt(req.query.chainId as string) || 1;
+      const moralisChain = getMoralisChain(chainId);
+
+      // Get comprehensive address analysis
+      const [tokenBalances, nativeBalance, contractInfo] = await Promise.allSettled([
+        makeMoralisRequest(`/${address}/erc20`, { chain: moralisChain }),
+        makeMoralisRequest(`/${address}/balance`, { chain: moralisChain }),
+        makeMoralisRequest(`/${address}`, { chain: moralisChain })
+      ]);
+
+      const analysis = {
+        address,
+        chainId,
+        tokens: tokenBalances.status === 'fulfilled' ? tokenBalances.value : [],
+        balance: nativeBalance.status === 'fulfilled' ? nativeBalance.value : { balance: "0" },
+        contractInfo: contractInfo.status === 'fulfilled' ? contractInfo.value : null,
+        timestamp: new Date().toISOString()
+      };
+
+      res.json(analysis);
+    } catch (error: any) {
+      console.error("Address analysis API error:", error);
+      res.status(500).json({ 
+        error: "Failed to analyze address", 
+        details: error.message 
+      });
+    }
+  });
+
   return httpServer;
 }
 
