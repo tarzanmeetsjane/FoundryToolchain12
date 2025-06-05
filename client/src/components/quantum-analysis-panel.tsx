@@ -23,12 +23,20 @@ export default function QuantumAnalysisPanel({
 
   const { data: poolStats } = useQuery<PoolStats>({
     queryKey: [`/api/pools/${poolAddress}/stats`, { dex: dexPlatform, chainId }],
-    enabled: !!poolAddress,
+    enabled: false, // Disable to prevent automatic requests
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    staleTime: Infinity,
   });
 
   const { data: swapEvents } = useQuery<SwapEvent[]>({
     queryKey: [`/api/pools/${poolAddress}/swaps`, { dex: dexPlatform, chainId }],
-    enabled: !!poolAddress,
+    enabled: false, // Disable to prevent automatic requests
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    staleTime: Infinity,
   });
 
   useEffect(() => {

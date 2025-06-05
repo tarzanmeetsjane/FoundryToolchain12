@@ -54,8 +54,10 @@ export default function SearchControls({
 
   const { data: poolStats } = useQuery<PoolStats>({
     queryKey: [`/api/pools/${selectedPool}/stats`, { dex: selectedDex, chainId: selectedChain }],
-    enabled: !!selectedPool,
+    enabled: false, // Disable to prevent automatic requests
     refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     staleTime: Infinity,
   });
 
