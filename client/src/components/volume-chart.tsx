@@ -10,7 +10,7 @@ interface VolumeChartProps {
 export default function VolumeChart({ poolAddress }: VolumeChartProps) {
   const { data: swapEvents = [] } = useQuery<SwapEvent[]>({
     queryKey: [`/api/pools/${poolAddress}/swaps`],
-    enabled: !!poolAddress,
+    enabled: false,
     refetchInterval: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,

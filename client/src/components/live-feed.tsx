@@ -16,7 +16,7 @@ export default function LiveFeed({ poolAddress }: LiveFeedProps) {
 
   const { data: swapEvents = [], isLoading } = useQuery<SwapEvent[]>({
     queryKey: [`/api/pools/${poolAddress}/swaps`],
-    enabled: !!poolAddress,
+    enabled: false,
     refetchInterval: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
