@@ -12,6 +12,8 @@ export default function VolumeChart({ poolAddress }: VolumeChartProps) {
     queryKey: [`/api/pools/${poolAddress}/swaps`],
     enabled: !!poolAddress,
     refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     staleTime: Infinity,
   });
 

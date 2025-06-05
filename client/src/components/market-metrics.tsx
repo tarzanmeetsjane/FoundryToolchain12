@@ -12,10 +12,9 @@ export default function MarketMetrics({ poolAddress }: MarketMetricsProps) {
     queryKey: [`/api/pools/${poolAddress}/stats`],
     enabled: !!poolAddress,
     refetchInterval: false,
-    staleTime: Infinity,
-    refetchInterval: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    staleTime: Infinity,
   });
 
   return (
