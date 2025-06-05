@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor, Search, Bell } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search, Bell, Droplets } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -56,6 +56,17 @@ export default function Navigation() {
               >
                 <Bell className="h-4 w-4 mr-2" />
                 Price Alerts
+              </Button>
+            </Link>
+            
+            <Link href="/liquidity-management">
+              <Button 
+                variant={location === "/liquidity-management" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <Droplets className="h-4 w-4 mr-2" />
+                Liquidity
               </Button>
             </Link>
             

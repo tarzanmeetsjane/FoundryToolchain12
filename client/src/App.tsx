@@ -8,6 +8,7 @@ import WalletSecurity from "@/pages/wallet-security";
 import WidgetPage from "@/pages/widget";
 import LiquidityScanner from "@/pages/liquidity-scanner";
 import AlertsPage from "@/pages/alerts";
+import LiquidityManagementPage from "@/pages/liquidity-management";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
+        <Route path="/liquidity-management" component={LiquidityManagementPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
