@@ -669,6 +669,102 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GeckoTerminal trending pools endpoint
+  app.get("/api/dex/trending-pools", async (req, res) => {
+    try {
+      const response = await fetch('https://api.geckoterminal.com/api/v2/networks/trending_pools', {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`GeckoTerminal API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error: any) {
+      console.error("GeckoTerminal trending pools error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch trending pools", 
+        details: error.message 
+      });
+    }
+  });
+
+  // GeckoTerminal network pools endpoint
+  app.get("/api/dex/:network/pools", async (req, res) => {
+    try {
+      const { network } = req.params;
+      const page = parseInt(req.query.page as string) || 1;
+      const sort = req.query.sort as string || 'h24_volume_usd_desc';
+      
+      const response = await fetch(`https://api.geckoterminal.com/api/v2/networks/${network}/pools?page=${page}&sort=${sort}`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`GeckoTerminal API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error: any) {
+      console.error("GeckoTerminal network pools error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch network pools", 
+        details: error.message 
+      });
+    }
+  });
+
+  // GeckoTerminal pool details endpoint
+  app.get("/api/dex/:network/pools/:address", async (req, res) => {
+    try {
+      const { network, address } = req.params;
+      
+      const response = await fetch(`https://api.geckoterminal.com/api/v2/networks/${network}/pools/${address}?include=base_token,quote_token,dex`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`GeckoTerminal API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error: any) {
+      console.error("GeckoTerminal pool details error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch pool details", 
+        details: error.message 
+      });
+    }
+  });
+
+  // GeckoTerminal token pools endpoint
+  app.get("/api/dex/:network/tokens/:address/pools", async (req, res) => {
+    try {
+      const { network, address } = req.params;
+      
+      const response = await fetch(`https://api.geckoterminal.com/api/v2/networks/${network}/tokens/${address}/pools`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`GeckoTerminal API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error: any) {
+      console.error("GeckoTerminal token pools error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch token pools", 
+        details: error.message 
+      });
+    }
+  });
+
   return httpServer;
 }
 
