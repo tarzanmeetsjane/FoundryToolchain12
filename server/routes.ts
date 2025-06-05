@@ -5,6 +5,16 @@ import { insertSwapEventSchema, insertPoolStatsSchema, insertDexPlatformSchema }
 import { ethers } from "ethers";
 import { DEX_CONFIGS, getExplorerApiUrl, getApiKeyForChain } from "./dex-config";
 
+// Moralis Web3 API configuration
+const MORALIS_BASE_URL = "https://deep-index.moralis.io/api/v2.2";
+const MORALIS_API_KEY = process.env.MORALIS_API_KEY;
+
+// CoinGecko API configuration
+const COINGECKO_BASE_URL = process.env.COINGECKO_API_KEY 
+  ? "https://pro-api.coingecko.com/api/v3"
+  : "https://api.coingecko.com/api/v3";
+const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY;
+
 // Default ETH/USDC pool address on Uniswap
 const DEFAULT_POOL_ADDRESS = "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640";
 
@@ -295,6 +305,159 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   const httpServer = createServer(app);
+  // Wallet Portfolio API endpoint using Moralis and CoinGecko
+  app.get("/api/wallet/:address/portfolio", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const chainId = parseInt(req.query.chainId as string) || 1;
+      const moralisChain = getMoralisChain(chainId);
+
+      // Get token balances from Moralis
+      const tokenBalances = await makeMoralisRequest(`/${address}/erc20`, {
+        chain: moralisChain,
+        exclude_spam: true,
+        exclude_unverified_contracts: false
+      });
+
+      // Get native balance from Moralis
+      const walletBalance = await makeMoralisRequest(`/${address}/balance`, {
+        chain: moralisChain
+      });
+
+      // Filter verified tokens with positive balances
+      const verifiedTokens = tokenBalances.filter(
+        (token: any) => !token.possible_spam && token.verified_contract && parseFloat(token.balance_formatted) > 0
+      );
+
+      if (verifiedTokens.length === 0) {
+        return res.json({
+          address,
+          totalValueUSD: walletBalance.balance_formatted || "0",
+          tokenCount: 0,
+          nativeBalance: walletBalance.balance_formatted || "0",
+          nativeValueUSD: "0",
+          tokens: [],
+          lastUpdated: new Date().toISOString()
+        });
+      }
+
+      // Get contract addresses for CoinGecko price lookup
+      const contractAddresses = verifiedTokens.map((token: any) => token.token_address);
+
+      // Get prices from CoinGecko
+      let tokenPrices: any = {};
+      try {
+        tokenPrices = await makeCoinGeckoRequest('/simple/token_price/ethereum', {
+          contract_addresses: contractAddresses.join(','),
+          vs_currencies: 'usd',
+          include_market_cap: true,
+          include_24hr_vol: true,
+          include_24hr_change: true
+        });
+      } catch (priceError) {
+        console.warn('CoinGecko price fetch failed:', priceError);
+      }
+
+      // Calculate total portfolio value
+      let totalValueUSD = parseFloat(walletBalance.usd_value || '0');
+
+      // Transform tokens with price data
+      const transformedTokens = verifiedTokens.map((token: any) => {
+        const priceData = tokenPrices[token.token_address.toLowerCase()];
+        const priceUSD = priceData?.usd || token.usd_price || 0;
+        const valueUSD = priceUSD * parseFloat(token.balance_formatted);
+        totalValueUSD += valueUSD;
+
+        return {
+          contractAddress: token.token_address,
+          symbol: token.symbol,
+          name: token.name,
+          decimals: token.decimals,
+          balance: token.balance,
+          balanceFormatted: token.balance_formatted,
+          priceUSD: priceUSD.toString(),
+          valueUSD: valueUSD.toString(),
+          logo: token.logo || token.thumbnail,
+          verified: token.verified_contract
+        };
+      });
+
+      // Sort by value descending
+      transformedTokens.sort((a: any, b: any) => parseFloat(b.valueUSD) - parseFloat(a.valueUSD));
+
+      const portfolio = {
+        address,
+        totalValueUSD: totalValueUSD.toString(),
+        tokenCount: transformedTokens.length,
+        nativeBalance: walletBalance.balance_formatted || "0",
+        nativeValueUSD: walletBalance.usd_value || "0",
+        tokens: transformedTokens,
+        lastUpdated: new Date().toISOString()
+      };
+
+      res.json(portfolio);
+    } catch (error: any) {
+      console.error("Wallet portfolio API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch wallet portfolio", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Token price lookup endpoint using CoinGecko
+  app.get("/api/tokens/prices", async (req, res) => {
+    try {
+      const { contracts, chain = '1' } = req.query;
+      
+      if (!contracts) {
+        return res.status(400).json({ error: "Contract addresses required" });
+      }
+
+      const contractList = (contracts as string).split(',');
+      
+      const prices = await makeCoinGeckoRequest('/simple/token_price/ethereum', {
+        contract_addresses: contractList.join(','),
+        vs_currencies: 'usd',
+        include_market_cap: true,
+        include_24hr_vol: true,
+        include_24hr_change: true
+      });
+
+      res.json(prices);
+    } catch (error: any) {
+      console.error("Token price API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch token prices", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Wallet transactions endpoint using Moralis
+  app.get("/api/wallet/:address/transactions", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const chainId = parseInt(req.query.chainId as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 100;
+      const moralisChain = getMoralisChain(chainId);
+
+      const transactions = await makeMoralisRequest(`/${address}`, {
+        chain: moralisChain,
+        limit,
+        order: 'DESC'
+      });
+
+      res.json(transactions);
+    } catch (error: any) {
+      console.error("Wallet transactions API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch wallet transactions", 
+        details: error.message 
+      });
+    }
+  });
+
   return httpServer;
 }
 
@@ -370,4 +533,75 @@ async function updatePoolStatistics(poolAddress: string, dexPlatform: string, ev
   } catch (error) {
     console.error("Error updating pool statistics:", error);
   }
+}
+
+// Helper function for Moralis API requests
+async function makeMoralisRequest(endpoint: string, params: Record<string, any> = {}) {
+  if (!MORALIS_API_KEY) {
+    throw new Error('MORALIS_API_KEY not configured');
+  }
+
+  const url = new URL(`${MORALIS_BASE_URL}${endpoint}`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.append(key, value.toString());
+    }
+  });
+
+  const response = await fetch(url.toString(), {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'X-API-Key': MORALIS_API_KEY
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Moralis API error: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+// Helper function for CoinGecko API requests
+async function makeCoinGeckoRequest(endpoint: string, params: Record<string, any> = {}) {
+  if (COINGECKO_API_KEY) {
+    params.x_cg_pro_api_key = COINGECKO_API_KEY;
+  }
+
+  const url = new URL(`${COINGECKO_BASE_URL}${endpoint}`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.append(key, value.toString());
+    }
+  });
+
+  const response = await fetch(url.toString(), {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'User-Agent': 'DEX-Analytics-Platform/1.0'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`CoinGecko API error: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+// Chain mapping for Moralis
+function getMoralisChain(chainId: number): string {
+  const chainMap: Record<number, string> = {
+    1: 'eth',
+    56: 'bsc',
+    137: 'polygon',
+    43114: 'avalanche',
+    250: 'fantom',
+    42161: 'arbitrum',
+    10: 'optimism',
+    8453: 'base'
+  };
+  return chainMap[chainId] || 'eth';
 }
