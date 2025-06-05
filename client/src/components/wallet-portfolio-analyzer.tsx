@@ -41,6 +41,8 @@ export default function WalletPortfolioAnalyzer() {
     queryKey: [`/api/wallet/${walletAddress}/portfolio`, selectedChain, searchTrigger],
     enabled: !!walletAddress && AddressValidator.validateEthereumAddress(walletAddress) && searchTrigger > 0,
     refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   const handleAnalyze = () => {

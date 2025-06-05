@@ -16,6 +16,8 @@ export default function PriceChart({ poolAddress }: PriceChartProps) {
     queryKey: [`/api/pools/${poolAddress}/swaps`],
     enabled: !!poolAddress,
     refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     staleTime: Infinity,
   });
 

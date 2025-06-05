@@ -55,17 +55,19 @@ export default function CryptoWidget({
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Fetch pool stats with manual refresh only
+  // Fetch pool stats with NO automatic refresh
   const { data: poolStats, refetch, isLoading } = useQuery({
     queryKey: ["/api/pools", settings.poolAddress, "stats"],
-    refetchInterval: settings.refreshInterval > 0 ? settings.refreshInterval : false,
+    refetchInterval: false,
+    staleTime: Infinity,
     enabled: isVisible,
   });
 
-  // Fetch recent swaps for trend analysis
+  // Fetch recent swaps with NO automatic refresh
   const { data: recentSwaps } = useQuery({
     queryKey: ["/api/pools", settings.poolAddress, "swaps"],
-    refetchInterval: settings.refreshInterval > 0 ? settings.refreshInterval * 2 : false,
+    refetchInterval: false,
+    staleTime: Infinity,
     enabled: isVisible && settings.showTrends,
   });
 

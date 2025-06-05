@@ -13,6 +13,9 @@ export default function MarketMetrics({ poolAddress }: MarketMetricsProps) {
     enabled: !!poolAddress,
     refetchInterval: false,
     staleTime: Infinity,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   return (
