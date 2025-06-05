@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Search, Wallet, DollarSign, TrendingUp, TrendingDown, ExternalLink, RefreshCw } from "lucide-react";
 import { AddressValidator } from "@/lib/address-validator";
-import { uniscanAPI, formatUSDValue, getChainName, type UniscanWalletData } from "@/lib/uniscan-api";
+import { moralisAPI, getMoralisChain, type MoralisTokenBalance } from "@/lib/moralis-api";
+import { coinGeckoAPI, formatPrice, formatPercentageChange } from "@/lib/coingecko-api";
 
 interface TokenBalance {
   contractAddress: string;
@@ -37,40 +38,73 @@ export default function WalletPortfolioAnalyzer() {
   const [selectedChain, setSelectedChain] = useState(1);
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-  // Query wallet portfolio data using Uniscan API
+  // Query wallet portfolio data using Moralis and CoinGecko APIs
   const { data: portfolio, isLoading, error, refetch } = useQuery<WalletPortfolio>({
-    queryKey: [`uniscan-wallet`, walletAddress, selectedChain, searchTrigger],
+    queryKey: [`moralis-wallet`, walletAddress, selectedChain, searchTrigger],
     queryFn: async () => {
       if (!walletAddress) throw new Error('No wallet address provided');
       
       try {
-        const uniscanData = await uniscanAPI.getWalletBalances(walletAddress, selectedChain);
+        const moralisChain = getMoralisChain(selectedChain);
         
-        // Transform Uniscan data to our interface
+        // Get token balances from Moralis
+        const tokenBalances = await moralisAPI.getWalletTokenBalances(walletAddress, moralisChain);
+        
+        // Get native balance
+        const walletBalance = await moralisAPI.getWalletBalance(walletAddress, moralisChain);
+        
+        // Get prices from CoinGecko for tokens that have contract addresses
+        const contractAddresses = tokenBalances
+          .filter(token => !token.possible_spam && token.verified_contract)
+          .map(token => token.token_address);
+        
+        let tokenPrices: any = {};
+        if (contractAddresses.length > 0) {
+          try {
+            tokenPrices = await coinGeckoAPI.getTokenPrices(contractAddresses);
+          } catch (priceError) {
+            console.warn('CoinGecko price fetch failed, continuing without prices:', priceError);
+          }
+        }
+        
+        // Calculate total portfolio value
+        let totalValueUSD = parseFloat(walletBalance.wallet_balance.usd_value?.toString() || '0');
+        
+        // Transform to our interface
+        const transformedTokens: TokenBalance[] = tokenBalances
+          .filter(token => !token.possible_spam && token.verified_contract)
+          .map(token => {
+            const price = tokenPrices[token.token_address.toLowerCase()]?.usd || token.usd_price || 0;
+            const value = price * parseFloat(token.balance_formatted);
+            totalValueUSD += value;
+            
+            return {
+              contractAddress: token.token_address,
+              symbol: token.symbol,
+              name: token.name,
+              decimals: token.decimals,
+              balance: token.balance,
+              balanceFormatted: token.balance_formatted,
+              priceUSD: price.toString(),
+              valueUSD: value.toString(),
+              logo: token.logo || token.thumbnail,
+              verified: token.verified_contract
+            };
+          });
+        
         const transformedPortfolio: WalletPortfolio = {
-          address: uniscanData.address,
-          totalValueUSD: uniscanData.total_value_usd,
-          tokenCount: uniscanData.token_count,
-          nativeBalance: uniscanData.native_balance,
-          nativeValueUSD: uniscanData.native_value_usd,
-          tokens: uniscanData.tokens.map(token => ({
-            contractAddress: token.contract_address,
-            symbol: token.symbol,
-            name: token.name,
-            decimals: token.decimals,
-            balance: token.balance,
-            balanceFormatted: token.balance_formatted,
-            priceUSD: token.price_usd,
-            valueUSD: token.value_usd,
-            logo: token.logo,
-            verified: token.verified
-          })),
-          lastUpdated: uniscanData.last_updated
+          address: walletAddress,
+          totalValueUSD: totalValueUSD.toString(),
+          tokenCount: transformedTokens.length,
+          nativeBalance: walletBalance.wallet_balance.balance_formatted,
+          nativeValueUSD: walletBalance.wallet_balance.usd_value?.toString() || '0',
+          tokens: transformedTokens,
+          lastUpdated: new Date().toISOString()
         };
         
         return transformedPortfolio;
       } catch (apiError: any) {
-        throw new Error(`Unable to fetch wallet data from Uniscan.xyz: ${apiError?.message || 'Unknown error'}`);
+        throw new Error(`Unable to fetch wallet data: ${apiError?.message || 'Unknown error'}`);
       }
     },
     enabled: !!walletAddress && AddressValidator.validateEthereumAddress(walletAddress) && searchTrigger > 0,
