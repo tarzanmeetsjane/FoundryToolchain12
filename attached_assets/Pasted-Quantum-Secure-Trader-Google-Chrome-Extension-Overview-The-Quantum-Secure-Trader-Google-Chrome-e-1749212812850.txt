@@ -1,0 +1,154 @@
+Quantum Secure Trader Google Chrome Extension
+Overview
+
+The Quantum Secure Trader Google Chrome extension is designed to provide users with real-time trading insights, portfolio management, and market analysis across multiple decentralized exchanges and blockchain networks. This extension will serve as a gateway to the Quantum Secure Trader platform, offering a seamless experience for traders, researchers, and DeFi enthusiasts.
+
+Essential Components
+1. Manifest File
+
+The manifest.json file is the backbone of the Chrome extension. It contains metadata, permissions, and functionality declarations.
+
+{
+  "manifest_version": 3,
+  "name": "Quantum Secure Trader",
+  "version": "1.0",
+  "description": "A comprehensive blockchain analytics platform",
+  "permissions": ["activeTab",_"https://api.geckoterminal.com/*",_"https://api.moralis.io/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+____{
+______"matches":_["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}
+2. Permissions
+
+The extension requires the following permissions:
+
+activeTab: Access to the currently active tab
+https://api.geckoterminal.com/*: Access to GeckoTerminal API for real-time DEX trading data
+https://api.moralis.io/*: Access to Moralis API for blockchain wallet balances and token metadata
+3. Background Script
+
+The background.js script runs in the background and handles API requests, data processing, and storage.
+
+// Import required libraries
+import axios from 'axios';
+import { storage } from './storage.js';
+
+// Set up API endpoints
+const geckoTerminalApi = 'https://api.geckoterminal.com';
+const moralisApi = 'https://api.moralis.io';
+
+// Function to fetch real-time DEX trading data
+async function getTradingData() {
+  try {
+    const response = await axios.get(`${geckoTerminalApi}/api/v1/dex/trading-data`);
+    const data = response.data;
+    // Process and store data
+    storage.set('tradingData', data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Function to fetch blockchain wallet balances
+async function getWalletBalances() {
+  try {
+    const response = await axios.get(`${moralisApi}/api/v1/wallet/balances`);
+    const data = response.data;
+    // Process and store data
+    storage.set('walletBalances', data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run functions on startup
+chrome.runtime.onStartup.addListener(() => {
+  getTradingData();
+  getWalletBalances();
+});
+4. Content Script
+
+The contentScript.js script runs on each webpage and injects the Quantum Secure Trader interface.
+
+// Function to inject interface
+function injectInterface() {
+  const iframe = document.createElement('iframe');
+  iframe.src = chrome.runtime.getURL('interface.html');
+  iframe.style.position = 'fixed';
+  iframe.style.top = '0';
+  iframe.style.right = '0';
+  iframe.style.width = '300px';
+  iframe.style.height = '600px';
+  iframe.style.zIndex = '1000';
+  iframe.style.border = '1px solid black';
+  document.body.appendChild(iframe);
+}
+
+// Inject interface on page load
+document.addEventListener('DOMContentLoaded', injectInterface);
+5. Interface
+
+The interface.html file contains the user interface for the Quantum Secure Trader platform.
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quantum Secure Trader</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        width: 300px;
+        height: 600px;
+        overflow-y: auto;
+        background-color: #f0f0f0;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Interface components -->
+    <h1>Quantum Secure Trader</h1>
+    <div id="trading-data"></div>
+    <div id="wallet-balances"></div>
+    <!-- Interface components -->
+    <script src="interface.js"></script>
+  </body>
+</html>
+6. APIs
+
+The extension uses the following APIs:
+
+GeckoTerminal API: https://api.geckoterminal.com
+Moralis API: https://api.moralis.io
+CoinGecko API: https://api.coingecko.com
+Etherscan API: https://api.etherscan.io
+Step-by-Step Guidance
+Create a new directory for the extension and create the following files:
+manifest.json
+background.js
+contentScript.js
+interface.html
+interface.js
+Define the manifest.json file with the required metadata, permissions, and functionality declarations.
+Implement the background.js script to handle API requests, data processing, and storage.
+Create the contentScript.js script to inject the Quantum Secure Trader interface on each webpage.
+Design and implement the interface.html file with the user interface for the Quantum Secure Trader platform.
+Test the extension on a local development environment using chrome://extensions/.
+Package and publish the extension on the Chrome Web Store.
+Conclusion
+
+The Quantum Secure Trader Google Chrome extension provides users with a comprehensive blockchain analytics platform, offering real-time trading insights, portfolio management, and market analysis across multiple decentralized exchanges and blockchain networks. By following this guide, developers can create a fully functional extension that integrates with the Quantum Secure Trader platform.

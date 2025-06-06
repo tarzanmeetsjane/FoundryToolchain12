@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Secure Trader</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <h1>Quantum Secure Trader</h1>
+                <span class="status-badge" id="statusBadge">Live</span>
+            </div>
+            <div class="refresh-btn" id="refreshBtn">⟳</div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="pools">Pools</button>
+            <button class="tab-btn" data-tab="tokens">Tokens</button>
+            <button class="tab-btn" data-tab="settings">Settings</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Market Cap</div>
+                    <div class="stat-value" id="totalMarketCap">$2.1T</div>
+                    <div class="stat-change positive" id="marketCapChange">+2.4%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">24h Volume</div>
+                    <div class="stat-value" id="totalVolume">$89.2B</div>
+                    <div class="stat-change negative" id="volumeChange">-1.2%</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Trending Pools</h3>
+                <div class="pool-list" id="trendingPoolsList">
+                    <div class="loading">Loading trending pools...</div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="action-btn" id="openDashboardBtn">Open Full Dashboard</button>
+                <button class="action-btn secondary" id="analyticsBtn">Analytics</button>
+            </div>
+        </div>
+
+        <!-- Pools Tab -->
+        <div class="tab-content" id="pools">
+            <div class="search-bar">
+                <input type="text" id="poolSearch" placeholder="Search pools...">
+            </div>
+            
+            <div class="network-selector">
+                <select id="networkSelect">
+                    <option value="eth">Ethereum</option>
+                    <option value="polygon">Polygon</option>
+                    <option value="bsc">BSC</option>
+                    <option value="arbitrum">Arbitrum</option>
+                    <option value="optimism">Optimism</option>
+                    <option value="base">Base</option>
+                </select>
+            </div>
+
+            <div class="pool-list" id="networkPoolsList">
+                <div class="loading">Loading network pools...</div>
+            </div>
+        </div>
+
+        <!-- Tokens Tab -->
+        <div class="tab-content" id="tokens">
+            <div class="token-list" id="tokenList">
+                <div class="loading">Loading token prices...</div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings">
+            <div class="settings-section">
+                <h3>Notification Settings</h3>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="priceAlerts" checked>
+                        Price Alerts
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="volumeAlerts" checked>
+                        Volume Alerts
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="poolAlerts">
+                        New Pool Alerts
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Update Frequency</h3>
+                <select id="updateFrequency">
+                    <option value="10">10 seconds</option>
+                    <option value="30" selected>30 seconds</option>
+                    <option value="60">1 minute</option>
+                    <option value="300">5 minutes</option>
+                </select>
+            </div>
+
+            <div class="settings-section">
+                <h3>Data Storage</h3>
+                <button class="action-btn secondary" id="clearCacheBtn">Clear Cache</button>
+                <div class="cache-info" id="cacheInfo">Cache: 2.4 MB</div>
+            </div>
+
+            <div class="settings-section">
+                <h3>About</h3>
+                <div class="version-info">
+                    <div>Version: 1.0.0</div>
+                    <div>Last Updated: <span id="lastUpdated">--</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="last-update">Last update: <span id="lastUpdateTime">--</span></div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
