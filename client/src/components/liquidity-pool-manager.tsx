@@ -60,19 +60,19 @@ interface ClaimableReward {
 
 export default function LiquidityPoolManager() {
   const { toast } = useToast();
-  const { address: walletAddress, isConnected } = useAccount();
+  const { address: connectedWalletAddress, isConnected } = useAccount();
   const [withdrawAmount, setWithdrawAmount] = useState<Record<string, string>>({});
   const [isWithdrawing, setIsWithdrawing] = useState<Record<string, boolean>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [walletAddress, setWalletAddress] = useState("");
 
-  // Update timestamp every 10 seconds for live data indicator
+  // Update timestamp every 60 seconds to reduce page jumping
   useEffect(() => {
     const interval = setInterval(() => {
       setLastUpdate(new Date());
-    }, 10000);
+    }, 60000); // Changed from 10 seconds to 60 seconds
     return () => clearInterval(interval);
   }, []);
-  const [walletAddress, setWalletAddress] = useState("");
   const [selectedPool, setSelectedPool] = useState("");
   const [addAmount1, setAddAmount1] = useState("");
   const [addAmount2, setAddAmount2] = useState("");
@@ -360,35 +360,24 @@ export default function LiquidityPoolManager() {
             <Droplets className="h-5 w-5 text-blue-500" />
             V3/V4 Positions
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              LIVE
-            </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => {
-                refetchPools();
-                refetchPositions();
-                refetchRewards();
-                toast({
-                  title: "Data Refreshed",
-                  description: "Live data updated successfully"
-                });
-              }}
-              disabled={poolsLoading || positionsLoading || rewardsLoading}
-            >
-              <RefreshCw className={`h-4 w-4 ${poolsLoading || positionsLoading || rewardsLoading ? 'animate-spin' : ''}`} />
-            </Button>
-          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => {
+              setLastUpdate(new Date());
+              toast({
+                title: "Data Refreshed",
+                description: "Position data updated"
+              });
+            }}
+            disabled={loading}
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          </Button>
         </CardTitle>
-              <CardDescription className="flex items-center justify-between">
-          <span>Manage your active liquidity pool positions</span>
-          <div className="text-xs text-muted-foreground">
-            Last updated: {lastUpdate.toLocaleTimeString()}
-            {!isConnected && <span className="ml-2 text-orange-500">• Connect wallet for live positions</span>}
-          </div>
+              <CardDescription>
+          Manage your active liquidity pool positions
+          {!isConnected && <span className="ml-2 text-orange-500">• Connect wallet for live positions</span>}
         </CardDescription>
             </CardHeader>
             <CardContent>

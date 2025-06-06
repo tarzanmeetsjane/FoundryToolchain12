@@ -74,7 +74,7 @@ export default function RealTimeDEXDashboard() {
       if (!response.ok) throw new Error('Failed to fetch trending pools');
       return response.json();
     },
-    refetchInterval: 30000, // Refresh every 30 seconds
+    refetchInterval: 120000, // Refresh every 2 minutes
   });
 
   // Fetch pools for selected network
@@ -85,7 +85,7 @@ export default function RealTimeDEXDashboard() {
       if (!response.ok) throw new Error('Failed to fetch network pools');
       return response.json();
     },
-    refetchInterval: 30000,
+    refetchInterval: 120000, // Refresh every 2 minutes
   });
 
   const formatVolume = (volume: string) => {
