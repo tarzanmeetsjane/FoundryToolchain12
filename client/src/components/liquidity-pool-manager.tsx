@@ -420,7 +420,61 @@ export default function LiquidityPoolManager() {
                             />
                             <span className="text-sm w-12">{removePercentage}%</span>
                           </div>
+                          <div className="flex gap-1 mt-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => setRemovePercentage(25)}
+                              className="text-xs"
+                            >
+                              25%
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => setRemovePercentage(50)}
+                              className="text-xs"
+                            >
+                              50%
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => setRemovePercentage(75)}
+                              className="text-xs"
+                            >
+                              75%
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => setRemovePercentage(100)}
+                              className="text-xs"
+                            >
+                              MAX
+                            </Button>
+                          </div>
                         </div>
+                        
+                        {removePercentage > 0 && (
+                          <div className="p-3 bg-muted rounded-lg mb-3">
+                            <div className="text-sm font-medium mb-2">You will receive:</div>
+                            <div className="grid grid-cols-2 gap-2 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">{position.tokenA.symbol}:</span>
+                                <span className="ml-1 font-medium">
+                                  {(parseFloat(position.tokenA.amount) * removePercentage / 100).toFixed(4)}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">{position.tokenB.symbol}:</span>
+                                <span className="ml-1 font-medium">
+                                  {(parseFloat(position.tokenB.amount) * removePercentage / 100).toFixed(4)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                         
                         <div className="flex gap-2">
                           <Button
@@ -430,7 +484,7 @@ export default function LiquidityPoolManager() {
                             disabled={loading || removePercentage === 0}
                           >
                             <Minus className="h-3 w-3 mr-1" />
-                            Remove Liquidity
+                            {removePercentage === 0 ? "Select Amount" : `Remove ${removePercentage}%`}
                           </Button>
                           <Button variant="outline" size="sm">
                             <ExternalLink className="h-3 w-3 mr-1" />
@@ -505,16 +559,22 @@ export default function LiquidityPoolManager() {
                 </div>
               </div>
 
-              <Card className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950/20">
+              <Card className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/20">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
+                  <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                     <AlertTriangle className="h-4 w-4" />
-                    <span className="font-medium">Smart Contract Integration Required</span>
+                    <span className="font-medium">How to Withdraw Your Liquidity</span>
                   </div>
-                  <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-1">
-                    To enable actual liquidity management, this requires integration with DEX smart contracts (Uniswap, SushiSwap, etc.). 
-                    The interface is ready - just needs contract addresses and Web3 provider setup.
-                  </p>
+                  <div className="text-sm text-blue-600 dark:text-blue-400 mt-2 space-y-2">
+                    <p><strong>To withdraw from your positions:</strong></p>
+                    <div className="ml-4 space-y-1">
+                      <p>1. Move the slider to select withdrawal percentage (10%, 25%, 50%, 100%)</p>
+                      <p>2. Click "Remove Liquidity" button</p>
+                      <p>3. Approve the transaction in your wallet</p>
+                      <p>4. You'll receive both tokens proportionally</p>
+                    </div>
+                    <p className="mt-3"><strong>Note:</strong> This is currently a demo interface. For real withdrawals, connect to Uniswap V2 Router contract.</p>
+                  </div>
                 </CardContent>
               </Card>
 
