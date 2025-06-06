@@ -15,6 +15,7 @@ import FundingTrackerPage from "@/pages/funding-tracker";
 import FrequencyTunerPage from "@/pages/frequency-tuner";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
+import { WalletProvider } from "@/components/wallet-provider";
 
 function Router() {
   return (
@@ -39,14 +40,16 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <div className="min-h-screen bg-background text-foreground">
-          <Toaster />
-          <Router />
-        </div>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <WalletProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="min-h-screen bg-background text-foreground">
+            <Toaster />
+            <Router />
+          </div>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </WalletProvider>
   );
 }
 

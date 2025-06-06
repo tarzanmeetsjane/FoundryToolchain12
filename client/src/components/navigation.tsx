@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio } from "lucide-react";
+import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 export default function Navigation() {
   const [location] = useLocation();
