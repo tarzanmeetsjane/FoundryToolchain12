@@ -64,7 +64,6 @@ export default function LiquidityPoolManager() {
   const [withdrawAmount, setWithdrawAmount] = useState<Record<string, string>>({});
   const [isWithdrawing, setIsWithdrawing] = useState<Record<string, boolean>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [walletAddress, setWalletAddress] = useState("");
 
   // Update timestamp every 60 seconds to reduce page jumping
   useEffect(() => {
@@ -73,6 +72,8 @@ export default function LiquidityPoolManager() {
     }, 60000); // Changed from 10 seconds to 60 seconds
     return () => clearInterval(interval);
   }, []);
+  
+  const [walletAddress, setWalletAddress] = useState("");
   const [selectedPool, setSelectedPool] = useState("");
   const [addAmount1, setAddAmount1] = useState("");
   const [addAmount2, setAddAmount2] = useState("");
