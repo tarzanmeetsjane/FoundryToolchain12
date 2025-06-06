@@ -1266,7 +1266,30 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     return tokenMap[chainName]?.[tokenSymbol] || "0x0000000000000000000000000000000000000000";
   }
 
-  return httpServer;
+  // Setup WebSocket server on a separate path
+  const server = createServer(app);
+  wss = new WebSocketServer({ server: server, path: '/ws' });
+
+  wss.on('connection', (ws) => {
+    console.log('Client connected to live data stream');
+    
+    ws.on('message', (message) => {
+      try {
+        const data = JSON.parse(message.toString());
+        if (data.type === 'subscribe') {
+          // Handle subscription logic
+        }
+      } catch (error) {
+        console.error('WebSocket message error:', error);
+      }
+    });
+
+    ws.on('close', () => {
+      console.log('Client disconnected from live data stream');
+    });
+  });
+
+  return server;
 }
 
 async function updatePoolStatistics(poolAddress: string, dexPlatform: string, events: any[]) {
