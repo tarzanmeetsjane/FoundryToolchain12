@@ -324,23 +324,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   const httpServer = createServer(app);
 
-  // Initialize WebSocket server for real-time updates
-  wss = new WebSocketServer({ server: httpServer });
 
-  wss.on('connection', (ws) => {
-    console.log('Client connected to live data stream');
-
-    // Send initial data
-    ws.send(JSON.stringify({
-      type: 'connected',
-      timestamp: new Date().toISOString(),
-      message: 'Live data stream connected'
-    }));
-
-    ws.on('close', () => {
-      console.log('Client disconnected from live data stream');
-    });
-  });
 
   // Liquidity positions endpoint
 app.get('/api/wallet/:address/positions', async (req, res) => {
@@ -1266,30 +1250,7 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     return tokenMap[chainName]?.[tokenSymbol] || "0x0000000000000000000000000000000000000000";
   }
 
-  // Setup WebSocket server on a separate path
-  const server = createServer(app);
-  wss = new WebSocketServer({ server: server, path: '/ws' });
-
-  wss.on('connection', (ws) => {
-    console.log('Client connected to live data stream');
-    
-    ws.on('message', (message) => {
-      try {
-        const data = JSON.parse(message.toString());
-        if (data.type === 'subscribe') {
-          // Handle subscription logic
-        }
-      } catch (error) {
-        console.error('WebSocket message error:', error);
-      }
-    });
-
-    ws.on('close', () => {
-      console.log('Client disconnected from live data stream');
-    });
-  });
-
-  return server;
+  return httpServer;
 }
 
 async function updatePoolStatistics(poolAddress: string, dexPlatform: string, events: any[]) {
