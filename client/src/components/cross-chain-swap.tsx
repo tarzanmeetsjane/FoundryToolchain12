@@ -69,25 +69,25 @@ export function CrossChainSwap() {
     
     setIsLoading(true);
     try {
-      // Simulate Symbiosis API call for quote
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const mockQuote = {
-        fromAmount: fromAmount,
-        toAmount: (parseFloat(fromAmount) * 0.998).toFixed(6), // 0.2% fee simulation
-        route: [fromChain, toChain],
-        estimatedTime: "2-5 minutes",
-        fees: {
-          networkFee: "$2.50",
-          protocolFee: "0.1%",
-          totalFeeUSD: "$4.20"
-        },
-        priceImpact: "0.05%",
-        guaranteedRefund: true
-      };
-      
-      setSwapQuote(mockQuote);
-      setToAmount(mockQuote.toAmount);
+      const response = await fetch('/api/symbiosis/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fromToken,
+          toToken,
+          fromChain,
+          toChain,
+          amount: fromAmount
+        })
+      });
+
+      if (response.ok) {
+        const quoteData = await response.json();
+        setSwapQuote(quoteData);
+        setToAmount(quoteData.toAmount);
+      } else {
+        throw new Error('Failed to get quote');
+      }
     } catch (error) {
       toast({
         title: "Quote Error",
