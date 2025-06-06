@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LiquidityPoolManager from "@/components/liquidity-pool-manager";
+import V3PositionCreator from "@/components/v3-position-creator";
+import PositionDashboard from "@/components/position-dashboard";
 import V3V4PositionManager from "@/components/v3-v4-position-manager";
 
 export default function LiquidityManagementPage() {
@@ -12,6 +14,7 @@ export default function LiquidityManagementPage() {
         </TabsList>
 
         <TabsContent value="v3v4">
+          <V3PositionCreator />
           <V3V4PositionManager />
         </TabsContent>
 

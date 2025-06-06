@@ -126,6 +126,10 @@ export default function Navigation() {
               </Button>
             </Link>
           </div>
+          
+          <div className="flex items-center space-x-4">
+            <WalletConnectButton />
+          </div>
         </div>
       </div>
     </nav>
