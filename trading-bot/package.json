@@ -1,0 +1,51 @@
+{
+  "name": "quantum-secure-trader-bot",
+  "version": "1.0.0",
+  "description": "Advanced DeFi liquidity pool analysis bot with AI-powered automation",
+  "main": "quantum_trading_orchestrator.py",
+  "scripts": {
+    "start": "python quantum_trading_orchestrator.py",
+    "analysis": "python liquidity_pool_analysis_bot.py",
+    "ai-train": "python ai_engine/ai_engine.py",
+    "automation": "node task_automation.js",
+    "install-deps": "pip install -r requirements.txt && npm install",
+    "test": "pytest tests/ && npm test",
+    "lint": "flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics",
+    "format": "black ."
+  },
+  "dependencies": {
+    "puppeteer": "^21.6.1",
+    "ws": "^8.14.2",
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "node-cron": "^3.0.3",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0"
+  },
+  "keywords": [
+    "defi",
+    "trading-bot",
+    "liquidity-pools",
+    "uniswap",
+    "automation",
+    "ai",
+    "blockchain",
+    "cryptocurrency",
+    "web3"
+  ],
+  "author": "Quantum Secure Trader",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quantum-secure-trader/trading-bot"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.8.0"
+  }
+}
