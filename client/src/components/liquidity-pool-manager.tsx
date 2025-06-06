@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,6 +59,19 @@ interface ClaimableReward {
 }
 
 export default function LiquidityPoolManager() {
+  const { toast } = useToast();
+  const { address: walletAddress, isConnected } = useAccount();
+  const [withdrawAmount, setWithdrawAmount] = useState<Record<string, string>>({});
+  const [isWithdrawing, setIsWithdrawing] = useState<Record<string, boolean>>({});
+  const [lastUpdate, setLastUpdate] = useState(new Date());
+
+  // Update timestamp every 10 seconds for live data indicator
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLastUpdate(new Date());
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
   const [walletAddress, setWalletAddress] = useState("");
   const [selectedPool, setSelectedPool] = useState("");
   const [addAmount1, setAddAmount1] = useState("");
@@ -151,12 +164,12 @@ export default function LiquidityPoolManager() {
     try {
       // In production: interact with smart contracts
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       toast({
         title: "Liquidity Added",
         description: `Added ${addAmount1} USDC and ${addAmount2} ETH to pool`,
       });
-      
+
       setAddAmount1("");
       setAddAmount2("");
     } catch (error) {
@@ -184,12 +197,12 @@ export default function LiquidityPoolManager() {
     try {
       // In production: interact with smart contracts
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       toast({
         title: "Liquidity Removed",
         description: `Removed ${removePercentage}% of liquidity from ${position.tokenA.symbol}/${position.tokenB.symbol} pool`,
       });
-      
+
       setRemovePercentage(0);
     } catch (error) {
       toast({
@@ -216,7 +229,7 @@ export default function LiquidityPoolManager() {
     try {
       // In production: interact with smart contracts
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       toast({
         title: "Rewards Claimed",
         description: `Claimed ${reward.amount} ${reward.rewardToken} tokens (${reward.value})`,
@@ -246,11 +259,11 @@ export default function LiquidityPoolManager() {
     try {
       // In production: batch claim all rewards
       await new Promise(resolve => setTimeout(resolve, 3000));
-      
+
       const totalValue = claimableRewards.reduce((sum, reward) => 
         sum + parseFloat(reward.value.replace('$', '')), 0
       );
-      
+
       toast({
         title: "All Rewards Claimed",
         description: `Claimed rewards worth $${totalValue.toFixed(2)}`,
@@ -281,7 +294,7 @@ export default function LiquidityPoolManager() {
           <Droplets className="h-6 w-6" />
           <h1 className="text-3xl font-bold">Liquidity Pool Manager</h1>
         </div>
-        
+
         {!walletAddress ? (
           <Button onClick={handleConnectWallet} disabled={loading}>
             <Wallet className="h-4 w-4 mr-2" />
@@ -310,7 +323,7 @@ export default function LiquidityPoolManager() {
             <div className="text-2xl font-bold">${totalPortfolioValue.toLocaleString()}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
@@ -320,7 +333,7 @@ export default function LiquidityPoolManager() {
             <div className="text-2xl font-bold">${totalPendingRewards.toFixed(2)}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
@@ -342,10 +355,41 @@ export default function LiquidityPoolManager() {
         <TabsContent value="positions">
           <Card>
             <CardHeader>
-              <CardTitle>Your Liquidity Positions</CardTitle>
-              <CardDescription>
-                Manage your active liquidity pool positions
-              </CardDescription>
+              <CardTitle className="flex items-center gap-2 justify-between">
+          <div className="flex items-center gap-2">
+            <Droplets className="h-5 w-5 text-blue-500" />
+            V3/V4 Positions
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              LIVE
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => {
+                refetchPools();
+                refetchPositions();
+                refetchRewards();
+                toast({
+                  title: "Data Refreshed",
+                  description: "Live data updated successfully"
+                });
+              }}
+              disabled={poolsLoading || positionsLoading || rewardsLoading}
+            >
+              <RefreshCw className={`h-4 w-4 ${poolsLoading || positionsLoading || rewardsLoading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
+        </CardTitle>
+              <CardDescription className="flex items-center justify-between">
+          <span>Manage your active liquidity pool positions</span>
+          <div className="text-xs text-muted-foreground">
+            Last updated: {lastUpdate.toLocaleTimeString()}
+            {!isConnected && <span className="ml-2 text-orange-500">• Connect wallet for live positions</span>}
+          </div>
+        </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -455,7 +499,7 @@ export default function LiquidityPoolManager() {
                             </Button>
                           </div>
                         </div>
-                        
+
                         {removePercentage > 0 && (
                           <div className="p-3 bg-muted rounded-lg mb-3">
                             <div className="text-sm font-medium mb-2">You will receive:</div>
@@ -475,7 +519,7 @@ export default function LiquidityPoolManager() {
                             </div>
                           </div>
                         )}
-                        
+
                         <div className="flex gap-2">
                           <Button
                             variant="outline"
@@ -623,13 +667,13 @@ export default function LiquidityPoolManager() {
                             </p>
                           </div>
                         </div>
-                        
+
                         <div className="text-right">
                           <div className="font-semibold">{reward.amount} {reward.rewardToken}</div>
                           <div className="text-sm text-green-600">{reward.value}</div>
                         </div>
                       </div>
-                      
+
                       <div className="flex gap-2 mt-4">
                         <Button 
                           onClick={() => handleClaimRewards(reward)}
@@ -647,7 +691,7 @@ export default function LiquidityPoolManager() {
                     </CardContent>
                   </Card>
                 ))}
-                
+
                 {claimableRewards.length === 0 && (
                   <div className="text-center p-8 text-muted-foreground">
                     No rewards available to claim

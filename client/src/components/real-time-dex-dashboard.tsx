@@ -105,7 +105,7 @@ export default function RealTimeDEXDashboard() {
     const volume24h = parseFloat(pool.attributes.volume_usd.h24);
     const reserveUsd = parseFloat(pool.attributes.reserve_in_usd);
     const priceChange24h = Math.abs(parseFloat(pool.attributes.price_change_percentage.h24));
-    
+
     if (volume24h > 100000 && reserveUsd > 500000 && priceChange24h < 15) {
       return { status: 'healthy', color: 'bg-green-500' };
     } else if (volume24h > 10000 && reserveUsd > 50000) {
@@ -203,10 +203,16 @@ export default function RealTimeDEXDashboard() {
         <TabsContent value="trending" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5" />
-                Trending Pools Across All Networks
-              </CardTitle>
+              <CardTitle className="flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-blue-500" />
+              Trending Pools
+            </div>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              LIVE
+            </div>
+          </CardTitle>
             </CardHeader>
             <CardContent>
               {trendingLoading ? (
@@ -362,7 +368,7 @@ export default function RealTimeDEXDashboard() {
                     Provides live pool information, trading volumes, and price movements.
                   </p>
                 </div>
-                
+
                 <div className="p-3 bg-green-50 dark:bg-green-950 rounded-lg">
                   <h4 className="font-semibold mb-2">Live Data Updates</h4>
                   <p className="text-sm text-muted-foreground">

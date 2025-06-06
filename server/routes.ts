@@ -7,6 +7,24 @@ import { DEX_CONFIGS, getExplorerApiUrl, getApiKeyForChain } from "./dex-config"
 
 // Moralis Web3 API configuration
 const MORALIS_BASE_URL = "https://deep-index.moralis.io/api/v2.2";
+
+import { WebSocketServer } from 'ws';
+
+// WebSocket server for real-time updates
+let wss: WebSocketServer | null = null;
+
+// Function to broadcast live data to all connected clients
+function broadcastLiveData(data: any) {
+  if (wss) {
+    wss.clients.forEach(client => {
+      if (client.readyState === 1) { // WebSocket.OPEN
+        client.send(JSON.stringify(data));
+      }
+    });
+  }
+}
+
+
 const MORALIS_API_KEY = process.env.MORALIS_API_KEY;
 
 // CoinGecko API configuration
@@ -305,6 +323,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   const httpServer = createServer(app);
+  
+  // Initialize WebSocket server for real-time updates
+  wss = new WebSocketServer({ server: httpServer });
+  
+  wss.on('connection', (ws) => {
+    console.log('Client connected to live data stream');
+    
+    // Send initial data
+    ws.send(JSON.stringify({
+      type: 'connected',
+      timestamp: new Date().toISOString(),
+      message: 'Live data stream connected'
+    }));
+    
+    ws.on('close', () => {
+      console.log('Client disconnected from live data stream');
+    });
+  });
+
   // Wallet Portfolio API endpoint using Moralis and CoinGecko
   app.get("/api/wallet/:address/portfolio", async (req, res) => {
     try {
@@ -710,6 +747,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(data);
     } catch (error: any) {
       console.error("GeckoTerminal network pools error:", error);
+
+  // Live price streaming endpoint
+  app.get("/api/live/prices", async (req, res) => {
+    try {
+      const symbols = (req.query.symbols as string)?.split(',') || ['bitcoin', 'ethereum', 'usd-coin'];
+      
+      const prices = await makeCoinGeckoRequest('/simple/price', {
+        ids: symbols.join(','),
+        vs_currencies: 'usd',
+        include_24hr_change: true,
+        include_24hr_vol: true,
+        include_last_updated_at: true
+      });
+
+      // Broadcast to WebSocket clients
+      broadcastLiveData({
+        type: 'price_update',
+        data: prices,
+        timestamp: new Date().toISOString()
+      });
+
+      res.json({
+        prices,
+        timestamp: new Date().toISOString(),
+        live: true
+      });
+    } catch (error: any) {
+      console.error("Live prices API error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch live prices", 
+        details: error.message 
+      });
+    }
+  });
+
+  // Live pool data endpoint with real-time updates
+  app.get("/api/live/pools/:network", async (req, res) => {
+    try {
+      const { network } = req.params;
+      const response = await fetch(`https://api.geckoterminal.com/api/v2/networks/${network}/pools?sort=h24_volume_usd_desc&limit=20`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Broadcast to WebSocket clients
+        broadcastLiveData({
+          type: 'pools_update',
+          network,
+          data: data.data,
+          timestamp: new Date().toISOString()
+        });
+
+        res.json({
+          network,
+          pools: data.data,
+          timestamp: new Date().toISOString(),
+          live: true
+        });
+      } else {
+        res.status(500).json({ error: 'Failed to fetch live pool data' });
+      }
+    } catch (error: any) {
+      console.error('Live pools error:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch live pool data', 
+        details: error.message 
+      });
+    }
+  });
+
+
       res.status(500).json({ 
         error: "Failed to fetch network pools", 
         details: error.message 
