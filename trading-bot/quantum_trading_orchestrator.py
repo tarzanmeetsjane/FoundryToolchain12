@@ -16,6 +16,7 @@ import sys
 
 from liquidity_pool_analysis_bot import QuantumPoolAnalyzer
 from ai_engine.ai_engine import QuantumAIEngine
+from dark_pool_analyzer import DarkPoolAnalyzer
 
 # Configure logging
 logging.basicConfig(
@@ -35,6 +36,7 @@ class QuantumTradingOrchestrator:
         self.is_running = False
         self.pool_analyzer = None
         self.ai_engine = None
+        self.dark_pool_analyzer = None
         self.automation_process = None
         self.config_path = "trading-bot/data/orchestrator_config.json"
         self.state_path = "trading-bot/data/orchestrator_state.json"
@@ -136,6 +138,9 @@ class QuantumTradingOrchestrator:
             # Initialize AI engine
             self.ai_engine = QuantumAIEngine()
             
+            # Initialize dark pool analyzer
+            self.dark_pool_analyzer = DarkPoolAnalyzer()
+            
             # Start task automation if enabled
             if self.config["automation_enabled"]:
                 await self.start_task_automation()
@@ -171,12 +176,21 @@ class QuantumTradingOrchestrator:
                     networks=self.config["networks"]
                 )
                 
+            # Run dark pool analysis
+            async with self.dark_pool_analyzer as dark_analyzer:
+                dark_pool_results = await dark_analyzer.scan_dark_pools(
+                    networks=self.config["networks"]
+                )
+                
             # Train AI models if needed
             if self.should_train_ai():
                 await self.train_ai_models()
                 
             # Process trading signals
             await self.process_trading_signals(analysis_results)
+            
+            # Process dark pool signals
+            await self.process_meme_signals(dark_pool_results)
             
             # Update state
             self.state["last_analysis"] = datetime.now().isoformat()
@@ -253,6 +267,83 @@ class QuantumTradingOrchestrator:
                     
             except Exception as e:
                 logger.error(f"Failed to process signal for {opportunity['pool_name']}: {e}")
+                
+    async def process_meme_signals(self, dark_pool_results: Dict):
+        """Process meme token and dark pool signals"""
+        if not dark_pool_results or not dark_pool_results.get("pump_signals"):
+            return
+            
+        logger.info("Processing meme token signals...")
+        
+        # Get high-priority pump signals
+        pump_signals = dark_pool_results["pump_signals"][:3]  # Top 3 signals
+        
+        for signal in pump_signals:
+            try:
+                # Additional risk checks for meme tokens
+                if not self.check_meme_risk_constraints(signal):
+                    continue
+                    
+                # Execute meme token trade with higher risk parameters
+                await self.execute_meme_trade(signal)
+                
+            except Exception as e:
+                logger.error(f"Failed to process meme signal for {signal['pool_name']}: {e}")
+                
+    def check_meme_risk_constraints(self, signal: Dict) -> bool:
+        """Check if meme token trade meets specialized risk constraints"""
+        # More lenient constraints for meme tokens but with stricter limits
+        if self.state["trades_today"] >= 3:  # Lower daily limit for meme trades
+            logger.warning("Daily meme trade limit reached")
+            return False
+            
+        # Only trade immediate and within_hour urgency signals
+        if signal["urgency"] not in ["immediate", "within_hour"]:
+            return False
+            
+        # Require higher pump probability for meme tokens
+        if signal["pump_probability"] < 0.6:
+            logger.warning(f"Pump probability too low for meme token: {signal['pump_probability']}")
+            return False
+            
+        return True
+        
+    async def execute_meme_trade(self, signal: Dict):
+        """Execute specialized meme token trade"""
+        logger.info(f"Executing meme token trade for {signal['pool_name']}")
+        
+        try:
+            # Smaller position size for higher risk meme tokens
+            position_size = min(200, self.config["risk_management"]["max_position_size"] * 0.2)
+            
+            trade_params = {
+                "type": "meme_token_trade",
+                "pool_name": signal["pool_name"],
+                "network": signal["network"],
+                "amount": position_size,
+                "target_multiplier": signal["target_multiplier"],
+                "pump_probability": signal["pump_probability"],
+                "urgency": signal["urgency"],
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            # Simulate execution
+            execution_result = await self.simulate_trade_execution(trade_params)
+            
+            if execution_result["success"]:
+                self.state["trades_today"] += 1
+                self.state["total_trades"] += 1
+                
+                logger.info(f"Meme token trade executed: {execution_result}")
+                
+                await self.send_notification({
+                    "type": "meme_trade_executed",
+                    "message": f"Meme token trade: {signal['pool_name']} (Target: {signal['target_multiplier']:.1f}x)",
+                    "details": trade_params
+                })
+                
+        except Exception as e:
+            logger.error(f"Failed to execute meme token trade: {e}")
                 
     def check_risk_constraints(self, opportunity: Dict) -> bool:
         """Check if trade meets risk management constraints"""
