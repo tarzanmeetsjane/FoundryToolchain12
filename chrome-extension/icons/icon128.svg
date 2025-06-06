@@ -1,0 +1,22 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="20" fill="url(#gradient)"/>
+  <path d="M32 64L64 32L96 64L64 96L32 64Z" fill="white" opacity="0.9"/>
+  <circle cx="64" cy="64" r="16" fill="white"/>
+  <path d="M64 48L80 64L64 80L48 64L64 48Z" fill="url(#innerGradient)"/>
+  <circle cx="64" cy="64" r="8" fill="white" opacity="0.3"/>
+  <path d="M20 20L44 20L44 44L20 44V20Z" fill="white" opacity="0.1"/>
+  <path d="M84 20L108 20L108 44L84 44V20Z" fill="white" opacity="0.1"/>
+  <path d="M20 84L44 84L44 108L20 108V84Z" fill="white" opacity="0.1"/>
+  <path d="M84 84L108 84L108 108L84 108V84Z" fill="white" opacity="0.1"/>
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#667eea"/>
+      <stop offset="0.5" stop-color="#764ba2"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="innerGradient" x1="48" y1="48" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e293b"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+</svg>

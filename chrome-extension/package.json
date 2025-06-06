@@ -1,0 +1,30 @@
+{
+  "name": "quantum-secure-trader-extension",
+  "version": "1.0.0",
+  "description": "Multi-Chain DeFi Analytics Chrome Extension",
+  "scripts": {
+    "build": "echo 'Building extension package...'",
+    "package": "zip -r quantum-secure-trader-extension.zip . -x '*.git*' '*.DS_Store' 'node_modules/*' 'package.json' 'package-lock.json'",
+    "test": "echo 'Testing extension...'",
+    "dev": "echo 'Development mode - load unpacked extension in Chrome'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "defi",
+    "blockchain",
+    "cryptocurrency",
+    "trading",
+    "analytics",
+    "uniswap",
+    "dex"
+  ],
+  "author": "Quantum Secure Trader",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quantum-secure-trader/chrome-extension"
+  },
+  "homepage": "https://quantum-secure-trader.replit.app",
+  "devDependencies": {},
+  "dependencies": {}
+}
