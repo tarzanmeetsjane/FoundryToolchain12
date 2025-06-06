@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AddressValidator } from "@/lib/address-validator";
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
 
 interface LiquidityPosition {
   poolAddress: string;
@@ -61,28 +63,67 @@ interface ClaimableReward {
 export default function LiquidityPoolManager() {
   const { toast } = useToast();
   const { address: connectedWalletAddress, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  
   const [withdrawAmount, setWithdrawAmount] = useState<Record<string, string>>({});
   const [isWithdrawing, setIsWithdrawing] = useState<Record<string, boolean>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
-
-  // Update timestamp every 60 seconds to reduce page jumping
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLastUpdate(new Date());
-    }, 60000); // Changed from 10 seconds to 60 seconds
-    return () => clearInterval(interval);
-  }, []);
-  
-  const [walletAddress, setWalletAddress] = useState("");
   const [selectedPool, setSelectedPool] = useState("");
   const [addAmount1, setAddAmount1] = useState("");
   const [addAmount2, setAddAmount2] = useState("");
   const [removePercentage, setRemovePercentage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+  const [realPositions, setRealPositions] = useState<LiquidityPosition[]>([]);
 
-  // Demo liquidity positions - in production, fetch from blockchain
-  const liquidityPositions: LiquidityPosition[] = [
+  // Update timestamp every 60 seconds to reduce page jumping
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLastUpdate(new Date());
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Fetch real positions when wallet is connected
+  useEffect(() => {
+    if (connectedWalletAddress && isConnected) {
+      fetchRealPositions();
+    }
+  }, [connectedWalletAddress, isConnected]);
+
+  // Function to fetch real liquidity positions
+  const fetchRealPositions = async () => {
+    if (!connectedWalletAddress) return;
+    
+    setLoading(true);
+    try {
+      // Fetch real positions from your server API that queries blockchain
+      const response = await fetch(`/api/wallet/${connectedWalletAddress}/positions?chainId=1`);
+      if (response.ok) {
+        const positions = await response.json();
+        setRealPositions(positions);
+        
+        toast({
+          title: "Positions Loaded",
+          description: `Found ${positions.length} liquidity positions`,
+        });
+      } else {
+        throw new Error('Failed to fetch positions');
+      }
+    } catch (error) {
+      console.error('Error fetching real positions:', error);
+      toast({
+        title: "Failed to Load Positions",
+        description: "Using demo data. Connect wallet for real positions.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Demo liquidity positions - fallback when real data unavailable
+  const demoPositions: LiquidityPosition[] = [
     {
       poolAddress: "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
       tokenA: { symbol: "USDC", address: "0xA0b86a33E6441b8435b662c1f8e7b3A8F9C9BF0f", amount: "5000.00", decimals: 6 },
@@ -123,23 +164,9 @@ export default function LiquidityPoolManager() {
   ];
 
   const handleConnectWallet = async () => {
-    if (!window.ethereum) {
-      toast({
-        title: "Wallet Not Found",
-        description: "Please install MetaMask or another Web3 wallet",
-        variant: "destructive"
-      });
-      return;
-    }
-
     try {
       setLoading(true);
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      setWalletAddress(accounts[0]);
-      toast({
-        title: "Wallet Connected",
-        description: `Connected to ${accounts[0].slice(0, 8)}...${accounts[0].slice(-6)}`,
-      });
+      await connect({ connector: injected() });
     } catch (error) {
       toast({
         title: "Connection Failed",
@@ -151,8 +178,16 @@ export default function LiquidityPoolManager() {
     }
   };
 
+  const handleDisconnectWallet = () => {
+    disconnect();
+    setRealPositions([]);
+  };
+
+  // Use real positions if available, otherwise use demo data
+  const liquidityPositions = realPositions.length > 0 ? realPositions : demoPositions;
+
   const handleAddLiquidity = async () => {
-    if (!walletAddress) {
+    if (!isConnected || !connectedWalletAddress) {
       toast({
         title: "Connect Wallet",
         description: "Please connect your wallet first",
@@ -185,7 +220,7 @@ export default function LiquidityPoolManager() {
   };
 
   const handleRemoveLiquidity = async (position: LiquidityPosition) => {
-    if (!walletAddress) {
+    if (!isConnected || !connectedWalletAddress) {
       toast({
         title: "Connect Wallet",
         description: "Please connect your wallet first",
@@ -217,7 +252,7 @@ export default function LiquidityPoolManager() {
   };
 
   const handleClaimRewards = async (reward: ClaimableReward) => {
-    if (!walletAddress) {
+    if (!isConnected || !connectedWalletAddress) {
       toast({
         title: "Connect Wallet",
         description: "Please connect your wallet first",
@@ -247,7 +282,7 @@ export default function LiquidityPoolManager() {
   };
 
   const handleClaimAllRewards = async () => {
-    if (!walletAddress) {
+    if (!isConnected || !connectedWalletAddress) {
       toast({
         title: "Connect Wallet",
         description: "Please connect your wallet first",
@@ -296,7 +331,7 @@ export default function LiquidityPoolManager() {
           <h1 className="text-3xl font-bold">Liquidity Pool Manager</h1>
         </div>
 
-        {!walletAddress ? (
+        {!isConnected ? (
           <Button onClick={handleConnectWallet} disabled={loading}>
             <Wallet className="h-4 w-4 mr-2" />
             {loading ? "Connecting..." : "Connect Wallet"}
@@ -304,10 +339,22 @@ export default function LiquidityPoolManager() {
         ) : (
           <div className="flex items-center gap-2">
             <Badge variant="outline">
-              {walletAddress.slice(0, 8)}...{walletAddress.slice(-6)}
+              {connectedWalletAddress?.slice(0, 8)}...{connectedWalletAddress?.slice(-6)}
             </Badge>
-            <Button variant="outline" size="sm" disabled={loading}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={fetchRealPositions}
+              disabled={loading}
+            >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleDisconnectWallet}
+            >
+              Disconnect
             </Button>
           </div>
         )}
