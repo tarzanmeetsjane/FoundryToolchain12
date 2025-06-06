@@ -14,6 +14,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { GeckoPoolAnalyzer } from "@/components/gecko-pool-analyzer";
 
 export default function TokenDiscoveryPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,6 +62,29 @@ export default function TokenDiscoveryPage() {
     refetchInterval: false,
     refetchOnWindowFocus: false,
   });
+
+  const demoTokens = [
+    {
+      symbol: "ETH",
+      name: "Ethereum",
+      address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      price: "$2,680.45",
+      change: "+2.34%",
+      volume: "$12.5B",
+      marketCap: "$322.1B",
+      verified: true
+    },
+    {
+      symbol: "USDC",
+      name: "USD Coin",
+      address: "0xA0b86a33E6441b8435b662c1f8e7b3A8F9C9BF0f",
+      price: "$1.00",
+      change: "+0.01%",
+      volume: "$5.2B",
+      marketCap: "$42.8B",
+      verified: true
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
@@ -130,6 +154,8 @@ export default function TokenDiscoveryPage() {
           </div>
         </CardContent>
       </Card>
+
+      <GeckoPoolAnalyzer />
 
       <Card>
         <CardHeader>
