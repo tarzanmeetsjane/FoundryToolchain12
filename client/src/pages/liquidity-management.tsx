@@ -14,8 +14,8 @@ export default function LiquidityManagementPage() {
         </TabsList>
 
         <TabsContent value="v3v4">
+          <PositionDashboard />
           <V3PositionCreator />
-          <V3V4PositionManager />
         </TabsContent>
 
         <TabsContent value="v2">
