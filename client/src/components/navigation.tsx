@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight } from "lucide-react";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 export default function Navigation() {
@@ -112,6 +112,17 @@ export default function Navigation() {
               >
                 <Radio className="h-4 w-4 mr-2" />
                 Frequency Tuner
+              </Button>
+            </Link>
+            
+            <Link href="/cross-chain-swap">
+              <Button 
+                variant={location === "/cross-chain-swap" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <ArrowLeftRight className="h-4 w-4 mr-2" />
+                Cross-Chain Swap
               </Button>
             </Link>
             

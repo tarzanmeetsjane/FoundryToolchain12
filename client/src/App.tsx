@@ -13,6 +13,7 @@ import AddressAnalyzer from "@/pages/address-analyzer";
 import TokenDiscovery from "@/pages/token-discovery";
 import FundingTrackerPage from "@/pages/funding-tracker";
 import FrequencyTunerPage from "@/pages/frequency-tuner";
+import CrossChainSwapPage from "@/pages/cross-chain-swap";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/token-discovery" component={TokenDiscovery} />
         <Route path="/funding-tracker" component={FundingTrackerPage} />
         <Route path="/frequency-tuner" component={FrequencyTunerPage} />
+        <Route path="/cross-chain-swap" component={CrossChainSwapPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
