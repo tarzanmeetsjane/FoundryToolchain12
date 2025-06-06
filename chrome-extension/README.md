@@ -170,17 +170,14 @@ chrome-extension/
 - Maintains service worker lifecycle
 
 **Real-time Updates**
-- 30-second interval for trending pools
-- Price data refreshed every 30 seconds
+- Manual update with the click of a button for trending pools
+- Price data refreshed on manual action
 - Network-specific pool data on demand
 - Efficient caching to minimize API calls
 
 ### Customization
 
 **Update Frequency**
-```javascript
-// In background.js
-this.updateInterval = 30000; // 30 seconds (configurable)
 ```
 
 **Widget Injection Sites**
