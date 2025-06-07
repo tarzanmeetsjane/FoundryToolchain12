@@ -116,10 +116,12 @@ export function CSVDataAnalyzer() {
 
   const analyzeLPTokenData = (data: any[]): AnalysisResult => {
     const protocols = data.map(token => token.Protocol).filter(Boolean);
-    const uniqueProtocols = Array.from(new Set(protocols));
+    const protocolSet = new Set(protocols);
+    const uniqueProtocols = Array.from(protocolSet);
     
     const blockchains = data.map(token => token.Blockchain).filter(Boolean);
-    const uniqueBlockchains = Array.from(new Set(blockchains));
+    const blockchainSet = new Set(blockchains);
+    const uniqueBlockchains = Array.from(blockchainSet);
 
     const pairs = data.map(token => token.Pair).filter(Boolean);
     const pairCounts = pairs.reduce((acc: any, pair) => {

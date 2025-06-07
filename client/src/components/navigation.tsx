@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight, PieChart } from "lucide-react";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 export default function Navigation() {
@@ -123,6 +123,17 @@ export default function Navigation() {
               >
                 <ArrowLeftRight className="h-4 w-4 mr-2" />
                 Cross-Chain Swap
+              </Button>
+            </Link>
+            
+            <Link href="/portfolio-analytics">
+              <Button 
+                variant={location === "/portfolio-analytics" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <PieChart className="h-4 w-4 mr-2" />
+                Portfolio Analytics
               </Button>
             </Link>
             
