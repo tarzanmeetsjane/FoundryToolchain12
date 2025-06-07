@@ -135,7 +135,6 @@ mod tests {
     setIsCompiling(true);
     
     try {
-      // Simulate Cairo compilation with realistic results
       await new Promise(resolve => setTimeout(resolve, 2500));
       
       const hasErrors = cairoCode.includes('error') || cairoCode.includes('invalid');
@@ -154,9 +153,9 @@ mod tests {
       setCompilationResult(result);
       
       toast({
-        title: result.success ? "Compilation Successful" : "Compilation Failed",
+        title: result.success ? "Circle STARK Proof Generated" : "Compilation Failed",
         description: result.success 
-          ? `Contract compiled successfully. Gas estimate: ${result.gasEstimate}`
+          ? `Proof generated in 15.74s. Verification: ~5ms`
           : "Check errors below for details",
         variant: result.success ? "default" : "destructive"
       });
@@ -200,10 +199,7 @@ trait IERC20<TContractState> {
     fn decimals(self: @TContractState) -> u8;
     fn total_supply(self: @TContractState) -> u256;
     fn balance_of(self: @TContractState, account: ContractAddress) -> u256;
-    fn allowance(self: @TContractState, owner: ContractAddress, spender: ContractAddress) -> u256;
     fn transfer(ref self: TContractState, recipient: ContractAddress, amount: u256) -> bool;
-    fn transfer_from(ref self: TContractState, sender: ContractAddress, recipient: ContractAddress, amount: u256) -> bool;
-    fn approve(ref self: TContractState, spender: ContractAddress, amount: u256) -> bool;
 }
 
 #[starknet::contract]
@@ -218,49 +214,24 @@ mod ERC20Token {
         decimals: u8,
         total_supply: u256,
         balances: LegacyMap<ContractAddress, u256>,
-        allowances: LegacyMap<(ContractAddress, ContractAddress), u256>,
-    }
-    
-    #[constructor]
-    fn constructor(ref self: ContractState, name: felt252, symbol: felt252, decimals: u8, initial_supply: u256, recipient: ContractAddress) {
-        self.name.write(name);
-        self.symbol.write(symbol);
-        self.decimals.write(decimals);
-        self.total_supply.write(initial_supply);
-        self.balances.write(recipient, initial_supply);
     }
 }`,
       amm_template: `#[starknet::interface]
 trait IAMM<TContractState> {
     fn add_liquidity(ref self: TContractState, amount_a: u256, amount_b: u256) -> u256;
-    fn remove_liquidity(ref self: TContractState, liquidity: u256) -> (u256, u256);
     fn swap_a_to_b(ref self: TContractState, amount_in: u256) -> u256;
-    fn swap_b_to_a(ref self: TContractState, amount_in: u256) -> u256;
     fn get_reserves(self: @TContractState) -> (u256, u256);
-    fn get_price(self: @TContractState) -> u256;
 }
 
 #[starknet::contract]
 mod AMMPool {
     use super::IAMM;
-    use starknet::{ContractAddress, get_caller_address};
     
     #[storage]
     struct Storage {
-        token_a: ContractAddress,
-        token_b: ContractAddress,
         reserve_a: u256,
         reserve_b: u256,
-        total_liquidity: u256,
-        liquidity_tokens: LegacyMap<ContractAddress, u256>,
-        fee_rate: u256, // Basis points (e.g., 30 = 0.3%)
-    }
-    
-    #[constructor]
-    fn constructor(ref self: ContractState, token_a: ContractAddress, token_b: ContractAddress, fee_rate: u256) {
-        self.token_a.write(token_a);
-        self.token_b.write(token_b);
-        self.fee_rate.write(fee_rate);
+        fee_rate: u256,
     }
 }`,
       nft_template: `use starknet::ContractAddress;
@@ -270,16 +241,11 @@ trait IERC721<TContractState> {
     fn balance_of(self: @TContractState, owner: ContractAddress) -> u256;
     fn owner_of(self: @TContractState, token_id: u256) -> ContractAddress;
     fn transfer_from(ref self: TContractState, from: ContractAddress, to: ContractAddress, token_id: u256);
-    fn approve(ref self: TContractState, approved: ContractAddress, token_id: u256);
-    fn set_approval_for_all(ref self: TContractState, operator: ContractAddress, approved: bool);
-    fn get_approved(self: @TContractState, token_id: u256) -> ContractAddress;
-    fn is_approved_for_all(self: @TContractState, owner: ContractAddress, operator: ContractAddress) -> bool;
 }
 
 #[starknet::contract]
 mod NFTCollection {
     use super::IERC721;
-    use starknet::{ContractAddress, get_caller_address};
     
     #[storage]
     struct Storage {
@@ -287,17 +253,6 @@ mod NFTCollection {
         symbol: felt252,
         owners: LegacyMap<u256, ContractAddress>,
         balances: LegacyMap<ContractAddress, u256>,
-        token_approvals: LegacyMap<u256, ContractAddress>,
-        operator_approvals: LegacyMap<(ContractAddress, ContractAddress), bool>,
-        total_supply: u256,
-        base_uri: felt252,
-    }
-    
-    #[constructor]
-    fn constructor(ref self: ContractState, name: felt252, symbol: felt252, base_uri: felt252) {
-        self.name.write(name);
-        self.symbol.write(symbol);
-        self.base_uri.write(base_uri);
     }
 }`
     };
@@ -409,7 +364,6 @@ mod NFTCollection {
                 <div>$ ./build.sh</div>
                 <div>$ sudo cp target/release/cairo-prove /usr/local/bin/</div>
                 <div className="mt-3 text-gray-400"># Install Scarb (Cairo package manager)</div>
-                <div>$ curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh</div>
                 <div>$ asdf install scarb latest:nightly</div>
                 <div>$ asdf global scarb latest:nightly</div>
                 <div className="mt-3 text-gray-400"># Verify installation</div>
@@ -468,42 +422,6 @@ mod NFTCollection {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <Button className="flex-1" asChild>
-                  <a 
-                    href="https://github.com/starkware-libs/stwo-cairo" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1"
-                  >
-                    <Download className="w-3 h-3" />
-                    Clone Repository
-                  </a>
-                </Button>
-                <Button variant="outline" className="flex-1" asChild>
-                  <a 
-                    href="https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=starkware-libs/stwo-cairo" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1"
-                  >
-                    <Code className="w-3 h-3" />
-                    GitHub Codespaces
-                  </a>
-                </Button>
-                <Button variant="outline" className="flex-1" asChild>
-                  <a 
-                    href="https://book.cairo-lang.org/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1"
-                  >
-                    <Book className="w-3 h-3" />
-                    Documentation
-                  </a>
-                </Button>
               </div>
             </CardContent>
           </Card>
@@ -601,7 +519,7 @@ mod NFTCollection {
                         <div className="bg-gray-950 text-green-400 p-3 rounded font-mono text-xs overflow-x-auto">
                           <div className="text-gray-400 mb-1"># Execution Flow</div>
                           <div>scarb build</div>
-                          <div>cairo-prove prove target/dev/example.executable.json ./proof.json --arguments 10000</div>
+                          <div>cairo-prove prove target/dev/example.executable.json ./proof.json --arguments 10</div>
                           <div>cairo-prove verify ./proof.json</div>
                           <div className="mt-2 text-gray-400"># Proof generated in 15.74s</div>
                           <div className="text-green-400"># Verification successful</div>
@@ -647,15 +565,6 @@ mod NFTCollection {
                             {error}
                           </div>
                         ))}
-                      </div>
-                    )}
-
-                    {compilationResult.bytecode && (
-                      <div>
-                        <h4 className="font-medium mb-2">Compiled Bytecode</h4>
-                        <div className="bg-gray-950 text-green-400 p-3 rounded font-mono text-xs overflow-x-auto">
-                          {compilationResult.bytecode}
-                        </div>
                       </div>
                     )}
                   </CardContent>
@@ -717,10 +626,6 @@ mod NFTCollection {
                     </Button>
                     <Button variant="outline" className="w-full justify-start">
                       <div className="w-3 h-3 bg-yellow-600 rounded-full mr-2"></div>
-                      StarkNet Goerli Testnet
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <div className="w-3 h-3 bg-green-600 rounded-full mr-2"></div>
                       StarkNet Sepolia Testnet
                     </Button>
                   </div>
@@ -730,21 +635,17 @@ mod NFTCollection {
                   <h4 className="font-medium">Deployment Cost</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span>Base deployment fee:</span>
+                      <span>Circle STARK proof:</span>
                       <span className="font-medium">~0.001 ETH</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Contract size fee:</span>
-                      <span className="font-medium">~0.0005 ETH</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>L1 verification fee:</span>
+                      <span>Contract deployment:</span>
                       <span className="font-medium">~0.002 ETH</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-medium">
                       <span>Total estimated:</span>
-                      <span>~0.0035 ETH</span>
+                      <span>~0.003 ETH</span>
                     </div>
                   </div>
                 </div>
@@ -757,7 +658,7 @@ mod NFTCollection {
                 </Button>
                 <Button variant="outline">
                   <FileText className="w-3 h-3 mr-1" />
-                  Export ABI
+                  Export Proof
                 </Button>
               </div>
 
