@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -357,8 +356,8 @@ mod NFTCollection {
                 <div>$ git clone https://github.com/starkware-libs/stwo-cairo.git</div>
                 <div>$ cd stwo-cairo</div>
                 <div className="mt-3 text-gray-400"># GitHub Packages authentication (for private deps)</div>
-                <div>$ echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" &gt;&gt; ~/.npmrc</div>
-                <div>$ echo "@starkware-libs:registry=https://npm.pkg.github.com" &gt;&gt; ~/.npmrc</div>
+                <div>$ echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" {'>>'} ~/.npmrc</div>
+                <div>$ echo "@starkware-libs:registry=https://npm.pkg.github.com" {'>>'} ~/.npmrc</div>
                 <div className="mt-3 text-gray-400"># Rust toolchain (auto-configured from rust-toolchain.toml)</div>
                 <div>$ rustup show</div>
                 <div className="text-gray-400"># Should show nightly toolchain as configured</div>
@@ -431,100 +430,136 @@ mod NFTCollection {
                 </div>
               </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Shield className="w-5 h-5" />
-                    GitHub Packages Authentication
-                  </CardTitle>
-                  <CardDescription>Configure access to GitHub Packages registry for enhanced development</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
-                    <h4 className="font-medium text-blue-600 dark:text-blue-400 mb-2">Authentication Setup</h4>
-                    <div className="space-y-2 text-sm text-blue-600 dark:text-blue-400">
-                      <div>1. Create Personal Access Token with packages:read scope</div>
-                      <div>2. Configure npm registry for @starkware-libs packages</div>
-                      <div>3. Access private dependencies and enhanced tooling</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <Button className="flex-1" asChild>
+                  <a 
+                    href="https://github.com/starkware-libs/stwo-cairo" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1"
+                  >
+                    <Download className="w-3 h-3" />
+                    Clone Repository
+                  </a>
+                </Button>
+                <Button variant="outline" className="flex-1" asChild>
+                  <a 
+                    href="https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=starkware-libs/stwo-cairo" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1"
+                  >
+                    <Code className="w-3 h-3" />
+                    GitHub Codespaces
+                  </a>
+                </Button>
+                <Button variant="outline" className="flex-1" asChild>
+                  <a 
+                    href="https://book.cairo-lang.org/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1"
+                  >
+                    <Book className="w-3 h-3" />
+                    Documentation
+                  </a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="w-5 h-5" />
+                GitHub Packages Authentication
+              </CardTitle>
+              <CardDescription>Configure access to GitHub Packages registry for enhanced development</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
+                <h4 className="font-medium text-blue-600 dark:text-blue-400 mb-2">Authentication Setup</h4>
+                <div className="space-y-2 text-sm text-blue-600 dark:text-blue-400">
+                  <div>1. Create Personal Access Token with packages:read scope</div>
+                  <div>2. Configure npm registry for @starkware-libs packages</div>
+                  <div>3. Access private dependencies and enhanced tooling</div>
+                </div>
+              </div>
+
+              <div className="bg-gray-950 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                <div className="mb-2 text-gray-400"># Create GitHub Personal Access Token</div>
+                <div># Settings → Developer settings → Personal access tokens → Tokens (classic)</div>
+                <div># Select scopes: read:packages, write:packages, delete:packages</div>
+                <div className="mt-3 text-gray-400"># Configure npm for GitHub Packages</div>
+                <div>$ npm config set @starkware-libs:registry https://npm.pkg.github.com</div>
+                <div>$ npm config set //npm.pkg.github.com/:_authToken YOUR_TOKEN_HERE</div>
+                <div className="mt-3 text-gray-400"># Alternative: Using .npmrc file</div>
+                <div>$ echo "@starkware-libs:registry=https://npm.pkg.github.com" {'>>'} ~/.npmrc</div>
+                <div>$ echo "//npm.pkg.github.com/:_authToken=YOUR_TOKEN_HERE" {'>>'} ~/.npmrc</div>
+                <div className="mt-3 text-gray-400"># Verify authentication</div>
+                <div>$ npm whoami --registry=https://npm.pkg.github.com</div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <h4 className="font-medium">Token Permissions Required</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                      <span>read:packages - Download packages</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
+                      <span>write:packages - Publish packages</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                      <span>delete:packages - Remove packages</span>
                     </div>
                   </div>
+                </div>
 
-                  <div className="bg-gray-950 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                    <div className="mb-2 text-gray-400"># Create GitHub Personal Access Token</div>
-                    <div># Settings → Developer settings → Personal access tokens → Tokens (classic)</div>
-                    <div># Select scopes: read:packages, write:packages, delete:packages</div>
-                    <div className="mt-3 text-gray-400"># Configure npm for GitHub Packages</div>
-                    <div>$ npm config set @starkware-libs:registry https://npm.pkg.github.com</div>
-                    <div>$ npm config set //npm.pkg.github.com/:_authToken YOUR_TOKEN_HERE</div>
-                    <div className="mt-3 text-gray-400"># Alternative: Using .npmrc file</div>
-                    <div>$ echo "@starkware-libs:registry=https://npm.pkg.github.com" &gt;&gt; ~/.npmrc</div>
-                    <div>$ echo "//npm.pkg.github.com/:_authToken=YOUR_TOKEN_HERE" &gt;&gt; ~/.npmrc</div>
-                    <div className="mt-3 text-gray-400"># Verify authentication</div>
-                    <div>$ npm whoami --registry=https://npm.pkg.github.com</div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      <h4 className="font-medium">Token Permissions Required</h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                          <span>read:packages - Download packages</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
-                          <span>write:packages - Publish packages</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                          <span>delete:packages - Remove packages</span>
-                        </div>
-                      </div>
+                <div className="space-y-3">
+                  <h4 className="font-medium">Benefits</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                      <span>Access private StarkWare packages</span>
                     </div>
-
-                    <div className="space-y-3">
-                      <h4 className="font-medium">Benefits</h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
-                          <span>Access private StarkWare packages</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
-                          <span>Enhanced Cairo development tools</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
-                          <span>Enterprise-grade package security</span>
-                        </div>
-                      </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                      <span>Enhanced Cairo development tools</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                      <span>Enterprise-grade package security</span>
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  <div className="flex gap-2">
-                    <Button variant="outline" asChild>
-                      <a 
-                        href="https://github.com/settings/tokens/new?scopes=read:packages,write:packages,delete:packages&description=Stwo%20Cairo%20Development" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="w-3 h-3 mr-1" />
-                        Create Token
-                      </a>
-                    </Button>
-                    <Button variant="outline" asChild>
-                      <a 
-                        href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        <Book className="w-3 h-3 mr-1" />
-                        Documentation
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="flex gap-2">
+                <Button variant="outline" asChild>
+                  <a 
+                    href="https://github.com/settings/tokens/new?scopes=read:packages,write:packages,delete:packages&description=Stwo%20Cairo%20Development" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="w-3 h-3 mr-1" />
+                    Create Token
+                  </a>
+                </Button>
+                <Button variant="outline" asChild>
+                  <a 
+                    href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <Book className="w-3 h-3 mr-1" />
+                    Documentation
+                  </a>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

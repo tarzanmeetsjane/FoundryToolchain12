@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { GeckoPoolAnalyzer } from "@/components/gecko-pool-analyzer";
 import { CSVDataAnalyzer } from "@/components/csv-data-analyzer";
 import { StarkNetAnalyzer } from "@/components/starknet-analyzer";
-import { CairoDevelopment } from "@/components/cairo-development-fixed";
+import { CairoDevelopment } from "@/components/cairo-dev-complete";
 
 export default function TokenDiscoveryPage() {
   const [searchQuery, setSearchQuery] = useState("");
