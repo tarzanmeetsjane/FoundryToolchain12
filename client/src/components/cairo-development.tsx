@@ -354,16 +354,21 @@ mod NFTCollection {
                 <div className="mb-2 text-gray-400"># Clone Stwo Cairo repository</div>
                 <div>$ git clone https://github.com/starkware-libs/stwo-cairo.git</div>
                 <div>$ cd stwo-cairo</div>
+                <div className="mt-3 text-gray-400"># Rust toolchain (auto-configured from rust-toolchain.toml)</div>
+                <div>$ rustup show</div>
+                <div className="text-gray-400"># Should show nightly toolchain as configured</div>
                 <div className="mt-3 text-gray-400"># Build cairo-prove binary</div>
                 <div>$ cd cairo-prove</div>
                 <div>$ ./build.sh</div>
                 <div>$ sudo cp target/release/cairo-prove /usr/local/bin/</div>
                 <div className="mt-3 text-gray-400"># Install Scarb (Cairo package manager)</div>
+                <div>$ curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh</div>
                 <div>$ asdf install scarb latest:nightly</div>
-                <div>$ asdf set -u scarb latest:nightly</div>
-                <div className="mt-3 text-gray-400"># Test installation</div>
+                <div>$ asdf global scarb latest:nightly</div>
+                <div className="mt-3 text-gray-400"># Verify installation</div>
                 <div>$ cairo-prove --version</div>
                 <div>$ scarb --version</div>
+                <div>$ rustc --version</div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -375,7 +380,7 @@ mod NFTCollection {
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                      <span>Rust (see cairo-prove/rust-toolchain.toml)</span>
+                      <span>Rust nightly (cairo-prove/rust-toolchain.toml)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-600 rounded-full"></div>
