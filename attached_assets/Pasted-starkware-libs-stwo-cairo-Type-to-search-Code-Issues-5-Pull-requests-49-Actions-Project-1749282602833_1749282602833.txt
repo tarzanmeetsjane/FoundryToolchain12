@@ -1,0 +1,207 @@
+starkware-libs
+stwo-cairo
+
+Type / to search
+Code
+Issues
+5
+Pull requests
+49
+Actions
+Projects
+Security
+Insights
+Owner avatar
+stwo-cairo
+Public
+starkware-libs/stwo-cairo
+Go to file
+t
+Name		
+m-kus
+m-kus
+dev-utils: extract method for serializing the proof to file and move …
+62c3c4a
+ · 
+2 days ago
+.github
+Fix compilation bugs with poseidon252_verifier (#927)
+last week
+cairo-prove
+cairo-prove
+2 weeks ago
+stwo_cairo_prover
+dev-utils: extract method for serializing the proof to file and move …
+2 days ago
+stwo_cairo_verifier
+memory split in cairo
+2 days ago
+README.md
+Update README.md (#946)
+2 weeks ago
+Repository files navigation
+README
+⚡ S-two Cairo ⚡
+Prove Cairo programs with the blazing-fast S-Two prover, powered by the cryptographic breakthrough of Circle STARKs.
+
+Disclaimer
+Prerequisites
+Usage
+Example
+Inputs
+Limitations
+Gas
+Syscalls
+Padding
+Pedersen
+scarb-prove
+Disclaimer
+S-two is not yet production-ready, but getting close. Early adopters are welcome—but we don't recommend using it in a production setting just yet.
+
+Prerequisites
+Rust
+
+See cairo-prove/rust-toolchain.toml for the specific version
+Scarb
+
+The recommended installation method is using asdf
+
+Make sure to use version 2.10.0 and onwards, and preferably the latest nightly version.
+
+To use the latest nightly version, run:
+
+asdf set -u scarb latest:nightly
+Installation
+First, clone this repo and navigate to its directory:
+
+git clone https://github.com/starkware-libs/stwo-cairo.git
+cd stwo-cairo
+Then, navigate to the cairo-prove directory and build the project:
+
+cd cairo-prove
+./build.sh
+Finally, add the cairo-prove binary to your PATH:
+
+sudo cp target/release/cairo-prove /usr/local/bin/
+Note: Adding the binary to your path is optional but highly recommended, as otherwise cairo-prove's path needs to be specified each time it is used.
+
+Usage
+To prove an execution of a Cairo program you must first create its executable. To do so, navigate to its directory and run:
+
+scarb build
+To generate a proof for an execution of a program's executable, run:
+
+cairo-prove prove <path-to-executable> <path-to-output> --arguments <args>
+or:
+
+cairo-prove prove <path-to-executable> <path-to-output-file> --arguments-file <path-to-args-file>
+Note: For information about the formats of arguments and arguments-file, see Inputs.
+
+To verify a proof, run:
+
+cairo-prove verify <path-to-proof-file>
+or, if the Pedersen builtin is used in the proof:
+
+cairo-prove verify <path-to-proof-file> --with-pedersen
+Note: To learn more about the effects of the Pedersen builtin, see Pedersen.
+
+Example
+The following can be used inside the cairo-prove/example directory to create an executable of cairo-prove/example/src/lib.cairo, prove its execution, and verify the proof:
+
+scarb build
+cairo-prove prove \
+  target/dev/example.executable.json \
+  ./example_proof.json \
+  --arguments 10000
+cairo-prove verify ./example_proof.json
+If successful, the result should be similar to the following:
+
+Compiling example v0.1.0 (stwo-cairo/cairo-prove/example/Scarb.toml)
+Finished `dev` profile target(s) in 4 seconds
+[2025-05-27T10:23:36Z INFO  cairo_prove] Generating proof for target: "target/dev/example.executable.json"
+[2025-05-27T10:23:36Z INFO  cairo_prove::execute] Executing program...
+[2025-05-27T10:23:36Z INFO  cairo_prove::execute] Program executed successfully.
+[2025-05-27T10:23:36Z INFO  cairo_prove::prove] Generating input for the prover...
+[2025-05-27T10:23:36Z INFO  cairo_prove::prove] Input for the prover generated successfully.
+[2025-05-27T10:23:52Z INFO  cairo_prove] Proof saved to: "./example_proof.json"
+[2025-05-27T10:23:52Z INFO  cairo_prove] Proof generation completed in 15.74s
+[2025-05-27T10:26:02Z INFO  cairo_prove] Verifying proof from: "./example_proof.json"
+[2025-05-27T10:26:02Z INFO  cairo_prove] Verification successful
+Inputs
+The expected input provided to cairo-prove prove using the --arguments option is a comma-separated list of integers. This list should correspond to the serialization of the main function’s arguments, for example:
+
+main’s signature	valid arguments example
+fn main(num: u8)	1
+fn main(num1: u8, num2: u16)	1,2
+fn main(num1: u8, tuple: (u16, u16))	1,2,3
+fn main(num1: u8, num2: u256)	1,2,3
+fn main(num1: u8, arr: Array<u8>)	1,2,1,2
+When using the --arguments-file option, the expected content of the file is an array of the equivalent hex strings. For example, 1,2,3 in the above table becomes ["0x1", "0x2", "0x3"].
+
+Limitations
+Gas
+Executables must be created with the enable-gas = false config in project's Scarb.toml file (e.g., cairo-prove/example/Scarb.toml).
+
+This limitation exists because gas tracking introduces computational overhead, which does not make sense in non-Starknet contexts.
+
+Syscalls
+Executables cannot be created from programs that use syscalls, either directly or via functions from the Cairo Core library that use syscalls (such as sha256, keccak, and secp256k1/secp256r1 operations).
+
+Padding
+Execution resources (the number of steps and builtin invocations) are currently padded to the next power of 2, with respect to the ratios in the all_cairo layout.
+
+This padding exists for legacy reasons and will be removed in a future version, as S-Two does not rely on it.
+
+Pedersen
+When the Pedersen builtin is used in an execution of a program, additional preprocessed columns need to be added to its proof.
+
+This variant is automatically deduced by cairo-prove prove, but requires adding the --with-pedersen option to cairo-prove verify.
+
+scarb prove
+As of Scarb version 2.10.0, scarb prove can be used instead of manually building and running stwo-cairo.
+
+However, scarb prove is still a work in progress, and using stwo-cairo directly is preferable for now.
+
+About
+Prove Cairo programs with the blazing-fast S-two prover, powered by the cryptographic breakthrough of Circle STARKs.
+
+Topics
+rust cairo stark zero-knowledge zkvm circle-stark
+Resources
+ Readme
+ Activity
+ Custom properties
+Stars
+ 204 stars
+Watchers
+ 4 watching
+Forks
+ 35 forks
+Report repository
+Releases
+No releases published
+Packages
+No packages published
+Contributors
+34
+@ohad-agadi
+@Gali-StarkWare
+@andrewmilson
+@Stavbe
+@shaharsamocha7
+@alonh5
+@spapinistarkware
+@ohad-nir-starkware
+@alon-f
+@yuvalsw
+@ilyalesokhin-starkware
+@anatgstarkware
+@Alon-Ti
+@atgrosso
++ 20 contributors
+Languages
+Rust
+51.9%
+ 
+Cairo
+48.1%
