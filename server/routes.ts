@@ -899,6 +899,186 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // Polygon NFT transaction analysis endpoint
+  app.get("/api/polygon/nft-transaction/:hash", async (req, res) => {
+    try {
+      const { hash } = req.params;
+      
+      if (!hash || hash.length !== 66) {
+        return res.status(400).json({ error: "Invalid transaction hash" });
+      }
+
+      const polygonscanUrl = `https://api.polygonscan.com/api?module=proxy&action=eth_getTransactionReceipt&txhash=${hash}&apikey=${process.env.ETHERSCAN_API_KEY || 'YourApiKeyToken'}`;
+      
+      const response = await fetch(polygonscanUrl);
+      const data = await response.json();
+
+      if (data.error) {
+        return res.status(400).json({ error: data.error.message });
+      }
+
+      const receipt = data.result;
+      if (!receipt) {
+        return res.status(404).json({ error: "Transaction not found" });
+      }
+
+      // NFT event signatures
+      const nftEventSignatures = {
+        transfer: "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        approval: "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+        approvalForAll: "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31",
+        transferSingle: "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62",
+        transferBatch: "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb"
+      };
+
+      // Parse NFT events
+      const nftEvents = receipt.logs.map((log: any, index: number) => {
+        const eventType = Object.entries(nftEventSignatures).find(([_, sig]) => 
+          log.topics[0] === sig
+        )?.[0] || 'unknown';
+
+        let parsedData = {};
+        
+        try {
+          switch (eventType) {
+            case 'transfer':
+              if (log.topics.length === 4) {
+                parsedData = {
+                  from: ethers.getAddress('0x' + log.topics[1].slice(26)),
+                  to: ethers.getAddress('0x' + log.topics[2].slice(26)),
+                  tokenId: BigInt(log.topics[3]).toString(),
+                  standard: 'ERC-721'
+                };
+              } else if (log.topics.length === 3) {
+                const iface = new ethers.Interface([
+                  "event Transfer(address indexed from, address indexed to, uint256 value)"
+                ]);
+                const parsed = iface.parseLog({ topics: log.topics, data: log.data });
+                parsedData = {
+                  from: parsed?.args.from,
+                  to: parsed?.args.to,
+                  value: parsed?.args.value?.toString(),
+                  standard: 'ERC-20'
+                };
+              }
+              break;
+            
+            case 'approval':
+              if (log.topics.length === 4) {
+                parsedData = {
+                  owner: ethers.getAddress('0x' + log.topics[1].slice(26)),
+                  approved: ethers.getAddress('0x' + log.topics[2].slice(26)),
+                  tokenId: BigInt(log.topics[3]).toString(),
+                  standard: 'ERC-721'
+                };
+              }
+              break;
+            
+            case 'approvalForAll':
+              const approvalIface = new ethers.Interface([
+                "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)"
+              ]);
+              const approvalParsed = approvalIface.parseLog({ topics: log.topics, data: log.data });
+              parsedData = {
+                owner: approvalParsed?.args.owner,
+                operator: approvalParsed?.args.operator,
+                approved: approvalParsed?.args.approved,
+                standard: 'ERC-721/1155'
+              };
+              break;
+              
+            case 'transferSingle':
+              const singleIface = new ethers.Interface([
+                "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)"
+              ]);
+              const singleParsed = singleIface.parseLog({ topics: log.topics, data: log.data });
+              parsedData = {
+                operator: singleParsed?.args.operator,
+                from: singleParsed?.args.from,
+                to: singleParsed?.args.to,
+                tokenId: singleParsed?.args.id?.toString(),
+                value: singleParsed?.args.value?.toString(),
+                standard: 'ERC-1155'
+              };
+              break;
+          }
+        } catch (error) {
+          parsedData = { error: `Failed to parse ${eventType}` };
+        }
+
+        return {
+          logIndex: index,
+          address: log.address,
+          eventType,
+          topics: log.topics,
+          data: log.data,
+          parsed: parsedData,
+          blockNumber: parseInt(log.blockNumber || receipt.blockNumber, 16)
+        };
+      });
+
+      // Filter NFT transfers
+      const nftTransfers = nftEvents.filter((e: any) => 
+        e.eventType === 'transfer' && e.parsed.standard === 'ERC-721'
+      );
+      
+      const erc1155Transfers = nftEvents.filter((e: any) => 
+        e.eventType === 'transferSingle' || e.eventType === 'transferBatch'
+      );
+
+      // Get unique NFT contracts
+      const nftContractSet = new Set([
+        ...nftTransfers.map((e: any) => e.address),
+        ...erc1155Transfers.map((e: any) => e.address)
+      ]);
+      const nftContracts = Array.from(nftContractSet);
+
+      // Calculate transaction metrics
+      const gasUsed = parseInt(receipt.gasUsed, 16);
+      const gasPrice = parseInt(receipt.effectiveGasPrice || receipt.gasPrice || "0", 16);
+      const transactionFee = (gasUsed * gasPrice) / 1e18;
+
+      const analysisResult = {
+        transactionHash: hash,
+        blockNumber: parseInt(receipt.blockNumber, 16),
+        gasUsed,
+        gasPrice,
+        transactionFee,
+        status: receipt.status === "0x1" ? "success" : "failed",
+        from: receipt.from,
+        to: receipt.to,
+        nftAnalysis: {
+          totalNFTEvents: nftTransfers.length + erc1155Transfers.length,
+          erc721Transfers: nftTransfers.length,
+          erc1155Transfers: erc1155Transfers.length,
+          nftContracts: nftContracts.length,
+          contractAddresses: nftContracts
+        },
+        nftTransfers: nftTransfers.map((e: any) => ({
+          contract: e.address,
+          ...e.parsed
+        })),
+        erc1155Transfers: erc1155Transfers.map((e: any) => ({
+          contract: e.address,
+          ...e.parsed
+        })),
+        allEvents: nftEvents,
+        eventsSummary: nftEvents.reduce((acc: any, event: any) => {
+          acc[event.eventType] = (acc[event.eventType] || 0) + 1;
+          return acc;
+        }, {}),
+        network: "polygon",
+        explorer: `https://polygonscan.com/tx/${hash}`,
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      res.json({ data: analysisResult });
+    } catch (error) {
+      console.error("Polygon NFT transaction analysis error:", error);
+      res.status(500).json({ error: "Failed to analyze NFT transaction" });
+    }
+  });
+
   // StarkNet contract analysis endpoint
   app.get("/api/starknet/contract/:address", async (req, res) => {
     try {
