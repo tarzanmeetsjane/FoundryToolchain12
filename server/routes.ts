@@ -910,8 +910,12 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
 
       const polygonscanUrl = `https://api.polygonscan.com/api?module=proxy&action=eth_getTransactionReceipt&txhash=${hash}&apikey=${process.env.ETHERSCAN_API_KEY || 'YourApiKeyToken'}`;
       
+      console.log(`Fetching from Polygonscan: ${polygonscanUrl}`);
+      
       const response = await fetch(polygonscanUrl);
       const data = await response.json();
+
+      console.log('Polygonscan response:', JSON.stringify(data, null, 2));
 
       if (data.error) {
         return res.status(400).json({ error: data.error.message });
@@ -920,6 +924,34 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
       const receipt = data.result;
       if (!receipt) {
         return res.status(404).json({ error: "Transaction not found" });
+      }
+
+      if (!receipt.logs) {
+        console.log('No logs found in receipt');
+        return res.json({
+          data: {
+            transactionHash: hash,
+            blockNumber: parseInt(receipt.blockNumber, 16),
+            gasUsed: parseInt(receipt.gasUsed, 16),
+            status: receipt.status === "0x1" ? "success" : "failed",
+            from: receipt.from,
+            to: receipt.to,
+            nftAnalysis: {
+              totalNFTEvents: 0,
+              erc721Transfers: 0,
+              erc1155Transfers: 0,
+              nftContracts: 0,
+              contractAddresses: []
+            },
+            nftTransfers: [],
+            erc1155Transfers: [],
+            allEvents: [],
+            eventsSummary: {},
+            network: "polygon",
+            explorer: `https://polygonscan.com/tx/${hash}`,
+            timestamp: Math.floor(Date.now() / 1000)
+          }
+        });
       }
 
       // NFT event signatures
@@ -932,7 +964,8 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
       };
 
       // Parse NFT events
-      const nftEvents = receipt.logs.map((log: any, index: number) => {
+      const logs = receipt.logs || [];
+      const nftEvents = logs.map((log: any, index: number) => {
         const eventType = Object.entries(nftEventSignatures).find(([_, sig]) => 
           log.topics[0] === sig
         )?.[0] || 'unknown';

@@ -18,7 +18,7 @@ import { GeckoPoolAnalyzer } from "@/components/gecko-pool-analyzer";
 import { CSVDataAnalyzer } from "@/components/csv-data-analyzer";
 import { StarkNetAnalyzer } from "@/components/starknet-analyzer";
 import { CairoDevelopment } from "@/components/cairo-dev-complete";
-import { NFTTransactionAnalyzer } from "@/components/nft-transaction-analyzer";
+import { PolygonNFTAnalyzer } from "@/components/polygon-nft-analyzer";
 
 export default function TokenDiscoveryPage() {
   const [searchQuery, setSearchQuery] = useState("");
