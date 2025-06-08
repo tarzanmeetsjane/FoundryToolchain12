@@ -90,11 +90,12 @@ export function PolygonNFTAnalyzer() {
           };
         });
 
-        const nftTransfers = parsedEvents.filter(e => 
+        const nftTransfers = parsedEvents.filter((e: any) => 
           e.eventType === 'transfer' && e.parsed.standard === 'ERC-721'
         );
 
-        const contractAddresses = [...new Set(nftTransfers.map(e => e.address))];
+        const contractSet = new Set(nftTransfers.map((e: any) => e.address));
+        const contractAddresses = Array.from(contractSet);
 
         const result = {
           transactionHash,

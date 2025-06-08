@@ -163,6 +163,8 @@ export default function TokenDiscoveryPage() {
 
       <CSVDataAnalyzer />
 
+      <PolygonNFTAnalyzer />
+
       <StarkNetAnalyzer />
 
       <CairoDevelopment />
