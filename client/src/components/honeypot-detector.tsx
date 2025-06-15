@@ -161,7 +161,7 @@ export function HoneypotDetector() {
                   Security Warnings
                 </h4>
                 <ul className="space-y-1 text-sm">
-                  {analysis.warnings.map((warning, index) => (
+                  {analysis.warnings.map((warning: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
                       <span className="text-orange-500">•</span>
                       {warning}
@@ -178,7 +178,7 @@ export function HoneypotDetector() {
                   Critical Issues
                 </h4>
                 <ul className="space-y-1 text-sm">
-                  {analysis.issues.map((issue, index) => (
+                  {analysis.issues.map((issue: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
                       <span className="text-red-500">•</span>
                       {issue}

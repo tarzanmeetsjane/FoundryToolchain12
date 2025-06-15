@@ -1,0 +1,127 @@
+Etherscan Logo
+Home
+Blockchain
+Transactions
+Pending Transactions
+Contract Internal Transactions
+Beacon Deposits
+Beacon Withdrawals
+View Blobs
+AA Transactions Beta
+View Blocks
+Forked Blocks (Reorgs)
+Uncles
+Top Accounts
+Verified Contracts
+Tokens
+Top Tokens (ERC-20)
+Token Transfers (ERC-20)
+NFTs
+Top NFTs
+Top Mints
+Latest Trades
+Latest Transfers
+Latest Mints
+Resources
+Charts And Stats
+Top Statistics
+Leaderboard
+Directory
+Newsletter
+Knowledge Base
+Developers
+API Plans
+API Documentation
+Code Reader Beta
+Verify Contract
+Similar Contract Search
+Smart Contract Search
+Contract Diff Checker
+Vyper Online Compiler
+Bytecode to Opcode
+Broadcast Transaction
+More
+Tools & Services
+Discover more of Etherscan's tools and services in one place.
+
+Sponsored
+
+
+Tools
+Input Data Decoder Beta
+Unit Converter
+CSV Export
+Account Balance Checker
+Explore
+Gas Tracker
+DEX Tracker
+Node Tracker
+Label Cloud
+Domain Name Lookup
+Services
+Token Approvals Beta
+Verified Signature
+Input Data Messages (IDM) Beta
+Advanced Filter Beta
+Blockscan Chat  Beta
+|
+ Sign In
+
+Token
+ERC20 ***
+Sponsored:   MetaWin: Free to enter - Win $10,000 USDT every Day! Play Now.
+ 
+ERC-20
+Overview
+Max Total Supply
+20,000,000
+ERC20 ***
+Holders
+964,521
+Total Transfers
+More than 972,626
+Market
+Onchain Market Cap 
+-
+Circulating Supply Market Cap
+-
+Other Info
+Token Contract (WITH 8 Decimals)
+0x3fC29836E84E471a053D2D9E80494A867D670EAD
+
+Transfers
+Holders
+Info
+Contract
+Analytics
+Cards
+New
+
+[ Download: CSV Export  ]
+A token is a representation of an on-chain or off-chain asset. The token page shows information such as price, total supply, holders, transfers and social links. Learn more about this page in our Knowledge Base.
+
+Back to Top
+Ethereum Logo
+Powered by Ethereum
+Etherscan is a Block Explorer and Analytics Platform for Ethereum, a decentralized smart contracts platform.
+
+Background Map Image
+Company
+About Us
+Brand Assets
+Contact Us
+Careers We're Hiring!
+Terms & Privacy
+Bug Bounty
+Community
+API Documentation
+Knowledge Base
+Network Status
+Newsletters
+Products & Services
+Advertise
+Explorer as a Service (EaaS)
+API Plans
+Priority Support
+Blockscan 
+Blockscan Chat 

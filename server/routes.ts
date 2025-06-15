@@ -53,6 +53,122 @@ interface EtherscanLog {
 
 export async function registerRoutes(app: Express): Promise<Server> {
 
+  // Wallet Generation API
+  app.post("/api/wallet/generate", async (req, res) => {
+    try {
+      // Generate random wallet using ethers
+      const wallet = ethers.Wallet.createRandom();
+      
+      // Extract wallet data
+      const walletData = {
+        address: wallet.address,
+        privateKey: wallet.privateKey,
+        mnemonic: wallet.mnemonic?.phrase || '',
+        publicKey: wallet.publicKey,
+        derivationPath: "m/44'/60'/0'/0/0"
+      };
+      
+      res.json(walletData);
+    } catch (error) {
+      console.error('Wallet generation error:', error);
+      res.status(500).json({ error: 'Failed to generate wallet' });
+    }
+  });
+
+  // Honeypot Detection API
+  app.get("/api/honeypot/analyze", async (req, res) => {
+    try {
+      const contractAddress = req.query.contract as string;
+      
+      if (!contractAddress || contractAddress.length !== 42) {
+        return res.status(400).json({ error: 'Invalid contract address' });
+      }
+
+      // Get contract source code verification status
+      const etherscanUrl = `https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${process.env.ETHERSCAN_API_KEY}`;
+      const sourceResponse = await fetch(etherscanUrl);
+      const sourceData = await sourceResponse.json();
+      
+      const isVerified = sourceData.result[0].SourceCode !== "";
+      const contractName = sourceData.result[0].ContractName || "Unknown";
+      
+      // Check if token exists on CoinGecko (legitimate tokens are usually listed)
+      let hasMarketData = false;
+      let liquidityUSD = 0;
+      
+      try {
+        const coinGeckoUrl = `https://api.coingecko.com/api/v3/coins/ethereum/contract/${contractAddress.toLowerCase()}`;
+        const coinResponse = await fetch(coinGeckoUrl);
+        if (coinResponse.ok) {
+          const coinData = await coinResponse.json();
+          hasMarketData = true;
+          liquidityUSD = coinData.market_data?.total_volume?.usd || 0;
+        }
+      } catch (error) {
+        // Token not found on CoinGecko - suspicious
+      }
+
+      // Analyze contract for honeypot indicators
+      const issues = [];
+      const warnings = [];
+      
+      if (!isVerified) {
+        issues.push("Contract source code is not verified on Etherscan");
+      }
+      
+      if (!hasMarketData) {
+        warnings.push("Token not listed on major price tracking platforms");
+      }
+      
+      if (liquidityUSD < 1000) {
+        warnings.push("Very low liquidity - high risk of price manipulation");
+      }
+
+      // Try to simulate a transfer to check for restrictions
+      let canSell = true;
+      try {
+        const transferData = `0xa9059cbb000000000000000000000000c46eb37677360efdc011f4097621f15b792fa630000000000000000000000000000000000000000000000000000000000000000a`;
+        const callUrl = `https://api.etherscan.io/api?module=proxy&action=eth_call&to=${contractAddress}&data=${transferData}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
+        const callResponse = await fetch(callUrl);
+        const callData = await callResponse.json();
+        
+        if (callData.error && callData.error.message.includes('execution reverted')) {
+          canSell = false;
+          issues.push("Transfer function appears to be blocked or restricted");
+        }
+      } catch (error) {
+        warnings.push("Unable to verify transfer functionality");
+      }
+
+      // Calculate risk level
+      let riskLevel = 'LOW';
+      if (issues.length > 0) riskLevel = 'HIGH';
+      if (issues.length > 1 || !canSell) riskLevel = 'CRITICAL';
+      
+      const isHoneypot = !canSell || (!isVerified && !hasMarketData);
+
+      const analysis = {
+        contractAddress,
+        tokenName: contractName,
+        tokenSymbol: contractName,
+        isHoneypot,
+        riskLevel,
+        issues,
+        canBuy: true, // Most honeypots allow buying
+        canSell,
+        isVerified,
+        hasLiquidity: liquidityUSD > 0,
+        liquidityUSD,
+        warnings
+      };
+
+      res.json(analysis);
+    } catch (error) {
+      console.error('Honeypot analysis error:', error);
+      res.status(500).json({ error: 'Failed to analyze contract' });
+    }
+  });
+
   // Initialize DEX platforms in database
   app.post("/api/dex/initialize", async (req, res) => {
     try {
