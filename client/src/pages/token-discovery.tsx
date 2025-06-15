@@ -19,6 +19,7 @@ import { CSVDataAnalyzer } from "@/components/csv-data-analyzer";
 import { StarkNetAnalyzer } from "@/components/starknet-analyzer";
 import { CairoDevelopment } from "@/components/cairo-dev-complete";
 import { PolygonNFTAnalyzer } from "@/components/polygon-nft-analyzer";
+import { BytecodeAnalyzer } from "@/components/bytecode-analyzer";
 
 export default function TokenDiscoveryPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -164,6 +165,8 @@ export default function TokenDiscoveryPage() {
       <CSVDataAnalyzer />
 
       <PolygonNFTAnalyzer />
+
+      <BytecodeAnalyzer />
 
       <StarkNetAnalyzer />
 
