@@ -19,6 +19,8 @@ import { TransactionAnalyzer } from "@/components/transaction-analyzer";
 import { HoneypotDetector } from "@/components/honeypot-detector";
 import { SmartWalletGenerator } from "@/components/smart-wallet-generator";
 import { ContractVerifier } from "@/components/contract-verifier";
+import { HoneypotFixer } from "@/components/honeypot-fixer";
+import { LegalCompliance } from "@/components/legal-compliance";
 
 export default function DashboardPage() {
   const [poolUrl, setPoolUrl] = useState("");
@@ -230,6 +232,10 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="data" className="space-y-6">
+          <LegalCompliance />
+          
+          <HoneypotFixer />
+          
           <SmartWalletGenerator />
           
           <ContractVerifier />
