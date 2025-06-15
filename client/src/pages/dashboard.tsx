@@ -24,6 +24,7 @@ import { LegalCompliance } from "@/components/legal-compliance";
 import { ConnectionStatus } from "@/components/connection-status";
 import { StepByStepGuide } from "@/components/step-by-step-guide";
 import { DBASetupGuide } from "@/components/dba-setup-guide";
+import { SoleProprietorSetup } from "@/components/sole-proprietor-setup";
 
 export default function DashboardPage() {
   const [poolUrl, setPoolUrl] = useState("");
@@ -237,7 +238,7 @@ export default function DashboardPage() {
         <TabsContent value="data" className="space-y-6">
           <StepByStepGuide />
           
-          <DBASetupGuide />
+          <SoleProprietorSetup />
           
           <ConnectionStatus />
           

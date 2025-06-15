@@ -169,14 +169,13 @@ Your ETHG recovery contract will be legally authorized for deployment.`
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <h4 className="font-medium text-green-800 mb-2 flex items-center gap-2">
             <CheckCircle className="w-4 h-4" />
-            Why D.B.A. is Perfect for You
+            Business Structure Options (Pick What's Easiest)
           </h4>
           <div className="space-y-2 text-sm text-green-700">
-            <div>• **Simple**: Just file one form at county clerk</div>
-            <div>• **Fast**: Usually processed same day</div>
-            <div>• **Cheap**: Typically $10-50 filing fee</div>
-            <div>• **Legal Authority**: Gives you business name to create contracts</div>
-            <div>• **No Corporate Setup**: No complex LLC/corporation paperwork</div>
+            <div>• **Sole Proprietorship**: FREE - No filing required, create contracts as individual</div>
+            <div>• **D.B.A.**: $10-50 - File business name, more professional appearance</div>
+            <div>• **Both Work**: Either gives you legal authority to deploy ETHG recovery contract</div>
+            <div>• **Recommendation**: Start with sole proprietorship (no cost, immediate)</div>
           </div>
         </div>
 
