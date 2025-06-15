@@ -374,21 +374,33 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
       const moralisChain = getMoralisChain(chainId);
 
       // Get token balances from Moralis
+      console.log(`Fetching token balances for ${address} on chain ${moralisChain}`);
       const tokenBalances = await makeMoralisRequest(`/${address}/erc20`, {
         chain: moralisChain,
         exclude_spam: true,
         exclude_unverified_contracts: false
       });
+      console.log(`Token balances response:`, JSON.stringify(tokenBalances, null, 2));
 
       // Get native balance from Moralis
+      console.log(`Fetching native balance for ${address} on chain ${moralisChain}`);
       const walletBalance = await makeMoralisRequest(`/${address}/balance`, {
         chain: moralisChain
       });
+      console.log(`Native balance response:`, JSON.stringify(walletBalance, null, 2));
 
-      // Filter verified tokens with positive balances
-      const verifiedTokens = tokenBalances.filter(
-        (token: any) => !token.possible_spam && token.verified_contract && parseFloat(token.balance_formatted) > 0
+      // Add balance_formatted field for compatibility
+      const tokensWithFormatted = tokenBalances.map((token: any) => ({
+        ...token,
+        balance_formatted: (parseFloat(token.balance) / Math.pow(10, token.decimals)).toString()
+      }));
+
+      // Filter verified tokens with positive balances (include all for debugging)
+      const verifiedTokens = tokensWithFormatted.filter(
+        (token: any) => !token.possible_spam && parseFloat(token.balance_formatted) > 0
       );
+      
+      console.log(`Filtered ${verifiedTokens.length} tokens from ${tokensWithFormatted.length} total`);
 
       if (verifiedTokens.length === 0) {
         return res.json({
@@ -1921,6 +1933,7 @@ async function updatePoolStatistics(poolAddress: string, dexPlatform: string, ev
 // Helper function for Moralis API requests
 async function makeMoralisRequest(endpoint: string, params: Record<string, any> = {}) {
   if (!MORALIS_API_KEY) {
+    console.error('MORALIS_API_KEY not configured');
     throw new Error('MORALIS_API_KEY not configured');
   }
 
@@ -1930,6 +1943,9 @@ async function makeMoralisRequest(endpoint: string, params: Record<string, any> 
       url.searchParams.append(key, value.toString());
     }
   });
+
+  console.log(`Making Moralis request to: ${url.toString()}`);
+  console.log(`Using API key: ${MORALIS_API_KEY.slice(0, 10)}...`);
 
   const response = await fetch(url.toString(), {
     method: 'GET',
@@ -1945,7 +1961,9 @@ async function makeMoralisRequest(endpoint: string, params: Record<string, any> 
     throw new Error(`Moralis API error: ${response.status} ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  console.log(`Moralis response data length: ${JSON.stringify(data).length}`);
+  return data;
 }
 
 // Helper function for CoinGecko API requests
