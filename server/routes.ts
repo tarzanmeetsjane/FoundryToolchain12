@@ -673,6 +673,23 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
   app.get("/api/address/:address/info", async (req, res) => {
     try {
       const { address } = req.params;
+      
+      // Validate address format
+      if (!address || address === '0' || address.length < 10) {
+        return res.status(400).json({ 
+          error: "Invalid address format",
+          address: address 
+        });
+      }
+
+      // Check for valid Ethereum address format
+      if (!address.startsWith('0x') || address.length !== 42) {
+        return res.status(400).json({ 
+          error: "Invalid Ethereum address format",
+          address: address 
+        });
+      }
+
       const chainId = parseInt(req.query.chainId as string) || 1;
       const moralisChain = getMoralisChain(chainId);
 
@@ -1700,6 +1717,8 @@ async function makeMoralisRequest(endpoint: string, params: Record<string, any> 
   });
 
   if (!response.ok) {
+    const errorText = await response.text().catch(() => 'Unknown error');
+    console.error(`Moralis API error: ${response.status} ${response.statusText}`, errorText);
     throw new Error(`Moralis API error: ${response.status} ${response.statusText}`);
   }
 

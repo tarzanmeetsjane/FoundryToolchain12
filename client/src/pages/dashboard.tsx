@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import { PortfolioAnalyzer } from "@/components/portfolio-analyzer";
 
 export default function DashboardPage() {
   const [poolUrl, setPoolUrl] = useState("");
@@ -225,6 +226,8 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="data" className="space-y-6">
+          <PortfolioAnalyzer />
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardContent className="pt-6">
@@ -253,44 +256,6 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Available Features</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">Live</Badge>
-                    <span className="text-sm">Pool Analysis</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">Live</Badge>
-                    <span className="text-sm">Transaction Tracking</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">Live</Badge>
-                    <span className="text-sm">CSV Data Import</span>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">Live</Badge>
-                    <span className="text-sm">NFT Analysis</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">Live</Badge>
-                    <span className="text-sm">StarkNet Integration</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">Live</Badge>
-                    <span className="text-sm">Cairo Development</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
       </Tabs>
     </div>
