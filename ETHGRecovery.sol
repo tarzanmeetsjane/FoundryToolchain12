@@ -20,7 +20,7 @@ contract ETHGRecovery is ERC20, Ownable {
     mapping(address => uint256) public originalETHGBalance;
     
     // Original honeypot contract address
-    address public constant ORIGINAL_ETHG = 0x3fc29836e84e471a053d2d9e80494a867d670ead;
+    address public constant ORIGINAL_ETHG = 0x3fC29836E84E471a053D2D9E80494A867D670EAD;
     
     // Migration controls
     bool public migrationEnabled = true;
