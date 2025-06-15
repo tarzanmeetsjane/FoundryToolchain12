@@ -26,6 +26,7 @@ import { StepByStepGuide } from "@/components/step-by-step-guide";
 import { DBASetupGuide } from "@/components/dba-setup-guide";
 import { SoleProprietorSetup } from "@/components/sole-proprietor-setup";
 import { ETHGRecoveryDeployer } from "@/components/ethg-recovery-deployer";
+import { CorrectedETHGContract } from "@/components/corrected-ethg-contract";
 
 export default function DashboardPage() {
   const [poolUrl, setPoolUrl] = useState("");
@@ -237,6 +238,8 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="data" className="space-y-6">
+          <CorrectedETHGContract />
+          
           <ETHGRecoveryDeployer />
           
           <StepByStepGuide />
