@@ -364,21 +364,71 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
   }
 });
 
-  // Wallet Portfolio API endpoint using Moralis and CoinGecko
+  // Enhanced Wallet Portfolio API endpoint with deep token scanning
   app.get("/api/wallet/:address/portfolio", async (req, res) => {
     try {
       const { address } = req.params;
       const chainId = parseInt(req.query.chainId as string) || 1;
       const moralisChain = getMoralisChain(chainId);
 
-      // Get token balances from Moralis
+      // Get token balances from Moralis (standard query)
       console.log(`Fetching token balances for ${address} on chain ${moralisChain}`);
       const tokenBalances = await makeMoralisRequest(`/${address}/erc20`, {
         chain: moralisChain,
-        exclude_spam: true,
+        exclude_spam: false, // Don't exclude any tokens for comprehensive scan
         exclude_unverified_contracts: false
       });
-      console.log(`Token balances response:`, JSON.stringify(tokenBalances, null, 2));
+      console.log(`Standard token query found ${tokenBalances.length} tokens`);
+
+      // Get transaction history to find additional tokens
+      console.log(`Fetching transaction history for comprehensive token discovery`);
+      const etherscanResponse = await fetch(`https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=1&offset=10000&sort=desc&apikey=${getApiKeyForChain(chainId)}`);
+      const txData = await etherscanResponse.json();
+      
+      // Extract unique token contracts from transaction history
+      const discoveredTokens = new Set();
+      if (txData.status === "1" && txData.result) {
+        txData.result.forEach((tx: any) => {
+          discoveredTokens.add(tx.contractAddress.toLowerCase());
+        });
+      }
+      console.log(`Discovered ${discoveredTokens.size} unique token contracts from transaction history`);
+
+      // Get current balances for discovered tokens using direct Etherscan calls
+      const allTokenBalances = [...tokenBalances];
+      for (const tokenContract of Array.from(discoveredTokens)) {
+        try {
+          // Direct Etherscan token balance query for accurate results
+          const balanceResponse = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${tokenContract}&address=${address}&tag=latest&apikey=${getApiKeyForChain(chainId)}`);
+          const balanceData = await balanceResponse.json();
+          
+          if (balanceData.status === "1" && balanceData.result && balanceData.result !== "0") {
+            const existingToken = allTokenBalances.find(t => t.token_address.toLowerCase() === tokenContract);
+            if (!existingToken) {
+              // Get token metadata from transaction history
+              const tokenInfo = txData.result.find((tx: any) => tx.contractAddress.toLowerCase() === tokenContract);
+              if (tokenInfo) {
+                allTokenBalances.push({
+                  token_address: tokenContract,
+                  symbol: tokenInfo.tokenSymbol,
+                  name: tokenInfo.tokenName,
+                  decimals: parseInt(tokenInfo.tokenDecimal),
+                  balance: balanceData.result,
+                  possible_spam: false,
+                  verified_contract: true,
+                  logo: null,
+                  thumbnail: null
+                });
+                console.log(`Added ${tokenInfo.tokenSymbol}: ${balanceData.result} raw balance`);
+              }
+            }
+          }
+        } catch (error) {
+          console.warn(`Failed to get balance for token ${tokenContract}:`, error);
+        }
+      }
+      
+      console.log(`Total tokens after comprehensive scan: ${allTokenBalances.length}`);
 
       // Get native balance from Moralis
       console.log(`Fetching native balance for ${address} on chain ${moralisChain}`);
@@ -388,17 +438,17 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
       console.log(`Native balance response:`, JSON.stringify(walletBalance, null, 2));
 
       // Add balance_formatted field for compatibility
-      const tokensWithFormatted = tokenBalances.map((token: any) => ({
+      const tokensWithFormatted = allTokenBalances.map((token: any) => ({
         ...token,
         balance_formatted: (parseFloat(token.balance) / Math.pow(10, token.decimals)).toString()
       }));
 
-      // Filter verified tokens with positive balances (include all for debugging)
+      // Filter tokens with positive balances (include all non-spam for comprehensive view)
       const verifiedTokens = tokensWithFormatted.filter(
-        (token: any) => !token.possible_spam && parseFloat(token.balance_formatted) > 0
+        (token: any) => parseFloat(token.balance_formatted) > 0
       );
       
-      console.log(`Filtered ${verifiedTokens.length} tokens from ${tokensWithFormatted.length} total`);
+      console.log(`Filtered ${verifiedTokens.length} tokens with positive balances from ${tokensWithFormatted.length} total`);
 
       if (verifiedTokens.length === 0) {
         return res.json({
