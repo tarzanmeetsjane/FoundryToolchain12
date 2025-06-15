@@ -27,10 +27,8 @@ function broadcastLiveData(data: any) {
 
 const MORALIS_API_KEY = process.env.MORALIS_API_KEY;
 
-// CoinGecko API configuration
-const COINGECKO_BASE_URL = process.env.COINGECKO_API_KEY 
-  ? "https://pro-api.coingecko.com/api/v3"
-  : "https://api.coingecko.com/api/v3";
+// CoinGecko API configuration - use standard API for Demo keys
+const COINGECKO_BASE_URL = "https://api.coingecko.com/api/v3";
 const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY;
 
 // StarkNet API configuration
@@ -1971,10 +1969,6 @@ async function makeMoralisRequest(endpoint: string, params: Record<string, any> 
 
 // Helper function for CoinGecko API requests
 async function makeCoinGeckoRequest(endpoint: string, params: Record<string, any> = {}) {
-  if (COINGECKO_API_KEY) {
-    params.x_cg_pro_api_key = COINGECKO_API_KEY;
-  }
-
   const url = new URL(`${COINGECKO_BASE_URL}${endpoint}`);
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
