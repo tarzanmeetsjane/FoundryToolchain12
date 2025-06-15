@@ -31,6 +31,18 @@ interface TransactionDetails {
   methodId?: string;
   functionName?: string;
   input?: string;
+  stateChanges?: StateChange[];
+}
+
+interface StateChange {
+  address: string;
+  name?: string;
+  before: string;
+  after: string;
+  difference: string;
+  nonceBefore?: number;
+  nonceAfter?: number;
+  type: 'ETH' | 'TOKEN' | 'NONCE';
 }
 
 interface TokenTransfer {
@@ -298,6 +310,68 @@ export function TransactionAnalyzer() {
                     </CardContent>
                   </Card>
                 )}
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Clock className="w-5 h-5" />
+                      State Changes Analysis
+                    </CardTitle>
+                    <CardDescription>
+                      ETH balance changes and nonce updates from your transaction
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-muted rounded-lg">
+                        <h4 className="font-medium mb-3">Example from your UNI transaction:</h4>
+                        <div className="space-y-3 text-sm">
+                          <div className="grid grid-cols-4 gap-2 font-medium border-b pb-2">
+                            <span>Address</span>
+                            <span>Before</span>
+                            <span>After</span>
+                            <span>Difference</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-4 gap-2">
+                            <span className="font-mono text-xs">0x1f9840a8...984 (UNI)</span>
+                            <span>Producer fees</span>
+                            <span>Updated</span>
+                            <span className="text-green-600">+fees</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-4 gap-2">
+                            <span className="font-mono text-xs">0x95222290...fe5</span>
+                            <span>8.529156907 ETH</span>
+                            <span>8.529208035 ETH</span>
+                            <span className="text-green-600">+0.000051127 ETH</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-4 gap-2">
+                            <span className="font-mono text-xs">0xc46eB376...630 (You)</span>
+                            <span>0.014736356 ETH</span>
+                            <span>0.014573871 ETH</span>
+                            <span className="text-red-600">-0.000162485 ETH</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-4 gap-2">
+                            <span className="font-mono text-xs">Nonce Change</span>
+                            <span>1</span>
+                            <span>2</span>
+                            <span className="text-blue-600">+1</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="text-xs text-muted-foreground space-y-1">
+                        <p>• Your wallet paid ~0.000162 ETH in gas fees</p>
+                        <p>• The builder/validator received the gas fees</p>
+                        <p>• Your nonce increased from 1 → 2 (next transaction number)</p>
+                        <p>• UNI contract state was updated with your approval</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             )}
           </TabsContent>
