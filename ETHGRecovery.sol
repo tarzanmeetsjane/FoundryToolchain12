@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /**
  * @title ETHG Recovery Token (ETHGR)
  * @dev Fixed version of trapped ETHG tokens with full transfer capability
- * @author Deployed by: 0x32e473f7A43cf3B64F7C7a852AD762A2cdCc0464
+ * @author Deployed by: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
  * 
  * Purpose: Recover 1,990,000 trapped ETHG tokens from honeypot contract
  * Original Contract: 0x3fc29836e84e471a053d2d9e80494a867d670ead (HONEYPOT)
