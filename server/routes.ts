@@ -417,18 +417,21 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
       // Get contract addresses for CoinGecko price lookup
       const contractAddresses = verifiedTokens.map((token: any) => token.token_address);
 
-      // Get prices from CoinGecko
+      // Get prices from CoinGecko - API only allows 1 contract per request on free tier
       let tokenPrices: any = {};
-      try {
-        tokenPrices = await makeCoinGeckoRequest('/simple/token_price/ethereum', {
-          contract_addresses: contractAddresses.join(','),
-          vs_currencies: 'usd',
-          include_market_cap: true,
-          include_24hr_vol: true,
-          include_24hr_change: true
-        });
-      } catch (priceError) {
-        console.warn('CoinGecko price fetch failed:', priceError);
+      console.log(`Getting prices for ${contractAddresses.length} tokens individually`);
+      
+      for (const address of contractAddresses) {
+        try {
+          const singlePrice = await makeCoinGeckoRequest('/simple/token_price/ethereum', {
+            contract_addresses: address,
+            vs_currencies: 'usd'
+          });
+          tokenPrices[address.toLowerCase()] = singlePrice[address.toLowerCase()];
+          console.log(`Got price for ${address}: $${singlePrice[address.toLowerCase()]?.usd || 'N/A'}`);
+        } catch (singleError) {
+          console.warn(`Failed to get price for ${address}:`, singleError);
+        }
       }
 
       // Calculate total portfolio value
@@ -1978,6 +1981,8 @@ async function makeCoinGeckoRequest(endpoint: string, params: Record<string, any
       url.searchParams.append(key, value.toString());
     }
   });
+
+  console.log(`Making CoinGecko request to: ${url.toString()}`);
 
   const response = await fetch(url.toString(), {
     method: 'GET',
