@@ -16,23 +16,26 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 interface TokenHolding {
-  token_address: string;
-  name: string;
+  contractAddress: string;
   symbol: string;
-  logo?: string;
-  thumbnail?: string;
+  name: string;
   decimals: number;
   balance: string;
-  balance_formatted: string;
-  usd_price?: number;
-  usd_value?: number;
-  percentage_relative_to_total_supply?: number;
+  balanceFormatted: string;
+  priceUSD: string;
+  valueUSD: string;
+  logo?: string;
+  verified: boolean;
 }
 
 interface PortfolioData {
   address: string;
-  total_balance: string;
+  totalValueUSD: string;
+  tokenCount: number;
+  nativeBalance: string;
+  nativeValueUSD: string;
   tokens: TokenHolding[];
+  lastUpdated: string;
 }
 
 export function PortfolioAnalyzer() {
@@ -41,11 +44,12 @@ export function PortfolioAnalyzer() {
   const { toast } = useToast();
 
   const { data: portfolioData, isLoading, refetch } = useQuery({
-    queryKey: ['/api/wallet', walletAddress, 'tokens'],
+    queryKey: ['/api/wallet', walletAddress, 'portfolio'],
     queryFn: async () => {
       if (!walletAddress || walletAddress.length !== 42) return null;
       
-      const response = await fetch(`/api/wallet/${walletAddress}/tokens?chain=${selectedChain}`);
+      const chainId = selectedChain === 'eth' ? 1 : selectedChain === 'bsc' ? 56 : 137;
+      const response = await fetch(`/api/wallet/${walletAddress}/portfolio?chainId=${chainId}`);
       if (!response.ok) throw new Error('Failed to fetch portfolio data');
       return response.json();
     },
@@ -62,10 +66,8 @@ export function PortfolioAnalyzer() {
   };
 
   const getTotalValue = () => {
-    if (!portfolioData?.tokens) return 0;
-    return portfolioData.tokens.reduce((total: number, token: TokenHolding) => {
-      return total + (token.usd_value || 0);
-    }, 0);
+    if (!portfolioData?.totalValueUSD) return 0;
+    return parseFloat(portfolioData.totalValueUSD);
   };
 
   const formatCurrency = (value: number) => {
@@ -164,13 +166,13 @@ export function PortfolioAnalyzer() {
             <div className="space-y-3">
               <h3 className="font-semibold">Token Holdings</h3>
               {portfolioData.tokens
-                .sort((a: TokenHolding, b: TokenHolding) => (b.usd_value || 0) - (a.usd_value || 0))
+                .sort((a: TokenHolding, b: TokenHolding) => parseFloat(b.valueUSD) - parseFloat(a.valueUSD))
                 .map((token: TokenHolding) => (
-                <div key={token.token_address} className="flex items-center justify-between p-3 border rounded-lg">
+                <div key={token.contractAddress} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
-                    {token.thumbnail && (
+                    {token.logo && (
                       <img 
-                        src={token.thumbnail} 
+                        src={token.logo} 
                         alt={token.symbol}
                         className="w-8 h-8 rounded-full"
                       />
@@ -178,16 +180,19 @@ export function PortfolioAnalyzer() {
                     <div>
                       <div className="font-medium">{token.name || token.symbol}</div>
                       <div className="text-sm text-muted-foreground">
-                        {formatNumber(token.balance_formatted)} {token.symbol}
+                        {formatNumber(token.balanceFormatted)} {token.symbol}
                       </div>
+                      {token.verified && (
+                        <Badge variant="secondary" className="text-xs">Verified</Badge>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="font-medium">
-                      {token.usd_value ? formatCurrency(token.usd_value) : '-'}
+                      {formatCurrency(parseFloat(token.valueUSD))}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {token.usd_price ? `$${token.usd_price.toFixed(4)}` : '-'}
+                      ${parseFloat(token.priceUSD).toFixed(6)}
                     </div>
                   </div>
                 </div>
