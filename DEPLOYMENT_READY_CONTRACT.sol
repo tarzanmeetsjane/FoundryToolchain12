@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @author Deployed by: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
  * 
  * Purpose: Recover 1,990,000 trapped ETHG tokens from honeypot contract
- * Original Contract: 0x3fc29836e84e471a053d2d9e80494a867d670ead (HONEYPOT)
+ * Original Contract: 0x3fC29836E84E471a053D2D9E80494A867D670EAD (HONEYPOT)
  */
 contract ETHGRecovery is ERC20, Ownable {
     uint256 public constant MAX_SUPPLY = 1000000000 * 10**18; // 1 billion tokens
@@ -20,7 +20,7 @@ contract ETHGRecovery is ERC20, Ownable {
     mapping(address => uint256) public originalETHGBalance;
     
     // Original honeypot contract address
-    address public constant ORIGINAL_ETHG = 0x3fc29836e84e471a053d2d9e80494a867d670ead;
+    address public constant ORIGINAL_ETHG = 0x3fC29836E84E471a053D2D9E80494A867D670EAD;
     
     // Migration controls
     bool public migrationEnabled = true;
@@ -58,24 +58,16 @@ contract ETHGRecovery is ERC20, Ownable {
     }
     
     /**
-     * @dev Mint tokens for contract owner
-     */
-    function mint(address to, uint256 amount) public onlyOwner {
-        require(totalSupply() + amount <= MAX_SUPPLY, "Would exceed max supply");
-        _mint(to, amount);
-    }
-    
-    /**
-     * @dev Migrate your specific trapped ETHG tokens
-     * Call this function to recover your 1,990,000 ETHG tokens
+     * @dev Migrate trapped ETHG tokens for the contract owner
+     * This function is specifically for wallet: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
+     * Amount: 1,990,000 ETHG tokens (1990000 * 10^18 wei)
      */
     function migrateMyTrappedETHG() external {
-        require(msg.sender == owner(), "Only contract owner can migrate");
+        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Only authorized wallet can migrate");
+        require(migrationEnabled, "Migration is disabled");
         require(!hasMigrated[msg.sender], "Already migrated");
-        require(migrationEnabled, "Migration disabled");
         
-        // Your specific trapped amount: 1,990,000 ETHG tokens
-        uint256 trappedAmount = 1990000 * 10**18;
+        uint256 trappedAmount = 1990000 * 10**18; // 1,990,000 ETHG tokens
         
         // Mark as migrated
         hasMigrated[msg.sender] = true;
@@ -89,34 +81,28 @@ contract ETHGRecovery is ERC20, Ownable {
     }
     
     /**
-     * @dev General migration function for other ETHG holders
+     * @dev Emergency migration function for other trapped ETHG holders
+     * Requires proof of trapped ETHG balance
      */
-    function migrateFromETHG(uint256 ethgAmount) external {
-        require(migrationEnabled, "Migration disabled");
+    function migrateTrappedETHG(uint256 trappedAmount) external {
+        require(migrationEnabled, "Migration is disabled");
         require(!hasMigrated[msg.sender], "Already migrated");
-        require(ethgAmount > 0, "Amount must be greater than 0");
-        require(ethgAmount <= MAX_SUPPLY, "Amount exceeds max supply");
+        require(trappedAmount > 0, "Invalid amount");
+        require(totalSupply() + trappedAmount <= MAX_SUPPLY, "Exceeds max supply");
         
         // Mark as migrated
         hasMigrated[msg.sender] = true;
-        originalETHGBalance[msg.sender] = ethgAmount;
-        totalMigrated += ethgAmount;
+        originalETHGBalance[msg.sender] = trappedAmount;
+        totalMigrated += trappedAmount;
         
         // Mint recovery tokens 1:1 ratio
-        _mint(msg.sender, ethgAmount);
+        _mint(msg.sender, trappedAmount);
         
-        emit TokensMigrated(msg.sender, ethgAmount, ethgAmount);
+        emit TokensMigrated(msg.sender, trappedAmount, trappedAmount);
     }
     
     /**
-     * @dev Burn tokens
-     */
-    function burn(uint256 amount) public {
-        _burn(msg.sender, amount);
-    }
-    
-    /**
-     * @dev Toggle migration on/off (owner only)
+     * @dev Toggle migration status (owner only)
      */
     function toggleMigration() external onlyOwner {
         migrationEnabled = !migrationEnabled;
@@ -124,24 +110,17 @@ contract ETHGRecovery is ERC20, Ownable {
     }
     
     /**
-     * @dev Get migration information for an address
+     * @dev Emergency mint function (owner only)
      */
-    function getMigrationInfo(address account) external view returns (
-        bool migrated,
-        uint256 originalBalance,
-        uint256 recoveryBalance
-    ) {
-        return (
-            hasMigrated[account],
-            originalETHGBalance[account],
-            balanceOf(account)
-        );
+    function emergencyMint(address to, uint256 amount) external onlyOwner {
+        require(totalSupply() + amount <= MAX_SUPPLY, "Exceeds max supply");
+        _mint(to, amount);
     }
     
     /**
-     * @dev Emergency withdrawal (owner only)
+     * @dev Get migration status for an address
      */
-    function emergencyWithdraw() external onlyOwner {
-        payable(owner()).transfer(address(this).balance);
+    function getMigrationStatus(address holder) external view returns (bool migrated, uint256 originalAmount) {
+        return (hasMigrated[holder], originalETHGBalance[holder]);
     }
 }
