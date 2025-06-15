@@ -75,6 +75,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Contract Information API
+  app.get("/api/contract/info", async (req, res) => {
+    try {
+      const contractAddress = req.query.address as string;
+      
+      if (!contractAddress || contractAddress.length !== 42) {
+        return res.status(400).json({ error: 'Invalid contract address' });
+      }
+
+      // Get contract source code from Etherscan
+      const etherscanUrl = `https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${process.env.ETHERSCAN_API_KEY}`;
+      const response = await fetch(etherscanUrl);
+      const data = await response.json();
+      
+      if (data.status !== "1" || !data.result[0]) {
+        return res.status(404).json({ error: 'Contract not found' });
+      }
+
+      const contractData = data.result[0];
+      const contractInfo = {
+        address: contractAddress,
+        isVerified: contractData.SourceCode !== "",
+        contractName: contractData.ContractName || "Unknown",
+        compilerVersion: contractData.CompilerVersion || "Unknown",
+        sourceCode: contractData.SourceCode || "",
+        abi: contractData.ABI || "[]",
+        constructorArgs: contractData.ConstructorArguments || "",
+        optimizationEnabled: contractData.OptimizationUsed === "1",
+        runs: parseInt(contractData.Runs) || 0,
+        licenseType: contractData.LicenseType || "Unknown"
+      };
+
+      res.json(contractInfo);
+    } catch (error) {
+      console.error('Contract info error:', error);
+      res.status(500).json({ error: 'Failed to fetch contract information' });
+    }
+  });
+
+  // Contract Verification API
+  app.post("/api/contract/verify", async (req, res) => {
+    try {
+      const { 
+        address, 
+        sourceCode, 
+        compilerVersion, 
+        optimizationEnabled, 
+        runs, 
+        contractName, 
+        constructorArgs, 
+        licenseType 
+      } = req.body;
+
+      if (!address || !sourceCode || !contractName) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      // Prepare verification data for Etherscan API
+      const verificationData: Record<string, string> = {
+        apikey: process.env.ETHERSCAN_API_KEY || '',
+        module: 'contract',
+        action: 'verifysourcecode',
+        contractaddress: address,
+        sourceCode: sourceCode,
+        codeformat: 'solidity-single-file',
+        contractname: contractName,
+        compilerversion: compilerVersion,
+        optimizationUsed: optimizationEnabled ? '1' : '0',
+        runs: runs.toString(),
+        constructorArguements: constructorArgs || '',
+        licenseType: getLicenseCode(licenseType)
+      };
+
+      // Submit verification request to Etherscan
+      const verifyUrl = 'https://api.etherscan.io/api';
+      const formData = new URLSearchParams(verificationData);
+      
+      const response = await fetch(verifyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+      });
+
+      const result = await response.json();
+      
+      if (result.status === "1") {
+        res.json({ 
+          success: true, 
+          guid: result.result, 
+          message: 'Contract verification submitted successfully' 
+        });
+      } else {
+        res.status(400).json({ 
+          success: false, 
+          error: result.result || 'Verification failed' 
+        });
+      }
+    } catch (error) {
+      console.error('Contract verification error:', error);
+      res.status(500).json({ error: 'Failed to submit verification' });
+    }
+  });
+
   // Honeypot Detection API
   app.get("/api/honeypot/analyze", async (req, res) => {
     try {
