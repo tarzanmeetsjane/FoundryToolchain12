@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PortfolioAnalyzer } from "@/components/portfolio-analyzer";
 import { TransactionAnalyzer } from "@/components/transaction-analyzer";
 import { HoneypotDetector } from "@/components/honeypot-detector";
+import { SmartWalletGenerator } from "@/components/smart-wallet-generator";
 
 export default function DashboardPage() {
   const [poolUrl, setPoolUrl] = useState("");
@@ -228,6 +229,8 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="data" className="space-y-6">
+          <SmartWalletGenerator />
+          
           <HoneypotDetector />
           
           <TransactionAnalyzer />
