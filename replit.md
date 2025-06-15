@@ -145,4 +145,6 @@ Changelog:
 
 ```
 Preferred communication style: Simple, everyday language.
+Task completion style: Walk through step-by-step with clear instructions on where to click.
+User wants complete solutions with guided implementation.
 ```
