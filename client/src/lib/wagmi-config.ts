@@ -5,19 +5,12 @@ import { injected, metaMask, walletConnect } from 'wagmi/connectors'
 // Wallet Connect project ID - you'll need to get this from WalletConnect
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'demo-project-id'
 
-// Dynamic metadata based on current environment
-const getMetadata = () => {
-  const isDev = import.meta.env.DEV;
-  const baseUrl = isDev 
-    ? (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000')
-    : 'https://quantum-secure-trader.replit.app';
-    
-  return {
-    name: 'Quantum Secure Trader',
-    description: 'Multi-Chain DeFi Analytics Platform',
-    url: baseUrl,
-    icons: [`${baseUrl}/favicon.ico`]
-  };
+// Simple metadata configuration to avoid warnings
+const metadata = {
+  name: 'Quantum Secure Trader',
+  description: 'Multi-Chain DeFi Analytics Platform',
+  url: 'https://quantum-secure-trader.replit.app',
+  icons: ['https://quantum-secure-trader.replit.app/favicon.ico']
 };
 
 export const config = createConfig({
@@ -27,14 +20,8 @@ export const config = createConfig({
     metaMask(),
     walletConnect({ 
       projectId,
-      metadata: getMetadata(),
-      showQrModal: true,
-      qrModalOptions: {
-        themeMode: 'light',
-        themeVariables: {
-          '--wcm-z-index': '9999'
-        }
-      }
+      metadata,
+      showQrModal: true
     }),
   ],
   transports: {

@@ -1,7 +1,7 @@
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConnectKitProvider } from 'connectkit'
-import { wagmiConfig } from '@/lib/wallet-config'
+import { config } from '@/lib/wagmi-config'
 
 // Singleton QueryClient to prevent re-initialization
 const queryClient = new QueryClient({
@@ -21,7 +21,7 @@ interface WalletProviderProps {
 
 export function WalletProvider({ children }: WalletProviderProps) {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <ConnectKitProvider
           theme="rounded"
