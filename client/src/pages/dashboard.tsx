@@ -15,6 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { PortfolioAnalyzer } from "@/components/portfolio-analyzer";
+import { TransactionAnalyzer } from "@/components/transaction-analyzer";
 
 export default function DashboardPage() {
   const [poolUrl, setPoolUrl] = useState("");
@@ -226,6 +227,8 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="data" className="space-y-6">
+          <TransactionAnalyzer />
+          
           <PortfolioAnalyzer />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

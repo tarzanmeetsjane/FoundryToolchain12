@@ -1757,6 +1757,77 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // Transaction analysis endpoint
+  app.get("/api/transaction/:hash", async (req, res) => {
+    try {
+      const { hash } = req.params;
+      
+      if (!hash || !hash.startsWith('0x') || hash.length !== 66) {
+        return res.status(400).json({ 
+          error: "Invalid transaction hash format" 
+        });
+      }
+
+      const apiKey = getApiKeyForChain(1); // Ethereum mainnet
+      
+      // Get transaction details
+      const txResponse = await fetch(
+        `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=${hash}&apikey=${apiKey}`
+      );
+      
+      if (!txResponse.ok) {
+        throw new Error('Failed to fetch transaction details');
+      }
+
+      const txData = await txResponse.json();
+      
+      if (!txData.result) {
+        return res.status(404).json({ error: "Transaction not found" });
+      }
+
+      // Get transaction receipt
+      const receiptResponse = await fetch(
+        `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=${hash}&apikey=${apiKey}`
+      );
+      
+      const receiptData = await receiptResponse.json();
+
+      // Get token transfers
+      const transferResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=tokentx&txhash=${hash}&apikey=${apiKey}`
+      );
+      
+      const transferData = await transferResponse.json();
+
+      // Parse method ID for function identification
+      const input = txData.result.input || "0x";
+      const methodId = input.slice(0, 10);
+
+      res.json({
+        hash: txData.result.hash,
+        blockNumber: txData.result.blockNumber,
+        timestamp: receiptData.result?.blockNumber || "0",
+        from: txData.result.from,
+        to: txData.result.to,
+        value: txData.result.value || "0",
+        gasPrice: txData.result.gasPrice || "0",
+        gasUsed: receiptData.result?.gasUsed || "0",
+        status: receiptData.result?.status || "0",
+        contractAddress: receiptData.result?.contractAddress,
+        methodId: methodId,
+        input: input,
+        tokenTransfers: transferData.result || []
+      });
+
+    } catch (error: any) {
+      console.error("Transaction analysis error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch transaction details",
+        details: error.message 
+      });
+    }
+  });
+
   // Helper function to get license code for Etherscan
   function getLicenseCode(licenseType: string): string {
     const licenseCodes: Record<string, string> = {
