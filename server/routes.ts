@@ -1618,6 +1618,158 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     return tokenMap[chainName]?.[tokenSymbol] || "0x0000000000000000000000000000000000000000";
   }
 
+  // Contract verification endpoints
+  app.get("/api/contract/verify-status/:address", async (req, res) => {
+    try {
+      const { address } = req.params;
+      
+      if (!address || !address.startsWith('0x') || address.length !== 42) {
+        return res.status(400).json({ 
+          error: "Invalid contract address format" 
+        });
+      }
+
+      const apiKey = getApiKeyForChain(1); // Ethereum mainnet
+      const response = await fetch(
+        `https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=${apiKey}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Etherscan API request failed');
+      }
+
+      const data = await response.json();
+      
+      if (data.status === "1" && data.result && data.result[0]) {
+        const contractData = data.result[0];
+        const isVerified = contractData.SourceCode !== "";
+        
+        res.json({
+          address,
+          isVerified,
+          sourcecode: contractData.SourceCode,
+          contractName: contractData.ContractName,
+          compilerVersion: contractData.CompilerVersion,
+          optimization: contractData.OptimizationUsed === "1",
+          runs: parseInt(contractData.Runs) || 0,
+          constructorArguments: contractData.ConstructorArguments,
+          evmVersion: contractData.EVMVersion || "default",
+          licenseType: contractData.LicenseType || "Unknown",
+          proxy: contractData.Proxy === "1",
+          implementation: contractData.Implementation
+        });
+      } else {
+        res.json({
+          address,
+          isVerified: false,
+          sourcecode: "",
+          contractName: "",
+          compilerVersion: "",
+          optimization: false,
+          runs: 0,
+          evmVersion: "default",
+          licenseType: "Unknown",
+          proxy: false
+        });
+      }
+    } catch (error: any) {
+      console.error("Contract verification status error:", error);
+      res.status(500).json({ 
+        error: "Failed to fetch contract verification status",
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/contract/verify", async (req, res) => {
+    try {
+      const {
+        address,
+        sourceCode,
+        contractName,
+        compilerVersion,
+        optimization,
+        runs,
+        constructorArguments,
+        evmVersion,
+        licenseType
+      } = req.body;
+
+      if (!address || !sourceCode || !contractName) {
+        return res.status(400).json({
+          error: "Missing required fields: address, sourceCode, contractName"
+        });
+      }
+
+      const apiKey = getApiKeyForChain(1); // Ethereum mainnet
+      
+      // Prepare form data for Etherscan verification API
+      const formData = new URLSearchParams();
+      formData.append('apikey', apiKey);
+      formData.append('module', 'contract');
+      formData.append('action', 'verifysourcecode');
+      formData.append('contractaddress', address);
+      formData.append('sourceCode', sourceCode);
+      formData.append('codeformat', 'solidity-single-file');
+      formData.append('contractname', contractName);
+      formData.append('compilerversion', compilerVersion);
+      formData.append('optimizationUsed', optimization ? '1' : '0');
+      formData.append('runs', runs.toString());
+      formData.append('constructorArguements', constructorArguments || '');
+      formData.append('evmversion', evmVersion);
+      formData.append('licenseType', getLicenseCode(licenseType));
+
+      const response = await fetch('https://api.etherscan.io/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Etherscan verification request failed');
+      }
+
+      const data = await response.json();
+      
+      if (data.status === "1") {
+        res.json({
+          success: true,
+          guid: data.result,
+          message: "Contract verification submitted successfully",
+          estimatedTime: "1-2 minutes"
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          error: data.result || "Verification submission failed"
+        });
+      }
+
+    } catch (error: any) {
+      console.error("Contract verification error:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to submit contract verification",
+        details: error.message
+      });
+    }
+  });
+
+  // Helper function to get license code for Etherscan
+  function getLicenseCode(licenseType: string): string {
+    const licenseCodes: Record<string, string> = {
+      'MIT': '3',
+      'GPL-3.0': '5',
+      'Apache-2.0': '2',
+      'BSD-3-Clause': '7',
+      'Unlicense': '1',
+      'None': '1'
+    };
+    return licenseCodes[licenseType] || '1';
+  }
+
   return httpServer;
 }
 
