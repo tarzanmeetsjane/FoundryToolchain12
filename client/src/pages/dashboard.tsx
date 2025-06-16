@@ -91,32 +91,32 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* ETHG Recovery Alert */}
-      <Card className="border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+      {/* ETHG Recovery Success */}
+      <Card className="border-green-200 bg-green-50 dark:bg-green-950 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="text-red-800 dark:text-red-200 flex items-center gap-2">
+          <CardTitle className="text-green-800 dark:text-green-200 flex items-center gap-2">
             <Activity className="h-5 w-5" />
-            ETHG Token Recovery Available
+            ETHG Recovery Complete - 1,990,000 ETHGR Tokens Ready
           </CardTitle>
-          <CardDescription className="text-red-700 dark:text-red-300">
-            Your 1,990,000 trapped ETHG tokens can now be recovered as fully transferable ETHGR tokens
+          <CardDescription className="text-green-700 dark:text-green-300">
+            Tokens successfully recovered and visible in MetaMask. Ready for market launch.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4 items-start">
             <div className="flex-1">
-              <div className="text-sm text-red-700 dark:text-red-300 mb-2">
-                Contract deployed at: <code className="bg-red-100 dark:bg-red-900 px-1 rounded">0xd9145CCE52D386f254917e481eB44e9943F39138</code>
+              <div className="text-sm text-green-700 dark:text-green-300 mb-2">
+                Recovery contract: <code className="bg-green-100 dark:bg-green-900 px-1 rounded">0xfA7b8c553C48C56ec7027d26ae95b029a2abF247</code>
               </div>
-              <div className="text-sm text-red-700 dark:text-red-300">
-                Gasless recovery service ready - no gas fees required
+              <div className="text-sm text-green-700 dark:text-green-300">
+                Tokens are fully transferable with no honeypot restrictions
               </div>
             </div>
             <Button 
-              onClick={() => window.location.href = '/ethg-recovery'}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={() => window.location.href = '/token-launch'}
+              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
             >
-              Recover Tokens Now
+              Launch Token Market
             </Button>
           </div>
         </CardContent>
