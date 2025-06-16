@@ -49,9 +49,39 @@ export default function TokenLaunchPage() {
       <Alert className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950 dark:to-blue-950 border-green-200">
         <CheckCircle className="h-4 w-4" />
         <AlertDescription>
-          <strong>Recovery Complete!</strong> Your 1,990,000 ETHGR tokens are ready for market launch. Set your initial price below to establish market value.
+          <strong>Ready for Launch!</strong> Your 1,990,000 ETHGR tokens are fully recovered and ready for market deployment. Follow the steps below to establish market value.
         </AlertDescription>
       </Alert>
+
+      <Card className="mb-6 border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950">
+        <CardHeader>
+          <CardTitle className="text-blue-800 dark:text-blue-200">Launch Process</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="space-y-3">
+              <div className="flex items-start gap-2">
+                <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</span>
+                <span><strong>Choose Amount:</strong> Use preset buttons or enter custom amounts</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</span>
+                <span><strong>Launch Pool:</strong> Click the launch button to open Uniswap</span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-start gap-2">
+                <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</span>
+                <span><strong>Connect Wallet:</strong> Approve ETHGR token spending</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">4</span>
+                <span><strong>Success:</strong> Your tokens immediately gain market value</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <Card className="border-2 border-green-200 dark:border-green-800">
@@ -172,30 +202,49 @@ export default function TokenLaunchPage() {
                   Launch on Uniswap V3 (${ethAmount} ETH + {ethgrAmount} ETHGR)
                 </Button>
                 
+                <div className="bg-yellow-50 dark:bg-yellow-950 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800 mb-4">
+                  <p className="text-sm text-yellow-800 dark:text-yellow-200 font-medium">💡 Gas Fee Estimate</p>
+                  <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                    Uniswap V3 pool creation: ~$25-50 gas fee. Keep 0.0001 ETH minimum for transaction costs.
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => {setEthAmount("0.0001"); setEthgrAmount("100");}}
+                    className="border-blue-200 hover:bg-blue-50"
                   >
-                    Micro
-                    <br />0.0001 ETH
+                    <div className="text-center">
+                      <div className="font-bold">Micro Test</div>
+                      <div>0.0001 ETH</div>
+                      <div className="text-green-600">$2.58/token</div>
+                    </div>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => {setEthAmount("0.0003"); setEthgrAmount("300");}}
+                    className="border-orange-200 hover:bg-orange-50"
                   >
-                    Small
-                    <br />0.0003 ETH
+                    <div className="text-center">
+                      <div className="font-bold">Small Launch</div>
+                      <div>0.0003 ETH</div>
+                      <div className="text-green-600">$2.58/token</div>
+                    </div>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => {setEthAmount("0.0005"); setEthgrAmount("500");}}
+                    className="border-purple-200 hover:bg-purple-50"
                   >
-                    Max Safe
-                    <br />0.0005 ETH
+                    <div className="text-center">
+                      <div className="font-bold">Max Deploy</div>
+                      <div>0.0005 ETH</div>
+                      <div className="text-green-600">$2.58/token</div>
+                    </div>
                   </Button>
                 </div>
               </div>
