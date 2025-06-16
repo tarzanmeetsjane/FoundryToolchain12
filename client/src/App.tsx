@@ -24,6 +24,7 @@ import ContractVerificationAPIPage from "@/pages/contract-verification-api";
 import ContractVerificationHelper from "@/pages/contract-verification-helper";
 import UniswapPoolCreator from "@/pages/uniswap-pool-creator";
 import WalletSecurityChecker from "@/pages/wallet-security-checker";
+import ManualVerification from "@/pages/manual-verification";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";

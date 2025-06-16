@@ -45,20 +45,20 @@ export default function UniswapPoolCreator() {
   const suggestedPairs = [
     {
       ethgr: "100000",
-      eth: "18.58",
-      ratio: "1 ETHGR = $0.706",
+      eth: "9.29",
+      ratio: "1 ETHGR = $0.355",
       description: "Conservative 5% of holdings"
     },
     {
       ethgr: "500000", 
-      eth: "92.9",
-      ratio: "1 ETHGR = $0.706",
+      eth: "46.45",
+      ratio: "1 ETHGR = $0.355",
       description: "Moderate 25% of holdings"
     },
     {
       ethgr: "1000000",
-      eth: "185.8", 
-      ratio: "1 ETHGR = $0.706",
+      eth: "92.9", 
+      ratio: "1 ETHGR = $0.355",
       description: "Aggressive 50% of holdings"
     }
   ];
