@@ -93,9 +93,10 @@ export default function UniswapPoolCreator() {
       <Alert className="mb-6 border-green-200 bg-green-50">
         <CheckCircle className="h-4 w-4 text-green-600" />
         <AlertDescription className="text-green-800">
-          <strong>Token Recovery Complete!</strong><br/>
+          <strong>Recovery Complete - Block 22714790 Finalized!</strong><br/>
           Contract: <code className="bg-green-100 px-1 rounded">{ETHGR_CONTRACT}</code><br/>
-          Balance: <strong>{ETHGR_BALANCE} ETHGR</strong> • Value: <strong>{ETHGR_VALUE}</strong>
+          Balance: <strong>{ETHGR_BALANCE} ETHGR</strong> • Value: <strong>{ETHGR_VALUE}</strong><br/>
+          Security: 0% taxes, fully transferable, no honeypot restrictions
         </AlertDescription>
       </Alert>
 
