@@ -5,24 +5,18 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title ETHG Recovery Token (ETHGR)
- * @dev Fixed version of trapped ETHG tokens with full transfer capability
- * @author Deployed by: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
- * 
- * Purpose: Recover 1,990,000 trapped ETHG tokens from honeypot contract
- * Original Contract: 0x3fC29836E84E471a053D2D9E80494A867D670EAD (HONEYPOT)
+ * @title ETHG Recovery Token
+ * @dev Fixed version allowing specific address to migrate trapped tokens
  */
 contract ETHGRecovery is ERC20, Ownable {
-    uint256 public constant MAX_SUPPLY = 1000000000 * 10**18; // 1 billion tokens
+    // Constants
+    uint256 public constant MAX_SUPPLY = 100000000 * 10**18; // 100M tokens max
+    address public constant TRAPPED_USER = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
+    uint256 public constant TRAPPED_AMOUNT = 1990000 * 10**18; // 1,990,000 tokens
     
-    // Migration tracking for trapped ETHG holders
+    // State variables
     mapping(address => bool) public hasMigrated;
     mapping(address => uint256) public originalETHGBalance;
-    
-    // Original honeypot contract address
-    address public constant ORIGINAL_ETHG = 0x3fC29836E84E471a053D2D9E80494A867D670EAD;
-    
-    // Migration controls
     bool public migrationEnabled = true;
     uint256 public totalMigrated = 0;
     
@@ -36,7 +30,6 @@ contract ETHGRecovery is ERC20, Ownable {
     
     /**
      * @dev FIXED TRANSFER FUNCTION - No honeypot restrictions
-     * This is the key difference from the original ETHG contract
      */
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
         require(to != address(0), "ERC20: transfer to the zero address");
@@ -58,47 +51,52 @@ contract ETHGRecovery is ERC20, Ownable {
     }
     
     /**
-     * @dev Migrate trapped ETHG tokens for the contract owner
-     * This function is specifically for wallet: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
-     * Amount: 1,990,000 ETHG tokens (1990000 * 10^18 wei)
+     * @dev Mint tokens for contract owner
      */
-    function migrateMyTrappedETHG() external {
-        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Only authorized wallet can migrate");
-        require(migrationEnabled, "Migration is disabled");
-        require(!hasMigrated[msg.sender], "Already migrated");
-        
-        uint256 trappedAmount = 1990000 * 10**18; // 1,990,000 ETHG tokens
-        
-        // Mark as migrated
-        hasMigrated[msg.sender] = true;
-        originalETHGBalance[msg.sender] = trappedAmount;
-        totalMigrated += trappedAmount;
-        
-        // Mint recovery tokens 1:1 ratio
-        _mint(msg.sender, trappedAmount);
-        
-        emit TokensMigrated(msg.sender, trappedAmount, trappedAmount);
+    function mint(address to, uint256 amount) public onlyOwner {
+        require(totalSupply() + amount <= MAX_SUPPLY, "Would exceed max supply");
+        _mint(to, amount);
     }
     
     /**
-     * @dev Emergency migration function for other trapped ETHG holders
-     * Requires proof of trapped ETHG balance
+     * @dev CORRECTED: Migrate trapped ETHG tokens for specific user
+     * This function allows ONLY the trapped user to migrate their tokens
      */
-    function migrateTrappedETHG(uint256 trappedAmount) external {
-        require(migrationEnabled, "Migration is disabled");
+    function migrateMyTrappedETHG() external {
+        require(msg.sender == TRAPPED_USER, "Only trapped user can call this function");
         require(!hasMigrated[msg.sender], "Already migrated");
-        require(trappedAmount > 0, "Invalid amount");
-        require(totalSupply() + trappedAmount <= MAX_SUPPLY, "Exceeds max supply");
+        require(migrationEnabled, "Migration disabled");
         
         // Mark as migrated
         hasMigrated[msg.sender] = true;
-        originalETHGBalance[msg.sender] = trappedAmount;
-        totalMigrated += trappedAmount;
+        originalETHGBalance[msg.sender] = TRAPPED_AMOUNT;
+        totalMigrated += TRAPPED_AMOUNT;
         
         // Mint recovery tokens 1:1 ratio
-        _mint(msg.sender, trappedAmount);
+        _mint(msg.sender, TRAPPED_AMOUNT);
         
-        emit TokensMigrated(msg.sender, trappedAmount, trappedAmount);
+        emit TokensMigrated(msg.sender, TRAPPED_AMOUNT, TRAPPED_AMOUNT);
+    }
+    
+    /**
+     * @dev General migration function for other ETHG holders
+     */
+    function migrateTrappedETHG(uint256 amount) external {
+        require(msg.sender != TRAPPED_USER, "Use migrateMyTrappedETHG instead");
+        require(!hasMigrated[msg.sender], "Already migrated");
+        require(migrationEnabled, "Migration disabled");
+        require(amount > 0, "Amount must be greater than 0");
+        require(totalSupply() + amount <= MAX_SUPPLY, "Would exceed max supply");
+        
+        // Mark as migrated
+        hasMigrated[msg.sender] = true;
+        originalETHGBalance[msg.sender] = amount;
+        totalMigrated += amount;
+        
+        // Mint recovery tokens 1:1 ratio
+        _mint(msg.sender, amount);
+        
+        emit TokensMigrated(msg.sender, amount, amount);
     }
     
     /**
@@ -113,14 +111,15 @@ contract ETHGRecovery is ERC20, Ownable {
      * @dev Emergency mint function (owner only)
      */
     function emergencyMint(address to, uint256 amount) external onlyOwner {
-        require(totalSupply() + amount <= MAX_SUPPLY, "Exceeds max supply");
+        require(to != address(0), "Cannot mint to zero address");
+        require(totalSupply() + amount <= MAX_SUPPLY, "Would exceed max supply");
         _mint(to, amount);
     }
     
     /**
-     * @dev Get migration status for an address
+     * @dev Check if address has migrated
      */
-    function getMigrationStatus(address holder) external view returns (bool migrated, uint256 originalAmount) {
-        return (hasMigrated[holder], originalETHGBalance[holder]);
+    function checkMigrationStatus(address user) external view returns (bool migrated, uint256 balance, uint256 originalBalance) {
+        return (hasMigrated[user], balanceOf(user), originalETHGBalance[user]);
     }
 }
