@@ -2132,6 +2132,117 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     return 'low';
   }
 
+  // Contract verification and Etherscan details endpoint
+  app.get('/api/etherscan/contract/:contractAddress', async (req: Request, res: Response) => {
+    try {
+      const { contractAddress } = req.params;
+      const apiKey = getApiKeyForChain(1); // Ethereum mainnet
+      
+      if (!apiKey) {
+        return res.status(400).json({ error: 'Etherscan API key not configured' });
+      }
+
+      // Get contract source code and verification status
+      const sourceResponse = await fetch(`https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${apiKey}`);
+      const sourceData = await sourceResponse.json();
+      
+      // Get contract ABI
+      const abiResponse = await fetch(`https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${apiKey}`);
+      const abiData = await abiResponse.json();
+      
+      // Get contract creation transaction
+      const creationResponse = await fetch(`https://api.etherscan.io/api?module=contract&action=getcontractcreation&contractaddresses=${contractAddress}&apikey=${apiKey}`);
+      const creationData = await creationResponse.json();
+
+      // Parse contract details
+      const contractInfo = sourceData.result?.[0] || {};
+      
+      const verificationStatus = {
+        contractAddress,
+        isVerified: contractInfo.SourceCode !== '',
+        contractName: contractInfo.ContractName || 'Unknown',
+        compilerVersion: contractInfo.CompilerVersion || 'Unknown',
+        optimization: contractInfo.OptimizationUsed === '1',
+        sourceCode: contractInfo.SourceCode || null,
+        abi: abiData.status === '1' ? JSON.parse(abiData.result) : null,
+        proxy: contractInfo.Proxy === '1',
+        implementation: contractInfo.Implementation || null,
+        creationTx: creationData.result?.[0]?.txHash || null,
+        creator: creationData.result?.[0]?.contractCreator || null,
+        etherscanUrl: `https://etherscan.io/address/${contractAddress}`,
+        verificationDate: new Date().toISOString(),
+        
+        // Token-specific details if ERC20
+        tokenDetails: null
+      };
+
+      // If verified, try to get token details
+      if (verificationStatus.isVerified && verificationStatus.abi) {
+        try {
+          // Check if it's an ERC20 token by looking for standard functions
+          const hasERC20Functions = verificationStatus.abi.some((func: any) => 
+            ['name', 'symbol', 'decimals', 'totalSupply'].includes(func.name)
+          );
+          
+          if (hasERC20Functions) {
+            // Get token info from contract calls
+            const tokenInfoPromises = [
+              fetch(`https://api.etherscan.io/api?module=proxy&action=eth_call&to=${contractAddress}&data=0x06fdde03&tag=latest&apikey=${apiKey}`), // name()
+              fetch(`https://api.etherscan.io/api?module=proxy&action=eth_call&to=${contractAddress}&data=0x95d89b41&tag=latest&apikey=${apiKey}`), // symbol()
+              fetch(`https://api.etherscan.io/api?module=proxy&action=eth_call&to=${contractAddress}&data=0x313ce567&tag=latest&apikey=${apiKey}`), // decimals()
+              fetch(`https://api.etherscan.io/api?module=proxy&action=eth_call&to=${contractAddress}&data=0x18160ddd&tag=latest&apikey=${apiKey}`)  // totalSupply()
+            ];
+
+            const [nameRes, symbolRes, decimalsRes, supplyRes] = await Promise.all(tokenInfoPromises);
+            const [nameData, symbolData, decimalsData, supplyData] = await Promise.all([
+              nameRes.json(), symbolRes.json(), decimalsRes.json(), supplyRes.json()
+            ]);
+
+            verificationStatus.tokenDetails = {
+              name: nameData.result ? hexToString(nameData.result) : 'Unknown',
+              symbol: symbolData.result ? hexToString(symbolData.result) : 'Unknown',
+              decimals: decimalsData.result ? parseInt(decimalsData.result, 16) : 18,
+              totalSupply: supplyData.result ? (parseInt(supplyData.result, 16) / Math.pow(10, 18)).toLocaleString() : 'Unknown'
+            };
+          }
+        } catch (error) {
+          console.log('Token details fetch failed:', error);
+        }
+      }
+
+      res.json(verificationStatus);
+
+    } catch (error) {
+      console.error('Etherscan contract verification error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to verify contract' 
+      });
+    }
+  });
+
+  // Helper function to convert hex to string
+  function hexToString(hex: string): string {
+    try {
+      if (!hex || hex === '0x') return '';
+      
+      // Remove 0x prefix
+      hex = hex.replace('0x', '');
+      
+      // Convert hex to bytes and then to string
+      let str = '';
+      for (let i = 0; i < hex.length; i += 2) {
+        const byte = parseInt(hex.substr(i, 2), 16);
+        if (byte !== 0) { // Skip null bytes
+          str += String.fromCharCode(byte);
+        }
+      }
+      
+      return str.trim();
+    } catch (error) {
+      return 'Parse Error';
+    }
+  }
+
   // Dark pools and meme tokens scanner endpoint
   app.get("/api/dark-pools/scan", async (req, res) => {
     try {

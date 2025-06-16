@@ -19,6 +19,7 @@ import ETHGRecovery from "@/pages/ethg-recovery";
 import TokenLaunchPage from "@/pages/token-launch";
 import BulkRecoveryPage from "@/pages/bulk-recovery";
 import ContractAnalyzerPage from "@/pages/contract-analyzer";
+import ContractVerificationPage from "@/pages/contract-verification";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -43,6 +44,7 @@ function Router() {
         <Route path="/token-launch" component={TokenLaunchPage} />
         <Route path="/bulk-recovery" component={BulkRecoveryPage} />
         <Route path="/contract-analyzer" component={ContractAnalyzerPage} />
+        <Route path="/contract-verification" component={ContractVerificationPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>

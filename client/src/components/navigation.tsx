@@ -170,6 +170,17 @@ export default function Navigation() {
               </Button>
             </Link>
             
+            <Link href="/contract-verification">
+              <Button 
+                variant={location === "/contract-verification" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Contract Verification
+              </Button>
+            </Link>
+            
             <Link href="/widget">
               <Button 
                 variant={location === "/widget" ? "default" : "ghost"} 
