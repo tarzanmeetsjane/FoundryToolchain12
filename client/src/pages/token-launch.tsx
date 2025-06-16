@@ -10,8 +10,8 @@ import { ExternalLink, TrendingUp, DollarSign, Users, Zap, Calculator, Rocket, C
 import { useQuery } from "@tanstack/react-query";
 
 export default function TokenLaunchPage() {
-  const [ethAmount, setEthAmount] = useState("0.01");
-  const [ethgrAmount, setEthgrAmount] = useState("10000");
+  const [ethAmount, setEthAmount] = useState("0.0005");
+  const [ethgrAmount, setEthgrAmount] = useState("500");
   const [calculatedPrice, setCalculatedPrice] = useState("0.00");
   const [totalValue, setTotalValue] = useState("0.00");
 
