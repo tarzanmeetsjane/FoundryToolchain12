@@ -1651,6 +1651,75 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     return Math.min((currentTPS / maxTPS) * 100, 100);
   }
 
+  // Bulk recovery scanner - Get all token holders
+  app.get('/api/token-holders/:contractAddress', async (req: Request, res: Response) => {
+    try {
+      const { contractAddress } = req.params;
+      const apiKey = getApiKeyForChain(1); // Ethereum mainnet
+      
+      if (!apiKey) {
+        return res.status(400).json({ error: 'Etherscan API key not configured' });
+      }
+
+      // Get token transfer events to find all holders
+      const transferUrl = `https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=${contractAddress}&startblock=0&endblock=99999999&sort=asc&apikey=${apiKey}`;
+      
+      const response = await fetch(transferUrl);
+      const data = await response.json();
+      
+      if (data.status !== '1') {
+        return res.status(400).json({ error: 'Failed to fetch token transfers' });
+      }
+
+      // Process transfers to calculate current balances
+      const balances = new Map<string, bigint>();
+      
+      for (const tx of data.result) {
+        const from = tx.from.toLowerCase();
+        const to = tx.to.toLowerCase();
+        const value = BigInt(tx.value);
+        
+        // Subtract from sender (unless it's a mint from 0x0)
+        if (from !== '0x0000000000000000000000000000000000000000') {
+          const currentFrom = balances.get(from) || 0n;
+          balances.set(from, currentFrom - value);
+        }
+        
+        // Add to receiver
+        const currentTo = balances.get(to) || 0n;
+        balances.set(to, currentTo + value);
+      }
+
+      // Filter out zero balances and format results
+      const holders = Array.from(balances.entries())
+        .filter(([_, balance]) => balance > 0n)
+        .map(([address, balance]) => ({
+          address,
+          balance: balance.toString(),
+          balanceFormatted: (Number(balance) / 1e18).toLocaleString(),
+          lastActivity: new Date().toISOString().split('T')[0],
+          status: address.toLowerCase() === '0x058c8fe01e5c9eac6ee19e6673673b549b368843' ? 'recovered' : 'trapped',
+          recoveryContract: address.toLowerCase() === '0x058c8fe01e5c9eac6ee19e6673673b549b368843' 
+            ? '0xfA7b8c553C48C56ec7027d26ae95b029a2abF247' 
+            : null
+        }))
+        .sort((a, b) => Number(BigInt(b.balance) - BigInt(a.balance)));
+
+      res.json({
+        contractAddress,
+        totalHolders: holders.length,
+        totalSupply: holders.reduce((sum, h) => sum + Number(h.balance), 0),
+        holders
+      });
+
+    } catch (error) {
+      console.error('Token holder scan error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to scan token holders' 
+      });
+    }
+  });
+
   // Dark pools and meme tokens scanner endpoint
   app.get("/api/dark-pools/scan", async (req, res) => {
     try {

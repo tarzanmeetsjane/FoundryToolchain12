@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight, PieChart, Rocket } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight, PieChart, Rocket, Users } from "lucide-react";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 export default function Navigation() {
@@ -145,6 +145,17 @@ export default function Navigation() {
               >
                 <Rocket className="h-4 w-4 mr-2" />
                 Token Launch
+              </Button>
+            </Link>
+            
+            <Link href="/bulk-recovery">
+              <Button 
+                variant={location === "/bulk-recovery" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Bulk Recovery
               </Button>
             </Link>
             

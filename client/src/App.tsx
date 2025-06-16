@@ -17,6 +17,7 @@ import CrossChainSwapPage from "@/pages/cross-chain-swap";
 import PortfolioAnalyticsPage from "@/pages/portfolio-analytics";
 import ETHGRecovery from "@/pages/ethg-recovery";
 import TokenLaunchPage from "@/pages/token-launch";
+import BulkRecoveryPage from "@/pages/bulk-recovery";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -39,6 +40,7 @@ function Router() {
         <Route path="/portfolio-analytics" component={PortfolioAnalyticsPage} />
         <Route path="/ethg-recovery" component={ETHGRecovery} />
         <Route path="/token-launch" component={TokenLaunchPage} />
+        <Route path="/bulk-recovery" component={BulkRecoveryPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
