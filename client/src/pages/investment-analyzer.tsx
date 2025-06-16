@@ -12,6 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 export default function InvestmentAnalyzerPage() {
   const [walletAddress, setWalletAddress] = useState("0x058C8FE01E5c9eaC6ee19e6673673B549B368843");
   const [originalContract, setOriginalContract] = useState("0xd9145CCE52D386f254917e481eB44e9943F39138");
+  const [ethSpent, setEthSpent] = useState("");
+  const [usdSpent, setUsdSpent] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState("");
 
   // Get transaction history for the wallet
   const { data: transactionHistory, isLoading, refetch } = useQuery({
@@ -91,7 +94,7 @@ export default function InvestmentAnalyzerPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-2 gap-4">
             <div>
               <Label htmlFor="wallet">Your Wallet Address</Label>
               <Input
@@ -114,12 +117,49 @@ export default function InvestmentAnalyzerPage() {
             </div>
           </div>
 
+          <div className="border-t pt-4">
+            <h4 className="font-semibold mb-3">Enter Your Original Purchase Information</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="ethSpent">ETH Spent</Label>
+                <Input
+                  id="ethSpent"
+                  value={ethSpent}
+                  onChange={(e) => setEthSpent(e.target.value)}
+                  placeholder="0.5"
+                  type="number"
+                  step="0.0001"
+                />
+              </div>
+              <div>
+                <Label htmlFor="usdSpent">USD Value (at purchase)</Label>
+                <Input
+                  id="usdSpent"
+                  value={usdSpent}
+                  onChange={(e) => setUsdSpent(e.target.value)}
+                  placeholder="1250"
+                  type="number"
+                />
+              </div>
+              <div>
+                <Label htmlFor="purchaseDate">Purchase Date</Label>
+                <Input
+                  id="purchaseDate"
+                  value={purchaseDate}
+                  onChange={(e) => setPurchaseDate(e.target.value)}
+                  placeholder="2024-01-15"
+                  type="date"
+                />
+              </div>
+            </div>
+          </div>
+
           <Button 
-            onClick={handleAnalyze}
-            disabled={!walletAddress || isLoading || isLoadingEthg}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            onClick={() => {/* Manual calculation with user data */}}
+            disabled={!ethSpent && !usdSpent}
+            className="w-full bg-green-600 hover:bg-green-700"
           >
-            {isLoading || isLoadingEthg ? 'Analyzing Investment History...' : 'Analyze Original Investment'}
+            Calculate True Token Value
           </Button>
 
           <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950">
