@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight, PieChart } from "lucide-react";
+import { BarChart3, Shield, Monitor, Search, Bell, Droplets, Wallet, Coins, DollarSign, Radio, ArrowLeftRight, PieChart, Rocket } from "lucide-react";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 
 export default function Navigation() {
@@ -134,6 +134,17 @@ export default function Navigation() {
               >
                 <PieChart className="h-4 w-4 mr-2" />
                 Portfolio Analytics
+              </Button>
+            </Link>
+            
+            <Link href="/token-launch">
+              <Button 
+                variant={location === "/token-launch" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9 bg-gradient-to-r from-green-600 to-blue-600 text-white hover:from-green-700 hover:to-blue-700"
+              >
+                <Rocket className="h-4 w-4 mr-2" />
+                Token Launch
               </Button>
             </Link>
             

@@ -111,9 +111,13 @@ export default function TokenLaunchPage() {
                 <p className="text-sm">Example: 0.1 ETH ÷ 100,000 ETHGR = $0.0026 per ETHGR</p>
               </div>
 
-              <Button className="w-full" size="lg">
+              <Button 
+                className="w-full" 
+                size="lg"
+                onClick={() => window.open(`https://app.uniswap.org/#/add/ETH/${tokenInfo.address}`, '_blank')}
+              >
                 <ExternalLink className="mr-2 h-4 w-4" />
-                Open Uniswap V3
+                Create ETHGR/ETH Pool on Uniswap
               </Button>
             </CardContent>
           </Card>
@@ -137,9 +141,14 @@ export default function TokenLaunchPage() {
                 </ul>
               </div>
 
-              <Button className="w-full" variant="outline" size="lg">
+              <Button 
+                className="w-full" 
+                variant="outline" 
+                size="lg"
+                onClick={() => window.open(`https://www.sushi.com/pool/add?token0=ETH&token1=${tokenInfo.address}`, '_blank')}
+              >
                 <ExternalLink className="mr-2 h-4 w-4" />
-                Open SushiSwap
+                Create ETHGR/ETH Pool on SushiSwap
               </Button>
             </CardContent>
           </Card>
