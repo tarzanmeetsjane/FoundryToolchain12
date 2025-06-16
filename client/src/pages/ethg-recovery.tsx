@@ -150,21 +150,33 @@ export default function ETHGRecovery() {
                   </div>
                 </div>
 
-                <Button 
-                  onClick={handleExecuteRecovery}
-                  disabled={isExecuting || executeMigration.isPending}
-                  className="w-full"
-                  size="lg"
-                >
-                  {isExecuting || executeMigration.isPending ? (
-                    <>
-                      <Clock className="h-4 w-4 mr-2 animate-spin" />
-                      Executing Recovery...
-                    </>
-                  ) : (
-                    'Execute Gasless Recovery'
-                  )}
-                </Button>
+                <div className="space-y-3">
+                  <Button 
+                    onClick={handleExecuteRecovery}
+                    disabled={isExecuting || executeMigration.isPending}
+                    className="w-full"
+                    size="lg"
+                  >
+                    {isExecuting || executeMigration.isPending ? (
+                      <>
+                        <Clock className="h-4 w-4 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      'Get Recovery Instructions'
+                    )}
+                  </Button>
+
+                  <div className="text-center">
+                    <Button 
+                      onClick={() => window.open('https://remix.ethereum.org/', '_blank')}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Open Remix IDE
+                    </Button>
+                  </div>
+                </div>
 
                 {executeMigration.isError && (
                   <div className="bg-red-50 dark:bg-red-950 p-4 rounded-lg">
@@ -175,10 +187,21 @@ export default function ETHGRecovery() {
                 )}
 
                 {executeMigration.isSuccess && (
-                  <div className="bg-green-50 dark:bg-green-950 p-4 rounded-lg">
-                    <p className="text-sm text-green-700 dark:text-green-200">
-                      Recovery service activated! Your tokens will be migrated shortly.
-                    </p>
+                  <div className="bg-green-50 dark:bg-green-950 p-4 rounded-lg space-y-3">
+                    <h4 className="font-semibold text-green-800 dark:text-green-200">Recovery Ready!</h4>
+                    <div className="text-sm text-green-700 dark:text-green-200">
+                      <p className="mb-2">Complete the migration in Remix:</p>
+                      <ol className="list-decimal list-inside space-y-1">
+                        <li>Open Remix IDE (click button above)</li>
+                        <li>Go to "Deploy & Run Transactions" tab</li>
+                        <li>In "At Address" field: <code className="bg-green-100 dark:bg-green-900 px-1 rounded">0xd9145CCE52D386f254917e481eB44e9943F39138</code></li>
+                        <li>Click "At Address" button</li>
+                        <li>Find and click the red "migrateMyTrappedETHG" button</li>
+                        <li>In MetaMask: Set Max Fee to 2 gwei, Priority to 1 gwei</li>
+                        <li>Confirm transaction</li>
+                      </ol>
+                      <p className="mt-2 font-medium">Result: 1,990,000 ETHGR tokens will appear in your wallet!</p>
+                    </div>
                   </div>
                 )}
               </div>
