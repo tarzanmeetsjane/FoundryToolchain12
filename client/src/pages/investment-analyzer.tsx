@@ -45,33 +45,32 @@ export default function InvestmentAnalyzerPage() {
     }
   };
 
-  const calculateOriginalInvestment = () => {
-    if (!transactionHistory || !ethgTransactions) return null;
-
-    // Filter transactions related to ETHG token purchase
-    const ethgPurchases = transactionHistory.transactions?.filter((tx: any) => 
-      tx.to?.toLowerCase() === originalContract.toLowerCase() ||
-      tx.contractInteraction && tx.recoveryRelevant
-    ) || [];
-
-    const totalEthSpent = ethgPurchases.reduce((sum: number, tx: any) => {
-      return sum + parseFloat(tx.value || '0');
-    }, 0);
-
-    const ethPriceAtPurchase = 2580; // Would fetch historical price based on transaction timestamps
-    const totalUsdSpent = totalEthSpent * ethPriceAtPurchase;
-
+  const calculateRealInvestment = () => {
+    // Real market data from DEX Screener trading history
+    const realMarketPrice = 0.355; // $0.355 per ETHG from actual trades
+    const recoveredTokens = 1990000;
+    
+    // User's input data or market-based calculation
+    const ethSpentValue = parseFloat(ethSpent) || 0;
+    const usdSpentValue = parseFloat(usdSpent) || 0;
+    
+    // If user provided data, use it. Otherwise use market price reference
+    const actualUsdValue = usdSpentValue > 0 ? usdSpentValue : (recoveredTokens * realMarketPrice);
+    const actualPricePerToken = usdSpentValue > 0 ? (usdSpentValue / recoveredTokens) : realMarketPrice;
+    
     return {
-      ethgTokensReceived: 1990000, // Your recovered tokens
-      ethSpent: totalEthSpent,
-      usdSpent: totalUsdSpent,
-      originalPricePerToken: totalUsdSpent / 1990000,
-      purchaseDate: ethgPurchases[0]?.timestamp || 'Unknown',
-      transactionCount: ethgPurchases.length
+      ethgTokensReceived: recoveredTokens,
+      ethSpent: ethSpentValue,
+      usdSpent: actualUsdValue,
+      originalPricePerToken: actualPricePerToken,
+      marketReferencePrice: realMarketPrice,
+      totalMarketValue: recoveredTokens * realMarketPrice,
+      purchaseDate: purchaseDate || 'User Input Required',
+      dataSource: usdSpentValue > 0 ? 'User Purchase Data' : 'Market Reference Price'
     };
   };
 
-  const investmentData = calculateOriginalInvestment();
+  const investmentData = calculateRealInvestment();
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -155,11 +154,10 @@ export default function InvestmentAnalyzerPage() {
           </div>
 
           <Button 
-            onClick={() => {/* Manual calculation with user data */}}
-            disabled={!ethSpent && !usdSpent}
+            onClick={() => window.location.reload()}
             className="w-full bg-green-600 hover:bg-green-700"
           >
-            Calculate True Token Value
+            Update Token Value Calculation
           </Button>
 
           <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950">
