@@ -5,11 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, TrendingUp, DollarSign, Users, Zap } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ExternalLink, TrendingUp, DollarSign, Users, Zap, Calculator, Rocket, CheckCircle } from "lucide-react";
 
 export default function TokenLaunchPage() {
-  const [ethgrPrice, setEthgrPrice] = useState("0.00");
-  const [liquidityPool, setLiquidityPool] = useState(null);
+  const [ethAmount, setEthAmount] = useState("0.05");
+  const [ethgrAmount, setEthgrAmount] = useState("50000");
+  const [calculatedPrice, setCalculatedPrice] = useState("0.00");
+  const [totalValue, setTotalValue] = useState("0.00");
 
   const tokenInfo = {
     address: "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247",
@@ -17,8 +20,20 @@ export default function TokenLaunchPage() {
     name: "ETHG Recovery",
     totalSupply: "1,990,000",
     holders: 1,
-    verified: true
+    verified: true,
+    userBalance: "1,990,000"
   };
+
+  const ethPrice = 2580; // Current ETH price
+
+  useEffect(() => {
+    if (ethAmount && ethgrAmount && parseFloat(ethAmount) > 0 && parseFloat(ethgrAmount) > 0) {
+      const pricePerToken = (parseFloat(ethAmount) * ethPrice) / parseFloat(ethgrAmount);
+      const totalPortfolioValue = pricePerToken * parseFloat(tokenInfo.userBalance);
+      setCalculatedPrice(pricePerToken.toFixed(6));
+      setTotalValue(totalPortfolioValue.toFixed(2));
+    }
+  }, [ethAmount, ethgrAmount]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -31,18 +46,27 @@ export default function TokenLaunchPage() {
         </p>
       </div>
 
+      <Alert className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950 dark:to-blue-950 border-green-200">
+        <CheckCircle className="h-4 w-4" />
+        <AlertDescription>
+          <strong>Recovery Complete!</strong> Your 1,990,000 ETHGR tokens are ready for market launch. Set your initial price below to establish market value.
+        </AlertDescription>
+      </Alert>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <Card>
+        <Card className="border-2 border-green-200 dark:border-green-800">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
-              Token Value
+              <DollarSign className="h-5 w-5 text-green-600" />
+              Calculated Price
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">${ethgrPrice}</div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Per ETHGR</p>
-            <Badge variant="outline" className="mt-2">Market Cap: $0</Badge>
+            <div className="text-3xl font-bold text-green-600">${calculatedPrice}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Per ETHGR Token</p>
+            <Badge variant="secondary" className="mt-2">
+              Total Portfolio Value: ${totalValue}
+            </Badge>
           </CardContent>
         </Card>
 
@@ -68,9 +92,9 @@ export default function TokenLaunchPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-600">$0</div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Total Liquidity</p>
-            <Badge variant="destructive" className="mt-2">No Pools Yet</Badge>
+            <div className="text-3xl font-bold text-orange-600">${(parseFloat(ethAmount) * ethPrice).toFixed(0)}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Initial Liquidity</p>
+            <Badge variant="outline" className="mt-2">Ready to Deploy</Badge>
           </CardContent>
         </Card>
       </div>
@@ -95,30 +119,86 @@ export default function TokenLaunchPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="ethAmount">ETH Amount</Label>
-                  <Input id="ethAmount" placeholder="0.1" type="number" step="0.001" />
+                  <Input 
+                    id="ethAmount" 
+                    placeholder="0.05" 
+                    type="number" 
+                    step="0.001"
+                    value={ethAmount}
+                    onChange={(e) => setEthAmount(e.target.value)}
+                  />
                   <p className="text-sm text-gray-600 mt-1">Your balance: 0.014 ETH</p>
                 </div>
                 <div>
                   <Label htmlFor="ethgrAmount">ETHGR Amount</Label>
-                  <Input id="ethgrAmount" placeholder="100000" type="number" />
+                  <Input 
+                    id="ethgrAmount" 
+                    placeholder="50000" 
+                    type="number"
+                    value={ethgrAmount}
+                    onChange={(e) => setEthgrAmount(e.target.value)}
+                  />
                   <p className="text-sm text-gray-600 mt-1">Your balance: 1,990,000 ETHGR</p>
                 </div>
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">Price Calculation</h4>
-                <p className="text-sm">Initial price will be: ETH Amount ÷ ETHGR Amount</p>
-                <p className="text-sm">Example: 0.1 ETH ÷ 100,000 ETHGR = $0.0026 per ETHGR</p>
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calculator className="h-4 w-4 text-blue-600" />
+                  <h4 className="font-semibold">Live Price Calculation</h4>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="font-medium">Price per ETHGR:</p>
+                    <p className="text-lg font-bold text-green-600">${calculatedPrice}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium">Total Portfolio Value:</p>
+                    <p className="text-lg font-bold text-blue-600">${totalValue}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                  Based on ETH @ ${ethPrice} • Updates automatically as you type
+                </p>
               </div>
 
-              <Button 
-                className="w-full" 
-                size="lg"
-                onClick={() => window.open(`https://app.uniswap.org/#/add/ETH/${tokenInfo.address}`, '_blank')}
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Create ETHGR/ETH Pool on Uniswap
-              </Button>
+              <div className="space-y-3">
+                <Button 
+                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700" 
+                  size="lg"
+                  onClick={() => window.open(`https://app.uniswap.org/#/add/ETH/${tokenInfo.address}?exactCurrency=ETH&exactAmount=${ethAmount}&feeAmount=3000`, '_blank')}
+                >
+                  <Rocket className="mr-2 h-4 w-4" />
+                  Launch on Uniswap V3 (${ethAmount} ETH + {ethgrAmount} ETHGR)
+                </Button>
+                
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {setEthAmount("0.01"); setEthgrAmount("10000");}}
+                  >
+                    Conservative
+                    <br />0.01 ETH
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {setEthAmount("0.05"); setEthgrAmount("50000");}}
+                  >
+                    Balanced
+                    <br />0.05 ETH
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {setEthAmount("0.1"); setEthgrAmount("100000");}}
+                  >
+                    Aggressive
+                    <br />0.1 ETH
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
