@@ -9,8 +9,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ExternalLink, TrendingUp, DollarSign, Users, Zap, Calculator, Rocket, CheckCircle } from "lucide-react";
 
 export default function TokenLaunchPage() {
-  const [ethAmount, setEthAmount] = useState("0.05");
-  const [ethgrAmount, setEthgrAmount] = useState("50000");
+  const [ethAmount, setEthAmount] = useState("0.01");
+  const [ethgrAmount, setEthgrAmount] = useState("10000");
   const [calculatedPrice, setCalculatedPrice] = useState("0.00");
   const [totalValue, setTotalValue] = useState("0.00");
 
@@ -65,7 +65,7 @@ export default function TokenLaunchPage() {
             <div className="text-3xl font-bold text-green-600">${calculatedPrice}</div>
             <p className="text-sm text-gray-600 dark:text-gray-400">Per ETHGR Token</p>
             <Badge variant="secondary" className="mt-2">
-              Total Portfolio Value: ${totalValue}
+              Total Portfolio Value: ${(parseFloat(calculatedPrice) * parseFloat(tokenInfo.userBalance)).toFixed(2)}
             </Badge>
           </CardContent>
         </Card>
@@ -127,7 +127,7 @@ export default function TokenLaunchPage() {
                     value={ethAmount}
                     onChange={(e) => setEthAmount(e.target.value)}
                   />
-                  <p className="text-sm text-gray-600 mt-1">Your balance: 0.014 ETH</p>
+                  <p className="text-sm text-gray-600 mt-1">Your balance: 0.0006 ETH</p>
                 </div>
                 <div>
                   <Label htmlFor="ethgrAmount">ETHGR Amount</Label>
@@ -154,7 +154,7 @@ export default function TokenLaunchPage() {
                   </div>
                   <div>
                     <p className="font-medium">Total Portfolio Value:</p>
-                    <p className="text-lg font-bold text-blue-600">${totalValue}</p>
+                    <p className="text-lg font-bold text-blue-600">${(parseFloat(calculatedPrice) * parseFloat(tokenInfo.userBalance)).toFixed(2)}</p>
                   </div>
                 </div>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
@@ -176,26 +176,26 @@ export default function TokenLaunchPage() {
                   <Button 
                     variant="outline" 
                     size="sm"
-                    onClick={() => {setEthAmount("0.01"); setEthgrAmount("10000");}}
+                    onClick={() => {setEthAmount("0.0001"); setEthgrAmount("100");}}
                   >
-                    Conservative
-                    <br />0.01 ETH
+                    Micro
+                    <br />0.0001 ETH
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    onClick={() => {setEthAmount("0.05"); setEthgrAmount("50000");}}
+                    onClick={() => {setEthAmount("0.0003"); setEthgrAmount("300");}}
                   >
-                    Balanced
-                    <br />0.05 ETH
+                    Small
+                    <br />0.0003 ETH
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    onClick={() => {setEthAmount("0.1"); setEthgrAmount("100000");}}
+                    onClick={() => {setEthAmount("0.0005"); setEthgrAmount("500");}}
                   >
-                    Aggressive
-                    <br />0.1 ETH
+                    Max Safe
+                    <br />0.0005 ETH
                   </Button>
                 </div>
               </div>

@@ -116,7 +116,7 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **Contract Analysis**:
   - Original broken: 0xd9145CCE52D386f254917e481eB44e9943F39138 (honeypot trap, non-transferable)
   - Working recovery: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247 (fully functional, transferable)
-- **Market Value Tools**: Real-time price calculation showing potential $5,134+ portfolio value
+- **Market Value Tools**: Real-time price calculation with wallet-adjusted liquidity presets for safe token launch
 - **Smart Wallet Generator**: Secure wallet creation with private keys, mnemonic phrases, and fresh start capability
 - **Honeypot Detector**: Real-time analysis of suspicious token contracts with transfer restriction detection
 - **Contract Verifier & Generator**: DappTools-inspired interface for smart contract development and Etherscan verification
