@@ -1885,6 +1885,253 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // Uniscan.xyz API integration for comprehensive blockchain analysis
+  app.get('/api/uniscan/contract/:contractAddress', async (req: Request, res: Response) => {
+    try {
+      const { contractAddress } = req.params;
+      const network = req.query.network || 'ethereum';
+      
+      // Get contract information from Uniscan
+      const contractResponse = await fetch(`https://api.uniscan.xyz/api/v1/contract/${contractAddress}?network=${network}`, {
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      if (!contractResponse.ok) {
+        throw new Error(`Uniscan API error: ${contractResponse.status}`);
+      }
+
+      const contractData = await contractResponse.json();
+      
+      // Enhanced analysis for token contracts
+      const analysisResult = {
+        contractAddress,
+        network,
+        contractInfo: contractData,
+        securityScore: calculateSecurityScore(contractData),
+        riskLevel: assessRiskLevel(contractData),
+        honeypotAnalysis: analyzeHoneypotRisk(contractData),
+        recoveryPotential: assessRecoveryPotential(contractData),
+        recommendations: generateRecoveryRecommendations(contractData)
+      };
+
+      res.json(analysisResult);
+
+    } catch (error) {
+      console.error('Uniscan contract analysis error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to analyze contract' 
+      });
+    }
+  });
+
+  app.get('/api/uniscan/holders/:contractAddress', async (req: Request, res: Response) => {
+    try {
+      const { contractAddress } = req.params;
+      const limit = req.query.limit || 100;
+      const network = req.query.network || 'ethereum';
+      
+      // Get token holders from Uniscan
+      const holdersResponse = await fetch(`https://api.uniscan.xyz/api/v1/token/${contractAddress}/holders?limit=${limit}&network=${network}`, {
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      if (!holdersResponse.ok) {
+        throw new Error(`Uniscan API error: ${holdersResponse.status}`);
+      }
+
+      const holdersData = await holdersResponse.json();
+      
+      // Enhanced holder analysis for recovery operations
+      const recoveryAnalysis = {
+        contractAddress,
+        network,
+        totalHolders: holdersData.total || 0,
+        holders: holdersData.holders?.map((holder: any) => ({
+          address: holder.address,
+          balance: holder.balance,
+          balanceFormatted: formatTokenBalance(holder.balance, holdersData.decimals || 18),
+          percentage: holder.percentage || 0,
+          status: assessHolderStatus(holder, contractAddress),
+          recoveryEligible: isRecoveryEligible(holder),
+          lastActivity: holder.lastTransactionTime || null
+        })) || [],
+        recoveryStats: {
+          eligibleHolders: 0,
+          trappedTokens: 0,
+          recoveryPotential: 'high'
+        }
+      };
+
+      // Calculate recovery statistics
+      recoveryAnalysis.recoveryStats.eligibleHolders = recoveryAnalysis.holders.filter(h => h.recoveryEligible).length;
+      recoveryAnalysis.recoveryStats.trappedTokens = recoveryAnalysis.holders
+        .filter(h => h.status === 'trapped')
+        .reduce((sum, h) => sum + parseFloat(h.balance || '0'), 0);
+
+      res.json(recoveryAnalysis);
+
+    } catch (error) {
+      console.error('Uniscan holders analysis error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to analyze token holders' 
+      });
+    }
+  });
+
+  app.get('/api/uniscan/transactions/:address', async (req: Request, res: Response) => {
+    try {
+      const { address } = req.params;
+      const limit = req.query.limit || 50;
+      const network = req.query.network || 'ethereum';
+      
+      // Get transaction history for recovery analysis
+      const txResponse = await fetch(`https://api.uniscan.xyz/api/v1/address/${address}/transactions?limit=${limit}&network=${network}`, {
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      if (!txResponse.ok) {
+        throw new Error(`Uniscan API error: ${txResponse.status}`);
+      }
+
+      const txData = await txResponse.json();
+      
+      // Analyze transactions for recovery patterns
+      const transactionAnalysis = {
+        address,
+        network,
+        totalTransactions: txData.total || 0,
+        transactions: txData.transactions?.map((tx: any) => ({
+          hash: tx.hash,
+          blockNumber: tx.blockNumber,
+          timestamp: tx.timestamp,
+          from: tx.from,
+          to: tx.to,
+          value: tx.value,
+          status: tx.status,
+          gasUsed: tx.gasUsed,
+          contractInteraction: isContractInteraction(tx),
+          recoveryRelevant: isRecoveryRelevant(tx),
+          riskLevel: assessTransactionRisk(tx)
+        })) || [],
+        patterns: {
+          failedTransactions: 0,
+          contractInteractions: 0,
+          suspiciousActivity: 0,
+          recoveryOpportunities: []
+        }
+      };
+
+      // Calculate transaction patterns
+      transactionAnalysis.patterns.failedTransactions = transactionAnalysis.transactions.filter(tx => tx.status === 'failed').length;
+      transactionAnalysis.patterns.contractInteractions = transactionAnalysis.transactions.filter(tx => tx.contractInteraction).length;
+
+      res.json(transactionAnalysis);
+
+    } catch (error) {
+      console.error('Uniscan transaction analysis error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to analyze transactions' 
+      });
+    }
+  });
+
+  // Helper functions for Uniscan analysis
+  function calculateSecurityScore(contractData: any): number {
+    let score = 70; // Base score
+    
+    if (contractData.verified) score += 20;
+    if (contractData.sourceCode) score += 10;
+    if (contractData.hasProxy) score -= 15;
+    if (contractData.hasOwnership) score -= 10;
+    
+    return Math.max(0, Math.min(100, score));
+  }
+
+  function assessRiskLevel(contractData: any): string {
+    const score = calculateSecurityScore(contractData);
+    if (score >= 80) return 'low';
+    if (score >= 60) return 'medium';
+    if (score >= 40) return 'high';
+    return 'critical';
+  }
+
+  function analyzeHoneypotRisk(contractData: any): any {
+    return {
+      isHoneypot: contractData.transfersRestricted || contractData.sellRestricted || false,
+      restrictionType: contractData.restrictionType || 'none',
+      canSell: !contractData.sellRestricted,
+      canTransfer: !contractData.transfersRestricted,
+      confidence: contractData.honeypotConfidence || 0
+    };
+  }
+
+  function assessRecoveryPotential(contractData: any): string {
+    if (contractData.isUpgradeable) return 'high';
+    if (contractData.hasOwnership && !contractData.ownershipRenounced) return 'medium';
+    if (contractData.verified && contractData.sourceCode) return 'medium';
+    return 'low';
+  }
+
+  function generateRecoveryRecommendations(contractData: any): string[] {
+    const recommendations = [];
+    
+    if (contractData.transfersRestricted) {
+      recommendations.push('Deploy recovery contract to bypass transfer restrictions');
+    }
+    if (contractData.hasOwnership && !contractData.ownershipRenounced) {
+      recommendations.push('Contact contract owner for potential recovery assistance');
+    }
+    if (contractData.isUpgradeable) {
+      recommendations.push('Monitor for contract upgrades that might enable recovery');
+    }
+    if (!contractData.verified) {
+      recommendations.push('Request contract verification for transparency');
+    }
+    
+    return recommendations;
+  }
+
+  function formatTokenBalance(balance: string, decimals: number): string {
+    const balanceNum = parseFloat(balance) / Math.pow(10, decimals);
+    return balanceNum.toLocaleString();
+  }
+
+  function assessHolderStatus(holder: any, contractAddress: string): string {
+    if (holder.address.toLowerCase() === '0x058c8fe01e5c9eac6ee19e6673673b549b368843') {
+      return 'recovered';
+    }
+    if (parseFloat(holder.balance || '0') > 0) {
+      return 'trapped';
+    }
+    return 'inactive';
+  }
+
+  function isRecoveryEligible(holder: any): boolean {
+    return parseFloat(holder.balance || '0') > 0 && 
+           holder.address.toLowerCase() !== '0x058c8fe01e5c9eac6ee19e6673673b549b368843';
+  }
+
+  function isContractInteraction(tx: any): boolean {
+    return tx.to && tx.input && tx.input !== '0x';
+  }
+
+  function isRecoveryRelevant(tx: any): boolean {
+    return tx.status === 'failed' || 
+           (tx.contractInteraction && tx.value === '0');
+  }
+
+  function assessTransactionRisk(tx: any): string {
+    if (tx.status === 'failed') return 'high';
+    if (tx.gasUsed > 500000) return 'medium';
+    return 'low';
+  }
+
   // Dark pools and meme tokens scanner endpoint
   app.get("/api/dark-pools/scan", async (req, res) => {
     try {

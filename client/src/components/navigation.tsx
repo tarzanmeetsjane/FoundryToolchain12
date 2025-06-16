@@ -159,6 +159,17 @@ export default function Navigation() {
               </Button>
             </Link>
             
+            <Link href="/contract-analyzer">
+              <Button 
+                variant={location === "/contract-analyzer" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Contract Analyzer
+              </Button>
+            </Link>
+            
             <Link href="/widget">
               <Button 
                 variant={location === "/widget" ? "default" : "ghost"} 
