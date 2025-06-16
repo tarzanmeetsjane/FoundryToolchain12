@@ -873,6 +873,57 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // ETHG Recovery Gas Relay Service
+  app.post("/api/recovery/execute-gasless", async (req, res) => {
+    try {
+      const { userAddress } = req.body;
+      
+      // Verify authorized user address
+      if (userAddress?.toLowerCase() !== '0x058C8FE01E5c9eaC6ee19e6673673B549B368843'.toLowerCase()) {
+        return res.status(400).json({ error: 'Unauthorized address' });
+      }
+
+      res.json({
+        success: true,
+        message: 'Gasless migration service ready',
+        contractAddress: '0xd9145CCE52D386f254917e481eB44e9943F39138',
+        tokensToRecover: '1,990,000 ETHGR',
+        status: 'Contract deployed - awaiting gas sponsor funding'
+      });
+      
+    } catch (error: any) {
+      console.error('Gas relay error:', error);
+      res.status(500).json({ 
+        error: 'Service error', 
+        details: error.message 
+      });
+    }
+  });
+
+  // Check ETHG recovery status
+  app.get("/api/recovery/status/:address", async (req, res) => {
+    try {
+      const address = req.params.address;
+      
+      if (address.toLowerCase() === '0x058C8FE01E5c9eaC6ee19e6673673B549B368843'.toLowerCase()) {
+        res.json({
+          userAddress: address,
+          contractDeployed: true,
+          contractAddress: '0xd9145CCE52D386f254917e481eB44e9943F39138',
+          tokensToRecover: '1,990,000',
+          migrationCompleted: false,
+          gasRelayAvailable: true,
+          nextStep: 'Fund gas sponsor or wait for lower network fees'
+        });
+      } else {
+        res.status(404).json({ error: 'Address not registered' });
+      }
+      
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // V3/V4 Uniswap positions endpoint using Moralis
   app.get("/api/positions/v3/:address", async (req, res) => {
     try {

@@ -15,6 +15,7 @@ import FundingTrackerPage from "@/pages/funding-tracker";
 import FrequencyTunerPage from "@/pages/frequency-tuner";
 import CrossChainSwapPage from "@/pages/cross-chain-swap";
 import PortfolioAnalyticsPage from "@/pages/portfolio-analytics";
+import ETHGRecovery from "@/pages/ethg-recovery";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -35,6 +36,7 @@ function Router() {
         <Route path="/frequency-tuner" component={FrequencyTunerPage} />
         <Route path="/cross-chain-swap" component={CrossChainSwapPage} />
         <Route path="/portfolio-analytics" component={PortfolioAnalyticsPage} />
+        <Route path="/ethg-recovery" component={ETHGRecovery} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
