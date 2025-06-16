@@ -38,9 +38,9 @@ export default function Navigation() {
               </Button>
             </Link>
             
-            <Link href="/wallet-security">
+            <Link href="/wallet-security-checker">
               <Button 
-                variant={location === "/wallet-security" ? "default" : "ghost"} 
+                variant={location === "/wallet-security-checker" ? "default" : "ghost"} 
                 size="sm"
                 className="h-9"
               >
