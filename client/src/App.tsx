@@ -20,6 +20,7 @@ import TokenLaunchPage from "@/pages/token-launch";
 import BulkRecoveryPage from "@/pages/bulk-recovery";
 import ContractAnalyzerPage from "@/pages/contract-analyzer";
 import ContractVerificationPage from "@/pages/contract-verification";
+import ContractVerificationAPIPage from "@/pages/contract-verification-api";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -45,6 +46,7 @@ function Router() {
         <Route path="/bulk-recovery" component={BulkRecoveryPage} />
         <Route path="/contract-analyzer" component={ContractAnalyzerPage} />
         <Route path="/contract-verification" component={ContractVerificationPage} />
+        <Route path="/contract-verification-api" component={ContractVerificationAPIPage} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
