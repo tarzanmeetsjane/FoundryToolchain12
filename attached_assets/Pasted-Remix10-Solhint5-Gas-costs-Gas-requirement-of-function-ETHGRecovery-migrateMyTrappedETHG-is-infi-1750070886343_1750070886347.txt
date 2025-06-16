@@ -1,0 +1,38 @@
+Remix10
+Solhint5
+Gas costs:
+Gas requirement of function ETHGRecovery.migrateMyTrappedETHG is infinite: If the gas requirement of a function is higher than the block gas limit, it cannot be executed. Please avoid loops in your functions or actions that modify large areas of storage (this includes clearing or copying arrays in storage)
+Pos: 27:4:
+Gas costs:
+Gas requirement of function ETHGRecovery.migrateTrappedETHG is infinite: If the gas requirement of a function is higher than the block gas limit, it cannot be executed. Please avoid loops in your functions or actions that modify large areas of storage (this includes clearing or copying arrays in storage)
+Pos: 43:4:
+Gas costs:
+Gas requirement of function ETHGRecovery.toggleMigration is infinite: If the gas requirement of a function is higher than the block gas limit, it cannot be executed. Please avoid loops in your functions or actions that modify large areas of storage (this includes clearing or copying arrays in storage)
+Pos: 57:4:
+Gas costs:
+Gas requirement of function ETHGRecovery.emergencyMint is infinite: If the gas requirement of a function is higher than the block gas limit, it cannot be executed. Please avoid loops in your functions or actions that modify large areas of storage (this includes clearing or copying arrays in storage)
+Pos: 64:4:
+Guard conditions:
+Use "assert(x)" if you never ever want x to be false, not in any circumstance (apart from a bug in your code). Use "require(x)" if x can be false, due to e.g. invalid input or a failing external component.
+more
+Pos: 28:8:
+Guard conditions:
+Use "assert(x)" if you never ever want x to be false, not in any circumstance (apart from a bug in your code). Use "require(x)" if x can be false, due to e.g. invalid input or a failing external component.
+more
+Pos: 29:8:
+Guard conditions:
+Use "assert(x)" if you never ever want x to be false, not in any circumstance (apart from a bug in your code). Use "require(x)" if x can be false, due to e.g. invalid input or a failing external component.
+more
+Pos: 30:8:
+Guard conditions:
+Use "assert(x)" if you never ever want x to be false, not in any circumstance (apart from a bug in your code). Use "require(x)" if x can be false, due to e.g. invalid input or a failing external component.
+more
+Pos: 44:8:
+Guard conditions:
+Use "assert(x)" if you never ever want x to be false, not in any circumstance (apart from a bug in your code). Use "require(x)" if x can be false, due to e.g. invalid input or a failing external component.
+more
+Pos: 45:8:
+Guard conditions:
+Use "assert(x)" if you never ever want x to be false, not in any circumstance (apart from a bug in your code). Use "require(x)" if x can be false, due to e.g. invalid input or a failing external component.
+more
+Pos: 46:8:
