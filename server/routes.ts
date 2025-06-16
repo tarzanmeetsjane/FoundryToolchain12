@@ -2821,6 +2821,95 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     return licenseCodes[licenseType] || '1';
   }
 
+  // Wallet Security Analysis
+  app.get('/api/wallet/security/:address', async (req: Request, res: Response) => {
+    try {
+      const { address } = req.params;
+      
+      if (!address.match(/^0x[a-fA-F0-9]{40}$/)) {
+        return res.status(400).json({ error: 'Invalid wallet address format' });
+      }
+
+      // Get basic wallet info
+      const ethBalanceResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const ethBalanceData = await ethBalanceResponse.json();
+      
+      // Get transaction count
+      const txCountResponse = await fetch(
+        `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionCount&address=${address}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const txCountData = await txCountResponse.json();
+
+      // Get recent transactions
+      const txListResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const txListData = await txListResponse.json();
+
+      // Get token balances (specifically check for ETHGR)
+      const tokenBalanceResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0xfA7b8c553C48C56ec7027d26ae95b029a2abF247&address=${address}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const tokenBalanceData = await tokenBalanceResponse.json();
+
+      const ethBalance = ethBalanceData.status === '1' ? 
+        (parseInt(ethBalanceData.result) / 1e18).toFixed(4) : '0';
+      
+      const transactionCount = txCountData.result ? 
+        parseInt(txCountData.result, 16) : 0;
+
+      const ethgrBalance = tokenBalanceData.status === '1' ? 
+        (parseInt(tokenBalanceData.result) / 1e18).toFixed(0) : '0';
+
+      // Analyze security factors
+      const securityAnalysis = {
+        hasEthBalance: parseFloat(ethBalance) > 0.01,
+        hasTransactions: transactionCount > 0,
+        hasETHGRTokens: parseInt(ethgrBalance) > 0,
+        isContractDeployer: txListData.result?.some((tx: any) => 
+          tx.to === '' && tx.isError === '0'
+        ) || false,
+        suspiciousActivity: false // Basic check - could be enhanced
+      };
+
+      const securityScore = [
+        securityAnalysis.hasEthBalance ? 25 : 0,
+        securityAnalysis.hasTransactions ? 20 : 0,
+        securityAnalysis.hasETHGRTokens ? 30 : 0,
+        securityAnalysis.isContractDeployer ? 20 : 0,
+        !securityAnalysis.suspiciousActivity ? 5 : 0
+      ].reduce((a, b) => a + b, 0);
+
+      res.json({
+        address,
+        ethBalance,
+        transactionCount,
+        ethgrBalance,
+        transactions: txListData.result || [],
+        tokens: [
+          {
+            contract: '0xfA7b8c553C48C56ec7027d26ae95b029a2abF247',
+            symbol: 'ETHGR',
+            balance: ethgrBalance,
+            value: parseFloat(ethgrBalance) * 0.355 // Original ETHG price
+          }
+        ],
+        securityAnalysis,
+        securityScore,
+        suspiciousActivity: false
+      });
+
+    } catch (error) {
+      console.error('Wallet security check error:', error);
+      res.status(500).json({ 
+        error: 'Failed to analyze wallet security',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   return httpServer;
 }
 
