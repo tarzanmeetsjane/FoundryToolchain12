@@ -212,11 +212,19 @@ export default function TokenLaunchPage() {
               <div className="mt-6 pt-6 border-t">
                 <h4 className="font-semibold mb-4">Quick Actions</h4>
                 <div className="grid grid-cols-2 gap-3">
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => window.open(`https://etherscan.io/address/${tokenInfo.address}`, '_blank')}
+                  >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     View on Etherscan
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => window.open(`https://dexscreener.com/ethereum/${tokenInfo.address}`, '_blank')}
+                  >
                     <Zap className="mr-2 h-4 w-4" />
                     Add to DEX Screener
                   </Button>
