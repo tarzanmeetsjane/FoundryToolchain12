@@ -883,26 +883,64 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
         return res.status(400).json({ error: 'Unauthorized address' });
       }
 
-      // Execute the recovery process
-      const { emergencyRecovery } = await import('./execute-recovery');
-      const result = await emergencyRecovery.executeRecovery();
+      // Calculate optimal gas settings for current network conditions
+      const { ethers } = await import('ethers');
+      const provider = new ethers.JsonRpcProvider('https://ethereum-rpc.publicnode.com');
+      
+      // Get current network gas data
+      const feeData = await provider.getFeeData();
+      const currentBaseFee = feeData.gasPrice || ethers.parseUnits('20', 'gwei');
+      
+      // Calculate safe gas settings
+      const priorityFee = ethers.parseUnits('2', 'gwei');
+      const maxFee = currentBaseFee + priorityFee;
+      
+      const gasSettings = {
+        gasLimit: '300000',
+        maxFeePerGas: maxFee.toString(),
+        maxPriorityFeePerGas: priorityFee.toString()
+      };
+      
+      // Check migration status
+      const contractABI = [
+        'function balanceOf(address) external view returns (uint256)',
+        'function hasMigrated(address) external view returns (bool)'
+      ];
+      const contract = new ethers.Contract('0xd9145CCE52D386f254917e481eB44e9943F39138', contractABI, provider);
+      const hasMigrated = await contract.hasMigrated(userAddress);
+      const currentBalance = await contract.balanceOf(userAddress);
 
-      if (result.success) {
+      if (hasMigrated) {
         res.json({
           success: true,
-          message: 'Recovery verification complete - contract ready for migration',
+          message: 'Token migration already completed',
+          userAddress: userAddress,
+          currentBalance: ethers.formatEther(currentBalance),
+          status: 'Migration completed - tokens available in wallet'
+        });
+      } else {
+        const maxFeeGwei = Math.round(Number(ethers.formatUnits(gasSettings.maxFeePerGas, 'gwei')));
+        const priorityFeeGwei = Math.round(Number(ethers.formatUnits(gasSettings.maxPriorityFeePerGas, 'gwei')));
+        
+        res.json({
+          success: true,
+          message: 'Optimal gas settings calculated for current network conditions',
           contractAddress: '0xd9145CCE52D386f254917e481eB44e9943F39138',
           userAddress: userAddress,
           tokensToRecover: '1,990,000 ETHGR',
-          status: 'Ready to execute migrateMyTrappedETHG() function',
-          instructions: 'In Remix: Deploy & Run → At Address → paste contract address → click migrateMyTrappedETHG',
-          details: result.details
-        });
-      } else {
-        res.status(400).json({
-          success: false,
-          error: result.message,
-          details: result.details
+          gasSettings: {
+            gasLimit: gasSettings.gasLimit,
+            maxFeePerGas: `${maxFeeGwei} gwei`,
+            maxPriorityFeePerGas: `${priorityFeeGwei} gwei`
+          },
+          instructions: [
+            'In Remix: Click migrateMyTrappedETHG button',
+            `Set Gas Limit: ${gasSettings.gasLimit}`,
+            `In MetaMask - Max Fee: ${maxFeeGwei} gwei`,
+            `In MetaMask - Priority Fee: ${priorityFeeGwei} gwei`,
+            'Confirm transaction to receive 1,990,000 ETHGR tokens'
+          ],
+          networkStatus: `Current base fee: ${Math.round(Number(ethers.formatUnits(currentBaseFee, 'gwei')))} gwei`
         });
       }
       
