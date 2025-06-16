@@ -883,13 +883,28 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
         return res.status(400).json({ error: 'Unauthorized address' });
       }
 
-      res.json({
-        success: true,
-        message: 'Gasless migration service ready',
-        contractAddress: '0xd9145CCE52D386f254917e481eB44e9943F39138',
-        tokensToRecover: '1,990,000 ETHGR',
-        status: 'Contract deployed - awaiting gas sponsor funding'
-      });
+      // Execute the recovery process
+      const { emergencyRecovery } = await import('./execute-recovery');
+      const result = await emergencyRecovery.executeRecovery();
+
+      if (result.success) {
+        res.json({
+          success: true,
+          message: 'Recovery verification complete - contract ready for migration',
+          contractAddress: '0xd9145CCE52D386f254917e481eB44e9943F39138',
+          userAddress: userAddress,
+          tokensToRecover: '1,990,000 ETHGR',
+          status: 'Ready to execute migrateMyTrappedETHG() function',
+          instructions: 'In Remix: Deploy & Run → At Address → paste contract address → click migrateMyTrappedETHG',
+          details: result.details
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          error: result.message,
+          details: result.details
+        });
+      }
       
     } catch (error: any) {
       console.error('Gas relay error:', error);
