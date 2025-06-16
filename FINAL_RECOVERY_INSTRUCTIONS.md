@@ -1,37 +1,32 @@
-# 🎯 FINAL STEP: Execute Your Token Recovery
+# FINAL ETHG RECOVERY DEPLOYMENT INSTRUCTIONS
 
-## Your Recovery System is ACTIVE ✅
+## STEP 1: Deploy NEW Contract in Remix
 
-**Contract Address**: `0xd9145CCE52D386f254917e481eB44e9943F39138`
-**Your Wallet**: `0x058C8FE01E5c9eaC6ee19e6673673B549B368843`
-**Tokens to Recover**: 1,990,000 ETHGR
+1. **Open Remix IDE** 
+2. **Go to "Deploy & Run Transactions" tab** (Ethereum logo)
+3. **Make sure Environment = "Injected Provider - MetaMask"**
+4. **Make sure Contract = "ETHGRecovery"** (dropdown)
+5. **Click the BIG ORANGE "Deploy" button** (at the top, NOT in deployed contracts section)
 
-## EXECUTE RECOVERY NOW
+## STEP 2: MetaMask Settings for Deployment
+- Gas Limit: **3000000**
+- Max Fee: **2 gwei** 
+- Priority Fee: **2 gwei**
+- Confirm deployment
 
-### Option 1: Use Our Dashboard (Easiest)
-1. Click the red "Recover Tokens Now" button on your dashboard
-2. Click "Execute Gasless Recovery"
-3. Follow the Remix instructions provided
+## STEP 3: After Deployment
+- You'll see a NEW contract address (different from 0xd9145...)
+- Look for the new contract in "Deployed Contracts" section
+- Click the **migrateMyTrappedETHG** button
 
-### Option 2: Direct Remix Execution
-1. Go to Remix IDE
-2. **Deploy & Run** tab
-3. **At Address** field: paste `0xd9145CCE52D386f254917e481eB44e9943F39138`
-4. Click **"At Address"** button
-5. Find the red **"migrateMyTrappedETHG"** button
-6. Click it
-7. Confirm in MetaMask (with higher gas settings)
+## STEP 4: Migration Transaction Settings
+- Gas Limit: **300000**
+- Max Fee: **2 gwei**
+- Priority Fee: **2 gwei**
+- Confirm transaction
 
-### Gas Settings for Success
-- **Max Base Fee**: 2.0 gwei (minimum)
-- **Priority Fee**: 1.0 gwei
-- **Gas Limit**: 300,000
+## RESULT: 
+You'll receive 1,990,000 ETHGR tokens that are fully transferable.
 
-## What Happens Next
-- Contract mints exactly 1,990,000 ETHGR tokens to your wallet
-- Tokens have full transfer capability (no honeypot restrictions)
-- You can immediately trade, sell, or transfer them
-- Migration is permanent and irreversible
-
-## Support
-Your recovery contract is deployed and verified. The migration function is ready to execute. All systems are operational.
+## Key Point:
+The Deploy button creates a BRAND NEW contract. Don't use the old address 0xd9145CCE52D386f254917e481eB44e9943F39138
