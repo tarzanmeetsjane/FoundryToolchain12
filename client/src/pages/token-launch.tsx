@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ExternalLink, TrendingUp, DollarSign, Users, Zap, Calculator, Rocket, CheckCircle } from "lucide-react";
+import { ExternalLink, TrendingUp, DollarSign, Users, Zap, Calculator, Rocket, CheckCircle, RefreshCw } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function TokenLaunchPage() {
   const [ethAmount, setEthAmount] = useState("0.01");
@@ -26,6 +27,28 @@ export default function TokenLaunchPage() {
 
   const ethPrice = 2580; // Current ETH price
 
+  // Check if ETHGR already has Uniswap pools
+  const { data: poolData, refetch: refetchPools } = useQuery({
+    queryKey: [`/api/uniswap/pools/${tokenInfo.address}`],
+    queryFn: async () => {
+      const response = await fetch(`/api/uniswap/pools/${tokenInfo.address}`);
+      if (!response.ok) throw new Error('Failed to fetch pool data');
+      return response.json();
+    },
+    refetchInterval: 30000
+  });
+
+  // Check current ETHGR price on Uniswap
+  const { data: priceData } = useQuery({
+    queryKey: [`/api/uniswap/token-price/${tokenInfo.address}`],
+    queryFn: async () => {
+      const response = await fetch(`/api/uniswap/token-price/${tokenInfo.address}`);
+      if (!response.ok) throw new Error('Failed to fetch price data');
+      return response.json();
+    },
+    refetchInterval: 15000
+  });
+
   useEffect(() => {
     if (ethAmount && ethgrAmount && parseFloat(ethAmount) > 0 && parseFloat(ethgrAmount) > 0) {
       const pricePerToken = (parseFloat(ethAmount) * ethPrice) / parseFloat(ethgrAmount);
@@ -34,6 +57,33 @@ export default function TokenLaunchPage() {
       setTotalValue(totalPortfolioValue.toFixed(2));
     }
   }, [ethAmount, ethgrAmount]);
+
+  const handleUniswapLaunch = async () => {
+    try {
+      const response = await fetch('/api/uniswap/create-pool', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tokenAddress: tokenInfo.address,
+          ethAmount,
+          tokenAmount: ethgrAmount,
+          feeTier: 3000
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        window.open(data.uniswapUrl, '_blank');
+      } else {
+        console.error('Pool creation failed:', data.error);
+      }
+    } catch (error) {
+      console.error('Uniswap launch error:', error);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -88,15 +138,30 @@ export default function TokenLaunchPage() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="h-5 w-5 text-green-600" />
-              Calculated Price
+              {priceData?.exists ? 'Live Uniswap Price' : 'Calculated Price'}
+              {priceData?.exists && (
+                <Badge variant="secondary" className="bg-green-100 text-green-800">
+                  LIVE
+                </Badge>
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">${calculatedPrice}</div>
+            <div className="text-3xl font-bold text-green-600">
+              ${priceData?.exists ? priceData.price.toFixed(6) : calculatedPrice}
+            </div>
             <p className="text-sm text-gray-600 dark:text-gray-400">Per ETHGR Token</p>
             <Badge variant="secondary" className="mt-2">
-              Total Portfolio Value: ${(parseFloat(calculatedPrice) * parseFloat(tokenInfo.userBalance)).toFixed(2)}
+              Total Portfolio Value: ${priceData?.exists ? 
+                (priceData.price * parseFloat(tokenInfo.userBalance.replace(/,/g, ''))).toFixed(2) :
+                (parseFloat(calculatedPrice) * parseFloat(tokenInfo.userBalance.replace(/,/g, ''))).toFixed(2)
+              }
             </Badge>
+            {priceData?.exists && (
+              <div className="mt-2 text-xs text-gray-500">
+                24h Volume: ${priceData.volume24h?.toFixed(0) || 'N/A'}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -118,13 +183,27 @@ export default function TokenLaunchPage() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
-              Liquidity Status
+              Uniswap Status
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => refetchPools()}
+                className="ml-auto"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-600">${(parseFloat(ethAmount) * ethPrice).toFixed(0)}</div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Initial Liquidity</p>
-            <Badge variant="outline" className="mt-2">Ready to Deploy</Badge>
+            <div className="text-3xl font-bold text-orange-600">
+              {poolData?.hasLiquidity ? `$${poolData.totalLiquidity?.toFixed(0) || '0'}` : 'No Pool'}
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {poolData?.hasLiquidity ? 'Total Liquidity' : 'Ready for Launch'}
+            </p>
+            <Badge variant={poolData?.hasLiquidity ? "default" : "outline"} className="mt-2">
+              {poolData?.hasLiquidity ? `${poolData.existingPools?.length || 0} Active Pool(s)` : 'Awaiting Pool Creation'}
+            </Badge>
           </CardContent>
         </Card>
       </div>

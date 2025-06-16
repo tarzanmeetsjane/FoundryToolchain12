@@ -1720,6 +1720,171 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // Uniswap API integration endpoints
+  app.get('/api/uniswap/pools/:tokenAddress', async (req: Request, res: Response) => {
+    try {
+      const { tokenAddress } = req.params;
+      const network = req.query.network || 'ethereum';
+      
+      // Check if pool already exists for this token
+      const poolsResponse = await fetch(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `{
+            pools(where: {
+              or: [
+                {token0: "${tokenAddress.toLowerCase()}"},
+                {token1: "${tokenAddress.toLowerCase()}"}
+              ]
+            }) {
+              id
+              token0 {
+                id
+                symbol
+                name
+              }
+              token1 {
+                id
+                symbol
+                name
+              }
+              feeTier
+              liquidity
+              volumeUSD
+              totalValueLockedUSD
+            }
+          }`
+        })
+      });
+
+      const poolsData = await poolsResponse.json();
+      
+      res.json({
+        tokenAddress,
+        network,
+        existingPools: poolsData.data?.pools || [],
+        hasLiquidity: (poolsData.data?.pools || []).length > 0,
+        totalLiquidity: poolsData.data?.pools?.reduce((sum: number, pool: any) => 
+          sum + parseFloat(pool.totalValueLockedUSD || '0'), 0) || 0
+      });
+
+    } catch (error) {
+      console.error('Uniswap pools check error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to check Uniswap pools' 
+      });
+    }
+  });
+
+  app.post('/api/uniswap/create-pool', async (req: Request, res: Response) => {
+    try {
+      const { tokenAddress, ethAmount, tokenAmount, feeTier = 3000 } = req.body;
+      
+      if (!tokenAddress || !ethAmount || !tokenAmount) {
+        return res.status(400).json({ error: 'Missing required parameters' });
+      }
+
+      // Generate Uniswap V3 pool creation URL
+      const uniswapUrl = `https://app.uniswap.org/#/add/ETH/${tokenAddress}?exactCurrency=ETH&exactAmount=${ethAmount}&feeAmount=${feeTier}`;
+      
+      // Calculate initial price
+      const ethPrice = 2580; // Current ETH price - would fetch from API in production
+      const pricePerToken = (parseFloat(ethAmount) * ethPrice) / parseFloat(tokenAmount);
+      
+      res.json({
+        success: true,
+        uniswapUrl,
+        poolDetails: {
+          token0: 'ETH',
+          token1: tokenAddress,
+          ethAmount,
+          tokenAmount,
+          feeTier,
+          initialPrice: pricePerToken.toFixed(6),
+          estimatedGas: '0.02-0.05 ETH'
+        },
+        instructions: [
+          'Click the Uniswap URL to open the interface',
+          'Connect your MetaMask wallet',
+          'Approve token spending for the contract',
+          'Confirm the liquidity addition transaction',
+          'Your tokens will immediately have market value'
+        ]
+      });
+
+    } catch (error) {
+      console.error('Uniswap pool creation error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to prepare pool creation' 
+      });
+    }
+  });
+
+  app.get('/api/uniswap/token-price/:tokenAddress', async (req: Request, res: Response) => {
+    try {
+      const { tokenAddress } = req.params;
+      
+      // Query Uniswap subgraph for current token price
+      const priceResponse = await fetch(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `{
+            token(id: "${tokenAddress.toLowerCase()}") {
+              id
+              symbol
+              name
+              decimals
+              derivedETH
+              totalValueLocked
+              volume
+              volumeUSD
+            }
+          }`
+        })
+      });
+
+      const priceData = await priceResponse.json();
+      const token = priceData.data?.token;
+
+      if (!token) {
+        return res.json({
+          tokenAddress,
+          exists: false,
+          price: 0,
+          message: 'Token not found in Uniswap - no liquidity pools exist'
+        });
+      }
+
+      // Calculate USD price (derivedETH * current ETH price)
+      const ethPrice = 2580; // Would fetch from API in production
+      const usdPrice = parseFloat(token.derivedETH || '0') * ethPrice;
+
+      res.json({
+        tokenAddress,
+        exists: true,
+        symbol: token.symbol,
+        name: token.name,
+        price: usdPrice,
+        priceETH: token.derivedETH,
+        totalValueLocked: token.totalValueLocked,
+        volume24h: token.volumeUSD,
+        lastUpdated: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('Uniswap price check error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to fetch token price' 
+      });
+    }
+  });
+
   // Dark pools and meme tokens scanner endpoint
   app.get("/api/dark-pools/scan", async (req, res) => {
     try {
