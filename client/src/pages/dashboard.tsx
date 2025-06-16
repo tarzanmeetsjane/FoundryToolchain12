@@ -91,6 +91,37 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {/* ETHG Recovery Alert */}
+      <Card className="border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
+        <CardHeader>
+          <CardTitle className="text-red-800 dark:text-red-200 flex items-center gap-2">
+            <Activity className="h-5 w-5" />
+            ETHG Token Recovery Available
+          </CardTitle>
+          <CardDescription className="text-red-700 dark:text-red-300">
+            Your 1,990,000 trapped ETHG tokens can now be recovered as fully transferable ETHGR tokens
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4 items-start">
+            <div className="flex-1">
+              <div className="text-sm text-red-700 dark:text-red-300 mb-2">
+                Contract deployed at: <code className="bg-red-100 dark:bg-red-900 px-1 rounded">0xd9145CCE52D386f254917e481eB44e9943F39138</code>
+              </div>
+              <div className="text-sm text-red-700 dark:text-red-300">
+                Gasless recovery service ready - no gas fees required
+              </div>
+            </div>
+            <Button 
+              onClick={() => window.location.href = '/ethg-recovery'}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Recover Tokens Now
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       <Tabs defaultValue="quick" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="quick">Quick Tools</TabsTrigger>

@@ -109,7 +109,7 @@ export default function ETHGRecovery() {
                 <div className="text-2xl font-bold">1,990,000 ETHGR</div>
               </div>
               <Badge variant="secondary">
-                {recoveryStatus?.migrationCompleted ? 'Completed' : 'Pending'}
+                {(recoveryStatus as any)?.migrationCompleted ? 'Completed' : 'Pending'}
               </Badge>
             </div>
           </CardContent>
@@ -125,7 +125,7 @@ export default function ETHGRecovery() {
           </CardHeader>
           <CardContent className="space-y-4">
             
-            {recoveryStatus?.migrationCompleted ? (
+            {(recoveryStatus as any)?.migrationCompleted ? (
               <div className="text-center py-8">
                 <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Migration Completed!</h3>
