@@ -54,6 +54,7 @@ function Router() {
         <Route path="/contract-verification-helper" component={ContractVerificationHelper} />
         <Route path="/uniswap-pool-creator" component={UniswapPoolCreator} />
         <Route path="/wallet-security-checker" component={WalletSecurityChecker} />
+        <Route path="/manual-verification" component={ManualVerification} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
