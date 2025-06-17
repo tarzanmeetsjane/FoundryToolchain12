@@ -26,6 +26,7 @@ import UniswapPoolCreator from "@/pages/uniswap-pool-creator";
 import WalletSecurityChecker from "@/pages/wallet-security-checker";
 import ManualVerification from "@/pages/manual-verification";
 import LiveUniswapCreator from "@/pages/live-uniswap-creator";
+import ETHGRecoveryAnalyzer from "@/pages/ethg-recovery-analyzer";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
