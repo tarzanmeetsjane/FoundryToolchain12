@@ -25,6 +25,7 @@ import ContractVerificationHelper from "@/pages/contract-verification-helper";
 import UniswapPoolCreator from "@/pages/uniswap-pool-creator";
 import WalletSecurityChecker from "@/pages/wallet-security-checker";
 import ManualVerification from "@/pages/manual-verification";
+import LiveUniswapCreator from "@/pages/live-uniswap-creator";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -55,6 +56,7 @@ function Router() {
         <Route path="/uniswap-pool-creator" component={UniswapPoolCreator} />
         <Route path="/wallet-security-checker" component={WalletSecurityChecker} />
         <Route path="/manual-verification" component={ManualVerification} />
+        <Route path="/live-uniswap-creator" component={LiveUniswapCreator} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>

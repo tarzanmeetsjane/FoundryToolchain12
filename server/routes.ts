@@ -2910,6 +2910,91 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // Live Uniswap Pool Data
+  app.get('/api/live/pool-data/:userAddress/:tokenAddress', async (req: Request, res: Response) => {
+    try {
+      const { userAddress, tokenAddress } = req.params;
+      
+      // Get live ETH price from CoinGecko
+      const ethPriceResponse = await makeCoinGeckoRequest('simple/price', {
+        ids: 'ethereum',
+        vs_currencies: 'usd'
+      });
+      const ethPrice = ethPriceResponse.ethereum?.usd || 0;
+
+      // Get token balance
+      const tokenBalanceResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${tokenAddress}&address=${userAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const tokenData = await tokenBalanceResponse.json();
+      const tokenBalance = tokenData.status === '1' ? 
+        (parseInt(tokenData.result) / 1e18).toFixed(0) : '0';
+
+      // Get ETH balance
+      const ethBalanceResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=balance&address=${userAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const ethData = await ethBalanceResponse.json();
+      const ethBalance = ethData.status === '1' ? 
+        (parseInt(ethData.result) / 1e18).toFixed(4) : '0';
+
+      // Get current gas price
+      const gasResponse = await fetch(
+        `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const gasData = await gasResponse.json();
+      const gasPrice = gasData.status === '1' ? 
+        parseInt(gasData.result.StandardGasPrice) : 0;
+
+      // Calculate pool creation estimates
+      const poolCreationGas = 200000; // Estimated gas for pool creation
+      const gasCostUSD = (poolCreationGas * gasPrice * 1e-9 * ethPrice).toFixed(2);
+
+      // Suggested liquidity ratios based on $0.355 per token
+      const tokenPriceUSD = 0.355;
+      const suggestions = [
+        {
+          percentage: 5,
+          tokenAmount: Math.floor(parseInt(tokenBalance) * 0.05),
+          ethAmount: (Math.floor(parseInt(tokenBalance) * 0.05) * tokenPriceUSD / ethPrice).toFixed(4),
+          usdValue: (Math.floor(parseInt(tokenBalance) * 0.05) * tokenPriceUSD).toFixed(0)
+        },
+        {
+          percentage: 25,
+          tokenAmount: Math.floor(parseInt(tokenBalance) * 0.25),
+          ethAmount: (Math.floor(parseInt(tokenBalance) * 0.25) * tokenPriceUSD / ethPrice).toFixed(4),
+          usdValue: (Math.floor(parseInt(tokenBalance) * 0.25) * tokenPriceUSD).toFixed(0)
+        },
+        {
+          percentage: 50,
+          tokenAmount: Math.floor(parseInt(tokenBalance) * 0.5),
+          ethAmount: (Math.floor(parseInt(tokenBalance) * 0.5) * tokenPriceUSD / ethPrice).toFixed(4),
+          usdValue: (Math.floor(parseInt(tokenBalance) * 0.5) * tokenPriceUSD).toFixed(0)
+        }
+      ];
+
+      res.json({
+        ethPrice,
+        tokenBalance,
+        ethBalance,
+        gasPrice,
+        gasCostUSD,
+        tokenPriceUSD,
+        totalValueUSD: (parseInt(tokenBalance) * tokenPriceUSD).toFixed(0),
+        suggestions,
+        timestamp: Date.now(),
+        poolCreationReady: parseInt(tokenBalance) > 0 && parseFloat(ethBalance) > 0.1
+      });
+
+    } catch (error) {
+      console.error('Live pool data error:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch live pool data',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   return httpServer;
 }
 
