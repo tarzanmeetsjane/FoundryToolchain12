@@ -88,22 +88,22 @@ export default function LiveUniswapCreator() {
 
   const suggestedPairs = [
     {
-      ethgr: "100000",
-      eth: (100000 * 0.355 / ethPrice).toFixed(4),
+      ethgr: Math.floor((parseFloat(ethBalance) * ethPrice * 0.9) / 0.355).toString(),
+      eth: (parseFloat(ethBalance) * 0.9).toFixed(4),
       ratio: "1 ETHGR = $0.355",
-      description: "Conservative 5% of holdings"
+      description: "Use 90% of current ETH balance"
     },
     {
-      ethgr: "500000", 
-      eth: (500000 * 0.355 / ethPrice).toFixed(4),
-      ratio: "1 ETHGR = $0.355",
-      description: "Moderate 25% of holdings"
+      ethgr: Math.floor((parseFloat(ethBalance) * ethPrice * 0.5) / 0.355).toString(),
+      eth: (parseFloat(ethBalance) * 0.5).toFixed(4),
+      ratio: "1 ETHGR = $0.355", 
+      description: "Use 50% of current ETH balance"
     },
     {
-      ethgr: "1000000",
-      eth: (1000000 * 0.355 / ethPrice).toFixed(4),
+      ethgr: Math.floor((parseFloat(ethBalance) * ethPrice * 0.25) / 0.355).toString(),
+      eth: (parseFloat(ethBalance) * 0.25).toFixed(4),
       ratio: "1 ETHGR = $0.355",
-      description: "Aggressive 50% of holdings"
+      description: "Use 25% of current ETH balance"
     }
   ];
 

@@ -60,14 +60,14 @@ export default function Navigation() {
               </Button>
             </Link>
             
-            <Link href="/liquidity-management">
+            <Link href="/live-uniswap-creator">
               <Button 
-                variant={location === "/liquidity-management" ? "default" : "ghost"} 
+                variant={location === "/live-uniswap-creator" ? "default" : "ghost"} 
                 size="sm"
                 className="h-9"
               >
                 <Droplets className="h-4 w-4 mr-2" />
-                Liquidity
+                Create Pool
               </Button>
             </Link>
             
