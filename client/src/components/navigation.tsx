@@ -71,6 +71,17 @@ export default function Navigation() {
               </Button>
             </Link>
             
+            <Link href="/ethg-recovery-analyzer">
+              <Button 
+                variant={location === "/ethg-recovery-analyzer" ? "default" : "ghost"} 
+                size="sm"
+                className="h-9"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                ETHG Recovery
+              </Button>
+            </Link>
+            
             <Link href="/address-analyzer">
               <Button 
                 variant={location === "/address-analyzer" ? "default" : "ghost"} 

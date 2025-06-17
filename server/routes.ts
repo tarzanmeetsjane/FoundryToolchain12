@@ -2995,6 +2995,87 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // ETHG Recovery Analysis
+  app.get('/api/ethg/recovery-analysis/:userAddress', async (req: Request, res: Response) => {
+    try {
+      const { userAddress } = req.params;
+      
+      // Get existing pool data from GeckoTerminal
+      const poolResponse = await fetch('https://api.geckoterminal.com/api/v2/search/pools?query=ETHG&network=eth&page=1');
+      const poolData = await poolResponse.json();
+      
+      const ethgPool = poolData.data.find((pool: any) => 
+        pool.attributes.address === '0x0890f93a1fd344b3437ec10c1c14d1a581142c5f'
+      );
+
+      // Get recovery contract balance
+      const recoveryBalanceResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0xfA7b8c553C48C56ec7027d26ae95b029a2abF247&address=${userAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const recoveryData = await recoveryBalanceResponse.json();
+      const recoveryBalance = recoveryData.status === '1' ? 
+        (parseInt(recoveryData.result) / 1e18).toFixed(0) : '0';
+
+      // Check for any LP tokens in original pool
+      const lpBalanceResponse = await fetch(
+        `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x0890f93a1fd344b3437ec10c1c14d1a581142c5f&address=${userAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`
+      );
+      const lpData = await lpBalanceResponse.json();
+      const lpBalance = lpData.status === '1' ? 
+        (parseInt(lpData.result) / 1e18).toFixed(6) : '0';
+
+      // Calculate market position
+      const currentPrice = ethgPool ? parseFloat(ethgPool.attributes.base_token_price_usd) : 0.335;
+      const recoveryValue = parseInt(recoveryBalance) * currentPrice;
+      const poolLiquidity = ethgPool ? parseFloat(ethgPool.attributes.reserve_in_usd) : 57970;
+      const advantageMultiplier = recoveryValue / poolLiquidity;
+
+      const recoveryOptions = [
+        {
+          type: 'primary',
+          title: 'Create New ETHG Pool',
+          description: 'Use your recovery contract to establish the primary ETHG trading venue',
+          feasibility: 'High',
+          value: recoveryValue,
+          action: 'Create pool with recovery contract tokens'
+        },
+        {
+          type: 'secondary', 
+          title: 'Market Transition Strategy',
+          description: 'Position as the legitimate ETHG after honeypot exposure',
+          feasibility: 'High',
+          value: recoveryValue * 1.2, // Premium for being the working version
+          action: 'Leverage market authority with larger holdings'
+        }
+      ];
+
+      res.json({
+        poolData: ethgPool,
+        userAnalysis: {
+          recoveryBalance,
+          recoveryValue: recoveryValue.toFixed(0),
+          lpBalance,
+          currentPrice,
+          advantageMultiplier: advantageMultiplier.toFixed(1)
+        },
+        recoveryOptions,
+        marketPosition: {
+          isAdvantaged: advantageMultiplier > 1,
+          canDominateMarket: advantageMultiplier > 10,
+          recommendedStrategy: 'create_new_pool'
+        },
+        timestamp: Date.now()
+      });
+
+    } catch (error) {
+      console.error('ETHG recovery analysis error:', error);
+      res.status(500).json({ 
+        error: 'Failed to analyze recovery options',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   return httpServer;
 }
 

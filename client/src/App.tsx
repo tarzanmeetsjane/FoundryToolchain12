@@ -58,6 +58,7 @@ function Router() {
         <Route path="/wallet-security-checker" component={WalletSecurityChecker} />
         <Route path="/manual-verification" component={ManualVerification} />
         <Route path="/live-uniswap-creator" component={LiveUniswapCreator} />
+        <Route path="/ethg-recovery-analyzer" component={ETHGRecoveryAnalyzer} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
