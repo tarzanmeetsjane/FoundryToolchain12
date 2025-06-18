@@ -71,14 +71,14 @@ export default function Navigation() {
               </Button>
             </Link>
             
-            <Link href="/ethg-recovery-analyzer">
+            <Link href="/immediate-monetization">
               <Button 
-                variant={location === "/ethg-recovery-analyzer" ? "default" : "ghost"} 
+                variant={location === "/immediate-monetization" ? "default" : "ghost"} 
                 size="sm"
                 className="h-9"
               >
-                <Shield className="h-4 w-4 mr-2" />
-                ETHG Recovery
+                <DollarSign className="h-4 w-4 mr-2" />
+                Cash Out
               </Button>
             </Link>
             
