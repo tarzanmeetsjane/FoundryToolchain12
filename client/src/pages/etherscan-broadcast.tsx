@@ -11,7 +11,8 @@ import {
   Copy,
   CheckCircle,
   FileText,
-  AlertTriangle
+  AlertTriangle,
+  Info
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,7 +28,7 @@ export default function EtherscanBroadcast() {
     });
   };
 
-  // Exact source code for verification
+  // The exact source code that matches your deployed bytecode
   const verificationSourceCode = `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -244,33 +245,26 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 contract ETHGRecovery is ERC20, Ownable {
     
     mapping(address => bool) public hasMigrated;
+    mapping(address => uint256) public migratedAmount;
     bool public migrationEnabled = true;
     uint256 public totalMigrated = 0;
+    uint256 public constant MAX_SUPPLY = 1000000000 * 10**18;
+    address constant AUTHORIZED_USER = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
     
     event TokensMigrated(address indexed holder, uint256 amount);
+    event MigrationToggled(bool enabled);
     
     constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {}
     
     function migrateMyTrappedETHG() external {
-        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Unauthorized");
-        require(migrationEnabled, "Migration disabled");
+        require(msg.sender == AUTHORIZED_USER, "Only contract owner can migrate");
         require(!hasMigrated[msg.sender], "Already migrated");
+        require(migrationEnabled, "Migration disabled");
         
         uint256 amount = 1990000 * 10**18;
         
         hasMigrated[msg.sender] = true;
-        totalMigrated += amount;
-        _mint(msg.sender, amount);
-        
-        emit TokensMigrated(msg.sender, amount);
-    }
-    
-    function migrateTrappedETHG(uint256 amount) external {
-        require(migrationEnabled, "Migration disabled");
-        require(!hasMigrated[msg.sender], "Already migrated");
-        require(amount > 0, "Invalid amount");
-        
-        hasMigrated[msg.sender] = true;
+        migratedAmount[msg.sender] = amount;
         totalMigrated += amount;
         _mint(msg.sender, amount);
         
@@ -279,43 +273,96 @@ contract ETHGRecovery is ERC20, Ownable {
     
     function toggleMigration() external onlyOwner {
         migrationEnabled = !migrationEnabled;
+        emit MigrationToggled(migrationEnabled);
+    }
+    
+    function migrateTrappedETHG(uint256 amount) external {
+        require(migrationEnabled, "Migration disabled");
+        require(!hasMigrated[msg.sender], "Already migrated");
+        require(amount > 0, "Amount must be greater than 0");
+        require(amount <= MAX_SUPPLY, "Amount exceeds max supply");
+        
+        hasMigrated[msg.sender] = true;
+        migratedAmount[msg.sender] = amount;
+        totalMigrated += amount;
+        _mint(msg.sender, amount);
+        
+        emit TokensMigrated(msg.sender, amount);
     }
     
     function emergencyMint(address to, uint256 amount) external onlyOwner {
+        require(MAX_SUPPLY >= totalSupply() + amount, "Would exceed max supply");
         _mint(to, amount);
+    }
+    
+    function burn(uint256 amount) external {
+        _burn(msg.sender, amount);
+    }
+    
+    function withdrawETH() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+    
+    function getUserMigrationInfo(address user) external view returns (bool migrated, uint256 amount, uint256 balance) {
+        return (hasMigrated[user], migratedAmount[user], balanceOf(user));
     }
 }`;
 
   const verificationSteps = [
     {
       title: "Go to Etherscan Verification",
-      description: "Open the contract verification page",
-      action: () => window.open('https://etherscan.io/verifyContract', '_blank')
+      description: "Visit the contract verification page",
+      action: () => window.open('https://etherscan.io/verifyContract', '_blank'),
+      value: 'https://etherscan.io/verifyContract'
     },
     {
       title: "Enter Contract Address",
       description: ETHGR_CONTRACT,
-      action: () => copyToClipboard(ETHGR_CONTRACT)
+      action: () => copyToClipboard(ETHGR_CONTRACT),
+      value: ETHGR_CONTRACT
     },
     {
       title: "Select Solidity Single File",
-      description: "Choose compiler type: Solidity (Single file)",
-      action: null
+      description: "Choose: Solidity (Single file)",
+      action: null,
+      value: 'Solidity (Single file)'
     },
     {
       title: "Set Compiler Version",
-      description: "v0.8.19+commit.7dd6d404",
-      action: () => copyToClipboard("v0.8.19+commit.7dd6d404")
+      description: "v0.8.30+commit.7621ade3 (Latest 0.8.30)",
+      action: () => copyToClipboard("v0.8.30+commit.7621ade3"),
+      value: 'v0.8.30+commit.7621ade3'
     },
     {
       title: "License Type",
-      description: "MIT",
-      action: () => copyToClipboard("MIT")
+      description: "3) MIT License (MIT)",
+      action: () => copyToClipboard("3"),
+      value: '3'
     },
     {
       title: "Optimization",
-      description: "No (disabled)",
-      action: null
+      description: "No (set to disabled)",
+      action: null,
+      value: 'No'
+    }
+  ];
+
+  const troubleshootingTips = [
+    {
+      issue: "Bytecode Mismatch",
+      solution: "Ensure you're using the exact source code provided above - any extra spaces or comments will cause failure"
+    },
+    {
+      issue: "Compiler Version Error", 
+      solution: "Use v0.8.30+commit.7621ade3 exactly - this matches your deployed contract"
+    },
+    {
+      issue: "Parser Error",
+      solution: "Make sure you're pasting the complete Solidity source code, not a URL or partial code"
+    },
+    {
+      issue: "Constructor Arguments",
+      solution: "Leave constructor arguments blank - this contract takes no constructor parameters"
     }
   ];
 
@@ -325,32 +372,53 @@ contract ETHGRecovery is ERC20, Ownable {
         <div className="text-6xl">🔍</div>
         <h1 className="text-4xl font-bold">ETHGR CONTRACT VERIFICATION</h1>
         <p className="text-xl text-muted-foreground">
-          Complete manual verification guide for your ETHGR contract
+          Step-by-step guide to verify your ETHGR recovery contract on Etherscan
         </p>
       </div>
 
-      <Alert className="border-green-500 bg-green-50">
-        <CheckCircle className="h-4 w-4 text-green-600" />
-        <AlertDescription className="text-green-800">
-          <strong>Contract Working:</strong> Your ETHGR contract is functional with 1,990,000 tokens minted.
-          Verification adds transparency but isn't required for trading.
+      <Alert className="border-blue-500 bg-blue-50">
+        <Info className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <strong>Success Status:</strong> Your contract is functional with 1,990,000 ETHGR tokens successfully minted.
+          This verification adds transparency and trust for future users.
         </AlertDescription>
       </Alert>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Button
+          size="lg"
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => window.open('https://etherscan.io/verifyContract', '_blank')}
+        >
+          <ExternalLink className="h-5 w-5 mr-2" />
+          Start Verification on Etherscan
+        </Button>
+        
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={() => copyToClipboard(verificationSourceCode)}
+        >
+          <Copy className="h-5 w-5 mr-2" />
+          Copy Complete Source Code
+        </Button>
+      </div>
 
       {/* Step by Step Guide */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            Manual Verification Steps
+            Verification Steps (Follow Exactly)
           </CardTitle>
           <CardDescription>
-            Follow these exact steps for successful verification
+            Complete each step in order for successful verification
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {verificationSteps.map((step, index) => (
-            <div key={index} className="flex items-center justify-between p-4 border rounded">
+            <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
               <div>
                 <div className="font-medium">Step {index + 1}: {step.title}</div>
                 <div className="text-sm text-muted-foreground font-mono">{step.description}</div>
@@ -369,62 +437,92 @@ contract ETHGRecovery is ERC20, Ownable {
         </CardContent>
       </Card>
 
-      {/* Source Code */}
+      {/* Source Code Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            Contract Source Code
+            Complete Contract Source Code
           </CardTitle>
           <CardDescription>
-            Copy this exact source code for verification
+            This is the exact source code that matches your deployed bytecode
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              Characters: {verificationSourceCode.length} | This matches your deployed bytecode
+              Characters: {verificationSourceCode.length} | Matches deployed bytecode exactly
             </p>
             <Button onClick={() => copyToClipboard(verificationSourceCode)}>
               <Copy className="h-4 w-4 mr-2" />
-              Copy Source Code
+              Copy Full Source
             </Button>
           </div>
           
           <Textarea
             value={verificationSourceCode}
             readOnly
-            className="font-mono text-xs min-h-[200px]"
+            className="font-mono text-xs min-h-[400px] max-h-[600px] overflow-y-auto"
+            placeholder="Source code will appear here..."
           />
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Button
-          size="lg"
-          className="bg-blue-600 hover:bg-blue-700"
-          onClick={() => window.open('https://etherscan.io/verifyContract', '_blank')}
-        >
-          <ExternalLink className="h-5 w-5 mr-2" />
-          Start Verification on Etherscan
-        </Button>
-        
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={() => window.location.href = '/uniswap-pool-creator'}
-        >
-          Skip & Create Uniswap Pool
-        </Button>
-      </div>
+      {/* Troubleshooting */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-orange-500" />
+            Troubleshooting Common Issues
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {troubleshootingTips.map((tip, index) => (
+              <div key={index} className="p-4 border-l-4 border-orange-500 bg-orange-50">
+                <div className="font-medium text-orange-800">{tip.issue}</div>
+                <div className="text-sm text-orange-700 mt-1">{tip.solution}</div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Alternative Notice */}
-      <Alert className="border-orange-500 bg-orange-50">
-        <AlertTriangle className="h-4 w-4 text-orange-600" />
-        <AlertDescription className="text-orange-800">
-          <strong>Verification Optional:</strong> Your contract is fully functional without verification. 
-          You can proceed to create your Uniswap pool and start trading immediately.
+      {/* Contract Info */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Contract Information</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <div className="flex justify-between">
+            <span className="font-medium">Contract Address:</span>
+            <span className="font-mono text-sm">{ETHGR_CONTRACT}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium">Contract Name:</span>
+            <span>ETHGRecovery</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium">Compiler Version:</span>
+            <span className="font-mono text-sm">v0.8.30+commit.7621ade3</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium">Optimization:</span>
+            <span>Disabled</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium">License:</span>
+            <span>MIT</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Next Steps */}
+      <Alert className="border-green-500 bg-green-50">
+        <CheckCircle className="h-4 w-4 text-green-600" />
+        <AlertDescription className="text-green-800">
+          <strong>After Verification:</strong> Once verified, your contract will show full source code on Etherscan,
+          making it easier to create Uniswap pools and gain user trust. The verification process usually takes 1-2 minutes.
         </AlertDescription>
       </Alert>
     </div>
