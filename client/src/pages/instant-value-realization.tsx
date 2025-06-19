@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalLink, TrendingUp, Zap, DollarSign, Activity } from "lucide-react";
+import { ContractAnalysisWidget } from "@/components/contract-analysis-widget";
+import BlockMonitor from "@/components/block-monitor";
 
 export default function InstantValueRealization() {
   const [ethPrice, setEthPrice] = useState(2580);
@@ -56,26 +58,6 @@ export default function InstantValueRealization() {
     }
   ];
 
-  // Placeholder for ContractAnalysisWidget, replace with actual implementation if available
-  const ContractAnalysisWidget = ({ contractAddress }) => {
-    return (
-      <Card className="bg-white/10 backdrop-blur border-white/20">
-        <CardHeader>
-          <CardTitle className="text-white">Contract Analysis</CardTitle>
-          <CardDescription className="text-blue-200">
-            Analyzing contract: {contractAddress}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-white">
-            This is a placeholder for the contract analysis widget.
-            Real implementation would fetch data about the contract from a blockchain explorer or analysis tool.
-          </p>
-        </CardContent>
-      </Card>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -98,6 +80,7 @@ export default function InstantValueRealization() {
             Current theoretical value: <strong>${originalValue.toLocaleString()}</strong> ({ethEquivalent.toFixed(1)} ETH)
           </AlertDescription>
         </Alert>
+        <BlockMonitor/>
 
         <Tabs defaultValue="strategies" className="w-full">
           <TabsList className="grid w-full grid-cols-5">
@@ -443,3 +426,4 @@ export default function InstantValueRealization() {
     </div>
   );
 }
+`

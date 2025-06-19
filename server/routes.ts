@@ -3076,6 +3076,74 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // Ethereum latest block endpoint
+  app.get('/api/ethereum/latest-block', async (req: Request, res: Response) => {
+    try {
+      const response = await fetch('https://api.etherscan.io/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          module: 'proxy',
+          action: 'eth_getBlockByNumber',
+          tag: 'latest',
+          boolean: true,
+          apikey: process.env.ETHERSCAN_API_KEY
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Etherscan API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      res.json(data.result);
+    } catch (error: any) {
+      console.error('Latest block fetch error:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch latest block data',
+        details: error.message 
+      });
+    }
+  });
+
+  // Ethereum gas price endpoint
+  app.get('/api/ethereum/gas-price', async (req: Request, res: Response) => {
+    try {
+      const response = await fetch('https://api.etherscan.io/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          module: 'proxy',
+          action: 'eth_gasPrice',
+          apikey: process.env.ETHERSCAN_API_KEY
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Etherscan API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      res.json({ gasPrice: data.result });
+    } catch (error: any) {
+      console.error('Gas price fetch error:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch gas price data',
+        details: error.message 
+      });
+    }
+  });
+
   return httpServer;
 }
 
