@@ -55,6 +55,7 @@ import AlternativeSolutions from "@/pages/alternative-solutions";
 import MetaMaskDirectExecution from "@/pages/metamask-direct-execution";
 import ETHGETHGRDirectPool from "@/pages/ethg-ethgr-direct-pool";
 import WalletConnection from "@/pages/wallet-connection";
+import WalletVerification from "@/pages/wallet-verification";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -117,6 +118,7 @@ function Router() {
         <Route path="/metamask-direct" component={MetaMaskDirectExecution} />
         <Route path="/ethg-ethgr-direct-pool" component={ETHGETHGRDirectPool} />
         <Route path="/wallet-connection" component={WalletConnection} />
+        <Route path="/wallet-verification" component={WalletVerification} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />

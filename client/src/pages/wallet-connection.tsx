@@ -26,6 +26,7 @@ export default function WalletConnection() {
 
   const ETHGR_CONTRACT = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
   const ETHG_CONTRACT = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+  const TARGET_WALLET = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
 
   useEffect(() => {
     checkConnection();
@@ -172,6 +173,17 @@ export default function WalletConnection() {
                   <p className="font-mono text-sm bg-muted p-2 rounded">
                     {walletAddress}
                   </p>
+                  {walletAddress?.toLowerCase() === TARGET_WALLET.toLowerCase() && (
+                    <Badge className="bg-green-600">✓ Correct Wallet</Badge>
+                  )}
+                  {walletAddress?.toLowerCase() !== TARGET_WALLET.toLowerCase() && walletAddress && (
+                    <Alert className="border-orange-500 bg-orange-50">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>
+                        Switch to wallet: {TARGET_WALLET}
+                      </AlertDescription>
+                    </Alert>
+                  )}
                 </div>
                 
                 <div className="space-y-2">
