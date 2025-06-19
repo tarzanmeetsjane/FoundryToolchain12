@@ -28,6 +28,8 @@ import ManualVerification from "@/pages/manual-verification";
 import LiveUniswapCreator from "@/pages/live-uniswap-creator";
 import ETHGRecoveryAnalyzer from "@/pages/ethg-recovery-analyzer";
 import ImmediateMonetization from "@/pages/immediate-monetization";
+import ZeroCapitalMonetization from "@/pages/zero-capital-monetization";
+import DirectPoolLinks from "@/pages/direct-pool-links";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -61,6 +63,8 @@ function Router() {
         <Route path="/live-uniswap-creator" component={LiveUniswapCreator} />
         <Route path="/ethg-recovery-analyzer" component={ETHGRecoveryAnalyzer} />
         <Route path="/immediate-monetization" component={ImmediateMonetization} />
+        <Route path="/zero-capital-monetization" component={ZeroCapitalMonetization} />
+        <Route path="/direct-pool-links" component={DirectPoolLinks} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>

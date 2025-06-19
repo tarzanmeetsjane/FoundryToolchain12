@@ -71,14 +71,14 @@ export default function Navigation() {
               </Button>
             </Link>
             
-            <Link href="/immediate-monetization">
+            <Link href="/direct-pool-links">
               <Button 
-                variant={location === "/immediate-monetization" ? "default" : "ghost"} 
+                variant={location === "/direct-pool-links" ? "default" : "ghost"} 
                 size="sm"
                 className="h-9"
               >
-                <DollarSign className="h-4 w-4 mr-2" />
-                Cash Out
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Pool Links
               </Button>
             </Link>
             
