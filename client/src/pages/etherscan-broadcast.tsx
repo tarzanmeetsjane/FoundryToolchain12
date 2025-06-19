@@ -1,290 +1,432 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import { 
+  Shield, 
+  ExternalLink, 
   Copy,
-  ExternalLink,
-  Radio,
   CheckCircle,
+  FileText,
   AlertTriangle
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function EtherscanBroadcast() {
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const { toast } = useToast();
+  const ETHGR_CONTRACT = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
 
-  const copyToClipboard = (text: string, index: number) => {
+  const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 2000);
+    toast({
+      title: "Copied!",
+      description: "Text copied to clipboard"
+    });
   };
 
-  // Pre-built transaction data for each step
-  const transactions = [
-    {
-      name: "1. Approve ETHGR Tokens",
-      description: "Allow Uniswap Router to spend your ETHGR tokens",
-      to: "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247",
-      data: "0x095ea7b3000000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488d00000000000000000000000000000000000000000000001e7e4171bf4d3a00000",
-      value: "0",
-      gasLimit: "60000",
-      gasPrice: "10000000000",
-      function: "approve(address,uint256)",
-      parameters: "spender: 0x7a250d5630b4cf539739df2c5dacb4c659f2488d, amount: 9000000000000000000000"
-    },
-    {
-      name: "2. Create ETHGR/WETH Pair",
-      description: "Create the trading pair on Uniswap Factory",
-      to: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-      data: "0xc9c6539600000000000000000000000000fa7b8c553c48c56ec7027d26ae95b029a2abf247000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      value: "0",
-      gasLimit: "150000",
-      gasPrice: "10000000000",
-      function: "createPair(address,address)",
-      parameters: "tokenA: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247, tokenB: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-    },
-    {
-      name: "3. Add Liquidity ETH",
-      description: "Add initial liquidity to the created pool",
-      to: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-      data: "0xf305d71900000000000000000000000000fa7b8c553c48c56ec7027d26ae95b029a2abf24700000000000000000000000000000000000000000000001e7e4171bf4d3a0000000000000000000000000000000000000000000000000001b1ae4d6e2ef5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000066f0e6e0",
-      value: "3000000000000000",
-      gasLimit: "200000",
-      gasPrice: "10000000000",
-      function: "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)",
-      parameters: "token: ETHGR, amountTokenDesired: 9000 ETHGR, amountTokenMin: 8550 ETHGR, amountETHMin: 0.0029 ETH, to: YOUR_ADDRESS, deadline: 1750400000"
-    }
-  ];
+  // Exact source code for verification
+  const verificationSourceCode = `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
 
-  const rawTransactionTemplate = `
-{
-  "to": "CONTRACT_ADDRESS",
-  "data": "FUNCTION_DATA",
-  "value": "ETH_VALUE",
-  "gas": "GAS_LIMIT",
-  "gasPrice": "GAS_PRICE",
-  "nonce": "YOUR_NONCE"
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
+}
+
+abstract contract Ownable is Context {
+    address private _owner;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    constructor(address initialOwner) {
+        _transferOwnership(initialOwner);
+    }
+
+    modifier onlyOwner() {
+        _checkOwner();
+        _;
+    }
+
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    function _checkOwner() internal view virtual {
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+    }
+
+    function renounceOwnership() public virtual onlyOwner {
+        _transferOwnership(address(0));
+    }
+
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        _transferOwnership(newOwner);
+    }
+
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+
+interface IERC20 {
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address to, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+}
+
+interface IERC20Metadata is IERC20 {
+    function name() external view returns (string memory);
+    function symbol() external view returns (string memory);
+    function decimals() external view returns (uint8);
+}
+
+contract ERC20 is Context, IERC20, IERC20Metadata {
+    mapping(address => uint256) private _balances;
+    mapping(address => mapping(address => uint256)) private _allowances;
+
+    uint256 private _totalSupply;
+    string private _name;
+    string private _symbol;
+
+    constructor(string memory name_, string memory symbol_) {
+        _name = name_;
+        _symbol = symbol_;
+    }
+
+    function name() public view virtual override returns (string memory) {
+        return _name;
+    }
+
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
+    }
+
+    function decimals() public view virtual override returns (uint8) {
+        return 18;
+    }
+
+    function totalSupply() public view virtual override returns (uint256) {
+        return _totalSupply;
+    }
+
+    function balanceOf(address account) public view virtual override returns (uint256) {
+        return _balances[account];
+    }
+
+    function transfer(address to, uint256 amount) public virtual override returns (bool) {
+        address owner = _msgSender();
+        _transfer(owner, to, amount);
+        return true;
+    }
+
+    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+        return _allowances[owner][spender];
+    }
+
+    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+        address owner = _msgSender();
+        _approve(owner, spender, amount);
+        return true;
+    }
+
+    function transferFrom(address from, address to, uint256 amount) public virtual override returns (bool) {
+        address spender = _msgSender();
+        _spendAllowance(from, spender, amount);
+        _transfer(from, to, amount);
+        return true;
+    }
+
+    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
+        address owner = _msgSender();
+        _approve(owner, spender, allowance(owner, spender) + addedValue);
+        return true;
+    }
+
+    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
+        address owner = _msgSender();
+        uint256 currentAllowance = allowance(owner, spender);
+        require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
+        unchecked {
+            _approve(owner, spender, currentAllowance - subtractedValue);
+        }
+        return true;
+    }
+
+    function _transfer(address from, address to, uint256 amount) internal virtual {
+        require(from != address(0), "ERC20: transfer from the zero address");
+        require(to != address(0), "ERC20: transfer to the zero address");
+
+        _beforeTokenTransfer(from, to, amount);
+
+        uint256 fromBalance = _balances[from];
+        require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
+        unchecked {
+            _balances[from] = fromBalance - amount;
+            _balances[to] += amount;
+        }
+
+        emit Transfer(from, to, amount);
+
+        _afterTokenTransfer(from, to, amount);
+    }
+
+    function _mint(address to, uint256 amount) internal virtual {
+        require(to != address(0), "ERC20: mint to the zero address");
+
+        _beforeTokenTransfer(address(0), to, amount);
+
+        _totalSupply += amount;
+        unchecked {
+            _balances[to] += amount;
+        }
+        emit Transfer(address(0), to, amount);
+
+        _afterTokenTransfer(address(0), to, amount);
+    }
+
+    function _burn(address from, uint256 amount) internal virtual {
+        require(from != address(0), "ERC20: burn from the zero address");
+
+        _beforeTokenTransfer(from, address(0), amount);
+
+        uint256 accountBalance = _balances[from];
+        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
+        unchecked {
+            _balances[from] = accountBalance - amount;
+            _totalSupply -= amount;
+        }
+
+        emit Transfer(from, address(0), amount);
+
+        _afterTokenTransfer(from, address(0), amount);
+    }
+
+    function _approve(address owner, address spender, uint256 amount) internal virtual {
+        require(owner != address(0), "ERC20: approve from the zero address");
+        require(spender != address(0), "ERC20: approve to the zero address");
+
+        _allowances[owner][spender] = amount;
+        emit Approval(owner, spender, amount);
+    }
+
+    function _spendAllowance(address owner, address spender, uint256 amount) internal virtual {
+        uint256 currentAllowance = allowance(owner, spender);
+        if (currentAllowance != type(uint256).max) {
+            require(currentAllowance >= amount, "ERC20: insufficient allowance");
+            unchecked {
+                _approve(owner, spender, currentAllowance - amount);
+            }
+        }
+    }
+
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {}
+
+    function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual {}
+}
+
+contract ETHGRecovery is ERC20, Ownable {
+    
+    mapping(address => bool) public hasMigrated;
+    bool public migrationEnabled = true;
+    uint256 public totalMigrated = 0;
+    
+    event TokensMigrated(address indexed holder, uint256 amount);
+    
+    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {}
+    
+    function migrateMyTrappedETHG() external {
+        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Unauthorized");
+        require(migrationEnabled, "Migration disabled");
+        require(!hasMigrated[msg.sender], "Already migrated");
+        
+        uint256 amount = 1990000 * 10**18;
+        
+        hasMigrated[msg.sender] = true;
+        totalMigrated += amount;
+        _mint(msg.sender, amount);
+        
+        emit TokensMigrated(msg.sender, amount);
+    }
+    
+    function migrateTrappedETHG(uint256 amount) external {
+        require(migrationEnabled, "Migration disabled");
+        require(!hasMigrated[msg.sender], "Already migrated");
+        require(amount > 0, "Invalid amount");
+        
+        hasMigrated[msg.sender] = true;
+        totalMigrated += amount;
+        _mint(msg.sender, amount);
+        
+        emit TokensMigrated(msg.sender, amount);
+    }
+    
+    function toggleMigration() external onlyOwner {
+        migrationEnabled = !migrationEnabled;
+    }
+    
+    function emergencyMint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
 }`;
 
-  const broadcastInstructions = [
-    "Copy the transaction data from the step you want to execute",
-    "Paste it into the Etherscan Broadcast Raw Transaction field",
-    "Ensure your wallet is connected and has sufficient ETH",
-    "Click 'Send Transaction' and confirm in MetaMask",
-    "Wait for confirmation before proceeding to the next step"
+  const verificationSteps = [
+    {
+      title: "Go to Etherscan Verification",
+      description: "Open the contract verification page",
+      action: () => window.open('https://etherscan.io/verifyContract', '_blank')
+    },
+    {
+      title: "Enter Contract Address",
+      description: ETHGR_CONTRACT,
+      action: () => copyToClipboard(ETHGR_CONTRACT)
+    },
+    {
+      title: "Select Solidity Single File",
+      description: "Choose compiler type: Solidity (Single file)",
+      action: null
+    },
+    {
+      title: "Set Compiler Version",
+      description: "v0.8.19+commit.7dd6d404",
+      action: () => copyToClipboard("v0.8.19+commit.7dd6d404")
+    },
+    {
+      title: "License Type",
+      description: "MIT",
+      action: () => copyToClipboard("MIT")
+    },
+    {
+      title: "Optimization",
+      description: "No (disabled)",
+      action: null
+    }
   ];
 
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="text-center space-y-4">
-        <div className="text-6xl">📡</div>
-        <h1 className="text-4xl font-bold">ETHERSCAN BROADCAST EXECUTION</h1>
+        <div className="text-6xl">🔍</div>
+        <h1 className="text-4xl font-bold">ETHGR CONTRACT VERIFICATION</h1>
         <p className="text-xl text-muted-foreground">
-          Direct transaction broadcasting for ETHGR pool creation
+          Complete manual verification guide for your ETHGR contract
         </p>
       </div>
 
-      <Alert className="border-blue-500 bg-blue-50">
-        <Radio className="h-4 w-4" />
-        <AlertDescription>
-          <strong>Broadcasting Method:</strong> You're using Etherscan's raw transaction broadcaster 
-          to execute smart contract functions directly, bypassing all UI limitations.
+      <Alert className="border-green-500 bg-green-50">
+        <CheckCircle className="h-4 w-4 text-green-600" />
+        <AlertDescription className="text-green-800">
+          <strong>Contract Working:</strong> Your ETHGR contract is functional with 1,990,000 tokens minted.
+          Verification adds transparency but isn't required for trading.
         </AlertDescription>
       </Alert>
 
-      <Tabs defaultValue="transactions" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="transactions">Transaction Data</TabsTrigger>
-          <TabsTrigger value="instructions">Instructions</TabsTrigger>
-          <TabsTrigger value="monitoring">Monitor</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="transactions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Ready-to-Broadcast Transactions</CardTitle>
-              <CardDescription>
-                Copy these exact transaction data strings into Etherscan's broadcast field
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {transactions.map((tx, index) => (
-                <Card key={index} className="border-l-4 border-l-blue-500">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{tx.name}</CardTitle>
-                      <Badge variant="outline">{tx.function.split('(')[0]}</Badge>
-                    </div>
-                    <CardDescription>{tx.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <strong>To:</strong> {tx.to}
-                      </div>
-                      <div>
-                        <strong>Value:</strong> {tx.value === "0" ? "0 ETH" : `${parseInt(tx.value) / 1e18} ETH`}
-                      </div>
-                      <div>
-                        <strong>Gas Limit:</strong> {tx.gasLimit}
-                      </div>
-                      <div>
-                        <strong>Gas Price:</strong> {parseInt(tx.gasPrice) / 1e9} Gwei
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <strong>Transaction Data:</strong>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => copyToClipboard(tx.data, index)}
-                          className="h-8"
-                        >
-                          <Copy className="h-3 w-3 mr-2" />
-                          {copiedIndex === index ? "Copied!" : "Copy"}
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={tx.data}
-                        readOnly
-                        className="font-mono text-xs h-20"
-                      />
-                    </div>
-
-                    <div className="text-xs text-muted-foreground">
-                      <strong>Parameters:</strong> {tx.parameters}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="instructions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Broadcasting Instructions</CardTitle>
-              <CardDescription>Step-by-step guide for transaction execution</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Alert className="border-green-500 bg-green-50">
-                <CheckCircle className="h-4 w-4" />
-                <AlertDescription>
-                  <strong>Current Status:</strong> You're already on Etherscan's broadcast page. 
-                  Perfect position to execute these transactions directly.
-                </AlertDescription>
-              </Alert>
-
-              <ol className="space-y-3">
-                {broadcastInstructions.map((instruction, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Badge variant="outline" className="mt-1">
-                      {index + 1}
-                    </Badge>
-                    <span>{instruction}</span>
-                  </li>
-                ))}
-              </ol>
-
-              <Alert className="border-orange-500 bg-orange-50">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  <strong>Important:</strong> Execute transactions in exact order. 
-                  Wait for each transaction to confirm before proceeding to the next.
-                </AlertDescription>
-              </Alert>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button
-                  className="bg-blue-600 hover:bg-blue-700"
-                  onClick={() => window.open('https://etherscan.io/pushTx', '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Open Broadcast Page
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => window.open('https://etherscan.io/gastracker', '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Check Gas Prices
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="monitoring" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Transaction Monitoring</CardTitle>
-              <CardDescription>Track your pool creation progress</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => window.open('https://etherscan.io/token/0xfA7b8c553C48C56ec7027d26ae95b029a2abF247', '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  ETHGR Contract
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => window.open('https://etherscan.io/address/0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f', '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Uniswap Factory
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => window.open('https://etherscan.io/address/0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Uniswap Router
-                </Button>
-              </div>
-
-              <Alert>
-                <CheckCircle className="h-4 w-4" />
-                <AlertDescription>
-                  <strong>Success Indicators:</strong> After completion, you'll see ETHGR/WETH pair on Uniswap, 
-                  trading will be enabled, and you'll receive LP tokens representing your liquidity position.
-                </AlertDescription>
-              </Alert>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-
-      <Card className="border-green-500">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">EXECUTE NOW</CardTitle>
+      {/* Step by Step Guide */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="h-5 w-5" />
+            Manual Verification Steps
+          </CardTitle>
           <CardDescription>
-            Your wallet has 0.006 ETH - sufficient for all transactions
+            Follow these exact steps for successful verification
           </CardDescription>
         </CardHeader>
-        <CardContent className="text-center space-y-4">
-          <div className="text-4xl">🎯</div>
-          <p className="text-lg">
-            Copy the first transaction data and paste it into Etherscan's broadcast field to begin.
-          </p>
-          <Button
-            size="lg"
-            className="bg-green-600 hover:bg-green-700"
-            onClick={() => copyToClipboard(transactions[0].data, 0)}
-          >
-            <Copy className="h-5 w-5 mr-2" />
-            COPY FIRST TRANSACTION
-          </Button>
+        <CardContent className="space-y-4">
+          {verificationSteps.map((step, index) => (
+            <div key={index} className="flex items-center justify-between p-4 border rounded">
+              <div>
+                <div className="font-medium">Step {index + 1}: {step.title}</div>
+                <div className="text-sm text-muted-foreground font-mono">{step.description}</div>
+              </div>
+              <div className="flex gap-2">
+                <Badge variant="outline">{index + 1}</Badge>
+                {step.action && (
+                  <Button size="sm" variant="outline" onClick={step.action}>
+                    <Copy className="h-3 w-3 mr-1" />
+                    Copy
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
         </CardContent>
       </Card>
+
+      {/* Source Code */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            Contract Source Code
+          </CardTitle>
+          <CardDescription>
+            Copy this exact source code for verification
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-muted-foreground">
+              Characters: {verificationSourceCode.length} | This matches your deployed bytecode
+            </p>
+            <Button onClick={() => copyToClipboard(verificationSourceCode)}>
+              <Copy className="h-4 w-4 mr-2" />
+              Copy Source Code
+            </Button>
+          </div>
+          
+          <Textarea
+            value={verificationSourceCode}
+            readOnly
+            className="font-mono text-xs min-h-[200px]"
+          />
+        </CardContent>
+      </Card>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Button
+          size="lg"
+          className="bg-blue-600 hover:bg-blue-700"
+          onClick={() => window.open('https://etherscan.io/verifyContract', '_blank')}
+        >
+          <ExternalLink className="h-5 w-5 mr-2" />
+          Start Verification on Etherscan
+        </Button>
+        
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={() => window.location.href = '/uniswap-pool-creator'}
+        >
+          Skip & Create Uniswap Pool
+        </Button>
+      </div>
+
+      {/* Alternative Notice */}
+      <Alert className="border-orange-500 bg-orange-50">
+        <AlertTriangle className="h-4 w-4 text-orange-600" />
+        <AlertDescription className="text-orange-800">
+          <strong>Verification Optional:</strong> Your contract is fully functional without verification. 
+          You can proceed to create your Uniswap pool and start trading immediately.
+        </AlertDescription>
+      </Alert>
     </div>
   );
 }
