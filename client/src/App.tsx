@@ -36,6 +36,7 @@ import EmergencyETHFunding from "@/pages/emergency-eth-funding";
 import PoolCreationReady from "@/pages/pool-creation-ready";
 import RemixDeploymentCenter from "@/pages/remix-deployment-center";
 import LivePoolExecution from "@/pages/live-pool-execution";
+import FinalPoolLaunch from "@/pages/final-pool-launch";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -77,6 +78,7 @@ function Router() {
         <Route path="/pool-creation-ready" component={PoolCreationReady} />
         <Route path="/remix-deployment-center" component={RemixDeploymentCenter} />
         <Route path="/live-pool-execution" component={LivePoolExecution} />
+        <Route path="/final-pool-launch" component={FinalPoolLaunch} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
