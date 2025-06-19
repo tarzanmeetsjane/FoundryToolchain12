@@ -248,12 +248,41 @@ export default function InstantValueRealization() {
                   </div>
 
                   {/* Path to 37 ETH */}
-                  <Alert className="border-yellow-500 bg-yellow-50">
-                    <DollarSign className="h-4 w-4 text-yellow-600" />
-                    <AlertDescription className="text-yellow-800">
-                      <strong>Path to 37 ETH:</strong> Create a pool with 3-5 ETH and capture 5% of the original ETHG market cap through proper positioning and marketing.
-                    </AlertDescription>
-                  </Alert>
+                  <div className="space-y-4">
+                    <Alert className="border-yellow-500 bg-yellow-50">
+                      <DollarSign className="h-4 w-4 text-yellow-600" />
+                      <AlertDescription className="text-yellow-800">
+                        <strong>YOUR 37 ETH TARGET:</strong> At ETHG's original $0.355 price, your 1.99M tokens = $706K = 274 ETH. 
+                        Capturing just 5% of original market cap gets you to <strong>37 ETH ($95,000)</strong>.
+                      </AlertDescription>
+                    </Alert>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                      <div className="p-4 bg-blue-50 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">1.99M</div>
+                        <div className="text-sm text-blue-800">ETHGR Tokens Recovered</div>
+                      </div>
+                      <div className="p-4 bg-green-50 rounded-lg">
+                        <div className="text-2xl font-bold text-green-600">$706K</div>
+                        <div className="text-sm text-green-800">Original Investment Value</div>
+                      </div>
+                      <div className="p-4 bg-purple-50 rounded-lg">
+                        <div className="text-2xl font-bold text-purple-600">37 ETH</div>
+                        <div className="text-sm text-purple-800">5% Recovery Target</div>
+                      </div>
+                    </div>
+
+                    {/* DexScreener Integration */}
+                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-semibold text-gray-800 mb-2">📈 Once Your Pool is Live:</h4>
+                      <p className="text-sm text-gray-600 mb-3">
+                        Your ETHGR/ETH pool will appear on DexScreener automatically, showing real-time trading data like this:
+                      </p>
+                      <div className="bg-white rounded border p-2 text-xs text-gray-500">
+                        DexScreener Embed: Your pool at 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
