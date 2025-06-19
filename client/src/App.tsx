@@ -52,6 +52,7 @@ import EnhancedContractVerification from "@/pages/enhanced-contract-verification
 import ImmediateExecution from "@/pages/immediate-execution";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
+import MetaMaskDirectExecution from "@/pages/metamask-direct-execution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -111,6 +112,7 @@ function Router() {
         <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/execution-dashboard" component={ExecutionDashboard} />
         <Route path="/alternative-solutions" component={AlternativeSolutions} />
+        <Route path="/metamask-direct" component={MetaMaskDirectExecution} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
