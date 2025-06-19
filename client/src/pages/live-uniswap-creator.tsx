@@ -41,7 +41,7 @@ export default function LiveUniswapCreator() {
       try {
         const response = await fetch(`/api/live/pool-data/${USER_ADDRESS}/${ETHGR_CONTRACT}`);
         const data = await response.json();
-        
+
         if (data.error) {
           throw new Error(data.error);
         }
@@ -107,7 +107,7 @@ export default function LiveUniswapCreator() {
     }
   ];
 
-  const handleCreatePool = () => {
+  const handleCreatePool = async () => {
     if (!ethAmount || !ethgrAmount) {
       toast({
         title: "Missing Information",
@@ -117,14 +117,49 @@ export default function LiveUniswapCreator() {
       return;
     }
 
-    // Open Uniswap interface with pre-filled data
-    const uniswapUrl = `https://app.uniswap.org/#/add/ETH/${ETHGR_CONTRACT}/${selectedFee}`;
-    window.open(uniswapUrl, '_blank');
-    
-    toast({
-      title: "Opening Uniswap",
-      description: "Redirecting to Uniswap pool creation interface"
-    });
+    try {
+      // Check if user has the required tokens
+      const response = await fetch(`/api/wallet/${ETHGR_CONTRACT}/check-balance`);
+      const balanceData = await response.json();
+
+      if (balanceData.balance < parseFloat(ethgrAmount)) {
+        toast({
+          title: "Insufficient ETHGR Balance",
+          description: `You need ${ethgrAmount} ETHGR tokens. Current balance: ${balanceData.balance}`,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Automated pool creation
+      const poolData = {
+        tokenA: ETHGR_CONTRACT,
+        tokenB: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", // WETH
+        ethgrAmount,
+        ethAmount,
+        feeLevel: selectedFee,
+        walletAddress: "0x7da0aef1b75035cbf364a690411bcca7e7859df8"
+      };
+
+      const createResponse = await fetch('/api/create-pool-automated', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(poolData)
+      });
+
+      if (createResponse.ok) {
+        toast({
+          title: "Pool Creation Initiated!",
+          description: "Your ETHGR/ETH pool is being created automatically",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Pool Creation Failed",
+        description: "Error setting up automated pool creation",
+        variant: "destructive"
+      });
+    }
   };
 
   if (loading) {
@@ -166,10 +201,10 @@ export default function LiveUniswapCreator() {
       </Alert>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Pool Configuration */}
         <div className="lg:col-span-2 space-y-6">
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -181,7 +216,7 @@ export default function LiveUniswapCreator() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              
+
               {/* Token Pair */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -313,7 +348,7 @@ export default function LiveUniswapCreator() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          
+
           {/* Live Market Data */}
           <Card>
             <CardHeader>

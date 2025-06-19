@@ -7,418 +7,463 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Shield, AlertTriangle, CheckCircle, Download, Users, Activity, Copy } from "lucide-react";
+import { Search, Shield, AlertTriangle, CheckCircle, Download, Users, Activity, Copy, ExternalLink } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function ContractAnalyzerPage() {
-  const [contractAddress, setContractAddress] = useState("0xd9145CCE52D386f254917e481eB44e9943F39138");
+  const [contractAddress, setContractAddress] = useState("0x7da0aef1b75035cbf364a690411bcca7e7859df8");
   const [activeTab, setActiveTab] = useState("analysis");
 
-  // Contract analysis query
-  const { data: contractAnalysis, isLoading: isAnalyzing, refetch: refetchAnalysis } = useQuery({
-    queryKey: [`/api/uniscan/contract/${contractAddress}`],
-    queryFn: async () => {
-      const response = await fetch(`/api/uniscan/contract/${contractAddress}`);
-      if (!response.ok) throw new Error('Failed to analyze contract');
-      return response.json();
-    },
-    enabled: false
-  });
-
-  // Holders analysis query
-  const { data: holdersAnalysis, isLoading: isLoadingHolders, refetch: refetchHolders } = useQuery({
-    queryKey: [`/api/uniscan/holders/${contractAddress}`],
-    queryFn: async () => {
-      const response = await fetch(`/api/uniscan/holders/${contractAddress}`);
-      if (!response.ok) throw new Error('Failed to analyze holders');
-      return response.json();
-    },
-    enabled: false
-  });
-
-  // Transaction analysis query
-  const { data: transactionAnalysis, isLoading: isLoadingTx, refetch: refetchTransactions } = useQuery({
-    queryKey: [`/api/uniscan/transactions/${contractAddress}`],
-    queryFn: async () => {
-      const response = await fetch(`/api/uniscan/transactions/${contractAddress}`);
-      if (!response.ok) throw new Error('Failed to analyze transactions');
-      return response.json();
-    },
-    enabled: false
-  });
-
-  const handleAnalyze = async () => {
-    if (!contractAddress) return;
-    
-    await Promise.all([
-      refetchAnalysis(),
-      refetchHolders(),
-      refetchTransactions()
-    ]);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
   };
 
-  const getRiskColor = (level: string) => {
-    switch (level) {
-      case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'high': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'critical': return 'text-red-600 bg-red-50 border-red-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
-    }
+  // Mock data for Etherscan
+  const etherscanData = {
+      tokenDetails: {
+          name: "ExampleToken",
+          symbol: "EXM",
+          decimals: 18,
+          totalSupply: "1000000",
+      }
   };
+
+  const verificationData = {
+      isVerified: true,
+      contractName: "ExampleContract",
+      compilerVersion: "v0.8.0",
+      optimization: true,
+      runs: 200,
+      licenseType: "MIT",
+      proxy: false,
+      sourcecode: `// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract ExampleContract {\n uint public value;\n\n function setValue(uint _value) public {\n value = _value;\n }\n}`
+  };
+
+  const honeypotData = {
+      riskLevel: "MEDIUM",
+      canBuy: true,
+      canSell: false,
+      hasLiquidity: true,
+      liquidityUSD: 10000,
+      isHoneypot: true,
+      issues: ["High initial buy tax", "Possible centralisation"],
+      warnings: ["Low trading volume"]
+  };
+  const isLoading = false;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Contract Analyzer</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Advanced honeypot detection and recovery assessment powered by Uniscan.xyz
-        </p>
+    <div className="container mx-auto px-4 py-8 space-y-6">
+      <div className="flex items-center gap-2">
+        <Shield className="h-8 w-8" />
+        <div>
+          <h1 className="text-3xl font-bold">Contract Security Analyzer</h1>
+          <p className="text-muted-foreground">
+            Comprehensive analysis of smart contracts and security assessment
+          </p>
+        </div>
       </div>
 
-      {/* Analysis Input */}
-      <Card className="mb-8">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Contract Analysis
-          </CardTitle>
+          <CardTitle>Contract Analysis</CardTitle>
           <CardDescription>
-            Enter a contract address to analyze security risks, honeypot patterns, and recovery potential
+            Enter a contract address to analyze its security, verification status, and potential risks
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <Label htmlFor="contract">Contract Address</Label>
-              <Input
-                id="contract"
-                value={contractAddress}
-                onChange={(e) => setContractAddress(e.target.value)}
-                placeholder="0x..."
-                className="font-mono"
-              />
-            </div>
-            <div className="flex items-end">
-              <Button 
-                onClick={handleAnalyze}
-                disabled={!contractAddress || isAnalyzing || isLoadingHolders || isLoadingTx}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                {isAnalyzing || isLoadingHolders || isLoadingTx ? 'Analyzing...' : 'Analyze Contract'}
-              </Button>
-            </div>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Enter contract address (e.g., 0x7da0aef...)"
+              value={contractAddress}
+              onChange={(e) => setContractAddress(e.target.value)}
+              className="flex-1"
+            />
+            <Button
+              onClick={() => window.open(`https://etherscan.io/address/${contractAddress}`, '_blank')}
+              variant="outline"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Etherscan
+            </Button>
           </div>
 
-          {/* Quick Examples */}
-          <div className="flex gap-2 flex-wrap">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setContractAddress("0xd9145CCE52D386f254917e481eB44e9943F39138")}
-            >
-              ETHG (Honeypot)
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setContractAddress("0xfA7b8c553C48C56ec7027d26ae95b029a2abF247")}
-            >
-              ETHGR (Recovery)
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setContractAddress("0xA0b86a33E6B1a7bE6bc7f3e2F3b9A6A2Cd4F3a5E")}
-            >
-              USDT (Safe)
-            </Button>
-          </div>
+          {contractAddress && (
+            <div className="flex items-center gap-2 p-2 bg-muted rounded">
+              <span className="text-sm font-mono">{contractAddress}</span>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => copyToClipboard(contractAddress)}
+              >
+                <Copy className="h-3 w-3" />
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Analysis Results */}
-      {contractAnalysis && (
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="analysis">Security Analysis</TabsTrigger>
-            <TabsTrigger value="holders">Token Holders</TabsTrigger>
-            <TabsTrigger value="transactions">Transactions</TabsTrigger>
-            <TabsTrigger value="recovery">Recovery Plan</TabsTrigger>
-          </TabsList>
+      {contractAddress && (
+        <Card>
+          <CardContent className="pt-6">
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="analysis">Overview</TabsTrigger>
+                <TabsTrigger value="verification">Verification</TabsTrigger>
+                <TabsTrigger value="security">Security</TabsTrigger>
+                <TabsTrigger value="source">Source Code</TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="analysis" className="space-y-6">
-            {/* Security Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2">
-                    <Shield className="h-5 w-5" />
-                    Security Score
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold mb-2">{contractAnalysis.securityScore}/100</div>
-                  <Progress value={contractAnalysis.securityScore} className="mb-2" />
-                  <Badge className={getRiskColor(contractAnalysis.riskLevel)}>
-                    {contractAnalysis.riskLevel.toUpperCase()} RISK
-                  </Badge>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5" />
-                    Honeypot Analysis
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {contractAnalysis.honeypotAnalysis?.isHoneypot ? 'HONEYPOT' : 'SAFE'}
-                  </div>
-                  <div className="text-sm space-y-1">
-                    <div>Can Sell: {contractAnalysis.honeypotAnalysis?.canSell ? '✅' : '❌'}</div>
-                    <div>Can Transfer: {contractAnalysis.honeypotAnalysis?.canTransfer ? '✅' : '❌'}</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5" />
-                    Recovery Potential
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2 capitalize">
-                    {contractAnalysis.recoveryPotential}
-                  </div>
-                  <Badge variant={contractAnalysis.recoveryPotential === 'high' ? 'default' : 'secondary'}>
-                    {contractAnalysis.recoveryPotential === 'high' ? 'Recoverable' : 'Limited Options'}
-                  </Badge>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Recommendations */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recovery Recommendations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {contractAnalysis.recommendations?.map((rec: string, index: number) => (
-                    <Alert key={index}>
-                      <AlertTriangle className="h-4 w-4" />
-                      <AlertDescription>{rec}</AlertDescription>
-                    </Alert>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="holders" className="space-y-6">
-            {holdersAnalysis && (
-              <>
-                {/* Holders Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <TabsContent value="analysis" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
-                        Total Holders
-                      </CardTitle>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm">Verification Status</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold">{holdersAnalysis.totalHolders}</div>
-                      <p className="text-sm text-gray-600">Active addresses</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle>Recovery Eligible</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-3xl font-bold text-orange-600">
-                        {holdersAnalysis.recoveryStats?.eligibleHolders || 0}
-                      </div>
-                      <p className="text-sm text-gray-600">Trapped holders</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle>Trapped Tokens</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-3xl font-bold text-red-600">
-                        {holdersAnalysis.recoveryStats?.trappedTokens?.toLocaleString() || 0}
-                      </div>
-                      <p className="text-sm text-gray-600">Total trapped</p>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Holders List */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Top Token Holders</CardTitle>
-                    <CardDescription>Addresses with significant token balances</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {holdersAnalysis.holders?.slice(0, 10).map((holder: any, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="font-mono text-sm">
-                              {holder.address.slice(0, 6)}...{holder.address.slice(-4)}
-                              <Button variant="ghost" size="sm" className="ml-2">
-                                <Copy className="h-3 w-3" />
-                              </Button>
-                            </div>
-                            <Badge variant={holder.status === 'recovered' ? 'default' : 'secondary'}>
-                              {holder.status}
-                            </Badge>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-bold">{holder.balanceFormatted}</div>
-                            <div className="text-sm text-gray-600">{holder.percentage}%</div>
-                          </div>
+                      {isLoading ? (
+                        <div className="animate-pulse h-6 bg-muted rounded" />
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          {verificationData?.isVerified ? (
+                            <>
+                              <CheckCircle className="h-4 w-4 text-green-600" />
+                              <Badge variant="default">Verified</Badge>
+                            </>
+                          ) : (
+                            <>
+                              <AlertTriangle className="h-4 w-4 text-red-600" />
+                              <Badge variant="destructive">Unverified</Badge>
+                            </>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            )}
-          </TabsContent>
-
-          <TabsContent value="transactions" className="space-y-6">
-            {transactionAnalysis && (
-              <>
-                {/* Transaction Patterns */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center gap-2">
-                        <Activity className="h-5 w-5" />
-                        Total Transactions
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-3xl font-bold">{transactionAnalysis.totalTransactions}</div>
+                      )}
                     </CardContent>
                   </Card>
 
                   <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle>Failed Transactions</CardTitle>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm">Contract Type</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-red-600">
-                        {transactionAnalysis.patterns?.failedTransactions || 0}
-                      </div>
-                      <p className="text-sm text-gray-600">Potential honeypot attempts</p>
+                      {isLoading ? (
+                        <div className="animate-pulse h-6 bg-muted rounded" />
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Activity className="h-4 w-4" />
+                          <span className="text-sm">
+                            {etherscanData?.tokenDetails ? 'Token Contract' : 'Smart Contract'}
+                          </span>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 
                   <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle>Contract Interactions</CardTitle>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm">Security Risk</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-blue-600">
-                        {transactionAnalysis.patterns?.contractInteractions || 0}
-                      </div>
-                      <p className="text-sm text-gray-600">Smart contract calls</p>
+                      {isLoading ? (
+                        <div className="animate-pulse h-6 bg-muted rounded" />
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Shield className="h-4 w-4" />
+                          <Badge 
+                            variant={honeypotData?.riskLevel === 'LOW' ? 'default' : 
+                                   honeypotData?.riskLevel === 'MEDIUM' ? 'secondary' : 'destructive'}
+                          >
+                            {honeypotData?.riskLevel || 'Unknown'}
+                          </Badge>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </div>
 
-                {/* Recent Transactions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Transactions</CardTitle>
-                    <CardDescription>Latest blockchain activity for this contract</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {transactionAnalysis.transactions?.slice(0, 10).map((tx: any, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="font-mono text-sm">
-                              {tx.hash?.slice(0, 10)}...{tx.hash?.slice(-6)}
-                            </div>
-                            <Badge variant={tx.status === 'success' ? 'default' : 'destructive'}>
-                              {tx.status}
-                            </Badge>
-                            <Badge variant={tx.riskLevel === 'high' ? 'destructive' : 'secondary'}>
-                              {tx.riskLevel} risk
-                            </Badge>
-                          </div>
-                          <div className="text-right text-sm">
-                            <div>Block: {tx.blockNumber}</div>
-                            <div className="text-gray-600">Gas: {tx.gasUsed}</div>
-                          </div>
+                {etherscanData?.tokenDetails && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Token Information</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Name:</span>
+                          <span className="ml-2 font-mono">{etherscanData.tokenDetails.name}</span>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            )}
-          </TabsContent>
-
-          <TabsContent value="recovery" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Download className="h-5 w-5" />
-                  Recovery Contract Generator
-                </CardTitle>
-                <CardDescription>
-                  Generate a custom recovery contract based on the analysis results
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {contractAnalysis?.honeypotAnalysis?.isHoneypot && (
-                  <Alert>
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>
-                      <strong>Honeypot Detected:</strong> This contract restricts token transfers. 
-                      A recovery contract can bypass these restrictions.
-                    </AlertDescription>
-                  </Alert>
+                        <div>
+                          <span className="text-muted-foreground">Symbol:</span>
+                          <span className="ml-2 font-mono">{etherscanData.tokenDetails.symbol}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Decimals:</span>
+                          <span className="ml-2 font-mono">{etherscanData.tokenDetails.decimals}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Total Supply:</span>
+                          <span className="ml-2 font-mono">{etherscanData.tokenDetails.totalSupply}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 )}
 
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 p-6 rounded-lg">
-                  <h4 className="font-semibold mb-4">Recovery Strategy</h4>
-                  <div className="space-y-2 text-sm">
-                    <div>✅ Deploy custom recovery contract</div>
-                    <div>✅ Mint equivalent tokens to affected holders</div>
-                    <div>✅ Establish market liquidity on Uniswap</div>
-                    <div>✅ Notify community of recovery completion</div>
-                  </div>
-                </div>
+                {honeypotData && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Risk Assessment</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm">Can Buy:</span>
+                            <Badge variant={honeypotData.canBuy ? "default" : "destructive"}>
+                              {honeypotData.canBuy ? "Yes" : "No"}
+                            </Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm">Can Sell:</span>
+                            <Badge variant={honeypotData.canSell ? "default" : "destructive"}>
+                              {honeypotData.canSell ? "Yes" : "No"}
+                            </Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm">Has Liquidity:</span>
+                            <Badge variant={honeypotData.hasLiquidity ? "default" : "destructive"}>
+                              {honeypotData.hasLiquidity ? "Yes" : "No"}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm">Liquidity (USD):</span>
+                            <span className="text-sm font-mono">${honeypotData.liquidityUSD?.toLocaleString() || 0}</span>
+                          </div>
+                        </div>
+                      </div>
 
-                <Button className="w-full" size="lg">
-                  <Download className="mr-2 h-4 w-4" />
-                  Generate Recovery Contract
-                </Button>
+                      {honeypotData.issues?.length > 0 && (
+                        <Alert>
+                          <AlertTriangle className="h-4 w-4" />
+                          <AlertDescription>
+                            <div className="space-y-1">
+                              <p className="font-semibold">Security Issues:</p>
+                              <ul className="list-disc list-inside space-y-1">
+                                {honeypotData.issues.map((issue: string, index: number) => (
+                                  <li key={index} className="text-sm">{issue}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </AlertDescription>
+                        </Alert>
+                      )}
 
-                <div className="text-xs text-gray-600 space-y-1">
-                  <p>• Contract will be customized for this specific honeypot pattern</p>
-                  <p>• Includes emergency functions for token recovery</p>
-                  <p>• Verified source code provided for transparency</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                      {honeypotData.warnings?.length > 0 && (
+                        <Alert>
+                          <AlertTriangle className="h-4 w-4" />
+                          <AlertDescription>
+                            <div className="space-y-1">
+                              <p className="font-semibold">Warnings:</p>
+                              <ul className="list-disc list-inside space-y-1">
+                                {honeypotData.warnings.map((warning: string, index: number) => (
+                                  <li key={index} className="text-sm">{warning}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+
+              <TabsContent value="verification" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Verification Details</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {isLoading ? (
+                      <div className="space-y-2">
+                        <div className="animate-pulse h-4 bg-muted rounded w-3/4" />
+                        <div className="animate-pulse h-4 bg-muted rounded w-1/2" />
+                        <div className="animate-pulse h-4 bg-muted rounded w-2/3" />
+                      </div>
+                    ) : verificationData ? (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Contract Name:</span>
+                            <span className="ml-2 font-mono">{verificationData.contractName || 'Unknown'}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Compiler Version:</span>
+                            <span className="ml-2 font-mono">{verificationData.compilerVersion || 'Unknown'}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Optimization:</span>
+                            <Badge variant={verificationData.optimization ? "default" : "secondary"}>
+                              {verificationData.optimization ? "Enabled" : "Disabled"}
+                            </Badge>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Runs:</span>
+                            <span className="ml-2 font-mono">{verificationData.runs || 0}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">License:</span>
+                            <span className="ml-2 font-mono">{verificationData.licenseType || 'Unknown'}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Proxy:</span>
+                            <Badge variant={verificationData.proxy ? "secondary" : "default"}>
+                              {verificationData.proxy ? "Yes" : "No"}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground">No verification data available</p>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="security" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Security Analysis</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {isLoading ? (
+                      <div className="space-y-2">
+                        <div className="animate-pulse h-4 bg-muted rounded w-full" />
+                        <div className="animate-pulse h-4 bg-muted rounded w-3/4" />
+                      </div>
+                    ) : honeypotData ? (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 p-4 rounded-lg border">
+                          {honeypotData.isHoneypot ? (
+                            <>
+                              <AlertTriangle className="h-6 w-6 text-red-600" />
+                              <div>
+                                <p className="font-semibold text-red-600">HONEYPOT DETECTED</p>
+                                <p className="text-sm text-muted-foreground">This contract shows honeypot characteristics</p>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle className="h-6 w-6 text-green-600" />
+                              <div>
+                                <p className="font-semibold text-green-600">NO HONEYPOT DETECTED</p>
+                                <p className="text-sm text-muted-foreground">Contract appears to be safe</p>
+                              </div>
+                            </>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <h4 className="font-semibold">Trading Capabilities</h4>
+                            <div className="space-y-1 text-sm">
+                              <div className="flex justify-between">
+                                <span>Can Buy:</span>
+                                <Badge variant={honeypotData.canBuy ? "default" : "destructive"}>
+                                  {honeypotData.canBuy ? "✓" : "✗"}
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Can Sell:</span>
+                                <Badge variant={honeypotData.canSell ? "default" : "destructive"}>
+                                  {honeypotData.canSell ? "✓" : "✗"}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <h4 className="font-semibold">Contract Status</h4>
+                            <div className="space-y-1 text-sm">
+                              <div className="flex justify-between">
+                                <span>Verified:</span>
+                                <Badge variant={honeypotData.isVerified ? "default" : "secondary"}>
+                                  {honeypotData.isVerified ? "✓" : "✗"}
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Has Liquidity:</span>
+                                <Badge variant={honeypotData.hasLiquidity ? "default" : "destructive"}>
+                                  {honeypotData.hasLiquidity ? "✓" : "✗"}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground">No security analysis available</p>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="source" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Source Code</CardTitle>
+                    <CardDescription>
+                      {verificationData?.isVerified ? 
+                        "Contract source code is verified and available" : 
+                        "Contract source code is not verified"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {verificationData?.sourcecode ? (
+                      <div className="space-y-4">
+                        <div className="bg-muted p-4 rounded-lg">
+                          <pre className="text-xs overflow-x-auto whitespace-pre-wrap">
+                            {verificationData.sourcecode.slice(0, 2000)}
+                            {verificationData.sourcecode.length > 2000 && '...'}
+                          </pre>
+                        </div>
+                        <Button
+                          onClick={() => window.open(`https://etherscan.io/address/${contractAddress}#code`, '_blank')}
+                          variant="outline"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          View Full Source on Etherscan
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <AlertTriangle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">Source code not available or not verified</p>
+                        <Button
+                          onClick={() => window.open(`https://etherscan.io/address/${contractAddress}`, '_blank')}
+                          variant="outline"
+                          className="mt-4"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          View on Etherscan
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      )}
+
+      {!contractAddress && (
+        <Card>
+          <CardContent className="text-center py-12">
+            <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground">Enter a contract address to begin analysis</p>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

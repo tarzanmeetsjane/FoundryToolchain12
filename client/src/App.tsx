@@ -56,6 +56,7 @@ import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
 import { BeaconChainAnalyzer } from './components/beacon-chain-analyzer';
+import MyPoolSetup from './pages/my-pool-setup';
 
 function Router() {
   return (
@@ -112,6 +113,7 @@ function Router() {
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
+        <Route path="/my-pool-setup" component={MyPoolSetup} />
         <Route component={NotFound} />
       </Switch>
     </div>

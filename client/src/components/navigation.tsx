@@ -14,7 +14,7 @@ export default function Navigation() {
             <BarChart3 className="h-6 w-6" />
             <span className="font-bold">Quantum Secure Trader</span>
           </div>
-          
+
           <div className="flex space-x-1">
             <Link href="/">
               <Button 
@@ -26,7 +26,7 @@ export default function Navigation() {
                 Trading Dashboard
               </Button>
             </Link>
-            
+
             <Link href="/liquidity-scanner">
               <Button 
                 variant={location === "/liquidity-scanner" ? "default" : "ghost"} 
@@ -37,7 +37,7 @@ export default function Navigation() {
                 Liquidity Scanner
               </Button>
             </Link>
-            
+
             <Link href="/wallet-security-checker">
               <Button 
                 variant={location === "/wallet-security-checker" ? "default" : "ghost"} 
@@ -48,7 +48,7 @@ export default function Navigation() {
                 Wallet Security
               </Button>
             </Link>
-            
+
             <Link href="/alerts">
               <Button 
                 variant={location === "/alerts" ? "default" : "ghost"} 
@@ -59,7 +59,7 @@ export default function Navigation() {
                 Price Alerts
               </Button>
             </Link>
-            
+
             <Link href="/live-uniswap-creator">
               <Button 
                 variant={location === "/live-uniswap-creator" ? "default" : "ghost"} 
@@ -70,7 +70,7 @@ export default function Navigation() {
                 Create Pool
               </Button>
             </Link>
-            
+
             <Link href="/direct-pool-links">
               <Button 
                 variant={location === "/direct-pool-links" ? "default" : "ghost"} 
@@ -81,7 +81,7 @@ export default function Navigation() {
                 Pool Links
               </Button>
             </Link>
-            
+
             <Link href="/address-analyzer">
               <Button 
                 variant={location === "/address-analyzer" ? "default" : "ghost"} 
@@ -92,7 +92,7 @@ export default function Navigation() {
                 Address Analyzer
               </Button>
             </Link>
-            
+
             <Link href="/token-discovery">
               <Button 
                 variant={location === "/token-discovery" ? "default" : "ghost"} 
@@ -103,7 +103,7 @@ export default function Navigation() {
                 Token Discovery
               </Button>
             </Link>
-            
+
             <Link href="/funding-tracker">
               <Button 
                 variant={location === "/funding-tracker" ? "default" : "ghost"} 
@@ -114,7 +114,7 @@ export default function Navigation() {
                 Funding
               </Button>
             </Link>
-            
+
             <Link href="/frequency-tuner">
               <Button 
                 variant={location === "/frequency-tuner" ? "default" : "ghost"} 
@@ -125,7 +125,7 @@ export default function Navigation() {
                 Frequency Tuner
               </Button>
             </Link>
-            
+
             <Link href="/cross-chain-swap">
               <Button 
                 variant={location === "/cross-chain-swap" ? "default" : "ghost"} 
@@ -136,7 +136,7 @@ export default function Navigation() {
                 Cross-Chain Swap
               </Button>
             </Link>
-            
+
             <Link href="/portfolio-analytics">
               <Button 
                 variant={location === "/portfolio-analytics" ? "default" : "ghost"} 
@@ -147,7 +147,7 @@ export default function Navigation() {
                 Portfolio Analytics
               </Button>
             </Link>
-            
+
             <Link href="/token-launch">
               <Button 
                 variant={location === "/token-launch" ? "default" : "ghost"} 
@@ -158,7 +158,7 @@ export default function Navigation() {
                 Token Launch
               </Button>
             </Link>
-            
+
             <Link href="/bulk-recovery">
               <Button 
                 variant={location === "/bulk-recovery" ? "default" : "ghost"} 
@@ -169,7 +169,7 @@ export default function Navigation() {
                 Bulk Recovery
               </Button>
             </Link>
-            
+
             <Link href="/contract-analyzer">
               <Button 
                 variant={location === "/contract-analyzer" ? "default" : "ghost"} 
@@ -180,7 +180,7 @@ export default function Navigation() {
                 Contract Analyzer
               </Button>
             </Link>
-            
+
             <Link href="/contract-verification">
               <Button 
                 variant={location === "/contract-verification" ? "default" : "ghost"} 
@@ -191,7 +191,7 @@ export default function Navigation() {
                 Contract Verification
               </Button>
             </Link>
-            
+
             <Link href="/widget">
               <Button 
                 variant={location === "/widget" ? "default" : "ghost"} 
@@ -203,7 +203,7 @@ export default function Navigation() {
               </Button>
             </Link>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <WalletConnectButton />
           </div>
