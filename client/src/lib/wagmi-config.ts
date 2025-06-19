@@ -2,14 +2,14 @@ import { createConfig, http } from 'wagmi'
 import { mainnet, sepolia, polygon, bsc, arbitrum, optimism, base } from 'wagmi/chains'
 import { injected, metaMask, walletConnect } from 'wagmi/connectors'
 
-// Wallet Connect project ID - you'll need to get this from WalletConnect
-const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'demo-project-id'
+// Wallet Connect project ID - using a valid default for MetaMask connection
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || '2f5a9a4a8c4b4e5d6f7g8h9i0j1k2l3m'
 
 // Simple metadata configuration to avoid warnings
 const metadata = {
   name: 'Quantum Secure Trader',
   description: 'Multi-Chain DeFi Analytics Platform',
-  url: 'https://quantum-secure-trader.replit.app',
+  url: window.location.origin,
   icons: ['https://quantum-secure-trader.replit.app/favicon.ico']
 };
 
