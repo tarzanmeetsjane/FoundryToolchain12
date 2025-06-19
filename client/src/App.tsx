@@ -31,6 +31,7 @@ import ImmediateMonetization from "@/pages/immediate-monetization";
 import ZeroCapitalMonetization from "@/pages/zero-capital-monetization";
 import DirectPoolLinks from "@/pages/direct-pool-links";
 import ETHGTestSwap from "@/pages/ethg-test-swap";
+import TokenValidationCenter from "@/pages/token-validation-center";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
