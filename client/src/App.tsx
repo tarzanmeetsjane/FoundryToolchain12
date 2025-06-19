@@ -45,6 +45,7 @@ import TokenAddressHelper from "@/pages/token-address-helper";
 import FinalPoolExecution from "@/pages/final-pool-execution";
 import DirectContractExecution from "@/pages/direct-contract-execution";
 import EtherscanBroadcast from "@/pages/etherscan-broadcast";
+import EtherscanFilterAnalyzer from "@/pages/etherscan-filter-analyzer";
 import ManualContractCalls from "@/pages/manual-contract-calls";
 import Step1Execution from "@/pages/step1-execution";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
@@ -106,6 +107,7 @@ function Router() {
         <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/execution-dashboard" component={ExecutionDashboard} />
         <Route path="/widget" component={WidgetPage} />
+        <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route component={NotFound} />
       </Switch>
     </div>
