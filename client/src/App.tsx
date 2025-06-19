@@ -44,6 +44,7 @@ import UrgentExecution from "@/pages/urgent-execution";
 import TokenAddressHelper from "@/pages/token-address-helper";
 import FinalPoolExecution from "@/pages/final-pool-execution";
 import DirectContractExecution from "@/pages/direct-contract-execution";
+import EtherscanBroadcast from "@/pages/etherscan-broadcast";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -93,6 +94,7 @@ function Router() {
         <Route path="/token-address-helper" component={TokenAddressHelper} />
         <Route path="/final-pool-execution" component={FinalPoolExecution} />
         <Route path="/direct-contract-execution" component={DirectContractExecution} />
+        <Route path="/etherscan-broadcast" component={EtherscanBroadcast} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
