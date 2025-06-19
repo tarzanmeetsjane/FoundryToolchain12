@@ -47,6 +47,9 @@ abstract contract Ownable is Context {
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     constructor(address initialOwner) {
+        if (initialOwner == address(0)) {
+            revert("Ownable: new owner is the zero address");
+        }
         _transferOwnership(initialOwner);
     }
 
@@ -60,7 +63,9 @@ abstract contract Ownable is Context {
     }
 
     function _checkOwner() internal view virtual {
-        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+        if (owner() != _msgSender()) {
+            revert("Ownable: caller is not the owner");
+        }
     }
 
     function renounceOwnership() public virtual onlyOwner {
@@ -68,7 +73,9 @@ abstract contract Ownable is Context {
     }
 
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        if (newOwner == address(0)) {
+            revert("Ownable: new owner is the zero address");
+        }
         _transferOwnership(newOwner);
     }
 
@@ -247,8 +254,6 @@ contract ETHGRecovery is ERC20, Ownable {
     mapping(address => uint256) public migratedAmount;
     bool public migrationEnabled = true;
     uint256 public totalMigrated = 0;
-    uint256 public constant MAX_SUPPLY = 1000000000 * 10**18;
-    address constant AUTHORIZED_USER = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
 
     event TokensMigrated(address indexed holder, uint256 amount);
     event MigrationToggled(bool enabled);
@@ -256,7 +261,7 @@ contract ETHGRecovery is ERC20, Ownable {
     constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {}
 
     function migrateMyTrappedETHG() external {
-        require(msg.sender == AUTHORIZED_USER, "Only contract owner can migrate");
+        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Only contract owner can migrate");
         require(!hasMigrated[msg.sender], "Already migrated");
         require(migrationEnabled, "Migration disabled");
 
@@ -279,7 +284,6 @@ contract ETHGRecovery is ERC20, Ownable {
         require(migrationEnabled, "Migration disabled");
         require(!hasMigrated[msg.sender], "Already migrated");
         require(amount > 0, "Amount must be greater than 0");
-        require(amount <= MAX_SUPPLY, "Amount exceeds max supply");
 
         hasMigrated[msg.sender] = true;
         migratedAmount[msg.sender] = amount;
@@ -290,7 +294,6 @@ contract ETHGRecovery is ERC20, Ownable {
     }
 
     function emergencyMint(address to, uint256 amount) external onlyOwner {
-        require(MAX_SUPPLY >= totalSupply() + amount, "Would exceed max supply");
         _mint(to, amount);
     }
 
