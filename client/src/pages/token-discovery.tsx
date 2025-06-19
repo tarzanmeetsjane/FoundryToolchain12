@@ -13,6 +13,7 @@ import {
   Star,
   AlertCircle
 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { GeckoPoolAnalyzer } from "@/components/gecko-pool-analyzer";
 import { CSVDataAnalyzer } from "@/components/csv-data-analyzer";

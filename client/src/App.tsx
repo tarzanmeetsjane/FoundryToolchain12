@@ -114,6 +114,7 @@ function Router() {
         <Route path="/execution-dashboard" component={ExecutionDashboard} />
         <Route path="/alternative-solutions" component={AlternativeSolutions} />
         <Route path="/metamask-direct" component={MetaMaskDirectExecution} />
+        <Route path="/ethg-ethgr-direct-pool" component={ETHGETHGRDirectPool} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
