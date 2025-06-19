@@ -24,7 +24,7 @@ interface BeaconBlockData {
 }
 
 export function BeaconChainAnalyzer() {
-  const [blockInput, setBlockInput] = useState("22740258");
+  const [blockInput, setBlockInput] = useState("11961081");
   const [blockData, setBlockData] = useState<BeaconBlockData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,11 +38,11 @@ export function BeaconChainAnalyzer() {
     slotRootHash: "0x33d21bf9d78117894a14db862bbc55651e8440a3ea14bc5e43829df30a4d0589",
     parentRootHash: "0xe88542f2019d2b0cec8c21844381fe2229fde78bc7ef9449e321e854144c8a1c",
     depositCount: 2045305,
-    graffiti: "0x (Hex:Null)",
-    randomness: "0xab541aef8418efd344776a2f0fa94ccf800bc299df70e734b0f4899a0b190cb0",
+    graffiti: "0x0000000000000000000000000000000000000000000000000000000000000000",
+    randomness: "0x5bfb7d78c5a256a0f23abb3fdc058c31f8caf2edcfe19485679f3f0039d90b49",
     randaoReveal: "0x894387de4afb5b9fbd0fbf183cd60b322867f1c08f95ee66eda54713ed650ec9fabdd49093dc3397e9d355cf59f722db16f254dda43c8374e8bbf94e3a5b3eff56184c088fadeab36f03cfacaf8ec6661ad04cb6de130c5d1363644558b7bf65",
-    isMEVBlock: true,
-    timestamp: Date.now()
+    isMEVBlock: false,
+    timestamp: new Date('2025-06-19T18:16:35Z').getTime()
   };
 
   const analyzeBlock = async () => {
@@ -50,8 +50,8 @@ export function BeaconChainAnalyzer() {
     setError(null);
     
     try {
-      // For demo purposes, use the example data
-      if (blockInput === "22740258") {
+      // Handle specific slot number from the provided data
+      if (blockInput === "11961081" || blockInput === "22740258") {
         setBlockData(exampleBlockData);
       } else {
         // In a real implementation, you would fetch from beacon chain API
@@ -98,7 +98,7 @@ export function BeaconChainAnalyzer() {
         <CardContent className="space-y-4">
           <div className="flex gap-2">
             <Input
-              placeholder="Enter block number (e.g., 22740258)"
+              placeholder="Enter slot number (e.g., 11961081)"
               value={blockInput}
               onChange={(e) => setBlockInput(e.target.value)}
               className="bg-white/10 border-white/30 text-white placeholder:text-gray-400"
