@@ -51,6 +51,7 @@ import Step1Execution from "@/pages/step1-execution";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ImmediateExecution from "@/pages/immediate-execution";
 import ExecutionDashboard from "@/pages/execution-dashboard";
+import AlternativeSolutions from "@/pages/alternative-solutions";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -109,6 +110,7 @@ function Router() {
         <Route path="/enhanced-verification" component={EnhancedContractVerification} />
         <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/execution-dashboard" component={ExecutionDashboard} />
+        <Route path="/alternative-solutions" component={AlternativeSolutions} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
