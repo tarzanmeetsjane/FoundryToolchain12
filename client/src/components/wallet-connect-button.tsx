@@ -18,6 +18,23 @@ export function WalletConnectButton() {
   const { disconnect } = useDisconnect()
   const { toast } = useToast()
 
+  const handleDisconnect = async () => {
+    try {
+      await disconnect()
+      toast({
+        title: "Wallet Disconnected",
+        description: "Successfully disconnected your wallet",
+      })
+    } catch (error) {
+      console.error('Disconnect error:', error)
+      toast({
+        title: "Disconnect Failed",
+        description: "Please try refreshing the page or disconnect manually from your wallet",
+        variant: "destructive"
+      })
+    }
+  }
+
   const copyAddress = () => {
     if (address) {
       navigator.clipboard.writeText(address)
@@ -86,7 +103,7 @@ export function WalletConnectButton() {
             View on Explorer
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => disconnect()} className="cursor-pointer text-red-600">
+          <DropdownMenuItem onClick={handleDisconnect} className="cursor-pointer text-red-600">
             <LogOut className="mr-2 h-4 w-4" />
             Disconnect
           </DropdownMenuItem>
