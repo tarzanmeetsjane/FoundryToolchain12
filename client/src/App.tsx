@@ -55,6 +55,7 @@ import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
+import { BeaconChainAnalyzer } from './components/beacon-chain-analyzer';
 
 function Router() {
   return (
@@ -110,6 +111,7 @@ function Router() {
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
+        <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
         <Route component={NotFound} />
       </Switch>
     </div>
