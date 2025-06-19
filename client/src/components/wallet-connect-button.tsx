@@ -41,17 +41,21 @@ export function WalletConnectButton() {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`
   }
 
+  const isETHGROwner = address?.toLowerCase() === "0x058c8fe01e5c9eac6ee19e6673673b549b368843"
+
   if (isConnected && address) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className={`gap-2 ${isETHGROwner ? 'border-green-500 bg-green-50' : ''}`}>
             <Wallet className="h-4 w-4" />
             <span className="hidden sm:inline">
               {ensName || formatAddress(address)}
+              {isETHGROwner && " ✓"}
             </span>
             <span className="sm:hidden">
               {ensName || formatAddress(address)}
+              {isETHGROwner && " ✓"}
             </span>
           </Button>
         </DropdownMenuTrigger>
@@ -60,10 +64,16 @@ export function WalletConnectButton() {
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium">
                 {ensName || formatAddress(address)}
+                {isETHGROwner && " ✓ ETHGR Owner"}
               </p>
               <p className="text-xs text-muted-foreground">
                 Connected to {chain?.name}
               </p>
+              {isETHGROwner && (
+                <p className="text-xs text-green-600 font-medium">
+                  Authorized for ETHGR Migration
+                </p>
+              )}
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

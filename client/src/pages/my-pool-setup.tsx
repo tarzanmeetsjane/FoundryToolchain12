@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,7 @@ import {
   Calculator
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { WalletVerification } from '@/components/wallet-verification';
 
 export default function MyPoolSetup() {
   const { toast } = useToast();
@@ -70,7 +70,7 @@ export default function MyPoolSetup() {
   const handleCreatePool = () => {
     const uniswapUrl = `https://app.uniswap.org/#/add/ETH/${ETHGR_CONTRACT}/${selectedFee}`;
     window.open(uniswapUrl, '_blank');
-    
+
     toast({
       title: "Opening Uniswap",
       description: `Creating ${ethgrAmount} ETHGR + ${ethAmount} ETH pool`
@@ -97,6 +97,9 @@ export default function MyPoolSetup() {
         </p>
       </div>
 
+            {/* Wallet Verification */}
+            <WalletVerification />
+
       {/* Your Status */}
       <Alert className="mb-6 border-green-200 bg-green-50">
         <CheckCircle className="h-4 w-4 text-green-600" />
@@ -109,10 +112,10 @@ export default function MyPoolSetup() {
       </Alert>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Pool Configuration */}
         <div className="lg:col-span-2 space-y-6">
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -124,7 +127,7 @@ export default function MyPoolSetup() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              
+
               {/* Token Pair Display */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-blue-100">
@@ -234,7 +237,7 @@ export default function MyPoolSetup() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          
+
           {/* Quick Setup Options */}
           <Card>
             <CardHeader>
