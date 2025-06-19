@@ -13,10 +13,12 @@ import {
   DollarSign,
   TrendingUp,
   AlertTriangle,
-  Calculator
+  Calculator,
+  Activity
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { WalletVerification } from '@/components/wallet-verification';
+import { useQuery } from "@tanstack/react-query";
 
 export default function MyPoolSetup() {
   const { toast } = useToast();
@@ -27,6 +29,9 @@ export default function MyPoolSetup() {
   // Your specific wallet and contract details
   const YOUR_WALLET = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
   const ETHGR_CONTRACT = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
+  const WETH_CONTRACT = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+  const USER_ADDRESS = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
+  const ORIGINAL_ETHG = "0x3fc29836e84e471a053d2d9e80494a867d670ead";
   const YOUR_ETHGR_BALANCE = "1,990,000";
   const ESTIMATED_VALUE = "$706,450";
 
@@ -87,6 +92,17 @@ export default function MyPoolSetup() {
     const ethValue = parseFloat(ethAmount) * 3800; // ETH price
     return ethValue / parseFloat(ethgrAmount);
   };
+
+  // Fetch original ETHG token data
+  const { data: ethgData, isLoading: ethgLoading } = useQuery({
+    queryKey: ['ethg-token-data', ORIGINAL_ETHG],
+    queryFn: async () => {
+      const response = await fetch(`/api/tokens/${ORIGINAL_ETHG}/metadata?chainId=1`);
+      if (!response.ok) throw new Error('Failed to fetch ETHG data');
+      return response.json();
+    },
+    refetchInterval: 30000,
+  });
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
@@ -237,6 +253,49 @@ export default function MyPoolSetup() {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* Wallet Verification */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Wallet Verification</CardTitle>
+              <CardDescription>
+                Verify your wallet and view token balances
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+          <Alert>
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>
+              Wallet connected: {YOUR_WALLET}
+            </AlertDescription>
+          </Alert>
+
+          {ethgData && (
+            <Alert className="border-blue-200 bg-blue-50">
+              <Activity className="h-4 w-4" />
+              <AlertDescription>
+                <div className="space-y-1">
+                  <div className="font-medium">Original ETHG Token Detected</div>
+                  <div className="text-sm">
+                    Name: {ethgData.name} | Symbol: {ethgData.symbol}
+                  </div>
+                  <div className="text-xs font-mono">
+                    Contract: {ORIGINAL_ETHG}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(`https://app.uniswap.org/explore/tokens/ethereum/${ORIGINAL_ETHG}`, '_blank')}
+                    className="mt-2"
+                  >
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    View on Uniswap
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+</CardContent>
+          </Card>
 
           {/* Quick Setup Options */}
           <Card>

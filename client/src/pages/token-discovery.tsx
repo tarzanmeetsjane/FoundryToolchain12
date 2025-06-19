@@ -161,6 +161,77 @@ export default function TokenDiscoveryPage() {
         </CardContent>
       </Card>
 
+      <Card className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-green-600" />
+            ETHG Recovery Status
+          </CardTitle>
+          <CardDescription>
+            Your ETHG token recovery and ETHGR deployment status
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <h4 className="font-medium">Original ETHG Token</h4>
+              <div className="text-sm space-y-1">
+                <div className="flex justify-between">
+                  <span>Contract:</span>
+                  <code className="text-xs">0x3fc2...0ead</code>
+                </div>
+                <div className="flex justify-between">
+                  <span>Your Balance:</span>
+                  <span className="font-medium text-orange-600">1,990,000 ETHG</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Status:</span>
+                  <Badge variant="destructive">Trapped</Badge>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <h4 className="font-medium">ETHGR Recovery Token</h4>
+              <div className="text-sm space-y-1">
+                <div className="flex justify-between">
+                  <span>Contract:</span>
+                  <code className="text-xs">0xfA7b...F247</code>
+                </div>
+                <div className="flex justify-between">
+                  <span>Deployed:</span>
+                  <Badge variant="default">Ready</Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span>Migration:</span>
+                  <Badge variant="secondary">Available</Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <Separator />
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={() => window.open(`https://app.uniswap.org/explore/tokens/ethereum/0x3fc29836e84e471a053d2d9e80494a867d670ead`, '_blank')}
+              variant="outline"
+              className="flex-1"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              View Original ETHG
+            </Button>
+            <Button
+              onClick={() => window.location.href = '/my-pool-setup'}
+              className="flex-1"
+            >
+              <DollarSign className="h-4 w-4 mr-2" />
+              Create ETHGR Pool
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       <GeckoPoolAnalyzer />
 
       <CSVDataAnalyzer />

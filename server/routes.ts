@@ -2113,6 +2113,74 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     }
   });
 
+  // ETHG Token Analysis Endpoint
+  app.get('/api/ethg/analysis', async (req: Request, res: Response) => {
+    try {
+      const ETHG_CONTRACT = "0x3fc29836e84e471a053d2d9e80494a867d670ead";
+      const ETHGR_CONTRACT = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
+      const USER_ADDRESS = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
+
+      // Get ETHG token information
+      const ethgResponse = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${ETHG_CONTRACT}&address=${USER_ADDRESS}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`);
+      const ethgBalance = await ethgResponse.json();
+
+      // Get ETHGR token information
+      const ethgrResponse = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${ETHGR_CONTRACT}&address=${USER_ADDRESS}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`);
+      const ethgrBalance = await ethgrResponse.json();
+
+      // Get Uniswap pool data for ETHG
+      const uniswapResponse = await fetch(`https://api.uniswap.org/v1/pools/ethereum/${ETHG_CONTRACT}/WETH`, {
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      let poolData = null;
+      if (uniswapResponse.ok) {
+        poolData = await uniswapResponse.json();
+      }
+
+      const analysis = {
+        ethg: {
+          contract: ETHG_CONTRACT,
+          balance: ethgBalance.result || "0",
+          status: "trapped",
+          uniswapUrl: `https://app.uniswap.org/explore/tokens/ethereum/${ETHG_CONTRACT}`,
+          poolData
+        },
+        ethgr: {
+          contract: ETHGR_CONTRACT,
+          balance: ethgrBalance.result || "0",
+          status: "deployed",
+          migrationAvailable: true
+        },
+        userAddress: USER_ADDRESS,
+        recoveryOptions: [
+          {
+            type: "migrate",
+            description: "Migrate trapped ETHG to ETHGR tokens",
+            action: "migrateMyTrappedETHG",
+            contract: ETHGR_CONTRACT
+          },
+          {
+            type: "pool_creation",
+            description: "Create ETHGR/WETH liquidity pool",
+            action: "createPool",
+            estimatedValue: "~$0.003 ETH"
+          }
+        ]
+      };
+
+      res.json(analysis);
+
+    } catch (error) {
+      console.error('ETHG analysis error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to analyze ETHG tokens' 
+      });
+    }
+  });
+
   // Helper functions for Uniscan analysis
   function calculateSecurityScore(contractData: any): number {
     let score = 70; // Base score
