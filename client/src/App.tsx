@@ -53,6 +53,7 @@ import ImmediateExecution from "@/pages/immediate-execution";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
 import MetaMaskDirectExecution from "@/pages/metamask-direct-execution";
+import ETHGETHGRDirectPool from "@/pages/ethg-ethgr-direct-pool";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
