@@ -54,6 +54,7 @@ import ExecutionDashboard from "@/pages/execution-dashboard";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
+import InstantValueRealization from '@/pages/instant-value-realization';
 
 function Router() {
   return (
@@ -108,6 +109,7 @@ function Router() {
         <Route path="/execution-dashboard" component={ExecutionDashboard} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
+        <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route component={NotFound} />
       </Switch>
     </div>
