@@ -47,6 +47,8 @@ import DirectContractExecution from "@/pages/direct-contract-execution";
 import EtherscanBroadcast from "@/pages/etherscan-broadcast";
 import ManualContractCalls from "@/pages/manual-contract-calls";
 import Step1Execution from "@/pages/step1-execution";
+import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
+import ImmediateExecution from "@/pages/immediate-execution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -99,6 +101,8 @@ function Router() {
         <Route path="/etherscan-broadcast" component={EtherscanBroadcast} />
         <Route path="/manual-contract-calls" component={ManualContractCalls} />
         <Route path="/step1-execution" component={Step1Execution} />
+        <Route path="/enhanced-verification" component={EnhancedContractVerification} />
+        <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
