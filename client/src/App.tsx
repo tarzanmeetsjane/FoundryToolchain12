@@ -42,6 +42,7 @@ import ETHGETHGRPool from "@/pages/ethg-ethgr-pool";
 import VictoryDashboard from "@/pages/victory-dashboard";
 import UrgentExecution from "@/pages/urgent-execution";
 import TokenAddressHelper from "@/pages/token-address-helper";
+import FinalPoolExecution from "@/pages/final-pool-execution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -89,6 +90,7 @@ function Router() {
         <Route path="/victory-dashboard" component={VictoryDashboard} />
         <Route path="/urgent-execution" component={UrgentExecution} />
         <Route path="/token-address-helper" component={TokenAddressHelper} />
+        <Route path="/final-pool-execution" component={FinalPoolExecution} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
