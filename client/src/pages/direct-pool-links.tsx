@@ -19,22 +19,32 @@ export default function DirectPoolLinks() {
 
   const poolLinks = [
     {
-      platform: "Uniswap V2 Pool Creation",
+      platform: "Uniswap V2 Pool Creation (ETHGR/WETH)",
+      url: `https://app.uniswap.org/#/add/v2/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/${ETHGR_CONTRACT}`,
+      description: "Create ETHGR/WETH liquidity pool using WETH contract",
+      priority: "high",
+      note: "WETH (Wrapped ETH) contract: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    {
+      platform: "Uniswap V2 Direct ETH Pool",
       url: `https://app.uniswap.org/#/add/v2/ETH/${ETHGR_CONTRACT}`,
-      description: "Create ETHGR/ETH liquidity pool (recommended)",
-      priority: "high"
+      description: "Create ETHGR/ETH pool (auto-converts to WETH)",
+      priority: "high",
+      note: "Uniswap automatically wraps ETH to WETH"
     },
     {
       platform: "Uniswap V3 Pool Creation", 
-      url: `https://app.uniswap.org/#/add/ETH/${ETHGR_CONTRACT}`,
-      description: "Create concentrated liquidity pool",
-      priority: "medium"
+      url: `https://app.uniswap.org/#/add/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/${ETHGR_CONTRACT}`,
+      description: "Create concentrated liquidity pool with WETH",
+      priority: "medium",
+      note: "V3 requires WETH contract address"
     },
     {
       platform: "ETHGR Token Swap Interface",
-      url: `https://app.uniswap.org/#/swap?outputCurrency=${ETHGR_CONTRACT}`,
+      url: `https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${ETHGR_CONTRACT}`,
       description: "Direct swap interface (pool must exist first)",
-      priority: "low"
+      priority: "low",
+      note: "For trading after pool creation"
     }
   ];
 
@@ -89,6 +99,12 @@ export default function DirectPoolLinks() {
                   <Copy className="h-3 w-3" />
                 </Button>
               </div>
+              
+              {link.note && (
+                <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
+                  {link.note}
+                </div>
+              )}
               
               <Button
                 className="w-full"
