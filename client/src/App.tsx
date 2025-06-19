@@ -68,6 +68,7 @@ function Router() {
         <Route path="/zero-capital-monetization" component={ZeroCapitalMonetization} />
         <Route path="/direct-pool-links" component={DirectPoolLinks} />
         <Route path="/ethg-test-swap" component={ETHGTestSwap} />
+        <Route path="/token-validation-center" component={TokenValidationCenter} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
