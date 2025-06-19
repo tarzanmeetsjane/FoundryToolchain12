@@ -32,6 +32,7 @@ import ZeroCapitalMonetization from "@/pages/zero-capital-monetization";
 import DirectPoolLinks from "@/pages/direct-pool-links";
 import ETHGTestSwap from "@/pages/ethg-test-swap";
 import TokenValidationCenter from "@/pages/token-validation-center";
+import EmergencyETHFunding from "@/pages/emergency-eth-funding";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -69,6 +70,7 @@ function Router() {
         <Route path="/direct-pool-links" component={DirectPoolLinks} />
         <Route path="/ethg-test-swap" component={ETHGTestSwap} />
         <Route path="/token-validation-center" component={TokenValidationCenter} />
+        <Route path="/emergency-eth-funding" component={EmergencyETHFunding} />
         <Route path="/widget" component={WidgetPage} />
         <Route component={NotFound} />
       </Switch>
