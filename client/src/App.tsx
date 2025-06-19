@@ -60,6 +60,8 @@ import SimpleWalletConnect from "@/pages/simple-wallet-connect";
 import WalletReady from "@/pages/wallet-ready";
 import WalletDashboard from "@/pages/wallet-dashboard";
 import ExecutionStatus from "@/pages/execution-status";
+import Step3Execution from "@/pages/step3-execution";
+import PairCreationNow from "@/pages/pair-creation-now";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -127,6 +129,8 @@ function Router() {
         <Route path="/wallet-ready" component={WalletReady} />
         <Route path="/wallet-dashboard" component={WalletDashboard} />
         <Route path="/execution-status" component={ExecutionStatus} />
+        <Route path="/step3-execution" component={Step3Execution} />
+        <Route path="/pair-creation-now" component={PairCreationNow} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
