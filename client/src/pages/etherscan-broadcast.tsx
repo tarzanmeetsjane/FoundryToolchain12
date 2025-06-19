@@ -27,7 +27,7 @@ export default function EtherscanBroadcast() {
     });
   };
 
-  // The exact source code that matches your deployed bytecode
+  // The exact source code that matches your deployed bytecode  
   const verificationSourceCode = `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -331,9 +331,9 @@ contract ETHGRecovery is ERC20, Ownable {
     },
     {
       title: "Set Compiler Version",
-      description: "v0.8.30+commit.7621ade3 (Latest 0.8.30)",
-      action: () => copyToClipboard("v0.8.30+commit.7621ade3"),
-      value: 'v0.8.30+commit.7621ade3'
+      description: "v0.8.19+commit.7dd6d404",
+      action: () => copyToClipboard("v0.8.19+commit.7dd6d404"),
+      value: 'v0.8.19+commit.7dd6d404'
     },
     {
       title: "License Type",
@@ -506,7 +506,7 @@ contract ETHGRecovery is ERC20, Ownable {
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Compiler Version:</span>
-            <span className="font-mono text-sm">v0.8.30+commit.7621ade3</span>
+            <span className="font-mono text-sm">v0.8.19+commit.7dd6d404</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Optimization:</span>
@@ -522,8 +522,8 @@ contract ETHGRecovery is ERC20, Ownable {
       <Alert className="border-green-500 bg-green-50">
         <CheckCircle className="h-4 w-4 text-green-600" />
         <AlertDescription className="text-green-800">
-          <strong>SUCCESS!</strong> Your ETHGR contract is verified and functional with 1,990,000 tokens minted.
-          Transaction: 0xd94f93577d44334...c01240c169 confirms successful deployment.
+          <strong>SUCCESS!</strong> Your ETHGR contract is deployed and functional with 1,990,000 tokens minted.
+          Transaction: <a href="https://etherscan.io/tx/0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169" target="_blank" className="underline">0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169</a> confirms successful deployment.
         </AlertDescription>
       </Alert>
 
