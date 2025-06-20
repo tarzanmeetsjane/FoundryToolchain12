@@ -66,6 +66,7 @@ import FeeAddressCheck from "@/pages/fee-address-check";
 import CorrectFeeInfo from "@/pages/correct-fee-info";
 import CreatePairClarification from "@/pages/createpair-clarification";
 import QuickPairExecution from "@/pages/quick-pair-execution";
+import GasSponsoredExecution from "@/pages/gas-sponsored-execution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -138,6 +139,7 @@ function Router() {
         <Route path="/fee-address-check" component={FeeAddressCheck} />
         <Route path="/correct-fee-info" component={CorrectFeeInfo} />
         <Route path="/createpair-clarification" component={CreatePairClarification} />
+        <Route path="/gas-sponsored-execution" component={GasSponsoredExecution} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
