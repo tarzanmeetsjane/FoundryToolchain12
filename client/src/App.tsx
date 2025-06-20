@@ -76,6 +76,7 @@ import ExecuteEthgrEth from "@/pages/execute-ethgr-eth";
 import CommunityRecoveryStory from "@/pages/community-recovery-story";
 import LiquidityPlanning from "@/pages/liquidity-planning";
 import ETHRecoveryCheck from "@/pages/eth-recovery-check";
+import RemixETHRecovery from "@/pages/remix-eth-recovery";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -158,6 +159,7 @@ function Router() {
         <Route path="/community-recovery-story" component={CommunityRecoveryStory} />
         <Route path="/liquidity-planning" component={LiquidityPlanning} />
         <Route path="/eth-recovery-check" component={ETHRecoveryCheck} />
+        <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
