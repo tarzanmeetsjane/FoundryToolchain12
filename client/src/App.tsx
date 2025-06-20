@@ -87,6 +87,8 @@ import ETHGRMonetization from "@/pages/ethgr-monetization";
 import ETHRecoveryTracker from "@/pages/eth-recovery-tracker";
 import ComprehensiveRecovery from "@/pages/comprehensive-recovery";
 import ImmediateETHRecovery from "@/pages/immediate-eth-recovery";
+import AddressFinder from "@/pages/address-finder";
+import FinalETHSolution from "@/pages/final-eth-solution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -180,6 +182,8 @@ function Router() {
         <Route path="/eth-recovery-tracker" component={ETHRecoveryTracker} />
         <Route path="/comprehensive-recovery" component={ComprehensiveRecovery} />
         <Route path="/immediate-eth-recovery" component={ImmediateETHRecovery} />
+        <Route path="/address-finder" component={AddressFinder} />
+        <Route path="/final-eth-solution" component={FinalETHSolution} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
