@@ -69,6 +69,7 @@ import QuickPairExecution from "@/pages/quick-pair-execution";
 import GasSponsoredExecution from "@/pages/gas-sponsored-execution";
 import AlternativeExecution from "@/pages/alternative-execution";
 import GasCheck from "@/pages/gas-check";
+import ExecuteNow from "@/pages/execute-now";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -144,6 +145,7 @@ function Router() {
         <Route path="/gas-sponsored-execution" component={GasSponsoredExecution} />
         <Route path="/alternative-execution" component={AlternativeExecution} />
         <Route path="/gas-check" component={GasCheck} />
+        <Route path="/execute-now" component={ExecuteNow} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
