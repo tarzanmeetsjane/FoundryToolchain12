@@ -13,51 +13,92 @@ import {
   ExternalLink,
   Zap
 } from "lucide-react";
-import { useState } from "react";
-import { ethers } from "ethers";
+import { useState, useEffect } from "react";
 
 export default function DirectWalletImport() {
-  const [privateKey, setPrivateKey] = useState("");
-  const [seedPhrase, setSeedPhrase] = useState("");
+  const [activeKeyIndex, setActiveKeyIndex] = useState(0);
   const [showPrivateKey, setShowPrivateKey] = useState(false);
-  const [wallet, setWallet] = useState<ethers.Wallet | null>(null);
-  const [balance, setBalance] = useState<string>("0");
+  const [wallets, setWallets] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const privateKeys = [
+    "0x25d770597d6e446666b63712b6fdbc31e66a6587463e66caa8b19246d1256855",
+    "0xa5ed71406d5a0be4fb9fe9ba2ff4addf51f01922688bc1eabf51ab92fbfe694f"
+  ];
 
   const expectedAddress = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
   const ethgrContract = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
 
-  const importFromPrivateKey = async () => {
+  // Auto-import both private keys
+  useEffect(() => {
+    importAllWallets();
+  }, []);
+
+  const importAllWallets = async () => {
     try {
       setIsLoading(true);
       setError("");
       
-      let key = privateKey.trim();
-      if (!key.startsWith('0x')) {
-        key = '0x' + key;
-      }
-      
-      const importedWallet = new ethers.Wallet(key);
-      
-      if (importedWallet.address.toLowerCase() !== expectedAddress.toLowerCase()) {
-        setError(`Wrong private key. Expected: ${expectedAddress}, Got: ${importedWallet.address}`);
-        return;
-      }
-      
-      // Connect to Ethereum mainnet
+      const { ethers } = await import('ethers');
       const provider = new ethers.JsonRpcProvider('https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
-      const connectedWallet = importedWallet.connect(provider);
       
-      // Get ETH balance
-      const ethBalance = await provider.getBalance(importedWallet.address);
-      const formattedBalance = ethers.formatEther(ethBalance);
+      const walletData = [];
       
-      setWallet(connectedWallet);
-      setBalance(formattedBalance);
+      for (let i = 0; i < privateKeys.length; i++) {
+        try {
+          const key = privateKeys[i];
+          const importedWallet = new ethers.Wallet(key);
+          const connectedWallet = importedWallet.connect(provider);
+          
+          // Get ETH balance
+          const ethBalance = await provider.getBalance(importedWallet.address);
+          const formattedBalance = ethers.formatEther(ethBalance);
+          
+          // Get contract ETH balance
+          const contractETH = await provider.getBalance(ethgrContract);
+          const contractFormatted = ethers.formatEther(contractETH);
+          
+          // Check if this wallet is the contract owner
+          let isOwner = false;
+          try {
+            const abi = ["function owner() view returns (address)"];
+            const contract = new ethers.Contract(ethgrContract, abi, connectedWallet);
+            const owner = await contract.owner();
+            isOwner = owner.toLowerCase() === importedWallet.address.toLowerCase();
+          } catch (err) {
+            console.log("Could not check ownership for", importedWallet.address);
+          }
+          
+          walletData.push({
+            wallet: connectedWallet,
+            address: importedWallet.address,
+            balance: formattedBalance,
+            contractBalance: contractFormatted,
+            isOwner,
+            keyIndex: i
+          });
+          
+        } catch (err) {
+          console.log(`Failed to import wallet ${i}:`, err);
+        }
+      }
+      
+      setWallets(walletData);
+      
+      // Set active wallet to the one that's the contract owner or has most ETH
+      const ownerWallet = walletData.find(w => w.isOwner);
+      if (ownerWallet) {
+        setActiveKeyIndex(ownerWallet.keyIndex);
+      } else {
+        const richestWallet = walletData.reduce((prev, current) => 
+          parseFloat(prev.balance) > parseFloat(current.balance) ? prev : current
+        );
+        setActiveKeyIndex(richestWallet.keyIndex);
+      }
       
     } catch (err) {
-      setError(`Invalid private key: ${err}`);
+      setError(`Failed to import wallets: ${err}`);
     } finally {
       setIsLoading(false);
     }
@@ -94,12 +135,15 @@ export default function DirectWalletImport() {
     }
   };
 
-  const executeEmergencyWithdraw = async () => {
-    if (!wallet) return;
+  const executeEmergencyWithdraw = async (walletIndex: number) => {
+    const walletData = wallets[walletIndex];
+    if (!walletData) return;
     
     try {
       setIsLoading(true);
       setError("");
+      
+      const { ethers } = await import('ethers');
       
       // ETHGR contract ABI for emergencyWithdraw
       const abi = [
@@ -108,33 +152,34 @@ export default function DirectWalletImport() {
         "function balanceOf(address) view returns (uint256)"
       ];
       
-      const contract = new ethers.Contract(ethgrContract, abi, wallet);
+      const contract = new ethers.Contract(ethgrContract, abi, walletData.wallet);
       
       // Check if wallet is owner
-      const owner = await contract.owner();
-      if (owner.toLowerCase() !== wallet.address.toLowerCase()) {
-        setError("Wallet is not the contract owner");
+      if (!walletData.isOwner) {
+        setError("This wallet is not the contract owner");
         return;
       }
       
       // Get contract ETH balance
-      const contractBalance = await wallet.provider.getBalance(ethgrContract);
-      const contractETH = ethers.formatEther(contractBalance);
+      const contractETHBalance = await walletData.wallet.provider.getBalance(ethgrContract);
+      const contractETH = ethers.formatEther(contractETHBalance);
       
-      if (parseFloat(contractETH) < 1) {
-        setError(`Contract only has ${contractETH} ETH, not the expected 37 ETH`);
+      if (parseFloat(contractETH) < 0.001) {
+        setError(`Contract only has ${contractETH} ETH. The 37 ETH might be elsewhere.`);
         return;
       }
       
       // Execute emergency withdraw
-      const tx = await contract.emergencyWithdraw();
+      const tx = await contract.emergencyWithdraw({
+        gasLimit: 500000,
+        gasPrice: ethers.parseUnits('20', 'gwei')
+      });
       const receipt = await tx.wait();
       
-      // Refresh balance
-      const newBalance = await wallet.provider.getBalance(wallet.address);
-      setBalance(ethers.formatEther(newBalance));
+      // Refresh all wallet data
+      importAllWallets();
       
-      alert(`Success! Transaction: ${receipt.transactionHash}`);
+      alert(`Success! Recovered ${contractETH} ETH. Transaction: ${receipt.transactionHash}`);
       
     } catch (err) {
       setError(`Withdrawal failed: ${err}`);
@@ -143,27 +188,25 @@ export default function DirectWalletImport() {
     }
   };
 
-  const hasSignificantETH = parseFloat(balance) > 30;
-
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="text-center space-y-4">
         <div className="text-6xl">🔑</div>
-        <h1 className="text-4xl font-bold">DIRECT WALLET IMPORT</h1>
+        <h1 className="text-4xl font-bold">MULTI-WALLET ANALYSIS</h1>
         <p className="text-xl text-muted-foreground">
-          Import your wallet directly using private key or seed phrase
+          Analyzing both private keys to find your 37 ETH
         </p>
       </div>
 
       <Alert className="border-blue-500 bg-blue-50">
         <Key className="h-4 w-4" />
         <AlertDescription>
-          <strong>SECURE IMPORT:</strong> Your private key stays in your browser and connects directly to Ethereum. 
-          This bypasses ConnectKit connection issues.
+          <strong>MULTI-WALLET SCAN:</strong> Checking both provided private keys to locate 
+          the 37 ETH and identify the ETHGR contract owner.
         </AlertDescription>
       </Alert>
 
-      {!wallet ? (
+      {wallets.length === 0 ? (
         <Tabs defaultValue="private-key" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="private-key">Private Key</TabsTrigger>
@@ -263,36 +306,38 @@ export default function DirectWalletImport() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 bg-green-50 rounded-lg">
                   <div className="text-sm font-bold mb-2">Wallet Address:</div>
                   <div className="font-mono text-xs break-all">{wallet.address}</div>
                 </div>
 
                 <div className="p-4 bg-blue-50 rounded-lg">
-                  <div className="text-sm font-bold mb-2">ETH Balance:</div>
+                  <div className="text-sm font-bold mb-2">Wallet ETH:</div>
                   <div className="text-2xl font-bold text-blue-600">{parseFloat(balance).toFixed(6)} ETH</div>
                   <div className="text-sm text-muted-foreground">${(parseFloat(balance) * 2500).toFixed(2)} USD</div>
                 </div>
+
+                <div className="p-4 bg-purple-50 rounded-lg">
+                  <div className="text-sm font-bold mb-2">Contract ETH:</div>
+                  <div className="text-2xl font-bold text-purple-600">{parseFloat(contractBalance).toFixed(6)} ETH</div>
+                  <div className="text-sm text-muted-foreground">${(parseFloat(contractBalance) * 2500).toFixed(2)} USD</div>
+                </div>
               </div>
 
-              {hasSignificantETH ? (
-                <Alert className="border-green-500 bg-green-50">
-                  <CheckCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    <strong>37+ ETH FOUND!</strong> Your wallet contains {parseFloat(balance).toFixed(6)} ETH. 
-                    You can proceed directly to create the ETHGR/ETH pool.
-                  </AlertDescription>
-                </Alert>
-              ) : (
-                <Alert className="border-orange-500 bg-orange-50">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertDescription>
-                    <strong>Check Contract:</strong> Your wallet has {parseFloat(balance).toFixed(6)} ETH. 
-                    The 37 ETH might be locked in the ETHGR contract. Try emergency withdrawal.
-                  </AlertDescription>
-                </Alert>
-              )}
+              <Alert className={`border-${totalETH > 30 ? 'green' : contractHasETH ? 'orange' : 'red'}-500 bg-${totalETH > 30 ? 'green' : contractHasETH ? 'orange' : 'red'}-50`}>
+                {totalETH > 30 ? <CheckCircle className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
+                <AlertDescription>
+                  <strong>TOTAL ETH ANALYSIS:</strong>
+                  <br />Wallet: {parseFloat(balance).toFixed(6)} ETH (${(parseFloat(balance) * 2500).toFixed(2)})
+                  <br />Contract: {parseFloat(contractBalance).toFixed(6)} ETH (${(parseFloat(contractBalance) * 2500).toFixed(2)})
+                  <br />Total: {totalETH.toFixed(6)} ETH (${(totalETH * 2500).toFixed(2)})
+                  <br />
+                  {totalETH > 30 ? "✓ Sufficient funds for massive liquidity pool!" : 
+                   contractHasETH ? "⚠ Use emergency withdrawal to recover contract ETH" : 
+                   "✗ 37 ETH not found in wallet or contract"}
+                </AlertDescription>
+              </Alert>
             </CardContent>
           </Card>
 
@@ -317,10 +362,12 @@ export default function DirectWalletImport() {
 
               <Button
                 onClick={executeEmergencyWithdraw}
-                disabled={isLoading}
-                className="w-full bg-orange-600 hover:bg-orange-700"
+                disabled={isLoading || !contractHasETH}
+                className={`w-full ${contractHasETH ? 'bg-orange-600 hover:bg-orange-700' : 'bg-gray-400'}`}
               >
-                {isLoading ? "Executing..." : "Execute Emergency Withdrawal"}
+                {isLoading ? "Executing..." : 
+                 contractHasETH ? `Withdraw ${parseFloat(contractBalance).toFixed(6)} ETH from Contract` : 
+                 "No ETH in Contract to Withdraw"}
               </Button>
 
               <div className="text-center">
