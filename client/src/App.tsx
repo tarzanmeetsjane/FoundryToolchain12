@@ -90,6 +90,10 @@ import ImmediateETHRecovery from "@/pages/immediate-eth-recovery";
 import AddressFinder from "@/pages/address-finder";
 import FinalETHSolution from "@/pages/final-eth-solution";
 import June15Analysis from "@/pages/june15-analysis";
+import TransactionAnalyzer from "@/pages/transaction-analyzer";
+import DirectTokenSales from "@/pages/direct-token-sales";
+import EmergencyRecovery from "@/pages/emergency-recovery";
+import SuccessDashboard from "@/pages/success-dashboard";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -186,6 +190,10 @@ function Router() {
         <Route path="/address-finder" component={AddressFinder} />
         <Route path="/final-eth-solution" component={FinalETHSolution} />
         <Route path="/june15-analysis" component={June15Analysis} />
+        <Route path="/transaction-analyzer" component={TransactionAnalyzer} />
+        <Route path="/direct-token-sales" component={DirectTokenSales} />
+        <Route path="/emergency-recovery" component={EmergencyRecovery} />
+        <Route path="/success-dashboard" component={SuccessDashboard} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
