@@ -63,6 +63,7 @@ import ExecutionStatus from "@/pages/execution-status";
 import Step3Execution from "@/pages/step3-execution";
 import PairCreationNow from "@/pages/pair-creation-now";
 import FeeAddressCheck from "@/pages/fee-address-check";
+import CorrectFeeInfo from "@/pages/correct-fee-info";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -133,6 +134,7 @@ function Router() {
         <Route path="/step3-execution" component={Step3Execution} />
         <Route path="/pair-creation-now" component={PairCreationNow} />
         <Route path="/fee-address-check" component={FeeAddressCheck} />
+        <Route path="/correct-fee-info" component={CorrectFeeInfo} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
