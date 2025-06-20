@@ -87,11 +87,18 @@ export default function ETHGRPoolCreation() {
         </p>
       </div>
 
-      <Alert className="border-green-500 bg-green-50">
+      <Alert className="border-orange-500 bg-orange-50">
         <CheckCircle className="h-4 w-4" />
         <AlertDescription>
-          <strong>READY FOR POOL CREATION:</strong> You have 1,990,000 ETHGR tokens ready to swap for ETH.
-          Connect your wallet and add liquidity to start earning trading fees immediately.
+          <strong>ETH REQUIRED:</strong> Pool creation requires minimum 0.1 ETH. If you need more ETH, 
+          check out alternative monetization strategies first.
+          <Button 
+            variant="link" 
+            className="p-0 h-auto ml-2 text-orange-600"
+            onClick={() => window.location.href = '/ethgr-monetization'}
+          >
+            View Alternatives →
+          </Button>
         </AlertDescription>
       </Alert>
 
