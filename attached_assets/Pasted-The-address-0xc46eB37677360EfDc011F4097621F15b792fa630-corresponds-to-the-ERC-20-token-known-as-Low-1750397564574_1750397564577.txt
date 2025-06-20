@@ -1,0 +1,41 @@
+The address 0xc46eB37677360EfDc011F4097621F15b792fa630 corresponds to the ERC-20 token known as "LowLevel". The token contract was deployed on May 14th, 2022 and the token has a circulating supply of 1.2 million tokens.
+
+LowLevel is described as a community-driven, deflationary meme token with static rewards that are distributed to holders. The token has several features such as static reflection and LP acquisition, aimed at creating a floor value for the token and incentivising holding. The project has a focus on building a strong community and has a stated mission to "change the world one meme at a time".
+
+The token can be traded on the PancakeSwap V2 platform.
+
+What games can you play with Ethereum Games token?
+Sources
+
+r/ExodusWallet on Reddit: Ethereum Games (ETHG)
+
+
+Ethereum Games price today, ETHG to USD live price, marketcap and chart | Mizar
+
+
+Best Ethereum Games | Top NFT Games on Ethereum | GAM3S.GG
+
+Ethereum Blockchain Games | PlayToEarn
+
+Top Ethereum NFT Games by Market Cap 2024
+
+Answer
+I could not find any games that accept Ethereum Games token as a form of payment or in-game currency. As mentioned previously, the token is likely associated with scam activity and has been referred to as an "unverified" contract.
+
+Popular Ethereum blockchain games include Big Time, Virtual Protocol, Gala Games and The Sandbox. These games offer features such as trading and collecting NFTs, and often have their own native tokens.
+
+tokenA: 0xd9145CCE52D386f254917e481eB44e9943F39138 tokenB: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
+Sources
+No sources used for this query.
+
+Answer
+TokenA is associated with the blockchain game My Neighbor Alice, which is a play-to-earn game where players can purchase and own virtual land, build their own virtual worlds and earn tokens by selling in-game items and content. Players can also socialise and collaborate with others. The token, called "ALICE", has a circulating supply of just under 4 million and a market cap of around $2 million.
+
+TokenB corresponds to the Binance Coin (BNB), which is the native coin of the Binance Chain and is also used on the Binance Smart Chain. BNB has a high market capitalisation of around $35 billion. The coin can be used for paying fees on the Binance exchange, and for gaming and paying for goods and services.
+
+Binance Coin is a well-established, utility coin with real-world use cases, whereas My Neighbor Alice's token ALICE appears to have a smaller market cap and is likely used for in-game purchases and rewards.
+
+
+
+
+
