@@ -80,6 +80,7 @@ import RemixETHRecovery from "@/pages/remix-eth-recovery";
 import SolRecoveryEmergency from "@/pages/sol-recovery-emergency";
 import ExactWithdrawalRecovery from "@/pages/exact-withdrawal-recovery";
 import WalletConnectFirst from "@/pages/wallet-connect-first";
+import DirectWalletImport from "@/pages/direct-wallet-import";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -166,6 +167,7 @@ function Router() {
         <Route path="/sol-recovery-emergency" component={SolRecoveryEmergency} />
         <Route path="/exact-withdrawal-recovery" component={ExactWithdrawalRecovery} />
         <Route path="/wallet-connect-first" component={WalletConnectFirst} />
+        <Route path="/direct-wallet-import" component={DirectWalletImport} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
