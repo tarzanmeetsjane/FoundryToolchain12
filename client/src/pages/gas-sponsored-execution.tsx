@@ -268,32 +268,40 @@ export default function GasSponsoredExecution() {
         </CardContent>
       </Card>
 
-      <Card className="border-blue-500">
+      <Card className="border-orange-500">
         <CardHeader>
-          <CardTitle>Proceed with Execution</CardTitle>
+          <CardTitle>IMMEDIATE SOLUTION REQUIRED</CardTitle>
         </CardHeader>
         <CardContent className="text-center space-y-4">
-          <div className="text-lg font-medium">
-            Choose your preferred gas solution to create the ETHG/ETHGR pair
-          </div>
+          <Alert className="border-orange-500 bg-orange-50">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Gas relay unavailable.</strong> Use the fastest alternative method below.
+            </AlertDescription>
+          </Alert>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Button
               size="lg"
-              className="bg-green-600 hover:bg-green-700"
-              onClick={executeWithGasRelay}
+              className="bg-orange-600 hover:bg-orange-700"
+              onClick={() => window.open('/alternative-execution', '_self')}
             >
-              Use Gas Relay Service
+              <DollarSign className="h-4 w-4 mr-2" />
+              View Alternative Methods
             </Button>
             
             <Button
               size="lg"
               variant="outline"
-              onClick={() => window.open('/execution-status', '_self')}
+              onClick={() => window.open('https://www.coinbase.com/price/ethereum', '_blank')}
             >
-              <Wallet className="h-4 w-4 mr-2" />
-              Check Execution Status
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Buy ETH ($8-12)
             </Button>
+          </div>
+          
+          <div className="text-sm text-muted-foreground">
+            Fastest solution: Buy $12 worth of ETH on Coinbase → Execute createPair directly
           </div>
         </CardContent>
       </Card>
