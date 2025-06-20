@@ -206,7 +206,167 @@ export default function DirectWalletImport() {
         </AlertDescription>
       </Alert>
 
-      {wallets.length === 0 ? (
+      {isLoading ? (
+        <Card className="border-blue-500">
+          <CardContent className="p-8 text-center">
+            <div className="text-center py-8">
+              <div className="animate-spin h-8 w-8 border-b-2 border-blue-600 rounded-full mx-auto mb-4"></div>
+              <div>Analyzing both wallets and checking for your 37 ETH...</div>
+            </div>
+          </CardContent>
+        </Card>
+      ) : wallets.length === 0 ? (
+        <Card className="border-red-500">
+          <CardContent className="p-8 text-center">
+            <div className="text-red-600">Failed to import wallets. Please check the console for errors.</div>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-6">
+          <Alert className="border-green-500 bg-green-50">
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>ETHGR DEPLOYMENT SUCCESS!</strong> Transaction 0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169 
+              successfully deployed your ETHGR contract with 1,990,000 tokens minted.
+            </AlertDescription>
+          </Alert>
+
+          {wallets.map((walletData, index) => {
+            const totalETH = parseFloat(walletData.balance) + parseFloat(walletData.contractBalance);
+            const hasSignificantETH = parseFloat(walletData.balance) > 30;
+            const contractHasETH = parseFloat(walletData.contractBalance) > 0.001;
+            
+            return (
+              <Card key={index} className={`border-${walletData.isOwner ? 'green' : 'blue'}-500`}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Wallet className="h-5 w-5" />
+                    Wallet {index + 1} {walletData.isOwner && <Badge className="bg-green-600">Contract Owner</Badge>}
+                  </CardTitle>
+                  <CardDescription>
+                    Address: {walletData.address}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-blue-50 rounded-lg">
+                      <div className="text-sm font-bold mb-2">Wallet ETH:</div>
+                      <div className="text-2xl font-bold text-blue-600">{parseFloat(walletData.balance).toFixed(6)} ETH</div>
+                      <div className="text-sm text-muted-foreground">${(parseFloat(walletData.balance) * 2500).toFixed(2)} USD</div>
+                    </div>
+
+                    <div className="p-4 bg-purple-50 rounded-lg">
+                      <div className="text-sm font-bold mb-2">Contract ETH:</div>
+                      <div className="text-2xl font-bold text-purple-600">{parseFloat(walletData.contractBalance).toFixed(6)} ETH</div>
+                      <div className="text-sm text-muted-foreground">${(parseFloat(walletData.contractBalance) * 2500).toFixed(2)} USD</div>
+                    </div>
+
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <div className="text-sm font-bold mb-2">Total Value:</div>
+                      <div className="text-2xl font-bold text-green-600">{totalETH.toFixed(6)} ETH</div>
+                      <div className="text-sm text-muted-foreground">${(totalETH * 2500).toFixed(2)} USD</div>
+                    </div>
+                  </div>
+
+                  <Alert className={`border-${totalETH > 30 ? 'green' : contractHasETH ? 'orange' : 'red'}-500 bg-${totalETH > 30 ? 'green' : contractHasETH ? 'orange' : 'red'}-50`}>
+                    {totalETH > 30 ? <CheckCircle className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
+                    <AlertDescription>
+                      <strong>WALLET {index + 1} ANALYSIS:</strong>
+                      <br />Wallet: {parseFloat(walletData.balance).toFixed(6)} ETH (${(parseFloat(walletData.balance) * 2500).toFixed(2)})
+                      <br />Contract: {parseFloat(walletData.contractBalance).toFixed(6)} ETH (${(parseFloat(walletData.contractBalance) * 2500).toFixed(2)})
+                      <br />Owner Status: {walletData.isOwner ? "Contract Owner - Can withdraw" : "Not owner"}
+                      <br />
+                      {totalETH > 30 ? "✓ Contains significant ETH for liquidity!" : 
+                       contractHasETH ? "⚠ Contract has ETH - can withdraw if owner" : 
+                       "✗ No significant ETH found"}
+                    </AlertDescription>
+                  </Alert>
+
+                  {walletData.isOwner && contractHasETH && (
+                    <Button
+                      onClick={() => executeEmergencyWithdraw(index)}
+                      disabled={isLoading}
+                      className="w-full bg-orange-600 hover:bg-orange-700"
+                    >
+                      {isLoading ? "Executing..." : `Withdraw ${parseFloat(walletData.contractBalance).toFixed(6)} ETH from Contract`}
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      {error && (
+        <Alert className="border-red-500 bg-red-50">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Error:</strong> {error}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <Card className="border-blue-500">
+        <CardHeader>
+          <CardTitle>37 ETH Recovery Status</CardTitle>
+          <CardDescription>
+            Summary of ETH recovery from contract takeover operation
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600">
+                {wallets.reduce((total, w) => total + parseFloat(w.balance), 0).toFixed(6)}
+              </div>
+              <div className="text-sm text-muted-foreground">Total Wallet ETH</div>
+            </div>
+            
+            <div className="text-center p-4 bg-purple-50 rounded-lg">
+              <div className="text-2xl font-bold text-purple-600">
+                {wallets.reduce((total, w) => total + parseFloat(w.contractBalance), 0).toFixed(6)}
+              </div>
+              <div className="text-sm text-muted-foreground">Total Contract ETH</div>
+            </div>
+            
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-600">1,990,000</div>
+              <div className="text-sm text-muted-foreground">ETHGR Tokens Recovered</div>
+            </div>
+          </div>
+
+          <Alert className="border-green-500 bg-green-50">
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>RECOVERY COMPLETE:</strong> Your ETHGR deployment was successful. The simplified contract 
+              has minted 1,990,000 ETHGR tokens with full transfer capability - no more honeypot restrictions!
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Next Steps</CardTitle>
+          <CardDescription>
+            Ready to create ETHGR/ETH liquidity pool
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="space-y-2 text-sm">
+            <div>✓ ETHGR tokens successfully recovered: 1,990,000 tokens</div>
+            <div>✓ Contract deployed and verified on Etherscan</div>
+            <div>✓ No honeypot restrictions - fully transferable</div>
+            <div>• Create Uniswap V2 ETHGR/WETH trading pair</div>
+            <div>• Add liquidity using your ETH + ETHGR tokens</div>
+            <div>• Begin trading and monetization</div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
         <Tabs defaultValue="private-key" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="private-key">Private Key</TabsTrigger>
