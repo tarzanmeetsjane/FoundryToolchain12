@@ -222,7 +222,7 @@ export default function FinalRecoverySummary() {
           </div>
 
           <div className="text-center space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Button
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700"
@@ -234,11 +234,20 @@ export default function FinalRecoverySummary() {
               
               <Button
                 size="lg"
+                className="bg-green-600 hover:bg-green-700"
+                onClick={() => window.location.href = '/ethgr-pool-creation'}
+              >
+                <TrendingUp className="h-4 w-4 mr-2" />
+                Create ETHGR Pool
+              </Button>
+
+              <Button
+                size="lg"
                 variant="outline"
                 onClick={() => window.open('https://app.uniswap.org', '_blank')}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Create Pool on Uniswap
+                Open Uniswap
               </Button>
             </div>
           </div>
