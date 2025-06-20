@@ -73,6 +73,7 @@ import ExecuteNow from "@/pages/execute-now";
 import PairExistenceCheck from "@/pages/pair-existence-check";
 import EthgrEthStrategy from "@/pages/ethgr-eth-strategy";
 import ExecuteEthgrEth from "@/pages/execute-ethgr-eth";
+import CommunityRecoveryStory from "@/pages/community-recovery-story";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -152,6 +153,7 @@ function Router() {
         <Route path="/pair-existence-check" component={PairExistenceCheck} />
         <Route path="/ethgr-eth-strategy" component={EthgrEthStrategy} />
         <Route path="/execute-ethgr-eth" component={ExecuteEthgrEth} />
+        <Route path="/community-recovery-story" component={CommunityRecoveryStory} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
