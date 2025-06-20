@@ -1,0 +1,32 @@
+// Deployment Script for Remix IDE
+// Copy this into Remix, compile, and deploy
+
+/*
+DEPLOYMENT INSTRUCTIONS:
+
+1. Go to https://remix.ethereum.org
+2. Create new file: ETHGRecovery.sol
+3. Paste the contract code above
+4. Go to Solidity Compiler tab
+5. Select compiler version 0.8.19 or higher
+6. Click "Compile ETHGRecovery.sol"
+7. Go to Deploy & Run Transactions tab
+8. Select "Injected Provider - MetaMask"
+9. Make sure you're connected with wallet: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
+10. Click "Deploy"
+
+AFTER DEPLOYMENT:
+
+1. Verify contract on Etherscan
+2. Call migrateMyTrappedETHG() function
+3. You'll receive 1,990,000 ETHGR tokens
+4. Test transfers - NO honeypot restrictions!
+
+CONTRACT FEATURES:
+- Name: ETHG Recovery
+- Symbol: ETHGR  
+- Decimals: 18 (standard)
+- Max Supply: 1 billion tokens
+- Your Migration: 1,990,000 tokens ready
+- Fixed Transfers: Full ERC20 functionality
+*/

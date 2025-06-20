@@ -217,7 +217,7 @@ export default function ImmediateETHRecovery() {
                   <div className="font-bold mb-2">Withdrawal Process:</div>
                   <ol className="list-decimal list-inside space-y-2 text-sm">
                     <li>Check contract ETH balance using "Check ETH Balance" button</li>
-                    <li>If balance > 0, "Execute Emergency Withdrawal" button appears</li>
+                    <li>If balance greater than 0, "Execute Emergency Withdrawal" button appears</li>
                     <li>Click withdrawal button to recover ETH to your wallet</li>
                     <li>Confirm transaction in MetaMask</li>
                     <li>ETH will be transferred to 0x058C8FE01E5c9eaC6ee19e6673673B549B368843</li>
