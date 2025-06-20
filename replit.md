@@ -130,6 +130,7 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **Simplified Access**: `/wallet-ready` provides direct access to verified wallet status and pool creation
 - **Execution Tracking**: Real-time progress monitoring with `/execution-status` and step-by-step guides
 - **Active Execution**: User executing token approvals and proceeding with pair creation on Uniswap V2 Factory
+- **Function Clarification**: Identified correct createPair function parameters (2 params only, not 4) for standard Uniswap V2
 
 ### Immediate Monetization System (June 18, 2025)
 - **Cash Out Dashboard Deployed**: Complete monetization interface for 1,990,000 ETHGR tokens ($666,650 value)
