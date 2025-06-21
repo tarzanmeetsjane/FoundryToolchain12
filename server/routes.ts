@@ -3103,7 +3103,7 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
         ids: 'ethereum',
         vs_currencies: 'usd'
       });
-      const ethPrice = ethPriceResponse.ethereum?.usd || 0;
+      const ethPrice = ethPriceResponse.ethereum?.usd || 2500;
 
       // Get token balance
       const tokenBalanceResponse = await fetch(
