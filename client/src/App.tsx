@@ -131,6 +131,7 @@ import ContractDeploymentReady from "@/pages/contract-deployment-ready";
 import FinalDeploymentCenter from "@/pages/final-deployment-center";
 import MainnetDeployment from "@/pages/mainnet-deployment";
 import ViemDeployment from "@/pages/viem-deployment";
+import PrivateKeyGuide from "@/pages/private-key-guide";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -268,6 +269,7 @@ function Router() {
         <Route path="/final-deployment-center" component={FinalDeploymentCenter} />
         <Route path="/mainnet-deployment" component={MainnetDeployment} />
         <Route path="/viem-deployment" component={ViemDeployment} />
+        <Route path="/private-key-guide" component={PrivateKeyGuide} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />

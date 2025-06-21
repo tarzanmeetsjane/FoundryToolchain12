@@ -378,7 +378,7 @@ RPC_URL=https://mainnet.infura.io/v3/your-project-id`;
               
               <div className="p-4 bg-gray-900/50 rounded-lg">
                 <p className="text-gray-400 text-sm mb-2">Secure deployment (using .env file):</p>
-                <code className="text-green-400 font-mono">echo "PRIVATE_KEY=your_private_key" > .env && npm run deploy</code>
+                <code className="text-green-400 font-mono">echo "PRIVATE_KEY=your_private_key" &amp;gt; .env &amp;&amp; npm run deploy</code>
               </div>
             </div>
           </CardContent>
