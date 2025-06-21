@@ -158,6 +158,7 @@ import ImmediateTradingDashboard from "@/pages/immediate-trading-dashboard";
 import TransactionStateAnalysis from "@/pages/transaction-state-analysis";
 import TradingActivityTracker from "@/pages/trading-activity-tracker";
 import WalletBalanceChecker from "@/pages/wallet-balance-checker";
+import MetaMaskTokenImport from "@/pages/metamask-token-import";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -322,6 +323,7 @@ function Router() {
         <Route path="/transaction-state-analysis" component={TransactionStateAnalysis} />
         <Route path="/trading-activity-tracker" component={TradingActivityTracker} />
         <Route path="/wallet-balance-checker" component={WalletBalanceChecker} />
+        <Route path="/metamask-token-import" component={MetaMaskTokenImport} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
