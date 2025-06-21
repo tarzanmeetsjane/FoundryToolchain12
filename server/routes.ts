@@ -4,6 +4,8 @@ import { storage } from "./storage";
 import { insertSwapEventSchema, insertPoolStatsSchema, insertDexPlatformSchema } from "@shared/schema";
 import { ethers } from "ethers";
 import { DEX_CONFIGS, getExplorerApiUrl, getApiKeyForChain } from "./dex-config";
+import { liveData } from './live-data';
+import { ethgrLiveData } from './ethgr-live-data';
 
 // Moralis Web3 API configuration
 const MORALIS_BASE_URL = "https://deep-index.moralis.io/api/v2.2";
@@ -3134,8 +3136,20 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
         error: 'Failed to fetch live data',
         message: error instanceof Error ? error.message : 'Unknown error'
       });
+    } catch (error) {
+      console.error('Live pool data error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to fetch live data',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
+
+  // Alternative live pool data endpoint
+  app.get('/api/live/pool-fallback/:userAddress/:tokenAddress', async (req: Request, res: Response) => {
+    try {
+      const { userAddress, tokenAddress } = req.params;
 
       // Get token balance
       const tokenBalanceResponse = await fetch(
@@ -3200,12 +3214,12 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
         timestamp: Date.now(),
         poolCreationReady: parseInt(tokenBalance) > 0 && parseFloat(ethBalance) > 0.1
       });
-
     } catch (error) {
       console.error('Live pool data error:', error);
       res.status(500).json({ 
-        error: 'Failed to fetch live pool data',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        success: false, 
+        error: 'Failed to fetch live data',
+        message: error instanceof Error ? error.message : 'Unknown error'
       });
     }
   });
@@ -3511,4 +3525,74 @@ function getMoralisChain(chainId: number): string {
     8453: 'base'
   };
   return chainMap[chainId] || 'eth';
+}
+
+  // ETHGR live data endpoints
+  app.get("/api/ethgr/live-data", async (req: Request, res: Response) => {
+  try {
+    const data = await ethgrLiveData.getETHGRData();
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('ETHGR live data error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch ETHGR live data',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+  });
+
+  app.get("/api/ethgr/sales-metrics", async (req: Request, res: Response) => {
+  try {
+    const data = await ethgrLiveData.getSalesMetrics();
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Sales metrics error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch sales metrics',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+  });
+
+  app.get("/api/ethgr/pool-readiness", async (req: Request, res: Response) => {
+  try {
+    const data = await ethgrLiveData.getPoolCreationReadiness();
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Pool readiness error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to check pool readiness',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+  });
+
+  app.get("/api/ethgr/verify-transaction/:txHash", async (req: Request, res: Response) => {
+  try {
+    const { txHash } = req.params;
+    const data = await ethgrLiveData.getTransactionVerification(txHash);
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Transaction verification error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to verify transaction',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+  });
+
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+      success: false, 
+      error: "Internal server error",
+      message: process.env.NODE_ENV === 'development' ? err.message : 'An error occurred'
+    });
+  });
+
+  return app;
 }
