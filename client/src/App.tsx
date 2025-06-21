@@ -185,6 +185,7 @@ import FoundationFundraising from "@/pages/foundation-fundraising";
 import InstantLiquidityCenter from "@/pages/instant-liquidity-center";
 import ExecuteLiquidation from "@/pages/execute-liquidation";
 import OTCTradingCenter from "@/pages/otc-trading-center";
+import WalletConnectionGuide from "@/pages/wallet-connection-guide";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -376,6 +377,7 @@ function Router() {
         <Route path="/instant-liquidity-center" component={InstantLiquidityCenter} />
         <Route path="/execute-liquidation" component={ExecuteLiquidation} />
         <Route path="/otc-trading-center" component={OTCTradingCenter} />
+        <Route path="/wallet-connection-guide" component={WalletConnectionGuide} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
