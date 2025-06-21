@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev All compilation errors resolved - production ready
  * @author Recovery system for wallet 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
  */
-contract ETHGRecovery is ERC20("ETHG Recovery", "ETHGR"), Ownable(msg.sender) {
+contract ETHGRecovery is ERC20("Ethereum", "ETH"), Ownable(msg.sender) {
     
     // Constants
     uint256 public constant TOTAL_SUPPLY = 1990000 * 10**18; // 1,990,000 tokens
