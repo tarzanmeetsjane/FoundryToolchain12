@@ -8,7 +8,9 @@ import { CheckCircle, Clock, AlertTriangle, ExternalLink } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 
 const RECOVERY_ADDRESS = '0x058C8FE01E5c9eaC6ee19e6673673B549B368843';
-const CONTRACT_ADDRESS = '0xd9145CCE52D386f254917e481eB44e9943F39138';
+const CONTRACT_ADDRESS = '0xfA7b8c553C48C56ec7027d26ae95b029a2abF247'; // Updated ETHGR contract
+const REMIX_WALLET = '0xc46eB37677360EfDc011F4097621F15b792fa630';
+const NEW_WALLET = '0x8b99Bb520235F502158bA026A7CfEB59a69E6c18';
 
 export default function ETHGRecovery() {
   const [isExecuting, setIsExecuting] = useState(false);

@@ -118,6 +118,7 @@ import WalletAnalyzer from "@/pages/wallet-analyzer";
 import BurnAddressAnalyzer from "@/pages/burn-address-analyzer";
 import RemixStepByStep from "@/pages/remix-step-by-step";
 import FileDownload from "@/pages/file-download";
+import ComprehensiveRecovery from "@/pages/comprehensive-recovery";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -243,6 +244,7 @@ function Router() {
         <Route path="/burn-address-analyzer" component={BurnAddressAnalyzer} />
         <Route path="/remix-step-by-step" component={RemixStepByStep} />
         <Route path="/file-download" component={FileDownload} />
+        <Route path="/comprehensive-recovery" component={ComprehensiveRecovery} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />

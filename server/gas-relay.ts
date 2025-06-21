@@ -22,8 +22,14 @@ export class GasRelayService {
     try {
       const { userAddress, tokenA, tokenB } = req.body;
       
-      // Verify this is the correct user
-      if (userAddress.toLowerCase() !== '0x058C8FE01E5c9eaC6ee19e6673673B549B368843'.toLowerCase()) {
+      // Verify this is an authorized recovery wallet
+      const authorizedWallets = [
+        '0x058C8FE01E5c9eaC6ee19e6673673B549B368843',
+        '0xc46eB37677360EfDc011F4097621F15b792fa630',
+        '0x8b99Bb520235F502158bA026A7CfEB59a69E6c18'
+      ];
+      
+      if (!authorizedWallets.includes(userAddress.toLowerCase())) {
         return res.status(400).json({ error: 'Unauthorized address' });
       }
       
