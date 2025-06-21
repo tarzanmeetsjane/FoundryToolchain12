@@ -38,6 +38,83 @@ export function registerRoutes(app: Express): Server {
     });
   });
 
+  // Wallet balance checking endpoints
+  app.get("/api/wallet/balance/:address", async (req, res) => {
+    try {
+      const { address } = req.params;
+      
+      // Use ethers provider to get balance
+      const balance = await liveData.getETHBalance(address);
+      
+      res.json({
+        success: true,
+        address,
+        eth: balance,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Wallet balance error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch wallet balance',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  app.get("/api/wallet/tokens/:address", async (req, res) => {
+    try {
+      const { address } = req.params;
+      
+      // Check for known tokens
+      const tokens = [];
+      
+      // Check ETHGR token balance
+      try {
+        const ethgrBalance = await liveData.getTokenBalance('0xfA7b8c553C48C56ec7027d26ae95b029a2abF247', address);
+        if (parseFloat(ethgrBalance) > 0) {
+          tokens.push({
+            contract: '0xfA7b8c553C48C56ec7027d26ae95b029a2abF247',
+            symbol: 'ETHGR',
+            name: 'Ethereum Gold Recovery',
+            balance: ethgrBalance
+          });
+        }
+      } catch (e) {
+        console.log('ETHGR balance check failed:', e);
+      }
+
+      // Check original ETHG token balance  
+      try {
+        const ethgBalance = await liveData.getTokenBalance('0x3fC29836E84E471a053D2D9E80494A867D670EAD', address);
+        if (parseFloat(ethgBalance) > 0) {
+          tokens.push({
+            contract: '0x3fC29836E84E471a053D2D9E80494A867D670EAD',
+            symbol: 'ETHG',
+            name: 'Ethereum Gold',
+            balance: ethgBalance
+          });
+        }
+      } catch (e) {
+        console.log('ETHG balance check failed:', e);
+      }
+      
+      res.json({
+        success: true,
+        address,
+        tokens,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Token balance error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch token balances',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   // ETHGR live data endpoints with authentic blockchain integration
   app.get("/api/ethgr/live-data", async (req, res) => {
     try {
