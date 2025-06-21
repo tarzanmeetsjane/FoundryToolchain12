@@ -148,6 +148,7 @@ import EIP7702DelegationGuide from "@/pages/eip-7702-delegation-guide";
 import SmartAccountManagement from "@/pages/smart-account-management";
 import SystemAuditReport from "@/pages/system-audit-report";
 import SmartAccountDisableSteps from "@/pages/smart-account-disable-steps";
+import RemixBypassDeployment from "@/pages/remix-bypass-deployment";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -302,6 +303,7 @@ function Router() {
         <Route path="/smart-account-management" component={SmartAccountManagement} />
         <Route path="/system-audit-report" component={SystemAuditReport} />
         <Route path="/smart-account-disable-steps" component={SmartAccountDisableSteps} />
+        <Route path="/remix-bypass-deployment" component={RemixBypassDeployment} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
