@@ -183,6 +183,8 @@ import ComprehensiveRecoveryComplete from "@/pages/comprehensive-recovery-comple
 import TokenClaimingCenter from "@/pages/token-claiming-center";
 import FoundationFundraising from "@/pages/foundation-fundraising";
 import InstantLiquidityCenter from "@/pages/instant-liquidity-center";
+import ExecuteLiquidation from "@/pages/execute-liquidation";
+import OTCTradingCenter from "@/pages/otc-trading-center";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -372,6 +374,8 @@ function Router() {
         <Route path="/token-claiming-center" component={TokenClaimingCenter} />
         <Route path="/foundation-fundraising" component={FoundationFundraising} />
         <Route path="/instant-liquidity-center" component={InstantLiquidityCenter} />
+        <Route path="/execute-liquidation" component={ExecuteLiquidation} />
+        <Route path="/otc-trading-center" component={OTCTradingCenter} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
