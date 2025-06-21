@@ -329,7 +329,7 @@ function Router() {
         <Route path="/metamask-token-import" component={MetaMaskTokenImport} />
         <Route path="/wallet-verification-center" component={WalletVerificationCenter} />
         <Route path="/simple-token-import" component={SimpleTokenImport} />
-        <Route path="/delegation-analysis" component={DelegationAnalysis} />
+        <Route path="/multi-wallet-transaction-analysis" component={MultiWalletTransactionAnalysis} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
