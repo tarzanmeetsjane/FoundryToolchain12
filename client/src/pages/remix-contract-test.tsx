@@ -5,28 +5,20 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { 
-  AlertTriangle,
+  Code,
+  PlayCircle,
+  ExternalLink,
   Copy,
   CheckCircle,
-  ExternalLink,
-  Upload,
+  Settings,
   FileText,
-  Settings
+  Download
 } from "lucide-react";
 
-export default function EtherscanVerificationFix() {
+export default function RemixContractTest() {
   const [copied, setCopied] = useState("");
 
-  const errorInfo = {
-    issue: "Invalid EVM version",
-    solution: "Set EVM Version to 'london' for 0.8.19",
-    compiler: "v0.8.19+commit.7dd6d404",
-    optimization: "No (False)",
-    runs: "200",
-    evmVersion: "london"
-  };
-
-  const correctSourceCode = `// SPDX-License-Identifier: MIT
+  const remixCode = `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 // Context
@@ -114,26 +106,9 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         return true;
     }
 
-    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
-        address owner = _msgSender();
-        _approve(owner, spender, allowance(owner, spender) + addedValue);
-        return true;
-    }
-
-    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        address owner = _msgSender();
-        uint256 currentAllowance = allowance(owner, spender);
-        require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
-        unchecked {
-            _approve(owner, spender, currentAllowance - subtractedValue);
-        }
-        return true;
-    }
-
     function _transfer(address from, address to, uint256 amount) internal virtual {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
-        _beforeTokenTransfer(from, to, amount);
         uint256 fromBalance = _balances[from];
         require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
         unchecked {
@@ -141,31 +116,15 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
             _balances[to] += amount;
         }
         emit Transfer(from, to, amount);
-        _afterTokenTransfer(from, to, amount);
     }
 
     function _mint(address to, uint256 amount) internal virtual {
         require(to != address(0), "ERC20: mint to the zero address");
-        _beforeTokenTransfer(address(0), to, amount);
         _totalSupply += amount;
         unchecked {
             _balances[to] += amount;
         }
         emit Transfer(address(0), to, amount);
-        _afterTokenTransfer(address(0), to, amount);
-    }
-
-    function _burn(address from, uint256 amount) internal virtual {
-        require(from != address(0), "ERC20: burn from the zero address");
-        _beforeTokenTransfer(from, address(0), amount);
-        uint256 accountBalance = _balances[from];
-        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        unchecked {
-            _balances[from] = accountBalance - amount;
-            _totalSupply -= amount;
-        }
-        emit Transfer(from, address(0), amount);
-        _afterTokenTransfer(from, address(0), amount);
     }
 
     function _approve(address owner, address spender, uint256 amount) internal virtual {
@@ -184,9 +143,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
             }
         }
     }
-
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {}
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual {}
 }
 
 // Ownable
@@ -210,15 +166,6 @@ abstract contract Ownable is Context {
 
     function _checkOwner() internal view virtual {
         require(owner() == _msgSender(), "Ownable: caller is not the owner");
-    }
-
-    function renounceOwnership() public virtual onlyOwner {
-        _transferOwnership(address(0));
-    }
-
-    function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        _transferOwnership(newOwner);
     }
 
     function _transferOwnership(address newOwner) internal virtual {
@@ -250,112 +197,180 @@ contract ETHGRecovery is ERC20, Ownable {
     setTimeout(() => setCopied(""), 2000);
   };
 
-  const verificationSteps = [
-    "Clear the source code field completely",
-    "Set Optimization to 'No' (False)",
-    "Set EVM Version to 'london'",
-    "Paste the corrected flattened code below",
-    "Submit verification"
+  const downloadFile = (content, filename) => {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const testSteps = [
+    {
+      step: 1,
+      title: "Open Remix IDE",
+      description: "Go to remix.ethereum.org",
+      action: () => window.open('https://remix.ethereum.org', '_blank')
+    },
+    {
+      step: 2,
+      title: "Create New File",
+      description: "Create 'ETHGRecovery.sol' in contracts folder",
+      action: null
+    },
+    {
+      step: 3,
+      title: "Paste Contract Code",
+      description: "Copy the flattened contract code",
+      action: () => copyToClipboard(remixCode, "remix")
+    },
+    {
+      step: 4,
+      title: "Set Compiler to 0.8.19",
+      description: "Select exact compiler version in Solidity Compiler tab",
+      action: null
+    },
+    {
+      step: 5,
+      title: "Compile Contract",
+      description: "Click compile and check for errors",
+      action: null
+    },
+    {
+      step: 6,
+      title: "Test Deployment",
+      description: "Deploy on JavaScript VM to verify functionality",
+      action: null
+    }
   ];
 
+  const compilerSettings = {
+    version: "0.8.19",
+    optimization: false,
+    evmVersion: "london",
+    license: "MIT"
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-red-900 to-purple-900 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-green-900 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <AlertTriangle className="h-8 w-8 text-red-400" />
+            <Code className="h-8 w-8 text-blue-400" />
             <h1 className="text-4xl font-bold text-white">
-              Etherscan Verification Fix
+              Remix Contract Testing
             </h1>
           </div>
           <p className="text-xl text-gray-300">
-            Fixing OpenZeppelin import errors for successful verification
+            Test your ETHGR contract in Remix before Etherscan verification
           </p>
         </div>
 
-        {/* Error Analysis */}
-        <Alert className="border-red-500 bg-red-500/10">
-          <AlertTriangle className="h-4 w-4 text-red-500" />
-          <AlertDescription className="text-red-200">
-            <strong>EVM Version Error:</strong> Invalid EVM version for Solidity 0.8.19. Must set EVM Version to 'london' in Etherscan verification form.
+        {/* Testing Strategy */}
+        <Alert className="border-blue-500 bg-blue-500/10">
+          <PlayCircle className="h-4 w-4 text-blue-500" />
+          <AlertDescription className="text-blue-200 text-center">
+            <strong>Smart Strategy:</strong> Test in Remix first to catch compilation errors before submitting to Etherscan verification.
           </AlertDescription>
         </Alert>
 
         {/* Compiler Settings */}
-        <Card className="bg-gray-800/50 border-orange-500">
+        <Card className="bg-gray-800/50 border-green-500">
           <CardHeader>
-            <CardTitle className="text-white">Correct Compiler Settings</CardTitle>
+            <CardTitle className="text-white">Remix Compiler Settings</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-4 bg-orange-600/10 border border-orange-600/30 rounded text-center">
-                <h5 className="text-orange-400 font-medium mb-2">Compiler Version</h5>
-                <p className="text-white font-mono text-sm">{errorInfo.compiler}</p>
-                <Badge className="bg-orange-600 text-white mt-2">Exact Match</Badge>
-              </div>
-              
-              <div className="p-4 bg-red-600/10 border border-red-600/30 rounded text-center">
-                <h5 className="text-red-400 font-medium mb-2">Optimization</h5>
-                <p className="text-white text-xl font-bold">{errorInfo.optimization}</p>
-                <Badge className="bg-red-600 text-white mt-2">Important</Badge>
+              <div className="p-4 bg-green-600/10 border border-green-600/30 rounded text-center">
+                <h5 className="text-green-400 font-medium mb-2">Solidity Version</h5>
+                <p className="text-white text-lg font-bold">{compilerSettings.version}</p>
+                <Badge className="bg-green-600 text-white mt-2">Required</Badge>
               </div>
               
               <div className="p-4 bg-blue-600/10 border border-blue-600/30 rounded text-center">
-                <h5 className="text-blue-400 font-medium mb-2">Optimizer Runs</h5>
-                <p className="text-white text-xl font-bold">{errorInfo.runs}</p>
-                <Badge className="bg-blue-600 text-white mt-2">Default</Badge>
+                <h5 className="text-blue-400 font-medium mb-2">Optimization</h5>
+                <p className="text-white text-lg font-bold">{compilerSettings.optimization ? "Yes" : "No"}</p>
+                <Badge className="bg-blue-600 text-white mt-2">Disabled</Badge>
               </div>
               
               <div className="p-4 bg-purple-600/10 border border-purple-600/30 rounded text-center">
                 <h5 className="text-purple-400 font-medium mb-2">EVM Version</h5>
-                <p className="text-white text-xl font-bold">{errorInfo.evmVersion}</p>
-                <Badge className="bg-purple-600 text-white mt-2">Required</Badge>
+                <p className="text-white text-lg font-bold">{compilerSettings.evmVersion}</p>
+                <Badge className="bg-purple-600 text-white mt-2">London</Badge>
+              </div>
+              
+              <div className="p-4 bg-orange-600/10 border border-orange-600/30 rounded text-center">
+                <h5 className="text-orange-400 font-medium mb-2">License</h5>
+                <p className="text-white text-lg font-bold">{compilerSettings.license}</p>
+                <Badge className="bg-orange-600 text-white mt-2">Standard</Badge>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Fix Steps */}
-        <Card className="bg-gray-800/50 border-green-500">
+        {/* Testing Steps */}
+        <Card className="bg-gray-800/50 border-blue-500">
           <CardHeader>
-            <CardTitle className="text-white">Verification Fix Steps</CardTitle>
+            <CardTitle className="text-white">Remix Testing Steps</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {verificationSteps.map((step, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 bg-green-600/10 border border-green-600/30 rounded">
-                  <div className="w-6 h-6 rounded-full bg-green-600 text-white font-bold flex items-center justify-center text-sm">
-                    {index + 1}
+            <div className="space-y-4">
+              {testSteps.map((step, index) => (
+                <div key={index} className="flex items-center gap-4 p-4 bg-blue-600/10 border border-blue-600/30 rounded">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">
+                    {step.step}
                   </div>
-                  <p className="text-gray-300">{step}</p>
+                  <div className="flex-1">
+                    <h5 className="text-white font-medium">{step.title}</h5>
+                    <p className="text-gray-300 text-sm">{step.description}</p>
+                  </div>
+                  {step.action && (
+                    <Button 
+                      onClick={step.action}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      {step.step === 1 ? <ExternalLink className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
+                      {step.step === 1 ? "Open Remix" : "Copy Code"}
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
 
-        {/* Corrected Source Code */}
-        <Card className="bg-gray-800/50 border-blue-500">
+        {/* Contract Code */}
+        <Card className="bg-gray-800/50 border-purple-500">
           <CardHeader>
             <CardTitle className="text-white flex items-center justify-between">
-              Corrected Flattened Source Code
-              <Button 
-                onClick={() => copyToClipboard(correctSourceCode, "corrected")}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                {copied === "corrected" ? <CheckCircle className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
-                Copy Fixed Code
-              </Button>
+              Contract Code for Remix Testing
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => copyToClipboard(remixCode, "main")}
+                  className="bg-purple-600 hover:bg-purple-700"
+                >
+                  {copied === "main" ? <CheckCircle className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
+                  Copy Code
+                </Button>
+                <Button 
+                  onClick={() => downloadFile(remixCode, "ETHGRecovery.sol")}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+              </div>
             </CardTitle>
-            <CardDescription className="text-gray-400">
-              Complete contract without external imports - ready for Etherscan
-            </CardDescription>
           </CardHeader>
           <CardContent>
             <Textarea 
-              value={correctSourceCode}
+              value={remixCode}
               readOnly
               className="font-mono text-xs h-96 bg-gray-900 text-green-400"
             />
@@ -365,51 +380,52 @@ contract ETHGRecovery is ERC20, Ownable {
         {/* Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Button 
-            className="bg-red-600 hover:bg-red-700 text-xl py-8"
-            onClick={() => window.open(`https://etherscan.io/verifyContract?a=0xfa7b8c553c48c56ec7027d26ae95b029a2abf247`, '_blank')}
+            className="bg-blue-600 hover:bg-blue-700 text-xl py-8"
+            onClick={() => window.open('https://remix.ethereum.org', '_blank')}
           >
-            <Upload className="h-6 w-6 mr-2" />
-            Retry Verification
+            <Code className="h-6 w-6 mr-2" />
+            Open Remix IDE
           </Button>
           
           <Button 
             className="bg-green-600 hover:bg-green-700 text-xl py-8"
-            onClick={() => copyToClipboard(correctSourceCode, "main")}
+            onClick={() => copyToClipboard(remixCode, "action")}
           >
-            {copied === "main" ? <CheckCircle className="h-6 w-6 mr-2" /> : <FileText className="h-6 w-6 mr-2" />}
-            Copy Source Code
+            {copied === "action" ? <CheckCircle className="h-6 w-6 mr-2" /> : <FileText className="h-6 w-6 mr-2" />}
+            Copy Contract
           </Button>
           
           <Button 
-            className="bg-blue-600 hover:bg-blue-700 text-xl py-8"
-            onClick={() => window.open(`https://etherscan.io/address/0xfa7b8c553c48c56ec7027d26ae95b029a2abf247`, '_blank')}
+            className="bg-purple-600 hover:bg-purple-700 text-xl py-8"
+            onClick={() => window.open('/etherscan-verification-fix', '_self')}
           >
-            <ExternalLink className="h-6 w-6 mr-2" />
-            View Contract
+            <Settings className="h-6 w-6 mr-2" />
+            Back to Verification
           </Button>
         </div>
 
-        {/* Key Changes */}
-        <Card className="bg-gray-800/50 border-purple-500">
+        {/* What to Expect */}
+        <Card className="bg-gray-800/50 border-yellow-500">
           <CardHeader>
-            <CardTitle className="text-white">What Was Fixed</CardTitle>
+            <CardTitle className="text-white">What to Expect in Remix</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 text-gray-300">
-              <p><strong>✓ Removed imports:</strong> No external OpenZeppelin dependencies</p>
-              <p><strong>✓ Inlined contracts:</strong> All required code in single file</p>
-              <p><strong>✓ Correct optimization:</strong> Set to 'No' to match bytecode</p>
-              <p><strong>✓ Same functionality:</strong> Identical contract behavior</p>
-              <p><strong>✓ MIT License:</strong> Added at top of file</p>
+              <p><strong>✓ Successful Compilation:</strong> No errors, green checkmark in compiler tab</p>
+              <p><strong>✓ Contract Size:</strong> Should be within deployment limits</p>
+              <p><strong>✓ Function Visibility:</strong> migrateMyTrappedETHG should be visible</p>
+              <p><strong>✓ Events:</strong> TokensMigrated event should be listed</p>
+              <p><strong>✓ Inheritance:</strong> ERC20 and Ownable functions accessible</p>
+              <p><strong>⚠ Gas Estimation:</strong> Check deployment gas requirements</p>
             </div>
           </CardContent>
         </Card>
 
-        {/* Success Indicator */}
+        {/* Success Path */}
         <Alert className="border-green-500 bg-green-500/10">
           <CheckCircle className="h-4 w-4 text-green-500" />
           <AlertDescription className="text-green-200 text-center">
-            <strong>Ready for Verification:</strong> This flattened code should verify successfully on Etherscan with the correct compiler settings.
+            <strong>Success Path:</strong> If Remix compiles without errors, the same code should verify successfully on Etherscan with identical compiler settings.
           </AlertDescription>
         </Alert>
       </div>
