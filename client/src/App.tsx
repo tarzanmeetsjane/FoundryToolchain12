@@ -163,6 +163,7 @@ import WalletVerificationCenter from "@/pages/wallet-verification-center";
 import SimpleTokenImport from "@/pages/simple-token-import";
 import MultiWalletTransactionAnalysis from "@/pages/multi-wallet-transaction-analysis";
 import NewWalletDiscovery from "@/pages/new-wallet-discovery";
+import WalletSuccessDashboard from "@/pages/wallet-success-dashboard";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -332,6 +333,7 @@ function Router() {
         <Route path="/simple-token-import" component={SimpleTokenImport} />
         <Route path="/multi-wallet-transaction-analysis" component={MultiWalletTransactionAnalysis} />
         <Route path="/new-wallet-discovery" component={NewWalletDiscovery} />
+        <Route path="/wallet-success-dashboard" component={WalletSuccessDashboard} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
