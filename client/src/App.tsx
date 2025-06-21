@@ -133,6 +133,7 @@ import MainnetDeployment from "@/pages/mainnet-deployment";
 import ViemDeployment from "@/pages/viem-deployment";
 import PrivateKeyGuide from "@/pages/private-key-guide";
 import DeploymentFiles from "@/pages/deployment-files";
+import UniswapDeployment from "@/pages/uniswap-deployment";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -272,6 +273,7 @@ function Router() {
         <Route path="/viem-deployment" component={ViemDeployment} />
         <Route path="/private-key-guide" component={PrivateKeyGuide} />
         <Route path="/deployment-files" component={DeploymentFiles} />
+        <Route path="/uniswap-deployment" component={UniswapDeployment} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
