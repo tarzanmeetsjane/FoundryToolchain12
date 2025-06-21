@@ -106,6 +106,7 @@ import BlockchainTestSuite from "@/pages/blockchain-test-suite";
 import ETHRecoveryAnalyzer from "@/pages/eth-recovery-analyzer";
 import WalletRecoveryDashboard from "@/pages/wallet-recovery-dashboard";
 import TransactionAnalysis from "@/pages/transaction-analysis";
+import ETHGRSuccessDashboard from "@/pages/ethgr-success-dashboard";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -218,6 +219,7 @@ function Router() {
         <Route path="/eth-recovery-analyzer" component={ETHRecoveryAnalyzer} />
         <Route path="/wallet-recovery-dashboard" component={WalletRecoveryDashboard} />
         <Route path="/transaction-analysis" component={TransactionAnalysis} />
+        <Route path="/ethgr-success-dashboard" component={ETHGRSuccessDashboard} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
