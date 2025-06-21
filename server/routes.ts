@@ -3098,12 +3098,44 @@ app.get('/api/wallet/:address/positions', async (req, res) => {
     try {
       const { userAddress, tokenAddress } = req.params;
       
-      // Get live ETH price from CoinGecko
-      const ethPriceResponse = await makeCoinGeckoRequest('simple/price', {
-        ids: 'ethereum',
-        vs_currencies: 'usd'
+      // Get live data using blockchain service
+      const [ethPrice, ethBalance, tokenBalance, gasPrice, currentBlock] = await Promise.all([
+        liveData.getLiveETHPrice(),
+        liveData.getETHBalance(userAddress),
+        liveData.getTokenBalance(tokenAddress, userAddress),
+        liveData.getGasPrice(),
+        liveData.getCurrentBlock()
+      ]);
+
+      const ethBalanceNum = parseFloat(ethBalance);
+      const tokenBalanceNum = parseFloat(tokenBalance);
+
+      res.json({
+        success: true,
+        data: {
+          userAddress,
+          tokenAddress,
+          ethPrice,
+          ethBalance: ethBalanceNum,
+          ethBalanceUSD: ethBalanceNum * ethPrice,
+          tokenBalance: tokenBalanceNum,
+          tokenBalanceFormatted: tokenBalanceNum.toLocaleString(),
+          gasPrice,
+          currentBlock,
+          lastUpdated: new Date().toISOString(),
+          network: 'mainnet',
+          dataSource: 'live-blockchain'
+        }
       });
-      const ethPrice = ethPriceResponse.ethereum?.usd || 2500;
+    } catch (error) {
+      console.error('Live pool data error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to fetch live data',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
 
       // Get token balance
       const tokenBalanceResponse = await fetch(
