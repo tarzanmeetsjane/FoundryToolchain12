@@ -85,7 +85,6 @@ import FinalRecoverySummary from "@/pages/final-recovery-summary";
 import ETHGRPoolCreation from "@/pages/ethgr-pool-creation";
 import ETHGRMonetization from "@/pages/ethgr-monetization";
 import ETHRecoveryTracker from "@/pages/eth-recovery-tracker";
-import ComprehensiveRecovery from "@/pages/comprehensive-recovery";
 import ImmediateETHRecovery from "@/pages/immediate-eth-recovery";
 import AddressFinder from "@/pages/address-finder";
 import FinalETHSolution from "@/pages/final-eth-solution";
@@ -210,7 +209,6 @@ function Router() {
         <Route path="/ethgr-pool-creation" component={ETHGRPoolCreation} />
         <Route path="/ethgr-monetization" component={ETHGRMonetization} />
         <Route path="/eth-recovery-tracker" component={ETHRecoveryTracker} />
-        <Route path="/comprehensive-recovery" component={ComprehensiveRecovery} />
         <Route path="/immediate-eth-recovery" component={ImmediateETHRecovery} />
         <Route path="/address-finder" component={AddressFinder} />
         <Route path="/final-eth-solution" component={FinalETHSolution} />
