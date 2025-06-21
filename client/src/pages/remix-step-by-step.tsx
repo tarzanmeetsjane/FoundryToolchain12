@@ -143,10 +143,57 @@ web3.eth.getBalance(proxyAddr).then(balance => {
       <Alert className="border-green-500 bg-green-50">
         <Target className="h-4 w-4" />
         <AlertDescription>
-          <strong>Don't worry!</strong> These commands are completely safe. They only READ information - they cannot spend or move any funds. 
-          We're just looking for where your 37 ETH went.
+          <strong>Easy Option:</strong> I've created a recovery script file you can upload to Remix IDE. 
+          <Button 
+            size="sm" 
+            className="ml-2" 
+            onClick={() => window.open('/file-download', '_blank')}
+          >
+            Download Recovery Script
+          </Button>
         </AlertDescription>
       </Alert>
+
+      <Card className="border-blue-500 bg-blue-50">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Copy className="h-5 w-5" />
+            Upload Method (Recommended)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="font-semibold">Quick Upload Instructions:</div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">1</Badge>
+                <span>Download the recovery script file (button above)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">2</Badge>
+                <span>Open Remix IDE file explorer (left panel)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">3</Badge>
+                <span>Upload the .js file to your workspace</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">4</Badge>
+                <span>Open the file and run it in the terminal</span>
+              </div>
+            </div>
+            <div className="p-3 bg-green-100 rounded">
+              <div className="font-semibold text-green-700">This script will automatically:</div>
+              <div className="text-sm">
+                <div>• Check all your wallet balances</div>
+                <div>• Search for the 37 ETH location</div>
+                <div>• Analyze proxy contracts</div>
+                <div>• Provide a complete recovery report</div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3 space-y-4">
@@ -260,8 +307,8 @@ web3.eth.getBalance(proxyAddr).then(balance => {
                   <div className="font-semibold mb-2">Where to paste commands:</div>
                   <div className="space-y-1">
                     <div>1. Bottom of Remix IDE screen</div>
-                    <div>2. Look for "Terminal" tab</div>
-                    <div>3. Find the prompt with ">" symbol</div>
+                    <div>2. Look for Terminal tab</div>
+                    <div>3. Find the prompt with greater than symbol</div>
                     <div>4. Paste command and press Enter</div>
                   </div>
                 </div>
