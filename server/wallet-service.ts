@@ -7,11 +7,24 @@ export class WalletService {
   constructor() {
     this.provider = new ethers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || 'demo'}`);
     
-    if (process.env.PRIVATE_KEY) {
-      try {
-        this.wallet = new ethers.Wallet(process.env.PRIVATE_KEY, this.provider);
-      } catch (error) {
-        console.error('Failed to initialize wallet:', error);
+    // Try different stored private keys
+    const privateKeys = [
+      process.env.QUANTUM_TRADER_KEYPRIVATE_KEY,
+      process.env.PRIVATE_KEY,
+      process.env.RECOVERY_PRIVATE_KEY,
+      process.env.ETH_PRIVATE_KEY
+    ];
+    
+    for (const key of privateKeys) {
+      if (key) {
+        try {
+          this.wallet = new ethers.Wallet(key, this.provider);
+          console.log(`Wallet initialized: ${this.wallet.address}`);
+          break;
+        } catch (error) {
+          console.log(`Failed to use private key: ${error}`);
+          continue;
+        }
       }
     }
   }
@@ -20,11 +33,20 @@ export class WalletService {
     address: string;
     hasPrivateKey: boolean;
     isConnected: boolean;
+    availableKeys: string[];
   } {
+    const availableKeys = [
+      process.env.QUANTUM_TRADER_KEYPRIVATE_KEY ? "QUANTUM_TRADER_KEYPRIVATE_KEY" : null,
+      process.env.PRIVATE_KEY ? "PRIVATE_KEY" : null,
+      process.env.RECOVERY_PRIVATE_KEY ? "RECOVERY_PRIVATE_KEY" : null,
+      process.env.ETH_PRIVATE_KEY ? "ETH_PRIVATE_KEY" : null
+    ].filter(Boolean) as string[];
+    
     return {
       address: this.wallet?.address || "No wallet configured",
-      hasPrivateKey: !!process.env.PRIVATE_KEY,
-      isConnected: !!this.wallet
+      hasPrivateKey: availableKeys.length > 0,
+      isConnected: !!this.wallet,
+      availableKeys
     };
   }
 

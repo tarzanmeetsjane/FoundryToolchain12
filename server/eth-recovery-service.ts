@@ -9,16 +9,29 @@ export class ETHRecoveryService {
   constructor() {
     this.provider = new ethers.JsonRpcProvider(`https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID || 'demo'}`);
     
-    // Derive wallet address from stored private key
-    if (process.env.PRIVATE_KEY) {
-      try {
-        const wallet = new ethers.Wallet(process.env.PRIVATE_KEY);
-        this.currentWallet = wallet.address;
-      } catch (error) {
-        console.error('Failed to derive wallet from private key:', error);
-        this.currentWallet = this.oldWallet;
+    // Try different stored private keys
+    const privateKeys = [
+      process.env.QUANTUM_TRADER_KEYPRIVATE_KEY,
+      process.env.PRIVATE_KEY,
+      process.env.RECOVERY_PRIVATE_KEY,
+      process.env.ETH_PRIVATE_KEY
+    ];
+    
+    for (const key of privateKeys) {
+      if (key) {
+        try {
+          const wallet = new ethers.Wallet(key);
+          this.currentWallet = wallet.address;
+          console.log(`Using wallet: ${this.currentWallet}`);
+          break;
+        } catch (error) {
+          console.log(`Failed to use private key: ${error}`);
+          continue;
+        }
       }
-    } else {
+    }
+    
+    if (!this.currentWallet) {
       this.currentWallet = this.oldWallet;
     }
   }
