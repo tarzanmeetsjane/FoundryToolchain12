@@ -1,0 +1,61 @@
+ Welcome to Remix 0.65.0 
+
+Your files are stored in indexedDB, 6.84 MB / 142.42 GB used
+
+You can use this terminal to: 
+Check transactions details and start debugging.
+Execute JavaScript scripts:
+ - Input a script directly in the command line interface 
+ - Select a Javascript file in the file explorer and then run `remix.execute()` or `remix.exeCurrent()`  in the command line interface 
+ - Right-click on a JavaScript file in the file explorer and then click `Run` 
+The following libraries are accessible:
+web3.js
+ethers.js 
+sol-gpt <your Solidity question here>  
+Type the library name to see available commands.
+creation of ETHGRecovery pending...
+[vm]from: 0x5B3...eddC4to: ETHGRecovery.(constructor)value: 0 weidata: 0x608...e0033logs: 1hash: 0x799...b7514
+transact to ETHGRecovery.migrateMyTrappedETHG pending ... 
+[vm]from: 0x5B3...eddC4to: ETHGRecovery.migrateMyTrappedETHG() 0xd8b...33fa8value: 0 weidata: 0x145...3926dlogs: 2hash: 0x91e...4c963
+transact to ETHGRecovery.migrateMyTrappedETHG pending ... 
+[vm]from: 0x5B3...eddC4to: ETHGRecovery.migrateMyTrappedETHG() 0xd8b...33fa8value: 0 weidata: 0x145...3926dlogs: 0hash: 0xa6a...fec53
+transact to ETHGRecovery.migrateMyTrappedETHG errored: Error occurred: revert.
+
+revert
+	The transaction has been reverted to the initial state.
+Reason provided by the contract: "Migration already completed".
+If the transaction failed for not having enough gas, try increasing the gas limit gently.
+transact to ETHGRecovery.migrateMyTrappedETHG pending ... 
+[vm]from: 0x5B3...eddC4to: ETHGRecovery.migrateMyTrappedETHG() 0xd8b...33fa8value: 0 weidata: 0x145...3926dlogs: 0hash: 0x12d...7594c
+transact to ETHGRecovery.migrateMyTrappedETHG errored: Error occurred: revert.
+
+revert
+	The transaction has been reverted to the initial state.
+Reason provided by the contract: "Migration already completed".
+If the transaction failed for not having enough gas, try increasing the gas limit gently.
+transact to ETHGRecovery.migrateMyTrappedETHG pending ... 
+[vm]from: 0x5B3...eddC4to: ETHGRecovery.migrateMyTrappedETHG() 0xd8b...33fa8value: 0 weidata: 0x145...3926dlogs: 0hash: 0xc7a...8f169
+transact to ETHGRecovery.migrateMyTrappedETHG errored: Error occurred: revert.
+
+revert
+	The transaction has been reverted to the initial state.
+Reason provided by the contract: "Migration already completed".
+If the transaction failed for not having enough gas, try increasing the gas limit gently.
+transact to ETHGRecovery.(receive) pending ... 
+[vm]from: 0x5B3...eddC4to: ETHGRecovery.(receive) 0xd8b...33fa8value: 0 weidata: 0xlogs: 0hash: 0x2ee...cf2b7
+status	0x1 Transaction mined and execution succeed
+transaction hash	0x2ee24ea466e88a894a4cae33477c7efc60e8a978550325f4229908a70b0cf2b7
+block hash	0x3cdc473457a7ed349b5badc1a35390e5c38cd1806f6a5f77a5289c67db5c0fd7
+block number	7
+from	0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
+to	ETHGRecovery.(receive) 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8
+gas	24198 gas
+transaction cost	21041 gas 
+execution cost	41 gas 
+input	0x
+output	0x
+decoded input	-
+decoded output	 - 
+logs	[]
+raw logs	[]
+>
