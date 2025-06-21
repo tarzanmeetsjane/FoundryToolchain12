@@ -1,0 +1,103 @@
+The code provided is a Solidity script that deploys an ETHR token contract on Ethereum Mainnet using Viem, a library for interacting with smart contracts.
+
+However, there are some issues in this code:
+
+The first line mkdir ethr-deploy && cd ethr-deploy seems to be a bash command and not relevant to the Solidity script.
+There is no actual deployment of an ETHR token contract in this code snippet.
+The error message "ParserError: Expected primary expression." suggests that there might be some syntax errors or missing dependencies.
+To fix these issues, you can try the following:
+
+Remove any irrelevant bash commands from your script and keep only Solidity-related code.
+Make sure to import all required libraries (e.g., viem, createWalletClient) correctly in your Solidity file.
+Check for syntax errors or missing dependencies by running a linter on your code.
+Here's an updated version of the deployment function:
+
+async function deployETHR() {
+  try {
+    // Setup wallet and clients
+    const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
+    
+    console.log('✅ Wallet loaded:', account.address);
+    
+    const publicClient = createPublicClient({
+      chain: mainnet,
+      transport: http()
+    });
+    
+    const walletClient = createWalletClient({
+      account,
+      chain: mainnet,
+      transport: http()
+    });
+
+    // Deploy contract
+    const hash = await walletClient.deployContract({
+      abi: ETHR_ABI,
+      bytecode: ETHR_BYTECODE,
+      args: []
+    });
+
+    console.log('🔗 Deployment Transaction:', hash);
+    
+  } catch (error) {
+    console.error('\n💥 DEPLOYMENT ERROR - CHECK PRIVATE KEY AND ETH BALANCE 💥');
+    console.error(error.message);
+  }
+}
+
+This updated function should deploy the contract on Ethereum Mainnet using Viem.
+
+Explain the error
+
+The code is a Solidity script that deploys an ETHR token contract on Ethereum Mainnet using Viem, a JavaScript library for interacting with EVM-based blockchain networks.
+
+However, there are several issues in this code:
+
+The mkdir ethr-deploy && cd ethr-deploy line at the top of the file is not Solidity code and should be removed.
+In the "Quick Setup" section, it's trying to execute a Bash command (npm init -y) inside a Solidity script, which will cause an error.
+To fix this issue:
+
+Remove the mkdir ethr-deploy && cd ethr-deploy line from the top of the file.
+Instead of executing Bash commands in your Solidity code, use Node.js to execute them separately.
+Here's how you can modify it:
+
+// deployETHR function remains unchanged
+
+async function main() {
+  try {
+    // Setup wallet and clients...
+    
+    const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
+    
+    console.log('✅ Wallet loaded:', account.address);
+    
+    const publicClient = createPublicClient({
+      chain: mainnet,
+      transport: http()
+    });
+    
+    const walletClient = createWalletClient({
+      account,
+      chain: mainnet,
+      transport: http()
+    });
+
+    // ... (rest of the code remains unchanged)
+  } catch (error) {
+    console.error('❌ DEPLOYMENT FAILED:', error);
+    throw error;
+  }
+}
+
+main();
+
+# Create a new file called deploy.js and paste your Solidity code in it.
+touch deploy.js
+
+# Install Viem library using npm
+npm install viem
+
+# Set environment variable PRIVATE_KEY with your private key (64 characters, no '0x' prefix)
+PRIVATE_KEY=your_private_key_here_without_0x_prefix node deploy.js
+
+This will execute the deployETHR function and perform the deployment.

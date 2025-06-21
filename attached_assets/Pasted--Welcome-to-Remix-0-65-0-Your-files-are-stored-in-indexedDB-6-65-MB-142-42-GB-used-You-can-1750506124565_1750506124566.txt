@@ -1,0 +1,206 @@
+ Welcome to Remix 0.65.0 
+
+Your files are stored in indexedDB, 6.65 MB / 142.42 GB used
+
+You can use this terminal to: 
+Check transactions details and start debugging.
+Execute JavaScript scripts:
+ - Input a script directly in the command line interface 
+ - Select a Javascript file in the file explorer and then run `remix.execute()` or `remix.exeCurrent()`  in the command line interface 
+ - Right-click on a JavaScript file in the file explorer and then click `Run` 
+The following libraries are accessible:
+web3.js
+ethers.js 
+sol-gpt <your Solidity question here>  
+Type the library name to see available commands.
+running undefined ...
+An error occurred while running the script:
+{"message":"Missing initializer in const declaration","name":"SyntaxError","stack":"SyntaxError: Missing initializer in const declaration\n    at new Function (<anonymous>)\n    at u.<anonymous> (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:955823)\n    at Generator.next (<anonymous>)\n    at i (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:953297)"} 
+Script source:
+
+        try {
+            const exports = {};
+            const module = { exports: {} }
+            window.__execPath__ = "scripts"
+            try {
+    const ret = mkdir, ethr;
+    -deploy && cd;
+    ethr - deploy;
+    if (ret instanceof Promise) {
+        ret.then((result) => { console.log(result); }).catch((error) => { console.log(error); });
+    }
+    else {
+        console.log(ret);
+    }
+}
+catch (e) {
+    console.log(e.message);
+}
+;
+            return exports || module.exports;
+        } catch (err) {
+            // Include the script location and throw it upwards
+            throw new Error('Error in script from path "scripts": ' + err.message + '\n' + err.stack);
+        }
+    
+error
+{"data":["Missing initializer in const declaration"]} 
+running undefined ...
+An error occurred while running the script:
+{"message":"Missing initializer in const declaration","name":"SyntaxError","stack":"SyntaxError: Missing initializer in const declaration\n    at new Function (<anonymous>)\n    at u.<anonymous> (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:955823)\n    at Generator.next (<anonymous>)\n    at i (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:953297)"} 
+Script source:
+
+        try {
+            const exports = {};
+            const module = { exports: {} }
+            window.__execPath__ = "scripts"
+            try {
+    const ret = npm, init;
+    -y;
+    if (ret instanceof Promise) {
+        ret.then((result) => { console.log(result); }).catch((error) => { console.log(error); });
+    }
+    else {
+        console.log(ret);
+    }
+}
+catch (e) {
+    console.log(e.message);
+}
+;
+            return exports || module.exports;
+        } catch (err) {
+            // Include the script location and throw it upwards
+            throw new Error('Error in script from path "scripts": ' + err.message + '\n' + err.stack);
+        }
+    
+error
+{"data":["Missing initializer in const declaration"]} 
+running undefined ...
+An error occurred while running the script:
+{"message":"Missing initializer in const declaration","name":"SyntaxError","stack":"SyntaxError: Missing initializer in const declaration\n    at new Function (<anonymous>)\n    at u.<anonymous> (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:955823)\n    at Generator.next (<anonymous>)\n    at i (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:953297)"} 
+Script source:
+
+        try {
+            const exports = {};
+            const module = { exports: {} }
+            window.__execPath__ = "scripts"
+            try {
+    const ret = npm, install, viem;
+    if (ret instanceof Promise) {
+        ret.then((result) => { console.log(result); }).catch((error) => { console.log(error); });
+    }
+    else {
+        console.log(ret);
+    }
+}
+catch (e) {
+    console.log(e.message);
+}
+;
+            return exports || module.exports;
+        } catch (err) {
+            // Include the script location and throw it upwards
+            throw new Error('Error in script from path "scripts": ' + err.message + '\n' + err.stack);
+        }
+    
+error
+{"data":["Missing initializer in const declaration"]} 
+running undefined ...
+An error occurred while running the script:
+{"message":"Missing initializer in const declaration","name":"SyntaxError","stack":"SyntaxError: Missing initializer in const declaration\n    at new Function (<anonymous>)\n    at u.<anonymous> (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:955823)\n    at Generator.next (<anonymous>)\n    at i (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:953297)"} 
+Script source:
+
+        try {
+            const exports = {};
+            const module = { exports: {} }
+            window.__execPath__ = "scripts"
+            try {
+    const ret = npm, install, viem;
+    if (ret instanceof Promise) {
+        ret.then((result) => { console.log(result); }).catch((error) => { console.log(error); });
+    }
+    else {
+        console.log(ret);
+    }
+}
+catch (e) {
+    console.log(e.message);
+}
+;
+            return exports || module.exports;
+        } catch (err) {
+            // Include the script location and throw it upwards
+            throw new Error('Error in script from path "scripts": ' + err.message + '\n' + err.stack);
+        }
+    
+error
+{"data":["Missing initializer in const declaration"]} 
+running undefined ...
+An error occurred while running the script:
+{"message":"Missing initializer in const declaration","name":"SyntaxError","stack":"SyntaxError: Missing initializer in const declaration\n    at new Function (<anonymous>)\n    at u.<anonymous> (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:955823)\n    at Generator.next (<anonymous>)\n    at i (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:953297)"} 
+Script source:
+
+        try {
+            const exports = {};
+            const module = { exports: {} }
+            window.__execPath__ = "scripts"
+            try {
+    const ret = npm, install, viem;
+    if (ret instanceof Promise) {
+        ret.then((result) => { console.log(result); }).catch((error) => { console.log(error); });
+    }
+    else {
+        console.log(ret);
+    }
+}
+catch (e) {
+    console.log(e.message);
+}
+;
+            return exports || module.exports;
+        } catch (err) {
+            // Include the script location and throw it upwards
+            throw new Error('Error in script from path "scripts": ' + err.message + '\n' + err.stack);
+        }
+    
+error
+{"data":["Missing initializer in const declaration"]} 
+running undefined ...
+An error occurred while running the script:
+{"message":"Missing initializer in const declaration","name":"SyntaxError","stack":"SyntaxError: Missing initializer in const declaration\n    at new Function (<anonymous>)\n    at u.<anonymous> (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:955823)\n    at Generator.next (<anonymous>)\n    at i (https://remix-project-org.github.io/script-runner-generator/projects/default/script-runner.js:2:953297)"} 
+Script source:
+
+        try {
+            const exports = {};
+            const module = { exports: {} }
+            window.__execPath__ = "scripts"
+            try {
+    const ret = mkdir, ethr;
+    -deploy;
+    cd;
+    ethr - deploy;
+    npm;
+    init - y;
+    npm;
+    install;
+    viem;
+    if (ret instanceof Promise) {
+        ret.then((result) => { console.log(result); }).catch((error) => { console.log(error); });
+    }
+    else {
+        console.log(ret);
+    }
+}
+catch (e) {
+    console.log(e.message);
+}
+;
+            return exports || module.exports;
+        } catch (err) {
+            // Include the script location and throw it upwards
+            throw new Error('Error in script from path "scripts": ' + err.message + '\n' + err.stack);
+        }
+    
+error
+{"data":["Missing initializer in const declaration"]} 

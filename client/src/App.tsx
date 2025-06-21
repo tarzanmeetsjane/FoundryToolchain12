@@ -135,6 +135,8 @@ import PrivateKeyGuide from "@/pages/private-key-guide";
 import DeploymentFiles from "@/pages/deployment-files";
 import UniswapDeployment from "@/pages/uniswap-deployment";
 import FinalDeploymentGuide from "@/pages/final-deployment-guide";
+import BrowserDeployment from "@/pages/browser-deployment";
+import RemixProperDeployment from "@/pages/remix-proper-deployment";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -276,6 +278,8 @@ function Router() {
         <Route path="/deployment-files" component={DeploymentFiles} />
         <Route path="/uniswap-deployment" component={UniswapDeployment} />
         <Route path="/final-deployment-guide" component={FinalDeploymentGuide} />
+        <Route path="/browser-deployment" component={BrowserDeployment} />
+        <Route path="/remix-proper-deployment" component={RemixProperDeployment} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
