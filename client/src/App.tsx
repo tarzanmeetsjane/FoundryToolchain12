@@ -189,6 +189,7 @@ import WalletConnectionGuide from "@/pages/wallet-connection-guide";
 import WalletVerifiedLiquidation from "@/pages/wallet-verified-liquidation";
 import ExecuteNowDashboard from "@/pages/execute-now-dashboard";
 import PlatformCapabilities from "@/pages/platform-capabilities";
+import ImmediateRevenueLaunch from "@/pages/immediate-revenue-launch";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -384,6 +385,7 @@ function Router() {
         <Route path="/wallet-verified-liquidation" component={WalletVerifiedLiquidation} />
         <Route path="/execute-now-dashboard" component={ExecuteNowDashboard} />
         <Route path="/platform-capabilities" component={PlatformCapabilities} />
+        <Route path="/immediate-revenue-launch" component={ImmediateRevenueLaunch} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
