@@ -120,6 +120,7 @@ import FileDownload from "@/pages/file-download";
 import ComprehensiveRecovery from "@/pages/comprehensive-recovery";
 import BuildInfoAnalyzer from "@/pages/build-info-analyzer";
 import DeploymentAnalyzer from "@/pages/deployment-analyzer";
+import Etherscan37ETHChecker from "@/pages/etherscan-37eth-checker";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -247,6 +248,7 @@ function Router() {
         <Route path="/comprehensive-recovery" component={ComprehensiveRecovery} />
         <Route path="/build-info-analyzer" component={BuildInfoAnalyzer} />
         <Route path="/deployment-analyzer" component={DeploymentAnalyzer} />
+        <Route path="/etherscan-37eth-checker" component={Etherscan37ETHChecker} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
