@@ -169,6 +169,7 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **SECURITY REVIEW**: User reviewed safer contract option but chose original route - "thats scary lets go with the first route" - proceeding with original ETHR deployment
 - **MAINNET COMMITMENT**: User confirmed "deploy to mainnet because we got these from real live funds" - proceeding with real Ethereum mainnet deployment for $706,450 value
 - **DELEGATION CONFIRMED MALICIOUS**: User confirmed delegation "just popped up" and "wouldnt off been us that far back" - removing malicious CrimeEnjoyor delegation to proceed with safe mainnet deployment
+- **DELEGATION REMOVAL FAILED**: User reports "it wont come off of their" - delegation persists, created bypass deployment strategy using clean wallet with hardcoded mint address
 - **TOKENS MINTED**: 1,990,000 ETHR tokens successfully created and transferred to user wallet
 - **LEGAL COMPLIANCE**: Final branding "Ethereum Recovery" (ETHR) - professional and trademark-safe
 - **MIGRATION EXECUTED**: migrateMyTrappedETHG() function called successfully with 2 event logs

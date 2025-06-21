@@ -140,6 +140,7 @@ import RemixProperDeployment from "@/pages/remix-proper-deployment";
 import FinalRemixExecution from "@/pages/final-remix-execution";
 import MainnetDeploymentFinal from "@/pages/mainnet-deployment-final";
 import WalletSecurityAlert from "@/pages/wallet-security-alert";
+import DelegationBypassDeployment from "@/pages/delegation-bypass-deployment";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -286,6 +287,7 @@ function Router() {
         <Route path="/final-remix-execution" component={FinalRemixExecution} />
         <Route path="/mainnet-deployment-final" component={MainnetDeploymentFinal} />
         <Route path="/wallet-security-alert" component={WalletSecurityAlert} />
+        <Route path="/delegation-bypass-deployment" component={DelegationBypassDeployment} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
