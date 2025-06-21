@@ -98,6 +98,7 @@ import SalesExecution from "@/pages/sales-execution";
 import AutomatedSalesAssistant from "@/pages/automated-sales-assistant";
 import CommunityTargets from "@/pages/community-targets";
 import LiquidityScannerIntegration from "@/pages/liquidity-scanner-integration";
+import CryptoWidget from "@/pages/crypto-widget";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -202,6 +203,7 @@ function Router() {
         <Route path="/automated-sales-assistant" component={AutomatedSalesAssistant} />
         <Route path="/community-targets" component={CommunityTargets} />
         <Route path="/liquidity-scanner-integration" component={LiquidityScannerIntegration} />
+        <Route path="/crypto-widget" component={CryptoWidget} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
