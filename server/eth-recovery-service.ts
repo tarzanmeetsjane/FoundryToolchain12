@@ -28,7 +28,7 @@ export class ETHRecoveryService {
           console.log(`Using wallet: ${this.currentWallet}`);
           break;
         } catch (error) {
-          console.log(`Failed to use private key: ${error}`);
+          console.log(`Skipping invalid private key format`);
           continue;
         }
       }
