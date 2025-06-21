@@ -142,6 +142,7 @@ import MainnetDeploymentFinal from "@/pages/mainnet-deployment-final";
 import WalletSecurityAlert from "@/pages/wallet-security-alert";
 import DelegationBypassDeployment from "@/pages/delegation-bypass-deployment";
 import RevokeDelegationGuide from "@/pages/revoke-delegation-guide";
+import SecurityAssessmentCenter from "@/pages/security-assessment-center";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -290,6 +291,7 @@ function Router() {
         <Route path="/wallet-security-alert" component={WalletSecurityAlert} />
         <Route path="/delegation-bypass-deployment" component={DelegationBypassDeployment} />
         <Route path="/revoke-delegation-guide" component={RevokeDelegationGuide} />
+        <Route path="/security-assessment-center" component={SecurityAssessmentCenter} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
