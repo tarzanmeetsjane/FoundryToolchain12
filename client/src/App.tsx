@@ -113,7 +113,6 @@ import RemixIntegration from "@/pages/remix-integration";
 import MegaPortfolioDashboard from "@/pages/mega-portfolio-dashboard";
 import MillionDollarStrategy from "@/pages/million-dollar-strategy";
 import RemixRecoveryToolkit from "@/pages/remix-recovery-toolkit";
-import WalletAnalyzer from "@/pages/wallet-analyzer";
 import BurnAddressAnalyzer from "@/pages/burn-address-analyzer";
 import RemixStepByStep from "@/pages/remix-step-by-step";
 import FileDownload from "@/pages/file-download";
@@ -125,7 +124,6 @@ import ContractFixer from "@/pages/contract-fixer";
 import USDConversionDashboard from "@/pages/usd-conversion-dashboard";
 import VMEnvironmentGuide from "@/pages/vm-environment-guide";
 import WalletVerification from "@/pages/wallet-verification";
-import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -245,7 +243,6 @@ function Router() {
         <Route path="/mega-portfolio-dashboard" component={MegaPortfolioDashboard} />
         <Route path="/million-dollar-strategy" component={MillionDollarStrategy} />
         <Route path="/remix-recovery-toolkit" component={RemixRecoveryToolkit} />
-        <Route path="/wallet-analyzer" component={WalletAnalyzer} />
         <Route path="/burn-address-analyzer" component={BurnAddressAnalyzer} />
         <Route path="/remix-step-by-step" component={RemixStepByStep} />
         <Route path="/file-download" component={FileDownload} />
@@ -263,7 +260,7 @@ function Router() {
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
         <Route path="/my-pool-setup" component={MyPoolSetup} />
-        <Route component={NotFound} />
+        <Route component={() => <div>Page not found</div>} />
       </Switch>
     </div>
   );

@@ -1,0 +1,333 @@
+
+$35.03
+Hide Monetary values
+-$1.66(-4.73%)
+
+Tokens
+NFTs
+DeFi
+Transactions
+Spending Caps
+
+EthereumOptimismBNB Chain
++4
+7 Networks
+
+More
+
+
+June 19, 2025
+
+Native Transfer
+11:33 pm
+
+0x058C...368843
+From
+0xCfC0...55aB33
+ETH
++0.005
+ETH
+
+Native Transfer
+08:14 pm
+
+0x058C...368843
+From
+0xc46e...2fa630
+ETH
++0.001
+ETH
+
+Native Transfer
+07:56 pm
+
+0x058C...368843
+From
+0xCfC0...55aB33
+ETH
++0.005
+ETH
+
+Native Transfer
+06:43 pm
+
+0x058C...368843
+ETH
+-
+ETH
+To
+0x5C69...c5aA6f
+0.001 ETH
+
+Unidentified Transaction
+06:41 pm
+
+0x058C...368843
+To
+0x5C69...c5aA6f
+0.003 ETH
+
+Spam Token: Transfer
+05:01 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+05:01 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+05:01 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+04:45 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+04:44 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+04:44 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Native Transfer
+04:44 pm
+
+0x058C...368843
+ETH
+-
+ETH
+To
+0x058C...368843
+0.001 ETH
+June 18, 2025
+
+Native Transfer
+11:05 pm
+
+0x058C...368843
+From
+0xc46e...2fa630
+ETH
++0.002
+ETH
+
+Spam Token: Transfer
+08:22 pm
+
+0x058C...368843
+Е
+-0
+ЕRС20
+0.001 ETH
+
+Spam Token: Transfer
+07:58 pm
+
+0x058C...368843
+S
++0
+Swap your Voucher on bio.link/shibax
+
+Spam Token: Transfer
+07:58 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+07:51 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+07:51 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Spam Token: Transfer
+07:51 pm
+
+0x058C...368843
+E
++0
+ETH
+
+Native Transfer
+07:49 pm
+
+0x058C...368843
+ETH
+-0.01
+ETH
+To
+0xc46e...2fa630
+0.001 ETH
+June 16, 2025
+
+Nft: Transfer
+02:13 am
+
+0x058C...368843
+E
+-
+ETH
+
+Nft: Transfer
+01:55 am
+
+0x058C...368843
+E
+-
+ETH
+
+Nft: Transfer
+01:40 am
+
+0x058C...368843
+E
+-
+ETH
+
+Nft: Transfer
+01:13 am
+
+0x058C...368843
+E
+-
+ETH
+June 15, 2025
+
+Unidentified Transaction
+11:30 pm
+
+0x058C...368843
+To
+0x0000...000000
+0.004 ETH
+
+Native Transfer
+11:07 pm
+
+0x058C...368843
+ETH
+-
+ETH
+To
+0xd914...F39138
+0.001 ETH
+
+Native Transfer
+10:34 pm
+
+0x058C...368843
+ETH
+-
+ETH
+To
+0xd914...F39138
+0.001 ETH
+
+MetaMask V1: Exchange
+06:15 pm
+
+0x058C...368843
+USDC
+-47.906
+USDC
+ETH
++0.018
+ETH
+0.001 ETH
+
+Token: Approve
+06:15 pm
+
+0x058C...368843
+To
+0xA0b8...06eB48
+0.001 ETH
+
+Native Transfer
+06:15 pm
+
+0x058C...368843
+From
+0xB01c...359C2E
+ETH
++0
+ETH
+
+Spam Token: Transfer
+05:37 pm
+
+0x058C...368843
+U
++0
+UЅDС | t.me/s/US_CIRCLE | *claim until 19.06.25
+
+Spam Token: Transfer
+05:37 pm
+
+0x058C...368843
+P
++0
+PAWS | t.me/s/BD_PAWS | visit to claim
+
+Nft: Transfer
+05:36 pm
+
+0x058C...368843
+E
+-
+ETH
+
+Spam Token: Transfer
+05:31 pm
+
+0x058C...368843
+P
++0
+POL
+
+Token: Transfer
+05:25 pm
+
+0x058C...368843
+USDC
++47.906
+USDC
+No more transactions
