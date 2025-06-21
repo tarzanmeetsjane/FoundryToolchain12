@@ -94,6 +94,7 @@ import TransactionAnalyzer from "@/pages/transaction-analyzer";
 import DirectTokenSales from "@/pages/direct-token-sales";
 import EmergencyRecovery from "@/pages/emergency-recovery";
 import SuccessDashboard from "@/pages/success-dashboard";
+import SalesExecution from "@/pages/sales-execution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -194,6 +195,7 @@ function Router() {
         <Route path="/direct-token-sales" component={DirectTokenSales} />
         <Route path="/emergency-recovery" component={EmergencyRecovery} />
         <Route path="/success-dashboard" component={SuccessDashboard} />
+        <Route path="/sales-execution" component={SalesExecution} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
