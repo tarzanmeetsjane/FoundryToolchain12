@@ -300,7 +300,7 @@ contract ETHGRecovery is ERC20, Ownable {
               
               <div className="p-4 bg-orange-600/10 border border-orange-600/30 rounded">
                 <h4 className="text-orange-400 font-medium mb-2">Deployment Time</h4>
-                <p className="text-white text-xl font-bold">< 5 min</p>
+                <p className="text-white text-xl font-bold">&lt; 5 min</p>
                 <p className="text-gray-400 text-sm">With optimization</p>
               </div>
             </div>
