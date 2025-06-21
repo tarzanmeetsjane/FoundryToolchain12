@@ -174,6 +174,7 @@ import ContractVerificationGuide from "@/pages/contract-verification-guide";
 import TokenRecoveryAnalysis from "@/pages/token-recovery-analysis";
 import EtherscanVerificationFix from "@/pages/etherscan-verification-fix";
 import RemixContractTest from "@/pages/remix-contract-test";
+import OriginalTokenAnalysis from "@/pages/original-token-analysis";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -354,6 +355,7 @@ function Router() {
         <Route path="/token-recovery-analysis" component={TokenRecoveryAnalysis} />
         <Route path="/etherscan-verification-fix" component={EtherscanVerificationFix} />
         <Route path="/remix-contract-test" component={RemixContractTest} />
+        <Route path="/original-token-analysis" component={OriginalTokenAnalysis} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
