@@ -102,6 +102,7 @@ import CryptoWidget from "@/pages/crypto-widget";
 import TransactionVerification from "@/pages/transaction-verification";
 import MoneyTracker from "@/pages/money-tracker";
 import LiveDataDashboard from "@/pages/live-data-dashboard";
+import BlockchainTestSuite from "@/pages/blockchain-test-suite";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -210,6 +211,7 @@ function Router() {
         <Route path="/transaction-verification" component={TransactionVerification} />
         <Route path="/money-tracker" component={MoneyTracker} />
         <Route path="/live-data-dashboard" component={LiveDataDashboard} />
+        <Route path="/blockchain-test-suite" component={BlockchainTestSuite} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
