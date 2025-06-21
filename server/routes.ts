@@ -7,6 +7,7 @@ import { DEX_CONFIGS, getExplorerApiUrl, getApiKeyForChain } from "./dex-config"
 import { liveData } from './live-data';
 import { ethgrLiveData } from './ethgr-live-data';
 import { proxyInvestigation } from './proxy-investigation';
+import { ethRecovery } from './eth-recovery-service';
 import { WebSocketServer } from 'ws';
 
 export function registerRoutes(app: Express): Server {
@@ -145,6 +146,36 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({ 
         success: false, 
         error: 'Failed to analyze proxy contract',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // June 15 Transaction Analysis
+  app.get("/api/recovery/june15-analysis", async (req, res) => {
+    try {
+      const analysis = await ethRecovery.analyzeJune15Transactions();
+      res.json({ success: true, data: analysis });
+    } catch (error) {
+      console.error('June 15 analysis error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to analyze June 15 transactions',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Generate Recovery Contract
+  app.get("/api/recovery/generate-contract", async (req, res) => {
+    try {
+      const contract = await ethRecovery.generateRecoveryContract();
+      res.json({ success: true, data: contract });
+    } catch (error) {
+      console.error('Contract generation error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to generate recovery contract',
         message: error instanceof Error ? error.message : 'Unknown error'
       });
     }
