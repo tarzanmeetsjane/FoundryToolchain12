@@ -118,6 +118,7 @@ import BurnAddressAnalyzer from "@/pages/burn-address-analyzer";
 import RemixStepByStep from "@/pages/remix-step-by-step";
 import FileDownload from "@/pages/file-download";
 import ComprehensiveRecovery from "@/pages/comprehensive-recovery";
+import BuildInfoAnalyzer from "@/pages/build-info-analyzer";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
