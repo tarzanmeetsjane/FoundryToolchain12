@@ -159,7 +159,8 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 
 ### ETHR Token Deployment SUCCESS (June 21, 2025) - MISSION ACCOMPLISHED
 - **DEPLOYMENT COMPLETE**: Contract successfully deployed at 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8 (Remix VM)
-- **MAINNET WALLET CONNECTED**: 0x8b99Bb520235F502158bA026A7CfEB59a69E6c18 confirmed on Ethereum Mainnet
+- **TARGET WALLET CONFIRMED**: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 (original recovery wallet)
+- **WALLET SWITCH REQUESTED**: User wants to use original wallet instead of 0x8b99Bb520235F502158bA026A7CfEB59a69E6c18
 - **TOKENS MINTED**: 1,990,000 ETHR tokens successfully created and transferred to user wallet
 - **LEGAL COMPLIANCE**: Final branding "Ethereum Recovery" (ETHR) - professional and trademark-safe
 - **MIGRATION EXECUTED**: migrateMyTrappedETHG() function called successfully with 2 event logs
