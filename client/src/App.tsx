@@ -161,7 +161,7 @@ import WalletBalanceChecker from "@/pages/wallet-balance-checker";
 import MetaMaskTokenImport from "@/pages/metamask-token-import";
 import WalletVerificationCenter from "@/pages/wallet-verification-center";
 import SimpleTokenImport from "@/pages/simple-token-import";
-import DelegationAnalysis from "@/pages/delegation-analysis";
+import MultiWalletTransactionAnalysis from "@/pages/multi-wallet-transaction-analysis";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
