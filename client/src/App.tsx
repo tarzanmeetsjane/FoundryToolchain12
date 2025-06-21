@@ -191,6 +191,7 @@ import ExecuteNowDashboard from "@/pages/execute-now-dashboard";
 import PlatformCapabilities from "@/pages/platform-capabilities";
 import ImmediateRevenueLaunch from "@/pages/immediate-revenue-launch";
 import VictimToAdvocateStrategy from "@/pages/victim-to-advocate-strategy";
+import CurrentAssetsRealityCheck from "@/pages/current-assets-reality-check";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -202,7 +203,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={Dashboard} />
+        <Route path="/" component={CurrentAssetsRealityCheck} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -388,6 +389,7 @@ function Router() {
         <Route path="/platform-capabilities" component={PlatformCapabilities} />
         <Route path="/immediate-revenue-launch" component={ImmediateRevenueLaunch} />
         <Route path="/victim-to-advocate-strategy" component={VictimToAdvocateStrategy} />
+        <Route path="/current-assets-reality-check" component={CurrentAssetsRealityCheck} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
