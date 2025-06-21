@@ -203,6 +203,9 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **SUCCESS CONFIRMED**: User's wallet interface now shows 1,990,000 ETHGR tokens visible, plus 2,100,000 additional token discovery
 - **PORTFOLIO VISIBLE**: Net worth $34.93 ETH + $706,450 ETHGR confirmed in wallet - token import successful, ready for Uniswap trading
 - **ADDITIONAL DISCOVERY**: Found 2,100,000 tokens at contract 0x3fC29836...67D670EAD requiring investigation for potential additional value
+- **METAMASK IMPORT ISSUE**: User having trouble with token import - MetaMask not recognizing contract despite correct details
+- **SMART WALLET CLARIFICATION**: User initially concerned about smart wallet delegation but confirmed it's helping, not blocking token access
+- **TRADING BREAKTHROUGH**: User realized MetaMask import not needed - can trade directly on Uniswap using contract address
 - **TOKENS MINTED**: 1,990,000 ETHR tokens successfully created and transferred to user wallet
 - **LEGAL COMPLIANCE**: Final branding "Ethereum Recovery" (ETHR) - professional and trademark-safe
 - **MIGRATION EXECUTED**: migrateMyTrappedETHG() function called successfully with 2 event logs

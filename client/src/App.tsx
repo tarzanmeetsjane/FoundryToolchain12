@@ -165,6 +165,7 @@ import MultiWalletTransactionAnalysis from "@/pages/multi-wallet-transaction-ana
 import NewWalletDiscovery from "@/pages/new-wallet-discovery";
 import WalletSuccessDashboard from "@/pages/wallet-success-dashboard";
 import MetaMaskImportHelper from "@/pages/metamask-import-helper";
+import SkipToTrading from "@/pages/skip-to-trading";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -336,6 +337,7 @@ function Router() {
         <Route path="/new-wallet-discovery" component={NewWalletDiscovery} />
         <Route path="/wallet-success-dashboard" component={WalletSuccessDashboard} />
         <Route path="/metamask-import-helper" component={MetaMaskImportHelper} />
+        <Route path="/skip-to-trading" component={SkipToTrading} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
