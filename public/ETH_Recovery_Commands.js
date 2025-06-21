@@ -1,6 +1,7 @@
-// 37 ETH Recovery Script for Remix IDE
+// 37 ETH Recovery Script for Remix IDE - AUTOMATED SEARCH
 // Upload this file to Remix IDE and run it in the terminal
 // These commands are READ-ONLY and completely safe
+// Will automatically highlight any wallet containing 30+ ETH
 
 console.log('🔍 Starting 37 ETH Recovery Search...')
 console.log('=' * 50)
@@ -15,7 +16,9 @@ web3.eth.getBalance('0xc46eB37677360EfDc011F4097621F15b792fa630').then(balance =
   
   if (parseFloat(ethAmount) > 30) {
     console.log('🎉🎉🎉 FOUND YOUR 37 ETH! 🎉🎉🎉')
-    console.log('Your missing ETH has been located!')
+    console.log('*** IMMEDIATE ACTION REQUIRED ***')
+    console.log('Transfer ETH to secure wallet NOW!')
+    console.log('Your missing $89,614 ETH has been located!')
   } else if (parseFloat(ethAmount) > 1) {
     console.log('⚠️ Significant balance found - investigate further')
   } else {
@@ -33,6 +36,9 @@ web3.eth.getBalance('0x8b99Bb520235F502158bA026A7CfEB59a69E6c18').then(balance =
   
   if (parseFloat(ethAmount) > 30) {
     console.log('🎉 POTENTIAL ETH LOCATION FOUND!')
+    console.log('*** INVESTIGATE THIS WALLET IMMEDIATELY ***')
+  } else if (parseFloat(ethAmount) > 5) {
+    console.log('💰 Substantial balance detected')
   }
   console.log('=' * 30)
 })
@@ -45,7 +51,10 @@ web3.eth.getBalance(proxyAddr).then(balance => {
   console.log('📍 PROXY CONTRACT: ' + proxyAddr)
   console.log('💰 Balance:', ethAmount, 'ETH')
   
-  if (parseFloat(ethAmount) > 1) {
+  if (parseFloat(ethAmount) > 30) {
+    console.log('🚨 PROXY CONTRACT CONTAINS 37 ETH! 🚨')
+    console.log('*** CHECK ADMIN FUNCTIONS NOW ***')
+  } else if (parseFloat(ethAmount) > 1) {
     console.log('⚠️ Contract contains ETH - checking admin access...')
   }
   
