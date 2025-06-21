@@ -175,6 +175,8 @@ import TokenRecoveryAnalysis from "@/pages/token-recovery-analysis";
 import EtherscanVerificationFix from "@/pages/etherscan-verification-fix";
 import RemixContractTest from "@/pages/remix-contract-test";
 import OriginalTokenAnalysis from "@/pages/original-token-analysis";
+import HoneypotRecoverySuccess from "@/pages/honeypot-recovery-success";
+import DexScreenerContactCenter from "@/pages/dexscreener-contact-center";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -356,6 +358,8 @@ function Router() {
         <Route path="/etherscan-verification-fix" component={EtherscanVerificationFix} />
         <Route path="/remix-contract-test" component={RemixContractTest} />
         <Route path="/original-token-analysis" component={OriginalTokenAnalysis} />
+        <Route path="/honeypot-recovery-success" component={HoneypotRecoverySuccess} />
+        <Route path="/dexscreener-contact-center" component={DexScreenerContactCenter} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
