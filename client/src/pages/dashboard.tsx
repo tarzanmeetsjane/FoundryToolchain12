@@ -10,7 +10,8 @@ import {
   BarChart3,
   FileText,
   Wallet,
-  Activity
+  Activity,
+  DollarSign
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";

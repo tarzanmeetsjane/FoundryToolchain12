@@ -111,6 +111,7 @@ import InstantMonetization from "@/pages/instant-monetization";
 import TokenTransferTool from "@/pages/token-transfer-tool";
 import LiveTransactionAnalyzer from "@/pages/live-transaction-analyzer";
 import RemixIntegration from "@/pages/remix-integration";
+import SalesExecution from "@/pages/sales-execution";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -228,6 +229,7 @@ function Router() {
         <Route path="/token-transfer-tool" component={TokenTransferTool} />
         <Route path="/live-transaction-analyzer" component={LiveTransactionAnalyzer} />
         <Route path="/remix-integration" component={RemixIntegration} />
+        <Route path="/sales-execution" component={SalesExecution} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
