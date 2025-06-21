@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { DEX_CONFIGS, getExplorerApiUrl, getApiKeyForChain } from "./dex-config";
 import { liveData } from './live-data';
 import { ethgrLiveData } from './ethgr-live-data';
+import { proxyInvestigation } from './proxy-investigation';
 import { WebSocketServer } from 'ws';
 
 export function registerRoutes(app: Express): Server {
@@ -128,6 +129,22 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({ 
         success: false, 
         error: 'Failed to fetch live data',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // 37 ETH Recovery - Proxy Investigation
+  app.get("/api/recovery/proxy-analysis/:address", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const analysis = await proxyInvestigation.analyzeProxy();
+      res.json({ success: true, data: analysis });
+    } catch (error) {
+      console.error('Proxy analysis error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to analyze proxy contract',
         message: error instanceof Error ? error.message : 'Unknown error'
       });
     }
