@@ -126,6 +126,7 @@ import CriticalDiscoveryDashboard from "@/pages/critical-discovery-dashboard";
 import WalletRetracementCenter from "@/pages/wallet-retracement-center";
 import USDCApprovalBreakthrough from "@/pages/usdc-approval-breakthrough";
 import ApprovalInvestigation from "@/pages/approval-investigation";
+import ETHRecoveryExecution from "@/pages/eth-recovery-execution";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -258,6 +259,7 @@ function Router() {
         <Route path="/wallet-retracement-center" component={WalletRetracementCenter} />
         <Route path="/usdc-approval-breakthrough" component={USDCApprovalBreakthrough} />
         <Route path="/approval-investigation" component={ApprovalInvestigation} />
+        <Route path="/eth-recovery-execution" component={ETHRecoveryExecution} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
