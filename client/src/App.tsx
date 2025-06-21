@@ -168,6 +168,8 @@ import MetaMaskImportHelper from "@/pages/metamask-import-helper";
 import SkipToTrading from "@/pages/skip-to-trading";
 import PortfolioSurgeDashboard from "@/pages/portfolio-surge-dashboard";
 import ContractVerificationCenter from "@/pages/contract-verification-center";
+import LiveMarketAnalysis from "@/pages/live-market-analysis";
+import MarketRealityDashboard from "@/pages/market-reality-dashboard";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -342,6 +344,8 @@ function Router() {
         <Route path="/skip-to-trading" component={SkipToTrading} />
         <Route path="/portfolio-surge-dashboard" component={PortfolioSurgeDashboard} />
         <Route path="/contract-verification-center" component={ContractVerificationCenter} />
+        <Route path="/live-market-analysis" component={LiveMarketAnalysis} />
+        <Route path="/market-reality-dashboard" component={MarketRealityDashboard} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />

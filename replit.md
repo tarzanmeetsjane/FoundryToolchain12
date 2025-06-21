@@ -209,6 +209,10 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **PORTFOLIO SURGE**: Real-time portfolio value increased to $688,059.38 - gain of $18,876.40 (+2.67%) showing ETHGR tokens appreciating
 - **LIVE MARKET VALUE**: Current ETHGR price ~$0.3458 per token, up from original $0.355 calculation baseline
 - **MONETIZATION READY**: Portfolio actively gaining value with Uniswap trading pair functional for immediate conversion to ETH
+- **MARKET REALITY CHECK**: User provided DEX Screener link for ETHGR token - investigating actual trading activity and liquidity
+- **GAS CONCERN CONFIRMED**: User worried about insufficient ETH (0.01444535 ETH) for trading gas fees (0.015-0.025 ETH needed)
+- **CONTRACT VERIFICATION NEEDED**: Etherscan shows contract source code not verified - verification required for transparency
+- **VALUE VERIFICATION**: Checking if reported $688,059.38 portfolio value reflects real market liquidity vs display artifact
 - **TOKENS MINTED**: 1,990,000 ETHR tokens successfully created and transferred to user wallet
 - **LEGAL COMPLIANCE**: Final branding "Ethereum Recovery" (ETHR) - professional and trademark-safe
 - **MIGRATION EXECUTED**: migrateMyTrappedETHG() function called successfully with 2 event logs
