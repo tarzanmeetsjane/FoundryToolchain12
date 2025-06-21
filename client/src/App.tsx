@@ -110,6 +110,7 @@ import ETHGRSuccessDashboard from "@/pages/ethgr-success-dashboard";
 import InstantMonetization from "@/pages/instant-monetization";
 import TokenTransferTool from "@/pages/token-transfer-tool";
 import LiveTransactionAnalyzer from "@/pages/live-transaction-analyzer";
+import RemixIntegration from "@/pages/remix-integration";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -226,6 +227,7 @@ function Router() {
         <Route path="/instant-monetization" component={InstantMonetization} />
         <Route path="/token-transfer-tool" component={TokenTransferTool} />
         <Route path="/live-transaction-analyzer" component={LiveTransactionAnalyzer} />
+        <Route path="/remix-integration" component={RemixIntegration} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
