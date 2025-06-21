@@ -1,0 +1,209 @@
+# Quantum Liquidity Scanner - Complete Blockchain Analysis Report
+Generated: June 21, 2025
+
+## Transaction Analysis Summary
+**Transaction Hash:** `0x40daf1acba06cffd6b0aa3b225ff3a925d2c27e2154ac43d2dea1285fb4e3848`
+
+### Transaction Details
+- **From Address:** 0xad106449e4d0743e1d75393c000d64c24f89f20b
+- **To Contract:** 0x3fc29836e84e471a053d2d9e80494a867d670ead
+- **Block Number:** 22,547,337 (0x159db89)
+- **Gas Used:** 262,014 (0x4037e)
+- **Transaction Value:** 0 ETH
+- **Transaction Type:** Batch wallet operation (104 addresses)
+
+### Contract Analysis
+**Target Contract:** 0x3fc29836e84e471a053d2d9e80494a867d670ead
+- **Status:** Not verified on Etherscan
+- **Function Called:** Batch operation (0xaff44c4a)
+- **Purpose:** Multi-address batch transaction
+
+## Extracted Wallet Addresses (104 Total)
+
+### Complete Address List:
+1. 0xf8153167313ce9cfcb45bd4aff2b543513388163 - **Balance: 4.86 ETH**
+2. 0x3d9fcdbb08a1f7a508bda15e05213edcb0fe8f32
+3. 0x25a5ae55c85e6044aaeceba318911882e14b7daf
+4. 0xe83a102af27486e353bc7b643a4563a251cc8028
+5. 0x5002ead90aeffefb470b1b67d7f871f16aac0ca9
+6. 0x4ae5e35acdf04994dc2f8fcde06393d8381c63c0
+7. 0x694f83e9d6498ac0bf0fb2e9a46aea0d47be4375
+8. 0x1a5d2be119162751cbfb519031c2e551346d58b6
+9. 0x4661587940885ca74f31dc513a4adb775ceb7a1f
+10. 0x9ee17f351708748be7162eefa7fcb34f5dc3fe98
+11. 0xe0aa6c0882443aae702b355a41281a6e28b9c11b
+12. 0x69450a9fb736a2896ab6887c3f84275a477d9072
+13. 0xa27bb6e40f35a80bbf2f478ce33017c45b194d58
+14. 0x1a2ebb7707f74011406a97a0c267d5f6f7a7d147
+15. 0x51f9e1b204c90d562297d705a255036021d0687a
+16. 0x65a6264d9e06b348db417f7efdf73b9132702acc
+17. 0x0ce213230f6b17f945e35ee139c1af07c0b837fd
+18. 0x606ff0368a4fbec9dc4b9b53a1463aae1cda33e0
+19. 0xa7437b8d8f17e23386e71e3d4b24a407a0c824ac
+20. 0xfb7e53606777991d4218b378fa81434956396d22
+21. 0x9f5d44c273f9ccffed49a78277f91ea05dd4611f
+22. 0xf4fba49d80b42106bdc38ee36afaec35b176a947
+23. 0x748225805ddf43f73d8ef6815945f577f3139bd9
+24. 0x451204af69c5f8646ab39871506494825d73ca24
+25. 0x3e5c9762c919d7d5057a534461c294afc25b0fac
+26. 0xf905442abe676f4634be388b48f63a84b30083d9
+27. 0xc1a01053e5ec5b40e73c10971d29d8ac0a51a074
+28. 0xc643d61cd868fbbdc346e8557d08c81466643e19
+29. 0x4ec1103d7018c291fa532500b90b8370772cf94b
+30. 0x50ea525c2b682c88220f84bb96beee4fe33c0cdc
+31. 0x4687943b367218cdc458cf34a0153e7f33786f3b
+32. 0x771f3d4a7002d5f20b7e9b126a46b12b5e61d432
+33. 0xe0184da5408ebccba1b93b46500604b3f33ab4b9
+34. 0xa13f42e78a182e23d48766f6135524939dda5c24
+35. 0x3908f89b206af269cd10520a39683d3e9b709a0c
+36. 0x79c6f4074e999948c243709b4ca8402a4c139fad
+37. 0x4718bfff986bba5f9fd3994a71bf84979d145e2e
+38. 0x87febc85ed919491847376c410bb49c69e1e265b
+39. 0x1674d6692d1a2555fb4904d65c8eb5544255a7a5
+40. 0x95ee518a47a8467de668c368be5d617fedd445f2
+41. 0x573f4567606c1aa38b683f53893fd47df03499a0
+42. 0x7b058cbfeae7c88430f2d85a420e8577772df78d
+43. 0xdfeb886c71cf17e27b1d1ee4f689aebc0802a2dd
+44. 0xf1429ce9b9e77e44eb3c17cc23fb07977af6bb89
+45. 0x10adba7f082519a076eb8c87d1cff8ceedf49f21
+46. 0xc1d0417fbe4432f91256c4e6b57ec7c49940f4bb
+47. 0x7354b08f67a93abc547242867a7e40bdafcc46a5
+48. 0xc364ac0928d168b946bc0679bc1fee74bca81336
+49. 0xf30f72d65aa7257d96c1e6f9ea933b51f116b2c0
+50. 0xc46eb37677360efdc011f4097621f15b792fa630
+51. 0x7c7aab2924249182b12ea6bb295dcdce9dd3726b
+52. 0x09afceb0a0544919022b486c7dd3507ce82c5112
+53. 0xee91bbd717ae0208cb2d61d076fa7b3b1467dbf4
+54. 0x45b59c63198ea92c1b301edd9b6a14359e05b438
+55. 0xa5bdc7d0c85ea5828dd6742ba5ccaf6bdecbc4a4
+56. 0xfde5b558e93586240c78af9a3449e1b4132d8b3b
+57. 0x42a758e64d72d2bd5ee5c7bcf1663795d2ae3dc4
+58. 0xef7dd7cd98f67a33cd7e3275a5ee406d221f903d
+59. 0x88ab37ba07f50ca113220b6f996f50f0cd9afe55
+60. 0xb40776559c5bde937339ea6819767baceef1cd44
+61. 0xb84e188e3c2fe0ba4cbe8df66b935229c72a145c
+62. 0xaadc708ec768d7cb88278c1d0f8463a015859951
+63. 0x0589c7c022e4fb555da849d154415f7db0f57be0
+64. 0x3f5c0efe17b3af03f90f5e644b74d55e512246ca
+65. 0x6689060b5224e14a1fb25acef99f4a20a0a78d77
+66. 0x435fba0543490a1699f8d9d697bf3f955073b39e
+67. 0x975bfc5df5a2613fe7464322513c4d9b7f564817
+68. 0xe69c624c28a02af9a856e98ad3cb894d5470a23b
+69. 0x0880a4f61a70a29f7abd92daca55372718e89ddf
+70. 0x2393a3314c2d5c21df5f0834d0f2db8675f74244
+71. 0xfadd407c25f67ad30472cb6863e09a57d192ec03
+72. 0x854fb82fe5dcd7de79482c4e96596768b6839f18
+73. 0x59ef0273d408d91a0af7c13f9dad01f29d719cdc
+74. 0x75987ab755da7ead78dd84ff9813275b618a3c28
+75. 0xd052d377bcdcb59a88f475846f170442059914a0
+76. 0xa3347682f3d386d30428c595b5c555849de013e3
+77. 0xf76a09857eba4803956ed0f11be41462baf6e2e1
+78. 0xdba0e227d03645051dd0261892363eef42f7c295
+79. 0xb8ae33ec1b41107635822bb9fc7a131c647c51f8
+80. 0xa5c369094b16b478f7ad9053a27c9e8775085b78
+81. 0xf907b0b246c67f5f6523d9870992bb4c66a83f78
+82. 0xe51031ab22a3bc87df8ca616ba95d14b57657182
+83. 0xaa7ac1b550e5ba6527c93ce9ceb7021639db6375
+84. 0x6c76e8023be154e1586642acf46169f7743bf965
+85. 0x5798fc6743f8f6fe680db0a0a661f082dcff2b94
+86. 0xa0468fc3a8212493f59a2d8c3891e8f5027ba965
+87. 0xde56d0016a12d9db9ba27d14cc1598d3cdd09f39
+88. 0xca2ddca3909031d25a155ba981bba00b8a7dcd25
+89. 0xfd71689e12e83c73247236aeea91028d46bd8e59
+90. 0xee568859d4b4092ed4af6ce607af91cb63f35ea6
+91. 0x595228604281feffc818c4ed3e969f73d83042bc
+92. 0xe242d592877b6589ffd0c65e4e578f8f652847a8
+93. 0x8b15082c7a9d6104dc4786031a3ed7641b2eee01
+94. 0xef1676bce973fdc1c8b0642d5651330a333d77cf
+95. 0xa353f168687ce2f28d34bda8e38d5c78f33a6d59
+96. 0xc0dc9e168acec3fdb0298653cf0cc6e0a614e9d7
+97. 0x381752c387021df2ae3f1451bb77cba6c7bdf55a
+98. 0x409b113338fd4da4761accf12ed7ba1192d7e8d3
+99. 0x4180c678b2a4dfa2c300ab773a7dd5e1eb85dd79
+100. 0xa17043f912120e6d3f6f699414b8db22db23d542
+101. 0x6d75e7220fd20795f06f243fc83b67e0ea7de8c9
+102. 0xab51865bba777f086b41931b0187d5419bbc2331
+103. 0xef45fa57bb1e2e09c178c318faf92229f2adb227
+104. 0x1f5aca12b3fb91d833f20c21a0a6d1a599d843c1
+
+## Contract Verification Results
+
+### Previously Tested Addresses:
+- **0x3576f8A2A5eaeC8f5B968601220542e18C45E4fc**
+  - Status: Valid Ethereum address
+  - Balance: 0 ETH
+  - Transactions: None
+  - Verification: Not verified
+  - Type: Unused/Empty contract
+
+### Liquidity Pool Verification:
+- **0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc**
+  - Status: **VERIFIED LIQUIDITY POOL**
+  - Protocol: **Uniswap V2**
+  - Type: Active DEX pair contract
+  - Verification: Successfully identified as liquidity pool
+
+## Connected Wallet Analysis
+**Your Wallet:** 0xCd24E103F976a9e49F26876dc1305D166bdeaC77
+
+### Wallet Details:
+- **ETH Balance:** 0.0028 ETH ($7.20 USD)
+- **Transaction Count:** 6 transactions
+- **Funding Source:** Zero Hash (via Stripe)
+- **LP Positions:** None currently detected
+- **Wallet Type:** Private key imported wallet
+- **Uniswap Compatibility:** Manual import required
+
+### Additional Wallet Addresses:
+- **Primary:** 0x2464cc822b85238bb5ebe9700942303caca688da
+- **Secondary:** 0x030d6e42626a34af27a9fc90276d5cfbb477ada0
+- **Mnemonic Generated:** 0xed124aD3e1E8508A5DA057888F581686B4f38b66 (Different from private key)
+
+## System Capabilities Verified
+
+### GitHub Integration:
+- **OAuth Token:** Active and configured
+- **Rate Limits:** Enhanced (5000 requests/hour)
+- **Private Repository Access:** Enabled
+- **Repository Scanning:** Operational
+
+### Etherscan Integration:
+- **API Key:** Active and verified
+- **Contract Verification:** Operational
+- **Balance Queries:** Working
+- **Transaction Analysis:** Functional
+- **Batch Processing:** Available
+
+### Contract Analysis Features:
+- **Liquidity Pool Detection:** Uniswap V2/V3, Sushiswap
+- **Protocol Identification:** Multiple DEX protocols
+- **ABI Extraction:** For verified contracts
+- **Source Code Analysis:** When available
+- **Proxy Contract Detection:** Implemented
+
+## Summary Statistics
+
+### Transaction Analysis:
+- **Total Addresses Extracted:** 104
+- **Verified Balances:** 1 address (4.86 ETH found)
+- **Contract Verification Tests:** 3 performed
+- **Liquidity Pools Identified:** 1 confirmed
+
+### System Integration:
+- **GitHub OAuth:** ✅ Active
+- **Etherscan API:** ✅ Active
+- **Database:** ✅ PostgreSQL operational
+- **Wallet Service:** ✅ Connected with real funds
+- **Contract Verification:** ✅ Fully functional
+
+### Blockchain Coverage:
+- **Primary Network:** Ethereum Mainnet
+- **Additional Support:** BSC, Polygon (configured)
+- **Total LP Tokens in Database:** 151
+- **Repository Scans Completed:** 34+
+
+---
+
+**Report Generated:** June 21, 2025 at 18:00 UTC
+**System Status:** All services operational
+**Next Steps:** Repository scanning, additional contract analysis, or wallet transaction testing

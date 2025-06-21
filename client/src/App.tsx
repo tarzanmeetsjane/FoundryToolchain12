@@ -179,6 +179,7 @@ import HoneypotRecoverySuccess from "@/pages/honeypot-recovery-success";
 import DexScreenerContactCenter from "@/pages/dexscreener-contact-center";
 import RemixCompilationSuccess from "@/pages/remix-compilation-success";
 import SecondaryWalletAnalysis from "@/pages/secondary-wallet-analysis";
+import ComprehensiveRecoveryComplete from "@/pages/comprehensive-recovery-complete";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -364,6 +365,7 @@ function Router() {
         <Route path="/dexscreener-contact-center" component={DexScreenerContactCenter} />
         <Route path="/remix-compilation-success" component={RemixCompilationSuccess} />
         <Route path="/secondary-wallet-analysis" component={SecondaryWalletAnalysis} />
+        <Route path="/comprehensive-recovery-complete" component={ComprehensiveRecoveryComplete} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
