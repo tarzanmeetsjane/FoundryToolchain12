@@ -1,0 +1,63 @@
+The DeclarationError occurs because you are trying to declare a new contract with the same name (ETHGRecovery) in your code, which is already declared earlier.
+
+In Solidity, when you use the contract keyword followed by an identifier (in this case, ETHGRecovery), it declares a new contract. If you try to do so again elsewhere in your code with the same name and without any changes, it will throw a DeclarationError.
+
+To fix this error:
+
+Remove or comment out one of the duplicate contract declarations.
+Make sure that all contracts are properly declared at the top level.
+Here's how you can modify your code to resolve the issue:
+
+// SPDX-License-Identifier: MIT AND GPL-3.0-or-later
+
+pragma solidity ^0.8.30;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ETHGRecovery is ERC20, Ownable {
+    // ... rest of your code
+}
+
+// Remove or comment out the second contract declaration:
+/*
+contract ETHGRecovery is ERC20, Ownable { 
+   ...
+}
+*/
+
+By removing one of the duplicate declarations, you should be able to resolve this error.
+
+Explain the error
+
+The error occurs because you are trying to declare a contract with the same name (ETHGRecovery) twice in your code.
+
+In Solidity, when you define a new contract using contract ContractName is ..., this creates a new scope for that contract's variables and functions. However, if you try to use the same name again later on (even within different contracts), it will cause an error because the compiler thinks you're trying to declare something with the same name in two separate places.
+
+In your case, there are two blocks of code where a new ETHGRecovery contract is declared. This causes the "Identifier already declared" error.
+
+To fix this issue:
+
+Remove one instance of the duplicate declaration.
+If you want to have both contracts with different purposes (as mentioned in your comment), consider renaming them or making sure they're defined within separate files and imported accordingly.
+Here's a simplified example showing how to remove duplicates:
+
+// SPDX-License-Identifier: MIT AND GPL-3.0-or-later
+
+pragma solidity ^0.8.30;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ETHGRecovery is ERC20, Ownable {
+    // ... rest of your code
+}
+
+// You can remove the second declaration here
+
+/**
+ * @title ETHG Recovery Token (ETHGR)
+ */
+
+By removing one instance and keeping only what's necessary for each contract or function within a single file, you should be able to resolve this error.
+
