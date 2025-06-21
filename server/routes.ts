@@ -11,6 +11,7 @@ import { ethRecovery } from './eth-recovery-service';
 import { walletService } from './wallet-service';
 import { transactionAnalyzer } from './transaction-analyzer';
 import { ethgrTransactionAnalyzer } from './ethgr-transaction-analyzer';
+import { etherscanFetcher } from './etherscan-transaction-fetcher';
 import { WebSocketServer } from 'ws';
 
 export function registerRoutes(app: Express): Server {
@@ -286,6 +287,21 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({
         success: false,
         error: 'Failed to get ETHGR contract details',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Analyze Any Transaction
+  app.get("/api/transaction/:hash", async (req, res) => {
+    try {
+      const analysis = await etherscanFetcher.analyzeTransaction(req.params.hash);
+      res.json({ success: true, data: analysis });
+    } catch (error) {
+      console.error('Transaction analysis error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to analyze transaction',
         message: error instanceof Error ? error.message : 'Unknown error'
       });
     }
