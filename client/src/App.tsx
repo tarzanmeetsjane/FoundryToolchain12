@@ -151,6 +151,7 @@ import SmartAccountDisableSteps from "@/pages/smart-account-disable-steps";
 import RemixBypassDeployment from "@/pages/remix-bypass-deployment";
 import DelegationAnalysis from "@/pages/delegation-analysis";
 import SmartAccountSafetyAnalysis from "@/pages/smart-account-safety-analysis";
+import FreshStartDeployment from "@/pages/fresh-start-deployment";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -308,6 +309,7 @@ function Router() {
         <Route path="/remix-bypass-deployment" component={RemixBypassDeployment} />
         <Route path="/delegation-analysis" component={DelegationAnalysis} />
         <Route path="/smart-account-safety-analysis" component={SmartAccountSafetyAnalysis} />
+        <Route path="/fresh-start-deployment" component={FreshStartDeployment} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
