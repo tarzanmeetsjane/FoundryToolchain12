@@ -153,6 +153,7 @@ import DelegationAnalysis from "@/pages/delegation-analysis";
 import SmartAccountSafetyAnalysis from "@/pages/smart-account-safety-analysis";
 import FreshStartDeployment from "@/pages/fresh-start-deployment";
 import OptimizedDeployment from "@/pages/optimized-deployment";
+import UniswapPairSuccess from "@/pages/uniswap-pair-success";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -312,6 +313,7 @@ function Router() {
         <Route path="/smart-account-safety-analysis" component={SmartAccountSafetyAnalysis} />
         <Route path="/fresh-start-deployment" component={FreshStartDeployment} />
         <Route path="/optimized-deployment" component={OptimizedDeployment} />
+        <Route path="/uniswap-pair-success" component={UniswapPairSuccess} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
