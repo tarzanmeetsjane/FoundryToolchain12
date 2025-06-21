@@ -8,6 +8,7 @@ import { liveData } from './live-data';
 import { ethgrLiveData } from './ethgr-live-data';
 import { proxyInvestigation } from './proxy-investigation';
 import { ethRecovery } from './eth-recovery-service';
+import { walletService } from './wallet-service';
 import { WebSocketServer } from 'ws';
 
 export function registerRoutes(app: Express): Server {
@@ -176,6 +177,53 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({ 
         success: false, 
         error: 'Failed to generate recovery contract',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Wallet Information
+  app.get("/api/wallet/info", async (req, res) => {
+    try {
+      const info = walletService.getWalletInfo();
+      const balance = info.isConnected ? await walletService.getBalance() : "0";
+      
+      res.json({
+        success: true,
+        data: {
+          ...info,
+          balance: parseFloat(balance),
+          balanceETH: `${balance} ETH`
+        }
+      });
+    } catch (error) {
+      console.error('Wallet info error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to get wallet info',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Execute Recovery Transaction
+  app.post("/api/recovery/execute", async (req, res) => {
+    try {
+      const { contractAddress, functionSignature, parameters, value } = req.body;
+      
+      const result = await walletService.executeContractCall(
+        contractAddress,
+        functionSignature,
+        parameters || [],
+        value || "0"
+      );
+      
+      res.json({ success: true, data: result });
+    } catch (error) {
+      console.error('Recovery execution error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to execute recovery',
         message: error instanceof Error ? error.message : 'Unknown error'
       });
     }

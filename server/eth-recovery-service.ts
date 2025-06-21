@@ -2,11 +2,25 @@ import { ethers } from "ethers";
 
 export class ETHRecoveryService {
   private provider: ethers.JsonRpcProvider;
-  private userWallet = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
+  private currentWallet: string;
+  private oldWallet = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843"; // Blacklisted address
   private suspectContract = "0xd816c710dc011db6d357e2b1210eafc60177338f";
   
   constructor() {
-    this.provider = new ethers.JsonRpcProvider("https://mainnet.infura.io/v3/demo");
+    this.provider = new ethers.JsonRpcProvider(`https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID || 'demo'}`);
+    
+    // Derive wallet address from stored private key
+    if (process.env.PRIVATE_KEY) {
+      try {
+        const wallet = new ethers.Wallet(process.env.PRIVATE_KEY);
+        this.currentWallet = wallet.address;
+      } catch (error) {
+        console.error('Failed to derive wallet from private key:', error);
+        this.currentWallet = this.oldWallet;
+      }
+    } else {
+      this.currentWallet = this.oldWallet;
+    }
   }
 
   async analyzeJune15Transactions(): Promise<{
@@ -18,27 +32,37 @@ export class ETHRecoveryService {
     strategy: string;
   }> {
     try {
-      // Get transaction history around June 15, 2025 (blocks 22700000-22750000)
-      const txResponse = await fetch(
-        `https://api.etherscan.io/api?module=account&action=txlist&address=${this.userWallet}&startblock=22700000&endblock=22750000&page=1&offset=100&sort=desc&apikey=${process.env.ETHERSCAN_API_KEY}`
-      );
-      const txData = await txResponse.json();
-      const transactions = txData.status === '1' ? txData.result : [];
+      // Get transaction history for both wallets around June 15, 2025 (blocks 22700000-22750000)
+      const [currentTxResponse, oldTxResponse] = await Promise.all([
+        fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${this.currentWallet}&startblock=22700000&endblock=22750000&page=1&offset=100&sort=desc&apikey=${process.env.ETHERSCAN_API_KEY}`),
+        fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${this.oldWallet}&startblock=22700000&endblock=22750000&page=1&offset=100&sort=desc&apikey=${process.env.ETHERSCAN_API_KEY}`)
+      ]);
+      const [currentTxData, oldTxData] = await Promise.all([
+        currentTxResponse.json(),
+        oldTxResponse.json()
+      ]);
+      
+      const currentTransactions = currentTxData.status === '1' ? currentTxData.result : [];
+      const oldTransactions = oldTxData.status === '1' ? oldTxData.result : [];
+      const allTransactions = [...currentTransactions, ...oldTransactions];
 
       // Filter for large ETH transfers (potential 37 ETH)
-      const largeTransfers = transactions.filter((tx: any) => {
+      const largeTransfers = allTransactions.filter((tx: any) => {
         const valueETH = parseFloat(tx.value) / 1e18;
         return valueETH > 10; // Looking for transfers > 10 ETH
       });
 
-      // Look for contract creation transactions
-      const contractCreations = transactions.filter((tx: any) => 
+      // Look for contract creation transactions from both wallets
+      const contractCreations = allTransactions.filter((tx: any) => 
         tx.to === "" || tx.to === null
       );
 
-      // Calculate total ETH sent out
-      const totalETHOut = transactions
-        .filter((tx: any) => tx.from.toLowerCase() === this.userWallet.toLowerCase())
+      // Calculate total ETH sent out from both wallets
+      const totalETHOut = allTransactions
+        .filter((tx: any) => 
+          tx.from.toLowerCase() === this.currentWallet.toLowerCase() ||
+          tx.from.toLowerCase() === this.oldWallet.toLowerCase()
+        )
         .reduce((sum: number, tx: any) => sum + parseFloat(tx.value) / 1e18, 0);
 
       // Check suspect contract balance and history
@@ -50,8 +74,12 @@ export class ETHRecoveryService {
         contractCreations,
         ethTransfers: largeTransfers,
         totalETHOut,
+        currentWallet: this.currentWallet,
+        oldWallet: this.oldWallet,
+        contractBalance: contractBalanceETH,
         recoveryPossible: contractBalanceETH > 0 || largeTransfers.length > 0,
-        strategy: this.determineRecoveryStrategy(contractBalanceETH, largeTransfers)
+        strategy: this.determineRecoveryStrategy(contractBalanceETH, largeTransfers),
+        hasPrivateKey: !!process.env.PRIVATE_KEY
       };
     } catch (error) {
       console.error('June 15 analysis failed:', error);
@@ -60,8 +88,12 @@ export class ETHRecoveryService {
         contractCreations: [],
         ethTransfers: [],
         totalETHOut: 0,
+        currentWallet: this.currentWallet,
+        oldWallet: this.oldWallet,
+        contractBalance: 0,
         recoveryPossible: false,
-        strategy: "Analysis failed - manual investigation required"
+        strategy: "Analysis failed - manual investigation required",
+        hasPrivateKey: !!process.env.PRIVATE_KEY
       };
     }
   }
@@ -113,7 +145,7 @@ contract ETHRecoveryV2 {
     return {
       contractCode: recoveryCode,
       deploymentInstructions: `
-1. Deploy this contract from your wallet (0x058C8FE01E5c9eaC6ee19e6673673B549B368843)
+1. Deploy this contract from your current wallet (${this.currentWallet})
 2. Use callContract() to interact with proxy at ${this.suspectContract}
 3. Try calling admin(), implementation(), or direct withdrawal functions
 4. Use emergencyWithdraw() to recover any ETH sent to this contract
