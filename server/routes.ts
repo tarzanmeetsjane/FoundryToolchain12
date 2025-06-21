@@ -9,6 +9,8 @@ import { ethgrLiveData } from './ethgr-live-data';
 import { proxyInvestigation } from './proxy-investigation';
 import { ethRecovery } from './eth-recovery-service';
 import { walletService } from './wallet-service';
+import { transactionAnalyzer } from './transaction-analyzer';
+import { ethgrTransactionAnalyzer } from './ethgr-transaction-analyzer';
 import { WebSocketServer } from 'ws';
 
 export function registerRoutes(app: Express): Server {
@@ -224,6 +226,66 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({
         success: false,
         error: 'Failed to execute recovery',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Analyze Transaction Data
+  app.post("/api/analyze/transaction", async (req, res) => {
+    try {
+      const analysis = await transactionAnalyzer.analyzeTransactionData(req.body);
+      res.json({ success: true, data: analysis });
+    } catch (error) {
+      console.error('Transaction analysis error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to analyze transaction',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Get Pool Details
+  app.get("/api/pool/details/:address", async (req, res) => {
+    try {
+      const details = await transactionAnalyzer.getPoolDetails(req.params.address);
+      res.json({ success: true, data: details });
+    } catch (error) {
+      console.error('Pool details error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to get pool details',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // ETHGR Transaction Analysis
+  app.get("/api/ethgr/transaction-analysis", async (req, res) => {
+    try {
+      const analysis = await ethgrTransactionAnalyzer.analyzeETHGRTransaction();
+      res.json({ success: true, data: analysis });
+    } catch (error) {
+      console.error('ETHGR transaction analysis error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to analyze ETHGR transaction',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // ETHGR Contract Details
+  app.get("/api/ethgr/contract-details", async (req, res) => {
+    try {
+      const details = await ethgrTransactionAnalyzer.getContractDetails();
+      res.json({ success: true, data: details });
+    } catch (error) {
+      console.error('ETHGR contract details error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to get ETHGR contract details',
         message: error instanceof Error ? error.message : 'Unknown error'
       });
     }

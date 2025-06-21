@@ -9,6 +9,7 @@ export class WalletService {
     
     // Try different stored private keys
     const privateKeys = [
+      process.env.RECOVERY_WALLET_PRIVATE_KEY,
       process.env.QUANTUM_TRADER_KEYPRIVATE_KEY,
       process.env.PRIVATE_KEY,
       process.env.RECOVERY_PRIVATE_KEY,
@@ -36,6 +37,7 @@ export class WalletService {
     availableKeys: string[];
   } {
     const availableKeys = [
+      process.env.RECOVERY_WALLET_PRIVATE_KEY ? "RECOVERY_WALLET_PRIVATE_KEY" : null,
       process.env.QUANTUM_TRADER_KEYPRIVATE_KEY ? "QUANTUM_TRADER_KEYPRIVATE_KEY" : null,
       process.env.PRIVATE_KEY ? "PRIVATE_KEY" : null,
       process.env.RECOVERY_PRIVATE_KEY ? "RECOVERY_PRIVATE_KEY" : null,

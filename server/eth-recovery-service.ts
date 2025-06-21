@@ -11,6 +11,7 @@ export class ETHRecoveryService {
     
     // Try different stored private keys
     const privateKeys = [
+      process.env.RECOVERY_WALLET_PRIVATE_KEY,
       process.env.QUANTUM_TRADER_KEYPRIVATE_KEY,
       process.env.PRIVATE_KEY,
       process.env.RECOVERY_PRIVATE_KEY,
