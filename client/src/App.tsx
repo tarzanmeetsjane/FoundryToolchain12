@@ -111,10 +111,10 @@ import InstantMonetization from "@/pages/instant-monetization";
 import TokenTransferTool from "@/pages/token-transfer-tool";
 import LiveTransactionAnalyzer from "@/pages/live-transaction-analyzer";
 import RemixIntegration from "@/pages/remix-integration";
-import SalesExecution from "@/pages/sales-execution";
 import MegaPortfolioDashboard from "@/pages/mega-portfolio-dashboard";
 import MillionDollarStrategy from "@/pages/million-dollar-strategy";
 import RemixRecoveryToolkit from "@/pages/remix-recovery-toolkit";
+import WalletAnalyzer from "@/pages/wallet-analyzer";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -236,6 +236,7 @@ function Router() {
         <Route path="/mega-portfolio-dashboard" component={MegaPortfolioDashboard} />
         <Route path="/million-dollar-strategy" component={MillionDollarStrategy} />
         <Route path="/remix-recovery-toolkit" component={RemixRecoveryToolkit} />
+        <Route path="/wallet-analyzer" component={WalletAnalyzer} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />

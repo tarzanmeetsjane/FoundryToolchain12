@@ -5,6 +5,7 @@ export class ETHRecoveryService {
   private currentWallet: string;
   private oldWallet = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843"; // Blacklisted address
   private remixWallet = "0xc46eB37677360EfDc011F4097621F15b792fa630"; // User saw 37 ETH here in Remix
+  private newWallet = "0x8b99Bb520235F502158bA026A7CfEB59a69E6c18"; // New wallet provided by user
   private suspectContract = "0xd816c710dc011db6d357e2b1210eafc60177338f";
   
   constructor() {
