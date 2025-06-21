@@ -301,18 +301,17 @@ remix.call('udapp', 'getInstanceList')
           <div className="mt-6 flex gap-4">
             <Button 
               className="flex-1"
+              onClick={() => window.open('/remix-eth-recovery', '_blank')}
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Execute Recovery Commands
+            </Button>
+            <Button 
+              variant="outline"
               onClick={() => window.open(`https://etherscan.io/address/0xc46eB37677360EfDc011F4097621F15b792fa630`, '_blank')}
             >
               <ExternalLink className="h-4 w-4 mr-2" />
               Check Remix Wallet
-            </Button>
-            <Button 
-              variant="outline" 
-              className="flex-1"
-              onClick={() => window.open('/million-dollar-strategy', '_blank')}
-            >
-              <Zap className="h-4 w-4 mr-2" />
-              Continue Strategy
             </Button>
           </div>
 

@@ -1,329 +1,338 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import { 
-  Wallet,
-  RefreshCw,
-  AlertTriangle,
-  ExternalLink,
   Search,
-  TrendingUp,
+  ExternalLink,
+  Copy,
+  Target,
   Zap,
-  DollarSign
+  CheckCircle,
+  AlertTriangle,
+  Clock,
+  Wallet,
+  Code,
+  History
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 export default function RemixETHRecovery() {
-  const ETHGR_CONTRACT = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
-  const PRIMARY_WALLET = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
+  const [remixConnected, setRemixConnected] = useState(false);
+  const [executedCommands, setExecutedCommands] = useState<string[]>([]);
+  const { toast } = useToast();
 
-  const { data: contractBalance, isLoading: contractLoading, refetch: refetchContract } = useQuery({
-    queryKey: ['/api/wallet/security', ETHGR_CONTRACT],
-    queryFn: async () => {
-      const response = await fetch(`/api/wallet/security/${ETHGR_CONTRACT}`);
-      if (!response.ok) throw new Error('Failed to fetch contract data');
-      return response.json();
-    }
-  });
+  useEffect(() => {
+    checkRemixConnection();
+  }, []);
 
-  const { data: walletBalance, isLoading: walletLoading, refetch: refetchWallet } = useQuery({
-    queryKey: ['/api/wallet/security', PRIMARY_WALLET],
-    queryFn: async () => {
-      const response = await fetch(`/api/wallet/security/${PRIMARY_WALLET}`);
-      if (!response.ok) throw new Error('Failed to fetch wallet data');
-      return response.json();
-    }
-  });
-
-  const getETHBalance = (data: any) => {
-    if (!data?.balances) return 0;
-    const ethBalance = data.balances.find((b: any) => 
-      b.token_address === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-    );
-    return ethBalance ? parseFloat(ethBalance.balance) / 1e18 : 0;
+  const checkRemixConnection = () => {
+    const currentUrl = window.location.href;
+    const hasRemixTab = document.referrer.includes('remix.ethereum.org');
+    setRemixConnected(hasRemixTab || currentUrl.includes('remix'));
   };
 
-  const contractETH = getETHBalance(contractBalance);
-  const walletETH = getETHBalance(walletBalance);
-  const totalETH = contractETH + walletETH;
-
-  const isRecoveryFound = contractETH > 30; // If contract has 30+ ETH, we found it!
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert("Copied to clipboard!");
+  const copyCommand = (command: string, label: string) => {
+    navigator.clipboard.writeText(command);
+    setExecutedCommands([...executedCommands, label]);
+    toast({
+      title: "Copied to Clipboard",
+      description: `${label} - paste into Remix IDE terminal`
+    });
   };
+
+  const recoveryCommands = [
+    {
+      title: "Check Deployment History",
+      description: "Find your recent contract deployments",
+      command: `// Get deployment instances and transaction history
+remix.call('udapp', 'getInstanceList').then(console.log)
+remix.call('udapp', 'getTransactionHistory').then(console.log)
+remix.call('fileManager', 'getCurrentWorkspace').then(console.log)`,
+      critical: true
+    },
+    {
+      title: "Check Key Wallet Balances", 
+      description: "Verify ETH in your recovery target wallets",
+      command: `// Check wallet balances for 37 ETH
+web3.eth.getBalance('0xc46eB37677360EfDc011F4097621F15b792fa630').then(bal => console.log('Remix Wallet:', web3.utils.fromWei(bal, 'ether'), 'ETH'))
+web3.eth.getBalance('0x8b99Bb520235F502158bA026A7CfEB59a69E6c18').then(bal => console.log('New Wallet:', web3.utils.fromWei(bal, 'ether'), 'ETH'))
+web3.eth.getBalance('0xd816c710dc011db6d357e2b1210eafc60177338f').then(bal => console.log('Proxy Contract:', web3.utils.fromWei(bal, 'ether'), 'ETH'))`,
+      critical: true
+    },
+    {
+      title: "Investigate Proxy Contract Functions",
+      description: "Check if proxy contract has recoverable ETH",
+      command: `// Investigate proxy contract at 0xd816c710dc011db6d357e2b1210eafc60177338f
+const proxyAddr = '0xd816c710dc011db6d357e2b1210eafc60177338f'
+web3.eth.getCode(proxyAddr).then(code => {
+  console.log('Contract Code Length:', code.length)
+  console.log('Has Code:', code !== '0x')
+})
+
+// Check for standard proxy functions
+const proxyABI = [
+  {"inputs":[],"name":"admin","outputs":[{"type":"address"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"implementation","outputs":[{"type":"address"}],"stateMutability":"view","type":"function"}
+]
+const proxyContract = new web3.eth.Contract(proxyABI, proxyAddr)
+proxyContract.methods.admin().call().then(admin => console.log('Proxy Admin:', admin)).catch(e => console.log('No admin function'))
+proxyContract.methods.implementation().call().then(impl => console.log('Implementation:', impl)).catch(e => console.log('No implementation function'))`,
+      critical: true
+    },
+    {
+      title: "Search Transaction History",
+      description: "Look for large ETH movements in your transactions",
+      command: `// Search for large ETH transfers in transaction history
+const targetWallets = [
+  '0xc46eB37677360EfDc011F4097621F15b792fa630',
+  '0x8b99Bb520235F502158bA026A7CfEB59a69E6c18',
+  '0x058C8FE01E5c9eaC6ee19e6673673B549B368843'
+]
+
+targetWallets.forEach(wallet => {
+  web3.eth.getTransactionCount(wallet).then(count => 
+    console.log(\`\${wallet}: \${count} transactions\`)
+  )
+})`,
+      critical: false
+    },
+    {
+      title: "Check Browser Local Storage",
+      description: "Access Remix stored deployment data",
+      command: `// Check browser storage for deployment records
+Object.keys(localStorage).filter(key => 
+  key.includes('remix') || key.includes('deploy') || key.includes('instance')
+).forEach(key => {
+  console.log(\`\${key}:\`, localStorage.getItem(key))
+})
+
+// Check for wallet connections
+Object.keys(localStorage).filter(key => 
+  key.includes('wallet') || key.includes('account')
+).forEach(key => {
+  console.log(\`Wallet Storage \${key}:\`, localStorage.getItem(key))
+})`,
+      critical: false
+    }
+  ];
+
+  const quickRecoverySteps = [
+    "Open Remix IDE in a new tab (https://remix.ethereum.org/)",
+    "Open the terminal panel (bottom of screen)",
+    "Copy and paste each command below one by one",
+    "Look for any wallet showing 30+ ETH balance",
+    "Check proxy contract admin functions for recovery access",
+    "Document any large ETH amounts found"
+  ];
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="text-center space-y-4">
-        <div className="text-6xl">🔧</div>
-        <h1 className="text-4xl font-bold">REMIX ETH RECOVERY</h1>
-        <p className="text-xl text-muted-foreground">
-          Checking if your 37 ETH is locked in the ETHGR recovery contract
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">37 ETH Recovery Mission</h1>
+          <p className="text-muted-foreground">
+            Execute recovery commands in Remix IDE to locate your 37 ETH
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => window.open('https://remix.ethereum.org/', '_blank')}
+            variant="default"
+          >
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Open Remix IDE
+          </Button>
+        </div>
       </div>
 
-      <Alert className="border-blue-500 bg-blue-50">
-        <AlertTriangle className="h-4 w-4" />
+      <Alert className="border-red-500 bg-red-50">
+        <Target className="h-4 w-4" />
         <AlertDescription>
-          <strong>REMIX CLUE:</strong> You last saw the 37 ETH on Remix before the ETHGR token change. 
-          The ETH might be locked in the recovery contract itself, waiting to be withdrawn.
+          <strong>MISSION CRITICAL:</strong> You saw 37 ETH ($89,614) in Remix IDE bottom left after deployment. 
+          This recovery interface provides exact commands to locate and access those funds.
         </AlertDescription>
       </Alert>
 
-      {isRecoveryFound && (
-        <Alert className="border-green-500 bg-green-50">
-          <Zap className="h-4 w-4" />
-          <AlertDescription>
-            <strong>🎉 RECOVERY ETH FOUND!</strong> The ETHGR contract contains {contractETH.toFixed(6)} ETH! 
-            This is likely your missing recovery funds.
-          </AlertDescription>
-        </Alert>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-purple-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5" />
-              ETHGR Recovery Contract
-            </CardTitle>
-            <CardDescription>
-              Checking if the 37 ETH is locked in your recovery contract
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {contractLoading ? (
-              <div className="text-center py-8">
-                <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-                <div>Checking contract balance...</div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-3xl font-bold text-purple-600">{contractETH.toFixed(6)}</div>
-                  <div className="text-sm text-muted-foreground">ETH in Contract</div>
-                  <div className="text-xs text-muted-foreground">${(contractETH * 2500).toFixed(2)} USD</div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="text-sm font-bold">Contract Address:</div>
-                  <div className="font-mono text-xs bg-white p-2 rounded border break-all">
-                    {ETHGR_CONTRACT}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Code className="h-5 w-5" />
+                Recovery Command Sequence
+              </CardTitle>
+              <CardDescription>
+                Execute these commands in Remix IDE terminal to find your ETH
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {recoveryCommands.map((cmd, index) => (
+                <div key={index} className={`p-4 border rounded-lg ${cmd.critical ? 'border-red-200 bg-red-50' : 'border-gray-200'}`}>
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={cmd.critical ? "destructive" : "outline"}>
+                          Step {index + 1}
+                        </Badge>
+                        <h4 className="font-semibold">{cmd.title}</h4>
+                        {executedCommands.includes(cmd.title) && (
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">{cmd.description}</p>
+                    </div>
                   </div>
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    onClick={() => copyToClipboard(ETHGR_CONTRACT)}
-                  >
-                    Copy Contract Address
-                  </Button>
-                </div>
-
-                <div className="text-center space-y-2">
-                  <Button
-                    className="bg-purple-600 hover:bg-purple-700"
-                    onClick={() => window.open(`https://etherscan.io/address/${ETHGR_CONTRACT}`, '_blank')}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    View on Etherscan
-                  </Button>
                   
-                  <Button
-                    variant="outline"
-                    onClick={() => window.open(`https://remix.ethereum.org`, '_blank')}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Open Remix IDE
-                  </Button>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="border-blue-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Wallet className="h-5 w-5" />
-              Primary Wallet
-            </CardTitle>
-            <CardDescription>
-              Your main execution wallet balance
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {walletLoading ? (
-              <div className="text-center py-8">
-                <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-                <div>Checking wallet balance...</div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-3xl font-bold text-blue-600">{walletETH.toFixed(6)}</div>
-                  <div className="text-sm text-muted-foreground">ETH in Wallet</div>
-                  <div className="text-xs text-muted-foreground">${(walletETH * 2500).toFixed(2)} USD</div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="text-sm font-bold">Wallet Address:</div>
-                  <div className="font-mono text-xs bg-white p-2 rounded border break-all">
-                    {PRIMARY_WALLET}
-                  </div>
+                  <Textarea 
+                    value={cmd.command}
+                    readOnly
+                    className="h-32 text-xs font-mono mb-3"
+                  />
+                  
                   <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    onClick={() => copyToClipboard(PRIMARY_WALLET)}
+                    size="sm"
+                    onClick={() => copyCommand(cmd.command, cmd.title)}
+                    variant={cmd.critical ? "destructive" : "outline"}
+                    className="w-full"
                   >
-                    Copy Wallet Address
+                    <Copy className="h-3 w-3 mr-2" />
+                    Copy & Execute in Remix
                   </Button>
                 </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
 
-                <div className="text-center">
-                  <Button
-                    className="bg-blue-600 hover:bg-blue-700"
-                    onClick={() => window.open(`https://etherscan.io/address/${PRIMARY_WALLET}`, '_blank')}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    View on Etherscan
-                  </Button>
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <History className="h-5 w-5" />
+                Quick Recovery Steps
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {quickRecoverySteps.map((step, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <Badge variant="outline" className="mt-0.5">
+                      {index + 1}
+                    </Badge>
+                    <span className="text-sm">{step}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Wallet className="h-5 w-5" />
+                Target Wallets
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 text-xs">
+                <div className="p-2 bg-yellow-50 rounded">
+                  <div className="font-semibold">Remix Deployment Wallet</div>
+                  <div className="font-mono break-all">0xc46eB37677360EfDc011F4097621F15b792fa630</div>
+                  <div className="text-muted-foreground">Where you saw 37 ETH</div>
+                </div>
+                <div className="p-2 bg-blue-50 rounded">
+                  <div className="font-semibold">New Discovery Wallet</div>
+                  <div className="font-mono break-all">0x8b99Bb520235F502158bA026A7CfEB59a69E6c18</div>
+                  <div className="text-muted-foreground">Recently provided</div>
+                </div>
+                <div className="p-2 bg-red-50 rounded">
+                  <div className="font-semibold">Proxy Contract</div>
+                  <div className="font-mono break-all">0xd816c710dc011db6d357e2b1210eafc60177338f</div>
+                  <div className="text-muted-foreground">Potential ETH trap</div>
                 </div>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5" />
+                What to Look For
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>Wallet balance showing 30+ ETH</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  <span>Proxy admin functions you control</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span>Contract with recoverable ETH</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <span>Large ETH transfer transactions</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
-      <Card className="border-gray-500">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
-            Recovery Summary
+            <Zap className="h-5 w-5" />
+            Recovery Success Action Plan
           </CardTitle>
-          <CardDescription>
-            Total ETH found across contract and wallet
-          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">{totalETH.toFixed(6)}</div>
-              <div className="text-sm text-muted-foreground">Total ETH Found</div>
-              <div className="text-xs text-muted-foreground">${(totalETH * 2500).toFixed(2)} USD</div>
+            <div className="p-4 bg-green-50 rounded">
+              <div className="font-semibold text-green-700">If ETH Found in Wallet</div>
+              <div className="text-sm mt-2">
+                • Immediately transfer to secure wallet
+                • Document transaction hash
+                • Update portfolio value to $1.503M
+              </div>
             </div>
-            
-            <div className="text-center p-4 bg-red-50 rounded-lg">
-              <div className="text-2xl font-bold text-red-600">{(37 - totalETH).toFixed(6)}</div>
-              <div className="text-sm text-muted-foreground">Still Missing</div>
-              <div className="text-xs text-muted-foreground">${((37 - totalETH) * 2500).toFixed(2)} USD</div>
+            <div className="p-4 bg-yellow-50 rounded">
+              <div className="font-semibold text-yellow-700">If ETH in Proxy Contract</div>
+              <div className="text-sm mt-2">
+                • Check admin functions access
+                • Execute withdrawal if possible
+                • May need proxy upgrade process
+              </div>
             </div>
-            
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-              <div className="text-2xl font-bold text-purple-600">1,990,000</div>
-              <div className="text-sm text-muted-foreground">ETHGR Tokens</div>
-              <div className="text-xs text-muted-foreground">Ready for pool</div>
+            <div className="p-4 bg-blue-50 rounded">
+              <div className="font-semibold text-blue-700">Continue Investigation</div>
+              <div className="text-sm mt-2">
+                • Trace transaction history
+                • Check implementation contracts
+                • Analyze deployment patterns
+              </div>
             </div>
           </div>
-
-          <div className="flex items-center justify-center">
-            <Button
-              variant="outline"
-              onClick={() => {
-                refetchContract();
-                refetchWallet();
-              }}
-              disabled={contractLoading || walletLoading}
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${(contractLoading || walletLoading) ? 'animate-spin' : ''}`} />
-              Refresh All Balances
+          
+          <div className="mt-6 flex gap-4">
+            <Button onClick={() => window.open('/million-dollar-strategy', '_blank')}>
+              Return to Strategy
+            </Button>
+            <Button variant="outline" onClick={() => window.open('/wallet-analyzer', '_blank')}>
+              Wallet Tools
             </Button>
           </div>
         </CardContent>
       </Card>
-
-      {isRecoveryFound ? (
-        <Card className="border-green-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-600">
-              <DollarSign className="h-5 w-5" />
-              ETH Recovery Success!
-            </CardTitle>
-            <CardDescription>
-              Found {contractETH.toFixed(6)} ETH in the recovery contract
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Alert className="border-green-500 bg-green-50">
-              <AlertDescription>
-                <strong>SUCCESS!</strong> The recovery contract contains {contractETH.toFixed(6)} ETH worth ${(contractETH * 2500).toFixed(2)}. 
-                This can fund your ETHGR liquidity pool!
-              </AlertDescription>
-            </Alert>
-
-            <div className="text-center space-y-4">
-              <div className="text-lg font-bold">Next Steps:</div>
-              <div className="space-y-2 text-sm">
-                <div>1. Withdraw ETH from recovery contract</div>
-                <div>2. Create ETHGR/ETH pair with recovered funds</div>
-                <div>3. Add liquidity using {contractETH.toFixed(2)} ETH + ETHGR tokens</div>
-              </div>
-              
-              <Button
-                size="lg"
-                className="bg-green-600 hover:bg-green-700"
-                onClick={() => window.open(`https://remix.ethereum.org`, '_blank')}
-              >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                Open Remix to Withdraw ETH
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="border-orange-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-orange-600">
-              <Search className="h-5 w-5" />
-              Continue Investigation
-            </CardTitle>
-            <CardDescription>
-              The 37 ETH wasn't found in these locations
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Alert className="border-orange-500 bg-orange-50">
-              <AlertDescription>
-                <strong>Keep Searching:</strong> Contract has {contractETH.toFixed(6)} ETH, wallet has {walletETH.toFixed(6)} ETH. 
-                The 37 ETH might be in another location or transaction.
-              </AlertDescription>
-            </Alert>
-
-            <div className="text-center space-y-4">
-              <div className="text-lg font-bold">Investigation Options:</div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => window.open(`https://etherscan.io/address/${ETHGR_CONTRACT}#internaltx`, '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Check Internal Transactions
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  onClick={() => window.open(`https://etherscan.io/address/${PRIMARY_WALLET}#internaltx`, '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Check Wallet Transactions
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }
