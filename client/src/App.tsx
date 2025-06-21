@@ -161,6 +161,7 @@ import WalletBalanceChecker from "@/pages/wallet-balance-checker";
 import MetaMaskTokenImport from "@/pages/metamask-token-import";
 import WalletVerificationCenter from "@/pages/wallet-verification-center";
 import SimpleTokenImport from "@/pages/simple-token-import";
+import DelegationAnalysis from "@/pages/delegation-analysis";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -328,6 +329,7 @@ function Router() {
         <Route path="/metamask-token-import" component={MetaMaskTokenImport} />
         <Route path="/wallet-verification-center" component={WalletVerificationCenter} />
         <Route path="/simple-token-import" component={SimpleTokenImport} />
+        <Route path="/delegation-analysis" component={DelegationAnalysis} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
