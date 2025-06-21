@@ -1,0 +1,88 @@
+The error occurs because you are trying to declare a contract with the same name (ETHGRecovery) twice in your code.
+
+In Solidity, when you define a new contract using contract ContractName is ..., this creates a new scope for that contract's variables and functions. However, if you try to use the same name again later on (even within different contracts), it will cause an error because the compiler thinks you're trying to declare something with the same name in two separate places.
+
+In your case, there are two blocks of code where a new ETHGRecovery contract is declared. This causes the "Identifier already declared" error.
+
+To fix this issue:
+
+Remove one instance of the duplicate declaration.
+If you want to have both contracts with different purposes (as mentioned in your comment), consider renaming them or making sure they're defined within separate files and imported accordingly.
+Here's a simplified example showing how to remove duplicates:
+
+// SPDX-License-Identifier: MIT AND GPL-3.0-or-later
+
+pragma solidity ^0.8.30;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ETHGRecovery is ERC20, Ownable {
+    // ... rest of your code
+}
+
+// You can remove the second declaration here
+
+/**
+ * @title ETHG Recovery Token (ETHGR)
+ */
+
+By removing one instance and keeping only what's necessary for each contract or function within a single file, you should be able to resolve this error.
+
+Explain the error
+
+The error "DeclarationError: Identifier already declared" occurs because there are two contracts with the same name ETHGRecovery in the code.
+
+In Solidity, a contract can only be defined once per file. However, you have defined two separate contracts named ETHGRecovery, which is causing this conflict.
+
+To fix this issue:
+
+Remove or rename one of the contract ETHGRecovery definitions.
+If both contracts are meant to serve different purposes, consider merging them into a single contract with distinct functions and variables for each functionality.
+Here's an example of how you can merge these two contracts into one:
+
+pragma solidity ^0.8.30;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ETHGRecovery is ERC20, Ownable {
+    // ... rest of your code
+
+    mapping(address => bool) public hasMigrated;
+    bool public migrationEnabled = true;
+
+    event TokensMigrated(address indexed holder, uint256 amount);
+
+    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {}
+
+    function migrateMyTrappedETHG() external {
+        // ... rest of your code
+    }
+
+    function transfer(address to, uint256 amount) public virtual override returns (bool) {
+        // ... rest of your code
+    }
+}
+
+Make sure that you don't have any duplicate variables or functions between the two contracts. If there are shared functionalities between them, consider creating a separate library contract for those and importing it into both ETHGRecovery instances.
+
+Note: You should also review the logic within these contracts to ensure they work as intended after merging.
+
+Explain the error
+
+The code you provided contains two identical contracts named ETHGRecovery. This is causing a duplicate declaration of contract names which leads to a "DeclarationError: Identifier already declared" in Solidity.
+
+To resolve this issue, remove one of the duplicated contracts and keep only one instance. The corrected code should look like:
+
+// SPDX-License-Identifier: MIT AND GPL-3.0-or-later
+
+pragma solidity ^0.8.30;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract ETHGRecovery is ERC20, Ownable {
+    // ... rest of your code
+}
+
+Note that the second instance was removed and only one contract remains. This should resolve the "DeclarationError" issue in Solidity.

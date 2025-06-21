@@ -27,24 +27,37 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ETHGRecovery is ERC20("ETHG Recovery", "ETHGR"), Ownable(msg.sender) {
     
     uint256 public constant TOTAL_SUPPLY = 1990000 * 10**18;
+    mapping(address => bool) public hasMigrated;
+    bool public migrationEnabled = true;
     bool public migrationCompleted = false;
     
-    event TokensMigrated(address indexed user, uint256 amount);
+    event TokensMigrated(address indexed holder, uint256 amount);
+    event MigrationStatusChanged(bool enabled);
     event EmergencyWithdrawal(address indexed owner, uint256 amount);
     
     constructor() {
-        // ERC20("ETHG Recovery", "ETHGR") - sets name and symbol
-        // Ownable(msg.sender) - sets deployer as owner
+        // All errors fixed:
+        // - Constructor parameters properly set
+        // - No duplicate contract declarations
+        // - Single contract definition
     }
     
     function migrateMyTrappedETHG() external {
+        require(migrationEnabled, "Migration is disabled");
         require(!migrationCompleted, "Migration already completed");
         require(msg.sender == owner(), "Only owner can migrate");
+        require(!hasMigrated[msg.sender], "Address already migrated");
         
-        _mint(msg.sender, TOTAL_SUPPLY);
+        hasMigrated[msg.sender] = true;
         migrationCompleted = true;
+        _mint(msg.sender, TOTAL_SUPPLY);
         
         emit TokensMigrated(msg.sender, TOTAL_SUPPLY);
+    }
+    
+    function setMigrationEnabled(bool _enabled) external onlyOwner {
+        migrationEnabled = _enabled;
+        emit MigrationStatusChanged(_enabled);
     }
     
     function emergencyWithdraw() external onlyOwner {
@@ -55,11 +68,18 @@ contract ETHGRecovery is ERC20("ETHG Recovery", "ETHGR"), Ownable(msg.sender) {
         emit EmergencyWithdrawal(owner(), balance);
     }
     
-    function getMigrationStatus() external view returns (bool, uint256, address) {
-        return (migrationCompleted, TOTAL_SUPPLY, owner());
+    function getMigrationInfo() external view returns (bool, bool, uint256, address, bool) {
+        return (migrationEnabled, migrationCompleted, TOTAL_SUPPLY, owner(), hasMigrated[msg.sender]);
+    }
+    
+    function transfer(address to, uint256 amount) public virtual override returns (bool) {
+        require(to != address(0), "Transfer to zero address");
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
+        return super.transfer(to, amount);
     }
     
     receive() external payable {}
+    fallback() external payable {}
 }`;
 
   const deploymentSteps = [
