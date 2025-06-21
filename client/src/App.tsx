@@ -107,6 +107,8 @@ import ETHRecoveryAnalyzer from "@/pages/eth-recovery-analyzer";
 import WalletRecoveryDashboard from "@/pages/wallet-recovery-dashboard";
 import TransactionAnalysis from "@/pages/transaction-analysis";
 import ETHGRSuccessDashboard from "@/pages/ethgr-success-dashboard";
+import InstantMonetization from "@/pages/instant-monetization";
+import TokenTransferTool from "@/pages/token-transfer-tool";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
@@ -220,6 +222,8 @@ function Router() {
         <Route path="/wallet-recovery-dashboard" component={WalletRecoveryDashboard} />
         <Route path="/transaction-analysis" component={TransactionAnalysis} />
         <Route path="/ethgr-success-dashboard" component={ETHGRSuccessDashboard} />
+        <Route path="/instant-monetization" component={InstantMonetization} />
+        <Route path="/token-transfer-tool" component={TokenTransferTool} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
