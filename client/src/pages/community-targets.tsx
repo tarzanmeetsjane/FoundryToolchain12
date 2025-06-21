@@ -102,7 +102,9 @@ export default function CommunityTargets() {
 🔍 VERIFICATION LINKS
 • Contract: https://etherscan.io/address/0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
 • Minting TX: https://etherscan.io/tx/0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169
+• CSV Export: Official Etherscan transaction record available
 • Honeypot Check: https://honeypot.is (0% tax confirmed)
+• Block Confirmation: 22714790 (34,000+ confirmations)
 
 ⚡ WHY THIS PRICE?
 • Support legitimate recovery effort
