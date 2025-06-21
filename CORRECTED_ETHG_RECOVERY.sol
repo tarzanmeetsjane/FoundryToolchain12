@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev Fixed constructor for OpenZeppelin v5.x compatibility
  * @author Deployed by: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
  */
-contract ETHGRecovery is ERC20, Ownable {
+contract ETHGRecovery is ERC20("ETHGR", "ETHGR"), Ownable(msg.sender) {
     
     // Migration tracking
     mapping(address => bool) public hasMigrated;

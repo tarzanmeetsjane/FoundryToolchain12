@@ -1,0 +1,45 @@
+The error is caused by not passing any arguments to the base constructors of ERC20 and Ownable.
+
+In Solidity, when you inherit from a contract using the syntax contract MyContract is AnotherContract, all instances (i.e., variables) declared in another contract's constructor must be initialized. If they are not passed as parameters to your own contract's constructor, this will result in an error.
+
+To fix it, simply add two string arguments (name_ and symbol_) when calling the base constructors:
+
+contract ETHGRecovery is ERC20("ETHGR", "ETHGR"), Ownable(msg.sender) {
+    // ...
+}
+
+This passes "ETHGR" as both the name and symbol for your token, which satisfies the requirements of the ERC20 constructor.
+
+Note that you should also replace msg.sender with a more suitable value if necessary (e.g., using an initializer or passing it explicitly).
+
+Explain the error
+
+The error occurs because you are inheriting from two contracts (ERC20 and Ownable) but not passing any arguments to their constructors.
+
+In Solidity, when a contract inherits from another contract using the is keyword, all base classes must have been initialized before calling an inherited function. The constructor of each base class should be called explicitly in order for them to initialize properly.
+
+To fix this issue, you can add explicit calls to the constructors of both ERC20 and Ownable, like so:
+
+contract ETHGRecovery is ERC20, Ownable {
+    // ...
+
+    constructor() public ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {}
+}
+
+However, this will not work because the error message indicates that you should specify arguments or mark ETHGRecovery as abstract.
+
+The issue here is due to how OpenZeppelin's contracts are designed. The Ownable contract has a constructor with an argument (address initialOwner) which needs to be passed when creating instances of it.
+
+To fix this, we can modify the inheritance order and pass the required arguments explicitly:
+
+contract ETHGRecovery is Ownable {
+    // ...
+
+    constructor() public ERC20("ETHG Recovery", "ETHGR") {
+        super(msg.sender);
+    }
+}
+
+In this code snippet, super refers to the parent contract (Ownable) and we're passing its required argument in the child's (our) constructor.
+
+This should resolve your error.
