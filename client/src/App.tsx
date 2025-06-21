@@ -122,7 +122,8 @@ import Etherscan37ETHChecker from "@/pages/etherscan-37eth-checker";
 import ContractFixer from "@/pages/contract-fixer";
 import USDConversionDashboard from "@/pages/usd-conversion-dashboard";
 import VMEnvironmentGuide from "@/pages/vm-environment-guide";
-import WalletVerification from "@/pages/wallet-verification";
+import CriticalDiscoveryDashboard from "@/pages/critical-discovery-dashboard";
+import WalletRetracementCenter from "@/pages/wallet-retracement-center";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -251,7 +252,9 @@ function Router() {
         <Route path="/contract-fixer" component={ContractFixer} />
         <Route path="/usd-conversion-dashboard" component={USDConversionDashboard} />
         <Route path="/vm-environment-guide" component={VMEnvironmentGuide} />
-        <Route path="/wallet-verification" component={WalletVerification} />
+        <Route path="/critical-discovery-dashboard" component={CriticalDiscoveryDashboard} />
+        <Route path="/wallet-retracement-center" component={WalletRetracementCenter} />
+        <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
