@@ -201,6 +201,7 @@ import UserSpecificLPRecovery from "@/pages/user-specific-lp-recovery";
 import LiveBlockchainImport from "@/pages/live-blockchain-import";
 import LiveImportExecution from "@/pages/live-import-execution";
 import LiveTradingDashboard from "@/pages/live-trading-dashboard";
+import ExecuteTrade from "@/pages/execute-trade";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -212,7 +213,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={LiveTradingDashboard} />
+        <Route path="/" component={ExecuteTrade} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -409,6 +410,7 @@ function Router() {
         <Route path="/live-blockchain-import" component={LiveBlockchainImport} />
         <Route path="/live-import-execution" component={LiveImportExecution} />
         <Route path="/live-trading-dashboard" component={LiveTradingDashboard} />
+        <Route path="/execute-trade" component={ExecuteTrade} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />

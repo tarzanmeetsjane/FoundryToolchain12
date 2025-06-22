@@ -16,6 +16,7 @@ import {
   Globe
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 
 export default function LiveTradingDashboard() {
   const [selectedToken, setSelectedToken] = useState("");
@@ -313,9 +314,18 @@ export default function LiveTradingDashboard() {
                       <h4 className="text-yellow-400 font-bold">{trade.action}</h4>
                       <p className="text-gray-400 text-sm">via {trade.platform}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-green-400 font-bold">{trade.potential}</p>
-                      <p className="text-gray-400 text-sm">Gas: {trade.estimatedGas}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <p className="text-green-400 font-bold">{trade.potential}</p>
+                        <p className="text-gray-400 text-sm">Gas: {trade.estimatedGas}</p>
+                      </div>
+                      {index === 0 && (
+                        <Link href="/execute-trade">
+                          <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                            Execute
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
