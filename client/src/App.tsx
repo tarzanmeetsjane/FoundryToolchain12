@@ -194,6 +194,9 @@ import CurrentAssetsRealityCheck from "@/pages/current-assets-reality-check";
 import WalletBalanceChecker from "@/pages/wallet-balance-checker";
 import GasFeeSolutionCenter from "@/pages/gas-fee-solution-center";
 import TradingOpportunityAnalyzer from "@/pages/trading-opportunity-analyzer";
+import RemixMainnetBridge from "@/pages/remix-mainnet-bridge";
+import LPTokenDetective from "@/pages/lp-token-detective";
+import TokenRecoveryHub from "@/pages/token-recovery-hub";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -205,7 +208,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={TradingOpportunityAnalyzer} />
+        <Route path="/" component={TokenRecoveryHub} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -395,6 +398,9 @@ function Router() {
         <Route path="/wallet-balance-checker" component={WalletBalanceChecker} />
         <Route path="/gas-fee-solution-center" component={GasFeeSolutionCenter} />
         <Route path="/trading-opportunity-analyzer" component={TradingOpportunityAnalyzer} />
+        <Route path="/remix-mainnet-bridge" component={RemixMainnetBridge} />
+        <Route path="/lp-token-detective" component={LPTokenDetective} />
+        <Route path="/token-recovery-hub" component={TokenRecoveryHub} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
