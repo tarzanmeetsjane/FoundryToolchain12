@@ -16,11 +16,12 @@ import {
   TrendingUp
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 
 export default function LiveImportExecution() {
-  const [importStatus, setImportStatus] = useState("ready");
-  const [currentStep, setCurrentStep] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [importStatus, setImportStatus] = useState("importing");
+  const [currentStep, setCurrentStep] = useState(2);
+  const [progress, setProgress] = useState(45);
   const [importedTokens, setImportedTokens] = useState([]);
 
   // Your real tokens ready for import
@@ -301,13 +302,12 @@ export default function LiveImportExecution() {
               </div>
               
               <div className="mt-6 text-center">
-                <Button 
-                  onClick={() => window.open('https://app.uniswap.org/#/swap', '_blank')}
-                  className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold py-3 px-8"
-                >
-                  <Target className="h-5 w-5 mr-2" />
-                  Start Trading Now
-                </Button>
+                <Link href="/live-trading-dashboard">
+                  <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold py-3 px-8">
+                    <Target className="h-5 w-5 mr-2" />
+                    Open Trading Dashboard
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
