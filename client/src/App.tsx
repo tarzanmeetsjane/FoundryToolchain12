@@ -193,6 +193,7 @@ import VictimToAdvocateStrategy from "@/pages/victim-to-advocate-strategy";
 import CurrentAssetsRealityCheck from "@/pages/current-assets-reality-check";
 import WalletBalanceChecker from "@/pages/wallet-balance-checker";
 import GasFeeSolutionCenter from "@/pages/gas-fee-solution-center";
+import TradingOpportunityAnalyzer from "@/pages/trading-opportunity-analyzer";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -204,7 +205,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={GasFeeSolutionCenter} />
+        <Route path="/" component={TradingOpportunityAnalyzer} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -393,6 +394,7 @@ function Router() {
         <Route path="/current-assets-reality-check" component={CurrentAssetsRealityCheck} />
         <Route path="/wallet-balance-checker" component={WalletBalanceChecker} />
         <Route path="/gas-fee-solution-center" component={GasFeeSolutionCenter} />
+        <Route path="/trading-opportunity-analyzer" component={TradingOpportunityAnalyzer} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
