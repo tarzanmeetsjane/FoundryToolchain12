@@ -25,12 +25,20 @@ export default function TokenRecoveryHub() {
       benefit: "Unlimited gas for operations"
     },
     {
+      title: "Your Specific LP Recovery", 
+      description: "Target your exact LP tokens from uploaded Replit data",
+      route: "/user-specific-lp-recovery",
+      icon: Search,
+      priority: "Critical",
+      benefit: "Real token addresses from your projects"
+    },
+    {
       title: "LP Token Detective", 
-      description: "Find your missing liquidity pool tokens from Replit investments",
+      description: "General search for missing liquidity pool tokens",
       route: "/lp-token-detective",
       icon: Search,
       priority: "High",
-      benefit: "Recover missing yield tokens"
+      benefit: "Systematic token scanning"
     },
     {
       title: "Trading Opportunity Analyzer",
@@ -74,10 +82,10 @@ export default function TokenRecoveryHub() {
       time: "5 minutes"
     },
     {
-      action: "Hunt for LP Tokens",
-      description: "Find your missing tokens from real investments",
-      route: "/lp-token-detective", 
-      time: "15 minutes"
+      action: "Target Your Specific Tokens",
+      description: "Use your uploaded LP token data for precise recovery",
+      route: "/user-specific-lp-recovery", 
+      time: "10 minutes"
     },
     {
       action: "Calculate Full ROI",
@@ -215,10 +223,10 @@ export default function TokenRecoveryHub() {
             </Button>
           </Link>
           
-          <Link href="/lp-token-detective">
+          <Link href="/user-specific-lp-recovery">
             <Button className="w-full bg-blue-600 hover:bg-blue-700 py-8">
               <Search className="h-6 w-6 mr-2" />
-              Find LP Tokens
+              Your LP Tokens
             </Button>
           </Link>
           
