@@ -199,6 +199,7 @@ import LPTokenDetective from "@/pages/lp-token-detective";
 import TokenRecoveryHub from "@/pages/token-recovery-hub";
 import UserSpecificLPRecovery from "@/pages/user-specific-lp-recovery";
 import LiveBlockchainImport from "@/pages/live-blockchain-import";
+import LiveImportExecution from "@/pages/live-import-execution";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -210,7 +211,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={TokenRecoveryHub} />
+        <Route path="/" component={LiveImportExecution} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -405,6 +406,7 @@ function Router() {
         <Route path="/token-recovery-hub" component={TokenRecoveryHub} />
         <Route path="/user-specific-lp-recovery" component={UserSpecificLPRecovery} />
         <Route path="/live-blockchain-import" component={LiveBlockchainImport} />
+        <Route path="/live-import-execution" component={LiveImportExecution} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />

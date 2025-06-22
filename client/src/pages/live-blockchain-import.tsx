@@ -19,6 +19,7 @@ import {
   RefreshCw
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 
 export default function LiveBlockchainImport() {
   const [importProgress, setImportProgress] = useState(0);
@@ -323,14 +324,15 @@ export default function LiveBlockchainImport() {
                   </div>
                   
                   <div className="flex gap-2">
-                    <Button
-                      onClick={() => simulateImport(token.address)}
-                      disabled={!!activeImport}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      <ArrowRight className="h-4 w-4 mr-2" />
-                      Import to Live Chain
-                    </Button>
+                    <Link href="/live-import-execution">
+                      <Button
+                        disabled={!!activeImport}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        <ArrowRight className="h-4 w-4 mr-2" />
+                        Execute Import
+                      </Button>
+                    </Link>
                     
                     <Button
                       onClick={() => copyToClipboard(token.address)}
