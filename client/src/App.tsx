@@ -198,6 +198,7 @@ import RemixMainnetBridge from "@/pages/remix-mainnet-bridge";
 import LPTokenDetective from "@/pages/lp-token-detective";
 import TokenRecoveryHub from "@/pages/token-recovery-hub";
 import UserSpecificLPRecovery from "@/pages/user-specific-lp-recovery";
+import LiveBlockchainImport from "@/pages/live-blockchain-import";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -403,6 +404,7 @@ function Router() {
         <Route path="/lp-token-detective" component={LPTokenDetective} />
         <Route path="/token-recovery-hub" component={TokenRecoveryHub} />
         <Route path="/user-specific-lp-recovery" component={UserSpecificLPRecovery} />
+        <Route path="/live-blockchain-import" component={LiveBlockchainImport} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />

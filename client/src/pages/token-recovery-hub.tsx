@@ -10,7 +10,8 @@ import {
   TrendingUp,
   Code,
   Database,
-  DollarSign
+  DollarSign,
+  Network
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -23,6 +24,14 @@ export default function TokenRecoveryHub() {
       icon: Zap,
       priority: "Critical",
       benefit: "Unlimited gas for operations"
+    },
+    {
+      title: "Live Blockchain Import", 
+      description: "Import your tokens to active trading networks",
+      route: "/live-blockchain-import",
+      icon: Network,
+      priority: "Critical",
+      benefit: "Direct access to live trading"
     },
     {
       title: "Your Specific LP Recovery", 
@@ -82,10 +91,10 @@ export default function TokenRecoveryHub() {
       time: "5 minutes"
     },
     {
-      action: "Target Your Specific Tokens",
-      description: "Use your uploaded LP token data for precise recovery",
-      route: "/user-specific-lp-recovery", 
-      time: "10 minutes"
+      action: "Import to Live Blockchain",
+      description: "Connect your tokens to active trading networks",
+      route: "/live-blockchain-import", 
+      time: "5 minutes"
     },
     {
       action: "Calculate Full ROI",
@@ -223,10 +232,10 @@ export default function TokenRecoveryHub() {
             </Button>
           </Link>
           
-          <Link href="/user-specific-lp-recovery">
+          <Link href="/live-blockchain-import">
             <Button className="w-full bg-blue-600 hover:bg-blue-700 py-8">
-              <Search className="h-6 w-6 mr-2" />
-              Your LP Tokens
+              <Network className="h-6 w-6 mr-2" />
+              Import to Live Chain
             </Button>
           </Link>
           
