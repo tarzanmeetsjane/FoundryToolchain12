@@ -207,6 +207,7 @@ import LiquidityExplained from "@/pages/liquidity-explained";
 import TransactionConfirmation from "@/pages/transaction-confirmation";
 import WalletTroubleshooting from "@/pages/wallet-troubleshooting";
 import PortfolioSuccess from "@/pages/portfolio-success";
+import DetailedPortfolioAnalysis from "@/pages/detailed-portfolio-analysis";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -218,7 +219,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={PortfolioSuccess} />
+        <Route path="/" component={DetailedPortfolioAnalysis} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -421,6 +422,7 @@ function Router() {
         <Route path="/transaction-confirmation" component={TransactionConfirmation} />
         <Route path="/wallet-troubleshooting" component={WalletTroubleshooting} />
         <Route path="/portfolio-success" component={PortfolioSuccess} />
+        <Route path="/detailed-portfolio-analysis" component={DetailedPortfolioAnalysis} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
