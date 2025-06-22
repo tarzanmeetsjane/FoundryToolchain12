@@ -204,6 +204,8 @@ import LiveTradingDashboard from "@/pages/live-trading-dashboard";
 import ExecuteTrade from "@/pages/execute-trade";
 import WalletVisibilityGuide from "@/pages/wallet-visibility-guide";
 import LiquidityExplained from "@/pages/liquidity-explained";
+import TransactionConfirmation from "@/pages/transaction-confirmation";
+import WalletTroubleshooting from "@/pages/wallet-troubleshooting";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -215,7 +217,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={LiquidityExplained} />
+        <Route path="/" component={WalletTroubleshooting} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -415,6 +417,8 @@ function Router() {
         <Route path="/execute-trade" component={ExecuteTrade} />
         <Route path="/wallet-visibility-guide" component={WalletVisibilityGuide} />
         <Route path="/liquidity-explained" component={LiquidityExplained} />
+        <Route path="/transaction-confirmation" component={TransactionConfirmation} />
+        <Route path="/wallet-troubleshooting" component={WalletTroubleshooting} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
