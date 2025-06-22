@@ -212,7 +212,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={LiveImportExecution} />
+        <Route path="/" component={LiveTradingDashboard} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
