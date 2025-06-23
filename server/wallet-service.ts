@@ -23,7 +23,7 @@ export class WalletService {
           console.log(`Wallet initialized: ${this.wallet.address}`);
           break;
         } catch (error) {
-          console.log(`Skipping invalid private key format`);
+          // Skip invalid private key format silently
           continue;
         }
       }

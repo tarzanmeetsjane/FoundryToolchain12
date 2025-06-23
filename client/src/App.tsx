@@ -253,6 +253,8 @@ import FoundryExecution from "@/pages/foundry-execution";
 import FoundryTestingCenter from "@/pages/foundry-testing-center";
 import FoundryDeploymentCenter from "@/pages/foundry-deployment-center";
 import CompleteFoundryTesting from "@/pages/complete-foundry-testing";
+import SecureCredentialManager from "@/pages/secure-credential-manager";
+import ImmediateLPClaims from "@/pages/immediate-lp-claims";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -264,7 +266,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={CompleteFoundryTesting} />
+        <Route path="/" component={ImmediateLPClaims} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -508,6 +510,8 @@ function Router() {
         <Route path="/foundry-testing-center" component={FoundryTestingCenter} />
         <Route path="/foundry-deployment-center" component={FoundryDeploymentCenter} />
         <Route path="/complete-foundry-testing" component={CompleteFoundryTesting} />
+        <Route path="/secure-credential-manager" component={SecureCredentialManager} />
+        <Route path="/immediate-lp-claims" component={ImmediateLPClaims} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
