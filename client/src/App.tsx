@@ -49,7 +49,6 @@ import EtherscanFilterAnalyzer from "@/pages/etherscan-filter-analyzer";
 import ManualContractCalls from "@/pages/manual-contract-calls";
 import Step1Execution from "@/pages/step1-execution";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
-import ImmediateExecution from "@/pages/immediate-execution";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
 import MetaMaskDirectExecution from "@/pages/metamask-direct-execution";
@@ -249,6 +248,7 @@ import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import LiveLPResults from "@/pages/live-lp-results";
 import WalletConnectionCenter from "@/pages/wallet-connection-center";
 import ImmediateExecution from "@/pages/immediate-execution";
+import AddressValidation from "@/pages/address-validation";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -260,7 +260,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={AddressValidation} />
+        <Route path="/" component={ImmediateExecution} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -304,7 +304,6 @@ function Router() {
         <Route path="/manual-contract-calls" component={ManualContractCalls} />
         <Route path="/step1-execution" component={Step1Execution} />
         <Route path="/enhanced-verification" component={EnhancedContractVerification} />
-        <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/execution-dashboard" component={ExecutionDashboard} />
         <Route path="/alternative-solutions" component={AlternativeSolutions} />
         <Route path="/metamask-direct" component={MetaMaskDirectExecution} />
@@ -499,6 +498,7 @@ function Router() {
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
         <Route path="/wallet-connection-center" component={WalletConnectionCenter} />
+        <Route path="/address-validation" component={AddressValidation} />
         <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />

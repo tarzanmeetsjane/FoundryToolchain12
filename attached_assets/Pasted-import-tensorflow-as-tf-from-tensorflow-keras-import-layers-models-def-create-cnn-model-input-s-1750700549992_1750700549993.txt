@@ -1,0 +1,73 @@
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+def create_cnn_model(input_shape, num_classes):
+    model = models.Sequential([
+________#_First_convolutional_layer
+________layers.Conv2D(32,_(3,_3),_activation='relu',_input_shape=input_shape),
+________layers.MaxPooling2D((2,_2)),
+________layers.Dropout(0.25),
+________
+________#_Second_convolutional_layer
+________layers.Conv2D(64,_(3,_3),_activation='relu'),
+________layers.MaxPooling2D((2,_2)),
+________layers.Dropout(0.25),
+________
+________#_Third_convolutional_layer
+________layers.Conv2D(64,_(3,_3),_activation='relu'),
+________layers.MaxPooling2D((2,_2)),
+________layers.Dropout(0.25),
+________
+________#_Flatten_layer
+________layers.Flatten(),
+________
+________#_Dense_hidden_layer
+________layers.Dense(64,_activation='relu'),
+________layers.Dropout(0.5),
+________
+________#_Output_layer
+________layers.Dense(num_classes,_activation='softmax')
+____])
+
+    return model
+
+# Assuming input shape is (224, 224, 3) for RGB images and 10 classes
+input_shape = (224, 224, 3)
+num_classes = 10
+
+# Create the model
+model = create_cnn_model(input_shape, num_classes)
+
+# Compile the model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy', 
+              metrics=['accuracy'])
+
+# Print model summary
+model.summary()
+
+This code creates a Convolutional Neural Network (CNN) using TensorFlow and Keras. Here's a breakdown of the model architecture:
+
+Three convolutional layers, each followed by max pooling and dropout:
+
+First layer: 32 filters
+Second and third layers: 64 filters each
+All use 3x3 kernels and ReLU activation
+
+A flatten layer to convert the 2D feature maps to a 1D vector
+
+A dense hidden layer with 64 units and ReLU activation, followed by dropout
+
+An output layer with softmax activation for multi-class classification
+
+The model is compiled using the Adam optimizer and categorical crossentropy loss function. Accuracy is used as the evaluation metric.
+
+To use this model:
+
+Prepare your dataset and preprocess the images to match the input shape (224, 224, 3)
+Split your data into training and validation sets
+Convert your labels to one-hot encoded format
+Use model.fit() to train the model on your data
+Evaluate the model using model.evaluate() on a test set
+
+Remember to adjust the input_shape and num_classes variables according to your specific dataset.
