@@ -256,6 +256,7 @@ import LiveTransactionCenter from "@/pages/live-transaction-center";
 import SushiSwapWalletIntegration from "@/pages/sushiswap-wallet-integration";
 import SushiWalletConnector from "@/pages/sushi-wallet-connector";
 import CurveFinanceIntegration from "@/pages/curve-finance-integration";
+import EthgrTokenIntegration from "@/pages/ethgr-token-integration";
 import LiveWalletAnalysis from "@/pages/live-wallet-analysis";
 import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import LiveLPResults from "@/pages/live-lp-results";
@@ -529,6 +530,7 @@ function Router() {
         <Route path="/sushiswap-wallet-integration" component={SushiSwapWalletIntegration} />
         <Route path="/sushi-wallet-connector" component={SushiWalletConnector} />
         <Route path="/curve-finance-integration" component={CurveFinanceIntegration} />
+        <Route path="/ethgr-token-integration" component={EthgrTokenIntegration} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
