@@ -218,6 +218,8 @@ import UniswapV4Integration from "@/pages/uniswap-v4-integration";
 import ETHRecoveryTracker from "@/pages/eth-recovery-tracker";
 import MainnetWalletImport from "@/pages/mainnet-wallet-import";
 import RainbowMainnetSwitch from "@/pages/rainbow-mainnet-switch";
+import ETHBreakthroughAnalysis from "@/pages/eth-breakthrough-analysis";
+import WalletVisibilityProblem from "@/pages/wallet-visibility-problem";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -229,7 +231,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={RainbowMainnetSwitch} />
+        <Route path="/" component={WalletVisibilityProblem} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -438,6 +440,8 @@ function Router() {
         <Route path="/direct-trading-platform" component={DirectTradingPlatform} />
         <Route path="/wallet-setup-wizard" component={WalletSetupWizard} />
         <Route path="/transaction-signature-guide" component={TransactionSignatureGuide} />
+        <Route path="/eth-breakthrough-analysis" component={ETHBreakthroughAnalysis} />
+        <Route path="/wallet-visibility-problem" component={WalletVisibilityProblem} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
