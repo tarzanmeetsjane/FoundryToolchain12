@@ -213,6 +213,7 @@ import MarketValueAnalyzer from "@/pages/market-value-analyzer";
 import DirectTradingPlatform from "@/pages/direct-trading-platform";
 import WalletSetupWizard from "@/pages/wallet-setup-wizard";
 import TransactionSignatureGuide from "@/pages/transaction-signature-guide";
+import SignatureTestCenter from "@/pages/signature-test-center";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -224,7 +225,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={TransactionSignatureGuide} />
+        <Route path="/" component={SignatureTestCenter} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -433,6 +434,7 @@ function Router() {
         <Route path="/direct-trading-platform" component={DirectTradingPlatform} />
         <Route path="/wallet-setup-wizard" component={WalletSetupWizard} />
         <Route path="/transaction-signature-guide" component={TransactionSignatureGuide} />
+        <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
