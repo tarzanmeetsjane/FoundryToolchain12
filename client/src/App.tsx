@@ -221,6 +221,7 @@ import RainbowMainnetSwitch from "@/pages/rainbow-mainnet-switch";
 import ETHBreakthroughAnalysis from "@/pages/eth-breakthrough-analysis";
 import WalletVisibilityProblem from "@/pages/wallet-visibility-problem";
 import SushiSwapDirectAccess from "@/pages/sushiswap-direct-access";
+import RemixETHBreakthrough from "@/pages/remix-eth-breakthrough";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -232,7 +233,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={SushiSwapDirectAccess} />
+        <Route path="/" component={RemixETHBreakthrough} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -444,6 +445,7 @@ function Router() {
         <Route path="/eth-breakthrough-analysis" component={ETHBreakthroughAnalysis} />
         <Route path="/wallet-visibility-problem" component={WalletVisibilityProblem} />
         <Route path="/sushiswap-direct-access" component={SushiSwapDirectAccess} />
+        <Route path="/remix-eth-breakthrough" component={RemixETHBreakthrough} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
