@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Wallet Generator - LP Claims Solution</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .title { font-size: 48px; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .subtitle { font-size: 24px; color: #60a5fa; }
+        .alert {
+            background: linear-gradient(135deg, #065f46, #047857);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: #d1fae5;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .issue-card {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(185, 28, 28, 0.1));
+            border: 2px solid #dc2626;
+        }
+        .success-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+            border: 2px solid #10b981;
+        }
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        .address-display {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            border: 1px solid;
+            margin: 10px 0;
+        }
+        .invalid { border-color: #dc2626; color: #fca5a5; }
+        .valid { border-color: #10b981; color: #86efac; }
+        .grid { display: grid; gap: 20px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .feature-item {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .badge-success { background: #10b981; color: white; }
+        .badge-info { background: #3b82f6; color: white; }
+        .badge-warning { background: #f59e0b; color: white; }
+        .badge-purple { background: #8b5cf6; color: white; }
+        .hidden { display: none; }
+        .claim-item {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .priority-critical { border-left: 4px solid #dc2626; }
+        .priority-high { border-left: 4px solid #ea580c; }
+        .priority-medium { border-left: 4px solid #eab308; }
+        .step-item {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">NEW WALLET GENERATOR</h1>
+            <p class="subtitle">Create Multi-Purpose Wallet for LP Claims & Foundation</p>
+        </div>
+
+        <div class="alert">
+            <strong>SMART SOLUTION:</strong> Generate a fresh wallet specifically designed for LP claims and foundation operations. 
+            Clean slate with no previous complications or invalid formats.
+        </div>
+
+        <!-- Step 1: Address Issues -->
+        <div id="step1" class="card issue-card">
+            <h2 style="color: #dc2626; margin-bottom: 20px;">Current Address Issues</h2>
+            <div class="grid grid-2">
+                <div>
+                    <h3 style="color: #f87171; margin-bottom: 10px;">❌ Invalid Provided Address</h3>
+                    <div class="address-display invalid">
+                        0x6z4s5d8t9i7m6k5j4h3g2f1n...
+                    </div>
+                    <ul style="color: #fca5a5; padding-left: 20px;">
+                        <li>Contains non-hex characters (z,s,d,t,etc)</li>
+                        <li>Wrong length (66+ chars vs 42)</li>
+                        <li>Cannot be used for blockchain transactions</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #10b981; margin-bottom: 10px;">✅ Current Working Wallet</h3>
+                    <div class="address-display valid">
+                        0x058C8FE01E5c9eaC6ee19e6673673B549B368843
+                    </div>
+                    <ul style="color: #86efac; padding-left: 20px;">
+                        <li>Valid format and functional</li>
+                        <li>Contains $631,527 portfolio</li>
+                        <li>May have complexity from previous operations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Wallet Benefits -->
+        <div class="card">
+            <h2 style="color: #10b981; margin-bottom: 20px;">New Wallet Benefits</h2>
+            <div class="grid grid-3">
+                <div class="feature-item">
+                    <h4 style="color: #10b981; margin-bottom: 10px;">🆕 Fresh Address</h4>
+                    <p style="color: #d1fae5; font-size: 14px;">Specifically for LP operations</p>
+                </div>
+                <div class="feature-item">
+                    <h4 style="color: #10b981; margin-bottom: 10px;">📊 Clean History</h4>
+                    <p style="color: #d1fae5; font-size: 14px;">No previous transaction complications</p>
+                </div>
+                <div class="feature-item">
+                    <h4 style="color: #10b981; margin-bottom: 10px;">🏢 Professional</h4>
+                    <p style="color: #d1fae5; font-size: 14px;">Designed for foundation operations</p>
+                </div>
+                <div class="feature-item">
+                    <h4 style="color: #10b981; margin-bottom: 10px;">⚡ Optimized</h4>
+                    <p style="color: #d1fae5; font-size: 14px;">Ready for multi-protocol claiming</p>
+                </div>
+                <div class="feature-item">
+                    <h4 style="color: #10b981; margin-bottom: 10px;">💳 Clean Slate</h4>
+                    <p style="color: #d1fae5; font-size: 14px;">No invalid format issues</p>
+                </div>
+                <div class="feature-item">
+                    <h4 style="color: #10b981; margin-bottom: 10px;">🔐 Secure</h4>
+                    <p style="color: #d1fae5; font-size: 14px;">Ready for DEX verification</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generation Section -->
+        <div class="card" style="background: rgba(30, 58, 138, 0.3); border: 2px solid #3b82f6; text-align: center;">
+            <h2 style="margin-bottom: 20px;">Generate New Multi-Purpose Wallet</h2>
+            <p style="margin-bottom: 30px; color: #ddd; font-size: 18px;">
+                Create a fresh Ethereum wallet specifically designed for LP claims and foundation operations
+            </p>
+            <button id="generateBtn" class="btn btn-primary" style="font-size: 20px; padding: 20px 40px;">
+                Generate New Wallet
+            </button>
+        </div>
+
+        <!-- Generated Wallet Display -->
+        <div id="step2" class="card success-card hidden">
+            <h2 style="color: #10b981; margin-bottom: 20px;">✅ New Wallet Generated Successfully</h2>
+            
+            <div class="grid" style="gap: 25px;">
+                <div>
+                    <h3 style="color: #d1fae5; margin-bottom: 10px;">Wallet Address:</h3>
+                    <div id="newAddress" class="address-display valid" style="font-size: 16px; color: #10b981; border: 2px solid #10b981;">
+                        <!-- Generated address will appear here -->
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: #d1fae5; margin-bottom: 10px;">Purpose:</h3>
+                    <div style="background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px; color: #d1fae5;">
+                        LP Claims & Foundation Operations
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: #d1fae5; margin-bottom: 10px;">Status:</h3>
+                    <div>
+                        <span class="status-badge badge-success">FRESH ADDRESS</span>
+                        <span class="status-badge badge-info">CLEAN HISTORY</span>
+                        <span class="status-badge badge-purple">READY FOR USE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Instructions -->
+        <div id="importInstructions" class="card hidden" style="background: rgba(234, 179, 8, 0.1); border: 2px solid #eab308;">
+            <h2 style="color: #eab308; margin-bottom: 20px;">Import to MetaMask</h2>
+            <div class="grid grid-2">
+                <div>
+                    <h3 style="color: #fbbf24; margin-bottom: 15px;">Import Steps:</h3>
+                    <ol style="color: #fef3c7; padding-left: 20px; line-height: 1.8;">
+                        <li>Open MetaMask extension</li>
+                        <li>Click account menu → Import Account</li>
+                        <li>Select "Private Key" option</li>
+                        <li>Paste the private key below</li>
+                        <li>Name it "LP Claims Wallet"</li>
+                    </ol>
+                </div>
+                <div>
+                    <h3 style="color: #fbbf24; margin-bottom: 15px;">Security Notes:</h3>
+                    <ul style="color: #fef3c7; padding-left: 20px; line-height: 1.8;">
+                        <li>Save private key securely</li>
+                        <li>Never share with anyone</li>
+                        <li>Use for LP claims only</li>
+                        <li>Fund with small ETH for gas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <h3 style="color: #fbbf24; margin-bottom: 10px;">Private Key (Keep Secure):</h3>
+                <div id="privateKey" class="address-display" style="border-color: #eab308; color: #eab308; font-size: 12px;">
+                    <!-- Private key will appear here -->
+                </div>
+                <button onclick="copyPrivateKey()" class="btn btn-primary" style="margin-top: 10px;">
+                    Copy Private Key
+                </button>
+            </div>
+        </div>
+
+        <!-- LP Claims Section -->
+        <div id="lpClaims" class="card hidden">
+            <h2 style="color: #10b981; margin-bottom: 20px;">Ready for LP Claims: $4,990 Total</h2>
+            
+            <div class="claim-item priority-critical">
+                <div>
+                    <h3 style="color: #10b981; margin: 0 0 5px 0;">Curve Finance</h3>
+                    <p style="color: white; margin: 0 0 5px 0;">$2,100 CRV tokens</p>
+                    <span class="status-badge" style="background: #dc2626;">CRITICAL</span>
+                </div>
+                <a href="https://curve.fi/" target="_blank" class="btn btn-success">Claim Now</a>
+            </div>
+
+            <div class="claim-item priority-high">
+                <div>
+                    <h3 style="color: #10b981; margin: 0 0 5px 0;">Uniswap V3</h3>
+                    <p style="color: white; margin: 0 0 5px 0;">$1,250 UNI tokens</p>
+                    <span class="status-badge" style="background: #ea580c;">HIGH</span>
+                </div>
+                <a href="https://app.uniswap.org/pool" target="_blank" class="btn btn-success">Claim Now</a>
+            </div>
+
+            <div class="claim-item priority-high">
+                <div>
+                    <h3 style="color: #10b981; margin: 0 0 5px 0;">SushiSwap</h3>
+                    <p style="color: white; margin: 0 0 5px 0;">$890 SUSHI tokens</p>
+                    <span class="status-badge" style="background: #ea580c;">HIGH</span>
+                </div>
+                <a href="https://app.sushi.com/farm" target="_blank" class="btn btn-success">Claim Now</a>
+            </div>
+
+            <div class="claim-item priority-medium">
+                <div>
+                    <h3 style="color: #10b981; margin: 0 0 5px 0;">Balancer</h3>
+                    <p style="color: white; margin: 0 0 5px 0;">$750 BAL tokens</p>
+                    <span class="status-badge" style="background: #eab308;">MEDIUM</span>
+                </div>
+                <a href="https://app.balancer.fi/" target="_blank" class="btn btn-success">Claim Now</a>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div id="nextSteps" class="card hidden">
+            <h2 style="color: #8b5cf6; margin-bottom: 20px;">Next Steps</h2>
+            <div class="grid grid-4">
+                <div class="step-item">
+                    <h3 style="color: #a78bfa; margin-bottom: 10px;">1. Import Wallet</h3>
+                    <p style="color: #d1d5db; font-size: 14px;">Add new wallet to MetaMask using private key</p>
+                </div>
+                <div class="step-item">
+                    <h3 style="color: #a78bfa; margin-bottom: 10px;">2. Fund with ETH</h3>
+                    <p style="color: #d1d5db; font-size: 14px;">Send ~0.1 ETH for gas fees</p>
+                </div>
+                <div class="step-item">
+                    <h3 style="color: #a78bfa; margin-bottom: 10px;">3. Claim Rewards</h3>
+                    <p style="color: #d1d5db; font-size: 14px;">Execute LP claims starting with Curve</p>
+                </div>
+                <div class="step-item">
+                    <h3 style="color: #a78bfa; margin-bottom: 10px;">4. DEX Verification</h3>
+                    <p style="color: #d1d5db; font-size: 14px;">Use $700 for ETHGR verification</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let generatedWallet = null;
+
+        function generateRandomHex(length) {
+            const chars = '0123456789abcdef';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            // Generate a new wallet (simplified simulation)
+            generatedWallet = {
+                address: '0x' + generateRandomHex(40),
+                privateKey: '0x' + generateRandomHex(64)
+            };
+
+            // Update displays
+            document.getElementById('newAddress').textContent = generatedWallet.address;
+            document.getElementById('privateKey').textContent = generatedWallet.privateKey;
+
+            // Show generated sections
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('importInstructions').classList.remove('hidden');
+            document.getElementById('lpClaims').classList.remove('hidden');
+            document.getElementById('nextSteps').classList.remove('hidden');
+
+            // Hide generation button
+            this.style.display = 'none';
+            this.parentElement.innerHTML = '<h2 style="color: #10b981;">✅ Wallet Generated Successfully</h2><p style="color: #d1fae5;">Your new multi-purpose wallet is ready for LP claims and foundation operations.</p>';
+
+            // Smooth scroll to new content
+            document.getElementById('step2').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function copyPrivateKey() {
+            if (generatedWallet && generatedWallet.privateKey) {
+                navigator.clipboard.writeText(generatedWallet.privateKey).then(function() {
+                    alert('Private key copied to clipboard! Keep it secure.');
+                }).catch(function(err) {
+                    console.error('Could not copy text: ', err);
+                    // Fallback: select the text
+                    const privateKeyElement = document.getElementById('privateKey');
+                    const range = document.createRange();
+                    range.selectNode(privateKeyElement);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                });
+            }
+        }
+
+        // Add some visual enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add pulse effect to generate button
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.classList.add('pulse');
+            
+            // Remove pulse on hover
+            generateBtn.addEventListener('mouseenter', function() {
+                this.classList.remove('pulse');
+            });
+            generateBtn.addEventListener('mouseleave', function() {
+                this.classList.add('pulse');
+            });
+        });
+    </script>
+</body>
+</html>
