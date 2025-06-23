@@ -251,6 +251,7 @@ import ImmediateExecution from "@/pages/immediate-execution";
 import AddressValidation from "@/pages/address-validation";
 import FoundryExecution from "@/pages/foundry-execution";
 import FoundryTestingCenter from "@/pages/foundry-testing-center";
+import FoundryDeploymentCenter from "@/pages/foundry-deployment-center";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -262,7 +263,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={FoundryTestingCenter} />
+        <Route path="/" component={FoundryDeploymentCenter} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -504,6 +505,7 @@ function Router() {
         <Route path="/immediate-execution" component={ImmediateExecution} />
         <Route path="/foundry-execution" component={FoundryExecution} />
         <Route path="/foundry-testing-center" component={FoundryTestingCenter} />
+        <Route path="/foundry-deployment-center" component={FoundryDeploymentCenter} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
