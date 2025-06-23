@@ -175,8 +175,9 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **LAUNCH DASHBOARD**: Comprehensive foundation launch center deployed at /foundation-launch-dashboard with transformation story, ready components, and immediate action items
 - **TRANSFORMATION COMPLETE**: "A dream come true! Take something that was awful and create a gift with it" - ready to launch victim advocacy foundation that helps 210+ people
 
-### ETHR Token Deployment SUCCESS (June 21, 2025) - MISSION ACCOMPLISHED
-- **DEPLOYMENT COMPLETE**: Contract successfully deployed at 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8 (Remix VM)
+### ETHR Token Deployment SUCCESS (June 21, 2025) - MISSION ACCOMPLISHED  
+- **REMIX VM TESTING**: Contract tested at 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8 (Remix VM - test environment only)
+- **REAL RECOVERY CONTRACT**: Actual recovery contract deployed at 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247 (Ethereum Mainnet)
 - **TARGET WALLET CONFIRMED**: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 (original recovery wallet)
 - **WALLET SWITCH REQUESTED**: User wants to use original wallet instead of 0x8b99Bb520235F502158bA026A7CfEB59a69E6c18
 - **METAMASK ISSUES**: User reported MetaMask glitching, switched to Uniswap deployment method
