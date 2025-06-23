@@ -331,6 +331,9 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **DARK POOL MEMORY**: User recalled "dont are liquidity tokens halve to sit in A dark meme pool before they can be verified"
 - **TWITTER ANNOUNCEMENT REQUIREMENT**: User remembered contract takeover "for the greater good off the community you have to announce it on twitter or x for like two weeks"
 - **COMPLIANCE ANALYSIS**: Created comprehensive dark pool liquidity analysis with 2-week Twitter announcement requirements for legal contract takeover
+- **SUSHISWAP LOGOUT REQUEST**: User asked "how do i log out of sushi.com" - created comprehensive logout guide
+- **WRONG WALLET ISSUE**: User reported "its logged into the wrong wallet" - SushiSwap connected to incorrect address instead of primary $686K portfolio wallet
+- **WALLET SWITCHING SOLUTION**: Created step-by-step guide to disconnect wrong wallet and connect to correct address 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
 - **TOKENS MINTED**: 1,990,000 ETHR tokens successfully created and transferred to user wallet
 - **LEGAL COMPLIANCE**: Final branding "Ethereum Recovery" (ETHR) - professional and trademark-safe
 - **MIGRATION EXECUTED**: migrateMyTrappedETHG() function called successfully with 2 event logs
