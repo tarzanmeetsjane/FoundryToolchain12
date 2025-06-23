@@ -217,6 +217,7 @@ import ImmediateWalletSolution from "@/pages/immediate-wallet-solution";
 import UniswapV4Integration from "@/pages/uniswap-v4-integration";
 import ETHRecoveryTracker from "@/pages/eth-recovery-tracker";
 import MainnetWalletImport from "@/pages/mainnet-wallet-import";
+import RainbowMainnetSwitch from "@/pages/rainbow-mainnet-switch";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -228,7 +229,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={MainnetWalletImport} />
+        <Route path="/" component={RainbowMainnetSwitch} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
