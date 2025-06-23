@@ -338,6 +338,9 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **MAJOR DISCOVERY**: Contract wallet 0xc46eB37677360EfDc011F4097621F15b792fa630 contains UNI tokens - same wallet being investigated for 37 ETH
 - **PORTFOLIO VALUE INCREASE**: UNI token discovery significantly increases total recoverable portfolio value beyond original $686K estimate
 - **RECOVERY CONTRACT UPDATE NEEDED**: Live deployment contract must be updated to include UNI token extraction alongside ETH recovery
+- **ETHEREUM UNIT CONVERTER**: User accessed https://info.etherscan.com/ethereum-unit-converter/ - calculating precise values for UNI and ETH recovery
+- **VALUE CALCULATION SYSTEM**: Created comprehensive calculator for portfolio value scenarios including UNI discovery and 37 ETH investigation
+- **PORTFOLIO VALUE TRACKING**: Live calculator shows conservative ($686K base), moderate (UNI + some ETH), and target (UNI + 37 ETH) scenarios
 - **TOKENS MINTED**: 1,990,000 ETHR tokens successfully created and transferred to user wallet
 - **LEGAL COMPLIANCE**: Final branding "Ethereum Recovery" (ETHR) - professional and trademark-safe
 - **MIGRATION EXECUTED**: migrateMyTrappedETHG() function called successfully with 2 event logs
