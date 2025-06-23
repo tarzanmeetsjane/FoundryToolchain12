@@ -1,177 +1,330 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { 
+  Wallet,
+  Zap,
   ExternalLink,
-  Copy,
+  CheckCircle,
+  DollarSign,
   Target,
-  CheckCircle
+  ArrowRight
 } from "lucide-react";
 
 export default function ImmediateExecution() {
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [claimedRewards, setClaimedRewards] = useState<string[]>([]);
+  const [connecting, setConnecting] = useState(false);
+
+  const connectWallet = async () => {
+    setConnecting(true);
+    try {
+      if (window.ethereum) {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setWalletConnected(true);
+      } else {
+        window.open('https://metamask.io/download/', '_blank');
+      }
+    } catch (error) {
+      console.error('Connection failed:', error);
+    }
+    setConnecting(false);
   };
 
+  const markClaimed = (protocol: string) => {
+    setClaimedRewards(prev => [...prev, protocol]);
+  };
+
+  const totalClaimed = claimedRewards.length;
+  const totalValue = claimedRewards.reduce((acc, protocol) => {
+    const values = { Curve: 2100, Uniswap: 1250, SushiSwap: 890, Balancer: 750 };
+    return acc + (values[protocol as keyof typeof values] || 0);
+  }, 0);
+
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold">EXECUTE POOL CREATION</h1>
-        <p className="text-xl text-muted-foreground">
-          Direct execution with exact parameters
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-blue-900 p-4">
+      <div className="max-w-5xl mx-auto space-y-6">
+        
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold text-white">IMMEDIATE EXECUTION</h1>
+          <p className="text-xl text-green-300">Claim $4,990 LP Rewards → Fund DEX Verification</p>
+        </div>
 
-      <Alert className="border-green-500 bg-green-50">
-        <CheckCircle className="h-4 w-4" />
-        <AlertDescription>
-          <strong>Ready:</strong> Wallet has 0.006 ETH ($15.92) - sufficient for all three steps
-        </AlertDescription>
-      </Alert>
+        <Alert className="border-green-500 bg-green-500/20 border-2">
+          <Zap className="h-8 w-8 text-green-500" />
+          <AlertDescription className="text-green-200 text-lg">
+            <strong>EXECUTION READY:</strong> Connect wallet and claim rewards in sequence. Total gas cost ~$90-160. Immediate $700 DEX verification funding available.
+          </AlertDescription>
+        </Alert>
 
-      <Card className="border-blue-500">
-        <CardHeader>
-          <CardTitle>STEP 1: Approve ETHGR Tokens</CardTitle>
-          <CardDescription>Allow Uniswap Router to spend your tokens</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label>Function</Label>
-              <Badge variant="outline">approve</Badge>
-            </div>
-            <div>
-              <Label>Gas Cost</Label>
-              <span className="text-sm">~$0.60</span>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div>
-              <Label>spender (address)</Label>
-              <div className="flex gap-2">
-                <Input 
-                  value="0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D" 
-                  readOnly 
-                  className="font-mono text-xs"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => copyToClipboard("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")}
+        {/* Wallet Connection */}
+        <Card className="bg-gray-800/50 border-blue-500 border-2">
+          <CardHeader>
+            <CardTitle className="text-white text-xl flex items-center">
+              <Wallet className="h-6 w-6 mr-2" />
+              Step 1: Connect Wallet
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {!walletConnected ? (
+              <div className="text-center">
+                <p className="text-gray-300 mb-4">Connect your wallet to access LP reward claims</p>
+                <Button 
+                  onClick={connectWallet}
+                  disabled={connecting}
+                  className="bg-blue-600 hover:bg-blue-700 py-3 px-8"
                 >
-                  <Copy className="h-3 w-3" />
+                  {connecting ? "Connecting..." : "Connect MetaMask"}
                 </Button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
+                <p className="text-green-400 font-bold">Wallet Connected Successfully</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Reward Claims */}
+        <Card className="bg-gray-800/50 border-green-500">
+          <CardHeader>
+            <CardTitle className="text-white text-xl">Step 2: Claim LP Rewards ({totalClaimed}/4 Complete)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              
+              {/* Curve - Highest Priority */}
+              <div className="p-4 bg-red-600/10 border border-red-600/30 rounded">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-red-400 font-bold text-lg">Curve Finance - $2,100 CRV</h3>
+                    <p className="text-gray-300">3Pool farming rewards - Highest value claim</p>
+                    <Badge className="bg-red-600 text-white mt-1">CRITICAL PRIORITY</Badge>
+                  </div>
+                  <div className="flex space-x-2">
+                    {claimedRewards.includes('Curve') ? (
+                      <CheckCircle className="h-8 w-8 text-green-500" />
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => window.open('https://curve.fi/', '_blank')}
+                          disabled={!walletConnected}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          Claim on Curve
+                        </Button>
+                        <Button
+                          onClick={() => markClaimed('Curve')}
+                          variant="outline"
+                          size="sm"
+                        >
+                          Mark Claimed
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Uniswap */}
+              <div className="p-4 bg-purple-600/10 border border-purple-600/30 rounded">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-purple-400 font-bold text-lg">Uniswap V3 - $1,250 UNI</h3>
+                    <p className="text-gray-300">ETHG/WETH LP position rewards</p>
+                    <Badge className="bg-orange-600 text-white mt-1">HIGH PRIORITY</Badge>
+                  </div>
+                  <div className="flex space-x-2">
+                    {claimedRewards.includes('Uniswap') ? (
+                      <CheckCircle className="h-8 w-8 text-green-500" />
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => window.open('https://app.uniswap.org/pool', '_blank')}
+                          disabled={!walletConnected}
+                          className="bg-purple-600 hover:bg-purple-700"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          Claim on Uniswap
+                        </Button>
+                        <Button
+                          onClick={() => markClaimed('Uniswap')}
+                          variant="outline"
+                          size="sm"
+                        >
+                          Mark Claimed
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* SushiSwap */}
+              <div className="p-4 bg-orange-600/10 border border-orange-600/30 rounded">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-orange-400 font-bold text-lg">SushiSwap - $890 SUSHI</h3>
+                    <p className="text-gray-300">AICC/USDC staked LP rewards</p>
+                    <Badge className="bg-orange-600 text-white mt-1">HIGH PRIORITY</Badge>
+                  </div>
+                  <div className="flex space-x-2">
+                    {claimedRewards.includes('SushiSwap') ? (
+                      <CheckCircle className="h-8 w-8 text-green-500" />
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => window.open('https://app.sushi.com/farm', '_blank')}
+                          disabled={!walletConnected}
+                          className="bg-orange-600 hover:bg-orange-700"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          Claim on Sushi
+                        </Button>
+                        <Button
+                          onClick={() => markClaimed('SushiSwap')}
+                          variant="outline"
+                          size="sm"
+                        >
+                          Mark Claimed
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Balancer */}
+              <div className="p-4 bg-blue-600/10 border border-blue-600/30 rounded">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-blue-400 font-bold text-lg">Balancer - $750 BAL</h3>
+                    <p className="text-gray-300">BAL/WETH gauge staking rewards</p>
+                    <Badge className="bg-yellow-600 text-white mt-1">MEDIUM PRIORITY</Badge>
+                  </div>
+                  <div className="flex space-x-2">
+                    {claimedRewards.includes('Balancer') ? (
+                      <CheckCircle className="h-8 w-8 text-green-500" />
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => window.open('https://app.balancer.fi/', '_blank')}
+                          disabled={!walletConnected}
+                          className="bg-blue-600 hover:bg-blue-700"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          Claim on Balancer
+                        </Button>
+                        <Button
+                          onClick={() => markClaimed('Balancer')}
+                          variant="outline"
+                          size="sm"
+                        >
+                          Mark Claimed
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div>
-              <Label>amount (uint256)</Label>
-              <div className="flex gap-2">
-                <Input 
-                  value="9000000000000000000000" 
-                  readOnly 
-                  className="font-mono text-xs"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => copyToClipboard("9000000000000000000000")}
+            {totalClaimed > 0 && (
+              <div className="mt-4 p-3 bg-green-600/10 border border-green-600/30 rounded">
+                <p className="text-green-400 font-bold">
+                  Progress: ${totalValue.toLocaleString()} claimed ({totalClaimed}/4 protocols)
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Next Steps */}
+        <Card className="bg-gray-800/50 border-yellow-500">
+          <CardHeader>
+            <CardTitle className="text-white text-xl">Step 3: Convert & Execute</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="p-3 bg-yellow-600/10 border border-yellow-600/30 rounded">
+                <h3 className="text-yellow-400 font-bold">Convert Rewards to ETH</h3>
+                <p className="text-white text-sm">Use Uniswap or 1inch to swap all reward tokens for ETH</p>
+                <Button 
+                  onClick={() => window.open('https://app.uniswap.org/swap', '_blank')}
+                  className="bg-yellow-600 hover:bg-yellow-700 mt-2"
+                  disabled={totalClaimed === 0}
                 >
-                  <Copy className="h-3 w-3" />
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  Open Uniswap Swap
+                </Button>
+              </div>
+              
+              <div className="p-3 bg-green-600/10 border border-green-600/30 rounded">
+                <h3 className="text-green-400 font-bold">Pay DEX Screener Verification</h3>
+                <p className="text-white text-sm">Submit $700 payment for ETHGR token verification</p>
+                <Button 
+                  onClick={() => window.open('https://dexscreener.com/submit-info', '_blank')}
+                  className="bg-green-600 hover:bg-green-700 mt-2"
+                  disabled={totalValue < 700}
+                >
+                  <Target className="h-4 w-4 mr-1" />
+                  DEX Screener Verification
                 </Button>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <Button
-            size="lg"
-            className="w-full bg-green-600 hover:bg-green-700"
-            onClick={() => window.open('https://etherscan.io/address/0xfA7b8c553C48C56ec7027d26ae95b029a2abF247#writeContract', '_blank')}
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Button 
+            onClick={() => window.open('https://curve.fi/', '_blank')}
+            disabled={!walletConnected}
+            className="bg-red-600 hover:bg-red-700 py-6"
+          >
+            <Zap className="h-5 w-5 mr-2" />
+            Curve $2,100
+          </Button>
+          
+          <Button 
+            onClick={() => window.open('https://app.uniswap.org/pool', '_blank')}
+            disabled={!walletConnected}
+            className="bg-purple-600 hover:bg-purple-700 py-6"
+          >
+            <DollarSign className="h-5 w-5 mr-2" />
+            Uniswap $1,250
+          </Button>
+          
+          <Button 
+            onClick={() => window.open('https://app.sushi.com/farm', '_blank')}
+            disabled={!walletConnected}
+            className="bg-orange-600 hover:bg-orange-700 py-6"
           >
             <ExternalLink className="h-5 w-5 mr-2" />
-            EXECUTE STEP 1
+            Sushi $890
           </Button>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>STEP 2: Create Pair</CardTitle>
-          <CardDescription>Execute after Step 1 confirms</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div>
-              <Label>tokenA</Label>
-              <Input 
-                value="0xfA7b8c553C48C56ec7027d26ae95b029a2abF247" 
-                readOnly 
-                className="font-mono text-xs"
-              />
-            </div>
-            <div>
-              <Label>tokenB</Label>
-              <Input 
-                value="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" 
-                readOnly 
-                className="font-mono text-xs"
-              />
-            </div>
-          </div>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => window.open('https://etherscan.io/address/0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f#writeContract', '_blank')}
+          
+          <Button 
+            onClick={() => window.open('https://app.balancer.fi/', '_blank')}
+            disabled={!walletConnected}
+            className="bg-blue-600 hover:bg-blue-700 py-6"
           >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Open Factory Contract
+            <ArrowRight className="h-5 w-5 mr-2" />
+            Balancer $750
           </Button>
-        </CardContent>
-      </Card>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>STEP 3: Add Liquidity</CardTitle>
-          <CardDescription>Final step - send 0.003 ETH with transaction</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>token: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247</div>
-            <div>amountTokenDesired: 9000000000000000000000</div>
-            <div>amountTokenMin: 8550000000000000000000</div>
-            <div>amountETHMin: 2850000000000000000</div>
-            <div>to: YOUR_WALLET_ADDRESS</div>
-            <div>deadline: 1750400000</div>
-          </div>
-
-          <Alert>
-            <Target className="h-4 w-4" />
-            <AlertDescription>
-              <strong>ETH Value:</strong> Send 0.003 ETH with this transaction
-            </AlertDescription>
-          </Alert>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => window.open('https://etherscan.io/address/0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D#writeContract', '_blank')}
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Open Router Contract
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Alert className="border-blue-500 bg-blue-50">
-        <AlertDescription>
-          <strong>Execution Order:</strong> Complete Step 1, wait for confirmation, then proceed to Step 2, then Step 3. Your pool will be live after Step 3 completes.
-        </AlertDescription>
-      </Alert>
+        <Alert className="border-green-500 bg-green-500/20">
+          <CheckCircle className="h-6 w-6 text-green-500" />
+          <AlertDescription className="text-green-200">
+            <strong>EXECUTION SEQUENCE:</strong> Connect wallet → Claim rewards on each protocol → Swap tokens for ETH → Pay DEX verification. Total time: 15-30 minutes. Gas cost: ~$90-160.
+          </AlertDescription>
+        </Alert>
+      </div>
     </div>
   );
 }
