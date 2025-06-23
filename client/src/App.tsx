@@ -240,6 +240,7 @@ import StrategicFoundationLaunch from "@/pages/strategic-foundation-launch";
 import VictimWalletDatabase from "@/pages/victim-wallet-database";
 import ReputationBuildingSystem from "@/pages/reputation-building-system";
 import AssetLocationSummary from "@/pages/asset-location-summary";
+import DEXScreenerVerification from "@/pages/dex-screener-verification";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -251,7 +252,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={AssetLocationSummary} />
+        <Route path="/" component={DEXScreenerVerification} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -482,6 +483,7 @@ function Router() {
         <Route path="/victim-wallet-database" component={VictimWalletDatabase} />
         <Route path="/reputation-building-system" component={ReputationBuildingSystem} />
         <Route path="/asset-location-summary" component={AssetLocationSummary} />
+        <Route path="/dex-screener-verification" component={DEXScreenerVerification} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
