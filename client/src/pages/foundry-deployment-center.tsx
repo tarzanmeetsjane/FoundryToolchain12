@@ -13,7 +13,7 @@ import {
   ExternalLink,
   CheckCircle,
   Wallet,
-  Gas,
+  Fuel,
   Code,
   Play
 } from "lucide-react";
@@ -246,7 +246,7 @@ polygon = { key = "\${POLYGONSCAN_API_KEY}" }`;
         <Card className="bg-gray-800/50 border-purple-500">
           <CardHeader>
             <CardTitle className="text-white text-xl flex items-center">
-              <Gas className="h-6 w-6 mr-2" />
+              <Fuel className="h-6 w-6 mr-2" />
               Gas Tracking & Optimization
             </CardTitle>
           </CardHeader>
