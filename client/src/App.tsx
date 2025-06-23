@@ -229,6 +229,7 @@ import SushiSwapLogoutGuide from "@/pages/sushiswap-logout-guide";
 import WalletSwitchingGuide from "@/pages/wallet-switching-guide";
 import UNITokenDiscovery from "@/pages/uni-token-discovery";
 import EthereumValueCalculator from "@/pages/ethereum-value-calculator";
+import LiveRecoveryExecution from "@/pages/live-recovery-execution";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -240,7 +241,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={EthereumValueCalculator} />
+        <Route path="/" component={LiveRecoveryExecution} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -460,6 +461,7 @@ function Router() {
         <Route path="/wallet-switching-guide" component={WalletSwitchingGuide} />
         <Route path="/uni-token-discovery" component={UNITokenDiscovery} />
         <Route path="/ethereum-value-calculator" component={EthereumValueCalculator} />
+        <Route path="/live-recovery-execution" component={LiveRecoveryExecution} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
