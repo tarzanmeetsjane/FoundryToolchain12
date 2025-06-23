@@ -252,6 +252,7 @@ import HoneypotDeceptionAnalysis from "@/pages/honeypot-deception-analysis";
 import CurrentFinancialStatus from "@/pages/current-financial-status";
 import WalletManagementCenter from "@/pages/wallet-management-center";
 import WalletSecurityAssessment from "@/pages/wallet-security-assessment";
+import LiveTransactionCenter from "@/pages/live-transaction-center";
 import LiveWalletAnalysis from "@/pages/live-wallet-analysis";
 import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import LiveLPResults from "@/pages/live-lp-results";
@@ -521,6 +522,7 @@ function Router() {
         <Route path="/current-financial-status" component={CurrentFinancialStatus} />
         <Route path="/wallet-management-center" component={WalletManagementCenter} />
         <Route path="/wallet-security-assessment" component={WalletSecurityAssessment} />
+        <Route path="/live-transaction-center" component={LiveTransactionCenter} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
