@@ -260,7 +260,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={ImmediateExecution} />
+        <Route path="/" component={AddressValidation} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
