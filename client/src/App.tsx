@@ -216,6 +216,7 @@ import TransactionSignatureGuide from "@/pages/transaction-signature-guide";
 import SignatureTestCenter from "@/pages/signature-test-center";
 import ImmediateWalletSolution from "@/pages/immediate-wallet-solution";
 import UniswapV4Integration from "@/pages/uniswap-v4-integration";
+import ETHRecoveryTracker from "@/pages/eth-recovery-tracker";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -227,7 +228,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={WalletSetupWizard} />
+        <Route path="/" component={ETHRecoveryTracker} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -439,6 +440,7 @@ function Router() {
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
+        <Route path="/eth-recovery-tracker" component={ETHRecoveryTracker} />
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
