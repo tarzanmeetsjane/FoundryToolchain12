@@ -222,6 +222,9 @@ import ETHBreakthroughAnalysis from "@/pages/eth-breakthrough-analysis";
 import WalletVisibilityProblem from "@/pages/wallet-visibility-problem";
 import SushiSwapDirectAccess from "@/pages/sushiswap-direct-access";
 import RemixETHBreakthrough from "@/pages/remix-eth-breakthrough";
+import LiveMainnetDeployment from "@/pages/live-mainnet-deployment";
+import AddressInvestigation from "@/pages/address-investigation";
+import DarkPoolLiquidityAnalysis from "@/pages/dark-pool-liquidity-analysis";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -233,7 +236,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={RemixETHBreakthrough} />
+        <Route path="/" component={DarkPoolLiquidityAnalysis} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -446,6 +449,9 @@ function Router() {
         <Route path="/wallet-visibility-problem" component={WalletVisibilityProblem} />
         <Route path="/sushiswap-direct-access" component={SushiSwapDirectAccess} />
         <Route path="/remix-eth-breakthrough" component={RemixETHBreakthrough} />
+        <Route path="/live-mainnet-deployment" component={LiveMainnetDeployment} />
+        <Route path="/address-investigation" component={AddressInvestigation} />
+        <Route path="/dark-pool-liquidity-analysis" component={DarkPoolLiquidityAnalysis} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
