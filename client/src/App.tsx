@@ -235,6 +235,7 @@ import HoneypotVictimOutreach from "@/pages/honeypot-victim-outreach";
 import ProactiveHoneypotInvestigation from "@/pages/proactive-honeypot-investigation";
 import CompleteRecoveryExecution from "@/pages/complete-recovery-execution";
 import UNIBalanceVerification from "@/pages/uni-balance-verification";
+import CompleteFinancialAnalysis from "@/pages/complete-financial-analysis";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -246,7 +247,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={UNIBalanceVerification} />
+        <Route path="/" component={CompleteFinancialAnalysis} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -472,6 +473,7 @@ function Router() {
         <Route path="/proactive-honeypot-investigation" component={ProactiveHoneypotInvestigation} />
         <Route path="/complete-recovery-execution" component={CompleteRecoveryExecution} />
         <Route path="/uni-balance-verification" component={UNIBalanceVerification} />
+        <Route path="/complete-financial-analysis" component={CompleteFinancialAnalysis} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
