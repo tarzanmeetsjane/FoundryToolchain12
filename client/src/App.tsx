@@ -247,6 +247,7 @@ import HoneypotInvestigation from "@/pages/honeypot-investigation";
 import ContractAnalyzer from "@/pages/contract-analyzer";
 import ServiceBasedFoundation from "@/pages/service-based-foundation";
 import RevenueSharingFoundation from "@/pages/revenue-sharing-foundation";
+import FoundationLaunchDashboard from "@/pages/foundation-launch-dashboard";
 import LiveWalletAnalysis from "@/pages/live-wallet-analysis";
 import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import LiveLPResults from "@/pages/live-lp-results";
@@ -511,6 +512,7 @@ function Router() {
         <Route path="/contract-analyzer-new" component={ContractAnalyzer} />
         <Route path="/service-based-foundation" component={ServiceBasedFoundation} />
         <Route path="/revenue-sharing-foundation" component={RevenueSharingFoundation} />
+        <Route path="/foundation-launch-dashboard" component={FoundationLaunchDashboard} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
