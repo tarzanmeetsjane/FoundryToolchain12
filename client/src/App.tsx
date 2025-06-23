@@ -243,6 +243,8 @@ import DEXScreenerVerification from "@/pages/dex-screener-verification";
 import TransactionFailureAnalysis from "@/pages/transaction-failure-analysis";
 import WalletPaymentAccess from "@/pages/wallet-payment-access";
 import AssetInvestigationCenter from "@/pages/asset-investigation-center";
+import HoneypotInvestigation from "@/pages/honeypot-investigation";
+import ContractAnalyzer from "@/pages/contract-analyzer";
 import LiveWalletAnalysis from "@/pages/live-wallet-analysis";
 import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import LiveLPResults from "@/pages/live-lp-results";
@@ -503,6 +505,8 @@ function Router() {
         <Route path="/transaction-failure-analysis" component={TransactionFailureAnalysis} />
         <Route path="/wallet-payment-access" component={WalletPaymentAccess} />
         <Route path="/asset-investigation-center" component={AssetInvestigationCenter} />
+        <Route path="/honeypot-investigation" component={HoneypotInvestigation} />
+        <Route path="/contract-analyzer-new" component={ContractAnalyzer} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
