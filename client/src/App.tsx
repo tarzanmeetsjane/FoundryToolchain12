@@ -245,6 +245,7 @@ import TransactionFailureAnalysis from "@/pages/transaction-failure-analysis";
 import WalletPaymentAccess from "@/pages/wallet-payment-access";
 import AssetInvestigationCenter from "@/pages/asset-investigation-center";
 import LiveWalletAnalysis from "@/pages/live-wallet-analysis";
+import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import Navigation from "@/components/navigation";
 import { WalletProvider } from "@/components/wallet-provider";
 import InstantValueRealization from '@/pages/instant-value-realization';
@@ -256,7 +257,7 @@ function Router() {
     <div>
       <Navigation />
       <Switch>
-        <Route path="/" component={LiveWalletAnalysis} />
+        <Route path="/" component={LiquidityPoolInvestigation} />
         <Route path="/liquidity-scanner" component={LiquidityScanner} />
         <Route path="/wallet-security" component={WalletSecurity} />
         <Route path="/alerts" component={AlertsPage} />
@@ -492,6 +493,7 @@ function Router() {
         <Route path="/wallet-payment-access" component={WalletPaymentAccess} />
         <Route path="/asset-investigation-center" component={AssetInvestigationCenter} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
+        <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/signature-test-center" component={SignatureTestCenter} />
         <Route path="/immediate-wallet-solution" component={ImmediateWalletSolution} />
         <Route path="/uniswap-v4-integration" component={UniswapV4Integration} />
