@@ -1,0 +1,7 @@
+Address,Blockchain,Type,Balance,Last Active,File Path,Line Number
+0x742d35Cc6634C0532925a3b8D295759d4C1D5D5F,Ethereum,EOA,,,contracts/DeFiProtocol.sol,8
+0x8894E0a0c962CB723c1976a4421c95949bE2D4E3,Ethereum,EOA,,,scripts/liquidity_manager.py,9
+0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F,Ethereum,EOA,,,scripts/liquidity_manager.py,10
+0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2,Ethereum,EOA,,,src/wallet_config.js,4
+0x742d35Cc6634C0532925a3b8D295759d4C1D5D5F,Ethereum,EOA,,,src/wallet_config.js,7
+0x8894E0a0c962CB723c1976a4421c95949bE2D4E3,Ethereum,EOA,,,src/wallet_config.js,8
