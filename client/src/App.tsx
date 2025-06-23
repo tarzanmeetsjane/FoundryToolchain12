@@ -249,6 +249,7 @@ import ServiceBasedFoundation from "@/pages/service-based-foundation";
 import RevenueSharingFoundation from "@/pages/revenue-sharing-foundation";
 import FoundationLaunchDashboard from "@/pages/foundation-launch-dashboard";
 import HoneypotDeceptionAnalysis from "@/pages/honeypot-deception-analysis";
+import CurrentFinancialStatus from "@/pages/current-financial-status";
 import LiveWalletAnalysis from "@/pages/live-wallet-analysis";
 import LiquidityPoolInvestigation from "@/pages/liquidity-pool-investigation";
 import LiveLPResults from "@/pages/live-lp-results";
@@ -515,6 +516,7 @@ function Router() {
         <Route path="/revenue-sharing-foundation" component={RevenueSharingFoundation} />
         <Route path="/foundation-launch-dashboard" component={FoundationLaunchDashboard} />
         <Route path="/honeypot-deception-analysis" component={HoneypotDeceptionAnalysis} />
+        <Route path="/current-financial-status" component={CurrentFinancialStatus} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
