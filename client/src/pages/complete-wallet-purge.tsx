@@ -81,22 +81,22 @@ export default function CompleteWalletPurge() {
 
   const strategicAssets = [
     {
-      name: "Ethereum Games (ETHG)",
-      symbol: "ETHG",
-      balance: "2.10M",
-      value: "$681,196.21",
-      status: "HONEYPOT EVIDENCE - STRATEGIC KEEP",
-      origin: "Original Honeypot Investment - PROOF OF VICTIM STATUS",
-      purpose: "Foundation Credibility & Victim Proof"
-    },
-    {
       name: "ETHG Recovery",
       symbol: "ETHGR", 
       balance: "1.99M",
-      value: "Your Recovery Contract - SAFE",
-      status: "RECOVERY SUCCESS - YOURS",
+      value: "$681,196.21",
+      status: "YOUR RECOVERY SUCCESS - VALUABLE",
       origin: "Your Legitimate Recovery Contract",
-      purpose: "Operational Funding for Foundation"
+      purpose: "Foundation Funding & Operations"
+    },
+    {
+      name: "Ethereum Games (ETHG)",
+      symbol: "ETHG",
+      balance: "2.10M",
+      value: "HONEYPOT - NO REAL VALUE",
+      status: "HONEYPOT EVIDENCE - NEUTRALIZE CONTROL",
+      origin: "Original Honeypot Investment - PROOF OF VICTIM STATUS",
+      purpose: "Foundation Credibility (After Neutralization)"
     },
     {
       name: "Ethereum",
@@ -360,7 +360,7 @@ completeWalletPurge().then(result => {
         <Alert className="foundation-card border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700 foundation-slide-up">
           <Trash2 className="h-6 w-6 text-red-600 dark:text-red-400" />
           <AlertDescription className="foundation-text-body text-red-800 dark:text-red-200">
-            <strong className="foundation-text-accent">COMPLETE PURGE + AIRDROP BLOCK:</strong> Removing ALL unknown tokens (AICC $1,657.63, hidden SHIBA VOUCHER, ERC20 spam) while protecting YOUR legitimate ETHG ($681K) and ETHGR recovery tokens. Zero tolerance for unsolicited assets.
+            <strong className="foundation-text-accent">COMPLETE PURGE + HONEYPOT NEUTRALIZATION:</strong> Removing ALL unknown tokens (AICC $1,657.63, hidden SHIBA VOUCHER, ERC20 spam) while protecting YOUR valuable ETHGR recovery tokens ($681K) and neutralizing honeypot ETHG control. Zero tolerance for threats.
           </AlertDescription>
         </Alert>
 
@@ -512,7 +512,7 @@ completeWalletPurge().then(result => {
             <Alert className="border-amber-500 bg-amber-50 dark:bg-amber-900/20 mt-4">
               <Target className="h-4 w-4" />
               <AlertDescription className="text-amber-800 dark:text-amber-200">
-                <strong>STRATEGIC ADVANTAGE:</strong> Your ETHG honeypot tokens prove authentic victim experience, giving you unmatched credibility when helping other victims. This transforms your loss into foundation strength.
+                <strong>CRITICAL PRIORITY:</strong> Your ETHGR recovery tokens ($681K) are the valuable foundation assets. ETHG honeypot tokens must have their control neutralized before portfolio activation.
               </AlertDescription>
             </Alert>
           </CardContent>
@@ -657,7 +657,7 @@ completeWalletPurge().then(result => {
               <Alert className="foundation-card border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700">
                 <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
                 <AlertDescription className="foundation-text-body text-red-800 dark:text-red-200">
-                  <strong className="foundation-text-accent">ZERO TOLERANCE PURGE + AIRDROP BLOCK:</strong> Remove ALL unknown tokens (AICC $1,657.63, hidden SHIBA VOUCHER, ERC20 spam) while protecting YOUR ETHG ($681K) and ETHGR recovery tokens. Clean wallet = secure operations.
+                  <strong className="foundation-text-accent">ZERO TOLERANCE PURGE + HONEYPOT NEUTRALIZATION:</strong> Remove ALL unknown tokens (AICC $1,657.63, hidden SHIBA VOUCHER, ERC20 spam) while protecting YOUR valuable ETHGR recovery tokens ($681K) and neutralizing honeypot ETHG control.
                 </AlertDescription>
               </Alert>
 
@@ -681,12 +681,11 @@ completeWalletPurge().then(result => {
                 </Button>
                 
                 <Button
-                  onClick={() => window.open('/portfolio-activation-ready', '_self')}
-                  className="foundation-button-secondary h-12"
-                  disabled={!purgeResults?.success}
+                  onClick={() => window.open('/honeypot-neutralization', '_self')}
+                  className="foundation-button-primary h-12"
                 >
-                  <TrendingUp className="h-5 w-5 mr-2" />
-                  Activate Portfolio
+                  <Shield className="h-5 w-5 mr-2" />
+                  Neutralize Honeypot
                 </Button>
                 
                 <Button
