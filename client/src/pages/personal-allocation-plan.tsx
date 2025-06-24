@@ -412,11 +412,11 @@ export default function PersonalAllocationPlan() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button
-                  onClick={() => window.open('/immediate-conversion-execution', '_self')}
+                  onClick={() => window.open('/pre-execution-security-check', '_self')}
                   className="foundation-button-primary h-12"
                 >
                   <DollarSign className="h-5 w-5 mr-2" />
-                  Execute $50K Now
+                  Security Check First
                 </Button>
                 
                 <Button

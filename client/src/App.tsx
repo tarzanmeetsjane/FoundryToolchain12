@@ -74,6 +74,8 @@ import LiquidEthOpportunities from "@/pages/liquid-eth-opportunities";
 import CleanFoundationContract from "@/pages/clean-foundation-contract";
 import PersonalAllocationPlan from "@/pages/personal-allocation-plan";
 import ImmediateConversionExecution from "@/pages/immediate-conversion-execution";
+import PreExecutionSecurityCheck from "@/pages/pre-execution-security-check";
+import ExecutionRoadmap from "@/pages/execution-roadmap";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -600,6 +602,8 @@ function Router() {
         <Route path="/clean-foundation-contract" component={CleanFoundationContract} />
         <Route path="/personal-allocation-plan" component={PersonalAllocationPlan} />
         <Route path="/immediate-conversion-execution" component={ImmediateConversionExecution} />
+        <Route path="/pre-execution-security-check" component={PreExecutionSecurityCheck} />
+        <Route path="/execution-roadmap" component={ExecutionRoadmap} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
