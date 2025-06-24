@@ -532,6 +532,8 @@ function Router() {
         <Route path="/curve-finance-integration" component={CurveFinanceIntegration} />
         <Route path="/ethgr-token-integration" component={EthgrTokenIntegration} />
         <Route path="/free-token-submission" component={FreeTokenSubmission} />
+        <Route path="/ethgr-value-creation" component={EthgrValueCreation} />
+        <Route path="/remix-vm-to-mainnet" component={RemixVmToMainnet} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
