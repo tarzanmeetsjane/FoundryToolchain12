@@ -573,6 +573,9 @@ function Router() {
         <Route path="/wallet-verification" component={WalletRetracementCenter} />
         <Route path="/remix-eth-recovery" component={RemixETHRecovery} />
         <Route path="/widget" component={WidgetPage} />
+        <Route path="/portfolio-value-integration" component={PortfolioValueIntegration} />
+        <Route path="/total-control-tokenomics" component={TotalControlTokenomics} />
+        <Route path="/pre-launch-security-audit" component={PreLaunchSecurityAudit} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
