@@ -698,6 +698,14 @@ completeWalletPurge().then(result => {
                 </Button>
                 
                 <Button
+                  onClick={() => window.open('/clean-foundation-contract', '_self')}
+                  className="foundation-button-secondary h-12"
+                >
+                  <Shield className="h-5 w-5 mr-2" />
+                  Clean Contracts
+                </Button>
+                
+                <Button
                   onClick={() => window.open('/wallet-security-cleanup', '_self')}
                   className="foundation-button-secondary h-12"
                 >
