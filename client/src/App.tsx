@@ -80,6 +80,7 @@ import TaxStrategyPlanning from "@/pages/tax-strategy-planning";
 import ImmediateExecutionCenter from "@/pages/immediate-execution-center";
 import LiveSecurityScan from "@/pages/live-security-scan";
 import ConversionExecutionCenter from "@/pages/conversion-execution-center";
+import LiveConversionExecution from "@/pages/live-conversion-execution";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -612,6 +613,7 @@ function Router() {
         <Route path="/immediate-execution-center" component={ImmediateExecutionCenter} />
         <Route path="/live-security-scan" component={LiveSecurityScan} />
         <Route path="/conversion-execution-center" component={ConversionExecutionCenter} />
+        <Route path="/live-conversion-execution" component={LiveConversionExecution} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />

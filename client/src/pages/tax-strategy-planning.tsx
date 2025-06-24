@@ -13,7 +13,8 @@ import {
   TrendingUp,
   Shield,
   Target,
-  Calendar
+  Calendar,
+  Zap
 } from "lucide-react";
 
 export default function TaxStrategyPlanning() {
