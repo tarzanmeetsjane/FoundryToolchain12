@@ -58,6 +58,8 @@ import EtherscanContractAnalysis from "@/pages/etherscan-contract-analysis";
 import EthRecoveryForLiquidity from "@/pages/eth-recovery-for-liquidity";
 import TransactionTraceAnalysis from "@/pages/transaction-trace-analysis";
 import LiveEthRecoveryExecution from "@/pages/live-eth-recovery-execution";
+import ContractWalletExtraction from "@/pages/contract-wallet-extraction";
+import PortfolioValueIntegration from "@/pages/portfolio-value-integration";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
