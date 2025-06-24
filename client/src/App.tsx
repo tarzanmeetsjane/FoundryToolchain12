@@ -63,6 +63,7 @@ import PortfolioValueIntegration from "@/pages/portfolio-value-integration";
 import TotalControlTokenomics from "@/pages/total-control-tokenomics";
 import PreLaunchSecurityAudit from "@/pages/pre-launch-security-audit";
 import FoundationIntegrityVerification from "@/pages/foundation-integrity-verification";
+import SecurityAuditResults from "@/pages/security-audit-results";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -578,6 +579,7 @@ function Router() {
         <Route path="/total-control-tokenomics" component={TotalControlTokenomics} />
         <Route path="/pre-launch-security-audit" component={PreLaunchSecurityAudit} />
         <Route path="/foundation-integrity-verification" component={FoundationIntegrityVerification} />
+        <Route path="/security-audit-results" component={SecurityAuditResults} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />

@@ -1,8 +1,8 @@
+@import './styles/foundation-theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/foundation-theme.css';
 
 :root {
   --background: 220 13% 4%; /* #0B0E11 */
