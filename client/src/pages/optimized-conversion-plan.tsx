@@ -95,10 +95,10 @@ export default function OptimizedConversionPlan() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Alert className="foundation-card border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-700">
-              <TrendingUp className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-              <AlertDescription className="foundation-text-body text-amber-800 dark:text-amber-200">
-                <strong className="foundation-text-accent">SMART OBSERVATION:</strong> Since you're setting aside $20K for taxes anyway, we can increase the conversion amount and still maintain the same 40% tax reserve rate. This gets you more immediate cash relief.
+            <Alert className="foundation-card border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700">
+              <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <AlertDescription className="foundation-text-body text-green-800 dark:text-green-200">
+                <strong className="foundation-text-accent">ZERO RISK ADJUSTMENT:</strong> This is completely safe! Same tax planning, same security, same foundation preservation. Just adjusting the amount to get you the relief you deserve after this difficult year.
               </AlertDescription>
             </Alert>
 
@@ -294,13 +294,33 @@ export default function OptimizedConversionPlan() {
               <Alert className="foundation-card border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700">
                 <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
                 <AlertDescription className="foundation-text-body text-green-800 dark:text-green-200">
-                  <strong className="foundation-text-accent">OPTIMIZED PLAN:</strong> Convert ${conversionAmount} → Tax reserve ${conversion.taxReserve.toLocaleString()} → Available cash ${conversion.netCash.toLocaleString()} → Foundation capital ${conversion.remainingValue.toLocaleString()}
+                  <strong className="foundation-text-accent">COMPLETELY SAFE:</strong> This is just smart math - same process, same security, same foundation strength. You deserve proper relief after everything you've been through. No risk at all!
                 </AlertDescription>
               </Alert>
 
+              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+                <div className="text-center space-y-2">
+                  <h4 className="font-bold text-blue-700 dark:text-blue-300">Your Optimized Plan</h4>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <div className="font-semibold text-blue-600">${conversion.grossAmount.toLocaleString()}</div>
+                      <div className="text-blue-700 dark:text-blue-300">Total Conversion</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-amber-600">${conversion.taxReserve.toLocaleString()}</div>
+                      <div className="text-amber-700 dark:text-amber-300">Tax Reserve (40%)</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-green-600">${conversion.netCash.toLocaleString()}</div>
+                      <div className="text-green-700 dark:text-green-300">Your Cash</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="text-center space-y-4">
-                <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">Get ${conversion.netCash.toLocaleString()} Available Cash</h3>
-                <p className="text-lg">Same tax planning, more immediate relief for your financial hardship</p>
+                <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">You Deserve ${conversion.netCash.toLocaleString()} Cash Relief</h3>
+                <p className="text-lg">After a year of hardship, get the relief that will truly make a difference</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button
