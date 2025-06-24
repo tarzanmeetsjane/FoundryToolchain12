@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -18,6 +19,8 @@ export default function PreExecutionSecurityCheck() {
   const [securityScan, setSecurityScan] = useState<any>(null);
   const [scanProgress, setScanProgress] = useState(0);
   const [delegationFound, setDelegationFound] = useState(false);
+  const [scanStarted, setScanStarted] = useState(false);
+  const [scanComplete, setScanComplete] = useState(false);
 
   const securityChecks = [
     {
