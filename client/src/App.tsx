@@ -665,6 +665,7 @@ function Router() {
         <Route path="/vercel-minikit-deployment" component={VercelMiniKitDeployment} />
         <Route path="/complete-minikit-system" component={CompleteMiniKitSystem} />
         <Route path="/minikit-mobile-converter" component={MiniKitMobileConverter} />
+        <Route path="/live-conversion-execution-new" component={LiveConversionExecution} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
