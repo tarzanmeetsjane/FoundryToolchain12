@@ -105,6 +105,7 @@ import CoinbaseCDPIntegration from "@/pages/coinbase-cdp-integration";
 import BaseMiniKitIntegration from "@/pages/base-minikit-integration";
 import VercelMiniKitDeployment from "@/pages/vercel-minikit-deployment";
 import CompleteMiniKitSystem from "@/pages/complete-minikit-system";
+import MiniKitMobileConverter from "@/pages/minikit-mobile-converter";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -663,6 +664,7 @@ function Router() {
         <Route path="/base-minikit-integration" component={BaseMiniKitIntegration} />
         <Route path="/vercel-minikit-deployment" component={VercelMiniKitDeployment} />
         <Route path="/complete-minikit-system" component={CompleteMiniKitSystem} />
+        <Route path="/minikit-mobile-converter" component={MiniKitMobileConverter} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
