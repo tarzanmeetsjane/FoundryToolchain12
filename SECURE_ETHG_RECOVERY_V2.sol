@@ -4,238 +4,236 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
 
 /**
- * @title ETHG Recovery Token (ETHGR) - Secure Production Version
- * @dev Security-hardened version addressing Etherscan vulnerabilities
- * @author Quantum Secure Trader Platform
+ * @title ETHG Recovery Token V2
+ * @dev Secure recovery token with proper burn mechanisms and decentralization
+ * Contract Address: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
+ * Enhanced with burn functionality and security measures
  */
-contract ETHGRecoverySecure is ERC20, Ownable, ReentrancyGuard, Pausable {
+contract ETHGRecoveryV2 is ERC20, Ownable, ReentrancyGuard {
     
-    // Constants
-    uint256 public constant MAX_SUPPLY = 2000000 * 10**18; // 2M max supply
-    address public constant AUTHORIZED_MIGRATOR = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
+    // Foundation and burn addresses
+    address public constant FOUNDATION_WALLET = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
+    address public constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
     
-    // Migration tracking with enhanced security
-    mapping(address => bool) public hasMigrated;
-    mapping(address => uint256) public migrationAmount;
-    mapping(address => bool) public authorizedMigrators;
+    // Token economics
+    uint256 public constant TOTAL_RECOVERY_SUPPLY = 1990000 * 10**18;
+    uint256 public constant FOUNDATION_RESERVE = 605570 * 10**18; // Victim assistance reserve
+    uint256 public constant RELIEF_CONVERSION = 219300 * 10**18;  // $45,000 relief conversion
     
-    // Security controls
-    bool public migrationEnabled = true;
-    bool public emergencyMigrationLocked = false;
-    uint256 public totalMigrated = 0;
-    uint256 public migrationDeadline;
+    // Burn tracking
+    uint256 public totalBurned;
+    mapping(address => uint256) public burnHistory;
     
-    // Events
-    event TokensMigrated(address indexed holder, uint256 amount, string migrationType);
-    event MigrationStatusChanged(bool enabled);
-    event AuthorizedMigratorAdded(address indexed migrator);
-    event AuthorizedMigratorRemoved(address indexed migrator);
-    event EmergencyMigrationLocked();
+    // Recovery tracking
+    mapping(address => bool) public registeredVictims;
+    mapping(address => uint256) public victimAllocations;
     
-    // Modifiers
-    modifier onlyAuthorizedMigrator() {
-        require(authorizedMigrators[msg.sender] || msg.sender == AUTHORIZED_MIGRATOR, "Unauthorized migrator");
-        _;
-    }
+    uint256 public totalVictimsRegistered;
+    uint256 public totalRecoveryDistributed;
+    bool public recoveryActive = true;
     
-    modifier migrationActive() {
-        require(migrationEnabled, "Migration disabled");
-        require(block.timestamp <= migrationDeadline, "Migration deadline passed");
-        require(!emergencyMigrationLocked, "Emergency migration locked");
-        _;
-    }
+    // Security features
+    uint256 public maxTransferAmount = 100000 * 10**18; // Prevent large dumps
+    mapping(address => bool) public exemptFromLimits;
     
-    modifier validMigrationAmount(uint256 amount) {
-        require(amount > 0, "Amount must be greater than 0");
-        require(amount <= 10000000 * 10**18, "Amount exceeds reasonable limit");
-        require(totalSupply() + amount <= MAX_SUPPLY, "Would exceed max supply");
-        _;
-    }
+    event TokensBurned(address indexed burner, uint256 amount, string reason);
+    event VictimRegistered(address indexed victim, uint256 allocation);
+    event RecoveryDistributed(address indexed victim, uint256 amount);
+    event FoundationConversion(uint256 amount, string purpose);
+    event TransferLimitUpdated(uint256 newLimit);
     
-    constructor() ERC20("ETHG Recovery Secure", "ETHGRS") Ownable(msg.sender) {
-        // Set migration deadline to 90 days from deployment
-        migrationDeadline = block.timestamp + 90 days;
+    constructor() ERC20("ETHG Recovery V2", "ETHGR") Ownable(msg.sender) {
+        // Mint foundation reserve for victim assistance
+        _mint(FOUNDATION_WALLET, FOUNDATION_RESERVE);
         
-        // Authorize the original wallet
-        authorizedMigrators[AUTHORIZED_MIGRATOR] = true;
-        emit AuthorizedMigratorAdded(AUTHORIZED_MIGRATOR);
+        // Mint relief conversion amount to foundation for $45,000 conversion
+        _mint(FOUNDATION_WALLET, RELIEF_CONVERSION);
+        
+        // Burn remaining supply to prevent centralization
+        uint256 remainingSupply = TOTAL_RECOVERY_SUPPLY - FOUNDATION_RESERVE - RELIEF_CONVERSION;
+        if (remainingSupply > 0) {
+            _mint(address(this), remainingSupply);
+            _burn(address(this), remainingSupply);
+            totalBurned += remainingSupply;
+            emit TokensBurned(address(this), remainingSupply, "Initial supply burn for decentralization");
+        }
+        
+        // Set foundation wallet as exempt from transfer limits
+        exemptFromLimits[FOUNDATION_WALLET] = true;
+        exemptFromLimits[address(this)] = true;
+        
+        // Transfer ownership to foundation
+        if (msg.sender != FOUNDATION_WALLET) {
+            _transferOwnership(FOUNDATION_WALLET);
+        }
     }
     
     /**
-     * @dev Secure migration for authorized wallet - FIXED VERSION
-     * Amount: 1,990,000 ETHG tokens
+     * @dev Burn tokens from caller's balance
+     * @param amount Amount of tokens to burn
+     * @param reason Reason for burning tokens
      */
-    function migrateAuthorizedETHG() external onlyAuthorizedMigrator migrationActive nonReentrant {
-        require(!hasMigrated[msg.sender], "Already migrated");
+    function burnTokens(uint256 amount, string memory reason) external nonReentrant {
+        require(amount > 0, "Amount must be positive");
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         
-        uint256 amount = 1990000 * 10**18; // 1,990,000 tokens
+        _burn(msg.sender, amount);
+        totalBurned += amount;
+        burnHistory[msg.sender] += amount;
         
-        // Update state before minting (CEI pattern)
-        hasMigrated[msg.sender] = true;
-        migrationAmount[msg.sender] = amount;
-        totalMigrated += amount;
-        
-        // Mint tokens
-        _mint(msg.sender, amount);
-        
-        emit TokensMigrated(msg.sender, amount, "Authorized");
+        emit TokensBurned(msg.sender, amount, reason);
     }
     
     /**
-     * @dev Secure general migration with strict controls
+     * @dev Foundation burn function for supply management
+     * @param amount Amount to burn from foundation holdings
+     * @param reason Purpose of burn
      */
-    function migrateVerifiedETHG(uint256 amount, bytes calldata proof) 
-        external 
-        migrationActive 
-        nonReentrant 
-        validMigrationAmount(amount) 
-    {
-        require(!hasMigrated[msg.sender], "Already migrated");
-        require(authorizedMigrators[msg.sender], "Must be pre-authorized");
-        require(_verifyMigrationProof(msg.sender, amount, proof), "Invalid migration proof");
+    function foundationBurn(uint256 amount, string memory reason) external onlyOwner nonReentrant {
+        require(amount > 0, "Amount must be positive");
+        require(balanceOf(FOUNDATION_WALLET) >= amount, "Insufficient foundation balance");
         
-        // Update state before minting (CEI pattern)
-        hasMigrated[msg.sender] = true;
-        migrationAmount[msg.sender] = amount;
-        totalMigrated += amount;
+        _burn(FOUNDATION_WALLET, amount);
+        totalBurned += amount;
+        burnHistory[FOUNDATION_WALLET] += amount;
         
-        // Mint tokens
-        _mint(msg.sender, amount);
+        emit TokensBurned(FOUNDATION_WALLET, amount, reason);
+    }
+    
+    /**
+     * @dev Send tokens to burn address (alternative burn method)
+     * @param amount Amount to send to burn address
+     */
+    function sendToBurnAddress(uint256 amount) external nonReentrant {
+        require(amount > 0, "Amount must be positive");
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         
-        emit TokensMigrated(msg.sender, amount, "Verified");
-    }
-    
-    /**
-     * @dev Add authorized migrator (owner only)
-     */
-    function addAuthorizedMigrator(address migrator) external onlyOwner {
-        require(migrator != address(0), "Invalid address");
-        require(!authorizedMigrators[migrator], "Already authorized");
+        _transfer(msg.sender, BURN_ADDRESS, amount);
+        totalBurned += amount;
+        burnHistory[msg.sender] += amount;
         
-        authorizedMigrators[migrator] = true;
-        emit AuthorizedMigratorAdded(migrator);
+        emit TokensBurned(msg.sender, amount, "Sent to burn address");
     }
     
     /**
-     * @dev Remove authorized migrator (owner only)
+     * @dev Register fraud victim for recovery allocation
      */
-    function removeAuthorizedMigrator(address migrator) external onlyOwner {
-        require(authorizedMigrators[migrator], "Not authorized");
-        require(migrator != AUTHORIZED_MIGRATOR, "Cannot remove primary migrator");
+    function registerVictim(address victim, uint256 allocation) external onlyOwner {
+        require(!registeredVictims[victim], "Victim already registered");
+        require(allocation > 0, "Allocation must be positive");
+        require(balanceOf(FOUNDATION_WALLET) >= allocation, "Insufficient foundation balance");
         
-        authorizedMigrators[migrator] = false;
-        emit AuthorizedMigratorRemoved(migrator);
+        registeredVictims[victim] = true;
+        victimAllocations[victim] = allocation;
+        totalVictimsRegistered++;
+        
+        emit VictimRegistered(victim, allocation);
     }
     
     /**
-     * @dev Toggle migration status (owner only)
+     * @dev Distribute recovery tokens to registered victim
      */
-    function toggleMigration() external onlyOwner {
-        migrationEnabled = !migrationEnabled;
-        emit MigrationStatusChanged(migrationEnabled);
+    function distributeRecovery(address victim) external onlyOwner nonReentrant {
+        require(registeredVictims[victim], "Victim not registered");
+        require(victimAllocations[victim] > 0, "No allocation available");
+        require(recoveryActive, "Recovery distribution paused");
+        
+        uint256 allocation = victimAllocations[victim];
+        victimAllocations[victim] = 0;
+        totalRecoveryDistributed += allocation;
+        
+        _transfer(FOUNDATION_WALLET, victim, allocation);
+        
+        emit RecoveryDistributed(victim, allocation);
     }
     
     /**
-     * @dev Permanently lock emergency migration (owner only, irreversible)
+     * @dev Foundation conversion for relief operations
      */
-    function lockEmergencyMigration() external onlyOwner {
-        emergencyMigrationLocked = true;
-        emit EmergencyMigrationLocked();
+    function foundationConversion(uint256 amount, string memory purpose) external onlyOwner {
+        require(amount > 0, "Amount must be positive");
+        require(balanceOf(FOUNDATION_WALLET) >= amount, "Insufficient foundation balance");
+        
+        emit FoundationConversion(amount, purpose);
     }
     
     /**
-     * @dev Emergency pause (owner only)
+     * @dev Update maximum transfer amount
      */
-    function pause() external onlyOwner {
-        _pause();
+    function updateTransferLimit(uint256 newLimit) external onlyOwner {
+        maxTransferAmount = newLimit;
+        emit TransferLimitUpdated(newLimit);
     }
     
     /**
-     * @dev Unpause (owner only)
+     * @dev Set address exemption from transfer limits
      */
-    function unpause() external onlyOwner {
-        _unpause();
+    function setExemptFromLimits(address account, bool exempt) external onlyOwner {
+        exemptFromLimits[account] = exempt;
     }
     
     /**
-     * @dev Override transfer to include pause functionality
+     * @dev Override transfer to implement security limits
      */
-    function transfer(address to, uint256 amount) public virtual override whenNotPaused returns (bool) {
+    function transfer(address to, uint256 amount) public virtual override returns (bool) {
+        if (!exemptFromLimits[msg.sender] && to != BURN_ADDRESS) {
+            require(amount <= maxTransferAmount, "Transfer amount exceeds limit");
+        }
         return super.transfer(to, amount);
     }
     
     /**
-     * @dev Override transferFrom to include pause functionality
+     * @dev Override transferFrom with security limits
      */
-    function transferFrom(address from, address to, uint256 amount) 
-        public 
-        virtual 
-        override 
-        whenNotPaused 
-        returns (bool) 
-    {
+    function transferFrom(address from, address to, uint256 amount) public virtual override returns (bool) {
+        if (!exemptFromLimits[from] && to != BURN_ADDRESS) {
+            require(amount <= maxTransferAmount, "Transfer amount exceeds limit");
+        }
         return super.transferFrom(from, to, amount);
     }
     
     /**
-     * @dev Burn tokens (anyone can burn their own tokens)
+     * @dev Get burn statistics
      */
-    function burn(uint256 amount) external {
-        _burn(msg.sender, amount);
-    }
-    
-    /**
-     * @dev Get migration info for an address
-     */
-    function getMigrationInfo(address account) external view returns (
-        bool migrated,
-        uint256 amount,
-        bool authorized,
-        uint256 balance
+    function getBurnStats() external view returns (
+        uint256 totalBurnedAmount,
+        uint256 burnAddressBalance,
+        uint256 circulatingSupply
     ) {
         return (
-            hasMigrated[account],
-            migrationAmount[account],
-            authorizedMigrators[account],
-            balanceOf(account)
+            totalBurned,
+            balanceOf(BURN_ADDRESS),
+            totalSupply() - balanceOf(BURN_ADDRESS)
         );
     }
     
     /**
-     * @dev Get contract status
+     * @dev Get foundation statistics
      */
-    function getContractStatus() external view returns (
-        bool migrationActive,
-        uint256 deadline,
-        uint256 totalMigrated_,
-        uint256 maxSupply,
-        bool emergencyLocked
+    function getFoundationStats() external view returns (
+        uint256 foundationBalance,
+        uint256 victimsCount,
+        uint256 recoveryDistributed,
+        uint256 reserveRemaining
     ) {
         return (
-            migrationEnabled && block.timestamp <= migrationDeadline && !emergencyMigrationLocked,
-            migrationDeadline,
-            totalMigrated,
-            MAX_SUPPLY,
-            emergencyMigrationLocked
+            balanceOf(FOUNDATION_WALLET),
+            totalVictimsRegistered,
+            totalRecoveryDistributed,
+            FOUNDATION_RESERVE - totalRecoveryDistributed
         );
     }
     
     /**
-     * @dev Verify migration proof (placeholder - implement actual verification)
+     * @dev Emergency functions for security
      */
-    function _verifyMigrationProof(address, uint256, bytes calldata) internal pure returns (bool) {
-        // Implement actual proof verification logic here
-        // For now, return false to prevent unauthorized migrations
-        return false;
+    function pauseRecovery() external onlyOwner {
+        recoveryActive = false;
     }
     
-    /**
-     * @dev Emergency withdrawal (owner only, for any accidentally sent ETH)
-     */
-    function emergencyWithdraw() external onlyOwner {
-        payable(owner()).transfer(address(this).balance);
+    function resumeRecovery() external onlyOwner {
+        recoveryActive = true;
     }
 }
