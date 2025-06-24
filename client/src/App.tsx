@@ -54,6 +54,7 @@ import RemixVmToMainnet from "@/pages/remix-vm-to-mainnet";
 import AntiHoneypotContract from "@/pages/anti-honeypot-contract";
 import GaslessProtectedContract from "@/pages/gasless-protected-contract";
 import WalletProtectionSystem from "@/pages/wallet-protection-system";
+import EtherscanContractAnalysis from "@/pages/etherscan-contract-analysis";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";

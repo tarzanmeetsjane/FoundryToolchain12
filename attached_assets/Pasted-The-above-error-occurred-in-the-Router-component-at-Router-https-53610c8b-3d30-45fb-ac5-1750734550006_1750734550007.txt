@@ -1,0 +1,18 @@
+The above error occurred in the <Router> component:
+
+    at Router (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/src/App.tsx?t=1750733342231&v=2tr_6NjsOZcfOLPKot8rO:1540:166)
+    at div
+    at Provider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-FTZEFKXK.js?v=e6dce23e:22:15)
+    at TooltipProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=e6dce23e:61:5)
+    at QueryClientProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BQZAI26I.js?v=e6dce23e:2932:3)
+    at Le (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/connectkit.js?v=e6dce23e:10909:42)
+    at Web3ContextProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/connectkit.js?v=e6dce23e:51329:30)
+    at ConnectKitProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/connectkit.js?v=e6dce23e:54816:29)
+    at QueryClientProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BQZAI26I.js?v=e6dce23e:2932:3)
+    at Hydrate (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-C5BNLM6I.js?v=e6dce23e:175:11)
+    at WagmiProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-C5BNLM6I.js?v=e6dce23e:199:11)
+    at WalletProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/src/components/wallet-provider.tsx:33:34)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
