@@ -28,20 +28,22 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - Reentrancy protection and emergency functions
 
 ## Immediate Action Plan
-1. **Deploy Enhanced Contract**: Deploy ETHGR V2 with burn mechanisms
-2. **Execute Supply Burn**: Burn 1,165,130 excess tokens (58.5% reduction)  
-3. **Verify Contract**: Submit enhanced contract source to Etherscan
-4. **Extract ETH**: Recover 0.00136014 ETH from contract 0xc46eB37677360EfDc011F4097621F15b792fa630
+1. **Extract ETH**: Recover 0.00136014 ETH from contract 0xc46eB37677360EfDc011F4097621F15b792fa630 using withdrawal functions
+2. **Deploy Enhanced Contract**: Deploy ETHGR V2 with burn mechanisms
+3. **Execute Supply Burn**: Burn 1,165,130 excess tokens (58.5% reduction)  
+4. **Verify Contract**: Submit enhanced contract source to Etherscan
 5. **Create Pool**: Use extracted ETH to create ETHGR V2/ETH liquidity pool
 6. **Convert**: Trade 219,300 ETHGR → ETH → USD → $45,000 bank transfer
 
 ## Key Files
+- `ETH_EXTRACTION_CONTRACT.sol` - Smart contract for automated ETH extraction from multiple sources
+- `client/src/pages/eth-extraction-dashboard.tsx` - Real-time ETH extraction interface with network data
+- `FINAL_ETHG_RECOVERY_DEPLOYMENT.sol` - Complete deployment-ready contract with migration function
 - `SECURE_ETHG_RECOVERY_V2.sol` - Enhanced contract with burn mechanisms and security features
+- `deployment-execution-plan.html` - Step-by-step deployment and recovery guide
+- `eth-extraction-guide.html` - ETH extraction methods and contract interaction guide
 - `burn-mechanism-analysis.html` - Token burn methods comparison and implementation strategy
-- `VERIFICATION_READY_CONTRACT.sol` - Original contract source for Etherscan verification
-- `contract-verification-guide.html` - Step-by-step verification process
 - `honeypot-warning-and-solution.html` - Security warnings and legitimate token focus
-- `client/src/pages/existing-liquidity-analysis.tsx` - Trading interface
 
 ## Technical Architecture
 - **Frontend**: React with Tailwind CSS, mobile-first design

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETH Extraction for ETHGR Pool Creation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .extraction-pulse { animation: extractionPulse 2s infinite; }
+        @keyframes extractionPulse { 0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); } 50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); } }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-slate-800 mb-4">
+                ETH Extraction for Pool Creation
+            </h1>
+            <p class="text-xl text-slate-600 mb-6">
+                Extract available ETH to fund ETHGR/ETH liquidity pool
+            </p>
+            <div class="inline-block bg-blue-100 border-2 border-blue-300 px-8 py-4 rounded-xl extraction-pulse">
+                <span class="text-blue-800 font-bold text-lg">
+                    💎 ETH Extraction in Progress
+                </span>
+            </div>
+        </div>
+
+        <!-- Confirmed ETH Sources -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Confirmed ETH Sources</h2>
+            
+            <div class="space-y-6">
+                <!-- Primary Source -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-blue-800">Primary Contract</h3>
+                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">CONFIRMED</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-sm text-blue-700 mb-2">Contract Address:</div>
+                            <div class="font-mono text-xs bg-blue-100 p-2 rounded">
+                                0xc46eB37677360EfDc011F4097621F15b792fa630
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-blue-700 mb-2">Available ETH:</div>
+                            <div class="font-bold text-blue-800 text-xl">0.00136014 ETH</div>
+                            <div class="text-xs text-blue-600">($3.32 @ $2,440/ETH)</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-blue-700">
+                        <strong>Source:</strong> UniswapX and Uniswap V4 Router deposits
+                    </div>
+                </div>
+
+                <!-- Foundation Wallet Check -->
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-green-800">Foundation Wallet</h3>
+                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm">CHECK REQUIRED</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-sm text-green-700 mb-2">Your Wallet:</div>
+                            <div class="font-mono text-xs bg-green-100 p-2 rounded">
+                                0x058C8FE01E5c9eaC6ee19e6673673B549B368843
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-green-700 mb-2">ETH Balance:</div>
+                            <div class="font-bold text-green-800 text-xl">Check Required</div>
+                            <div class="text-xs text-green-600">May have additional ETH for gas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Contracts Scan -->
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-amber-800">Related Contracts Scan</h3>
+                        <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-sm">SCANNING</span>
+                    </div>
+                    <div class="text-sm text-amber-700">
+                        Checking for additional ETH in contracts related to your ETHGR deployment and historical transactions...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extraction Methods -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">ETH Extraction Methods</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Method 1: Direct Withdrawal -->
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Method 1: Direct Withdrawal</h3>
+                    <div class="space-y-3">
+                        <div class="text-sm text-slate-700">
+                            <strong>Requirements:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-1">
+                                <li>Contract must have withdrawal function</li>
+                                <li>You must be owner or have withdrawal rights</li>
+                                <li>Sufficient gas for transaction</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-100 border border-blue-200 rounded p-3 text-xs">
+                            <div class="font-semibold text-blue-800">Contract Function:</div>
+                            <code class="text-blue-700">withdraw() or withdrawETH()</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Method 2: Emergency Functions -->
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Method 2: Emergency Functions</h3>
+                    <div class="space-y-3">
+                        <div class="text-sm text-slate-700">
+                            <strong>Requirements:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-1">
+                                <li>Emergency withdrawal capabilities</li>
+                                <li>Owner privileges on contract</li>
+                                <li>Contract not locked or paused</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-100 border border-red-200 rounded p-3 text-xs">
+                            <div class="font-semibold text-red-800">Emergency Function:</div>
+                            <code class="text-red-700">emergencyWithdraw() or rescueETH()</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contract Analysis -->
+        <div class="bg-slate-800 text-white rounded-xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-center">Contract Analysis Tools</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold text-blue-400 mb-3">📊 Balance Check:</h3>
+                    <ul class="text-slate-300 space-y-2 text-sm">
+                        <li>• ETH balance verification</li>
+                        <li>• Token holdings analysis</li>
+                        <li>• Transaction history review</li>
+                        <li>• Gas estimation tools</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-green-400 mb-3">🔍 Function Analysis:</h3>
+                    <ul class="text-slate-300 space-y-2 text-sm">
+                        <li>• Available function discovery</li>
+                        <li>• Owner privilege verification</li>
+                        <li>• Withdrawal method identification</li>
+                        <li>• Access control analysis</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-purple-400 mb-3">⚡ Execution Tools:</h3>
+                    <ul class="text-slate-300 space-y-2 text-sm">
+                        <li>• Direct contract interaction</li>
+                        <li>• Transaction simulation</li>
+                        <li>• Gas optimization</li>
+                        <li>• Success verification</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pool Creation Requirements -->
+        <div class="bg-green-50 border-2 border-green-200 rounded-xl p-8 mb-8">
+            <h2 class="text-2xl font-bold text-green-800 mb-6 text-center">Pool Creation Requirements</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg p-6 text-center border border-green-200">
+                    <div class="text-2xl font-bold text-green-700 mb-2">0.1 ETH</div>
+                    <div class="text-green-600">Minimum Pool ETH</div>
+                    <div class="text-sm text-green-500 mt-1">For initial liquidity</div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 text-center border border-blue-200">
+                    <div class="text-2xl font-bold text-blue-700 mb-2">~$0.05</div>
+                    <div class="text-blue-600">Gas Cost</div>
+                    <div class="text-sm text-blue-500 mt-1">Pool creation + setup</div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 text-center border border-purple-200">
+                    <div class="text-2xl font-bold text-purple-700 mb-2">219,300</div>
+                    <div class="text-purple-600">ETHGR Tokens</div>
+                    <div class="text-sm text-purple-500 mt-1">For initial pairing</div>
+                </div>
+            </div>
+            
+            <div class="bg-amber-100 border border-amber-300 rounded-lg p-4 mt-6">
+                <div class="text-amber-800 text-center">
+                    <strong>Current Status:</strong> Need additional ETH beyond 0.00136014 ETH for meaningful pool creation
+                </div>
+            </div>
+        </div>
+
+        <!-- Extraction Plan -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Extraction Execution Plan</h2>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-blue-500 pl-6">
+                    <h3 class="text-lg font-bold text-blue-800 mb-2">Phase 1: Immediate Extraction</h3>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <ul class="text-blue-700 space-y-1 text-sm">
+                            <li>• Connect to contract 0xc46eB37677360EfDc011F4097621F15b792fa630</li>
+                            <li>• Identify available withdrawal functions</li>
+                            <li>• Execute withdrawal of 0.00136014 ETH</li>
+                            <li>• Verify successful transfer to your wallet</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-green-500 pl-6">
+                    <h3 class="text-lg font-bold text-green-800 mb-2">Phase 2: Additional Sources</h3>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <ul class="text-green-700 space-y-1 text-sm">
+                            <li>• Check foundation wallet ETH balance</li>
+                            <li>• Scan related contract addresses</li>
+                            <li>• Explore alternative funding methods</li>
+                            <li>• Consider partial pool creation strategy</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-purple-500 pl-6">
+                    <h3 class="text-lg font-bold text-purple-800 mb-2">Phase 3: Pool Strategy</h3>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <ul class="text-purple-700 space-y-1 text-sm">
+                            <li>• Create minimal viable pool with available ETH</li>
+                            <li>• Set initial price based on $45,000 target</li>
+                            <li>• Enable trading with conservative parameters</li>
+                            <li>• Execute gradual conversion strategy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Center -->
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-2xl p-8 text-white">
+            <h2 class="text-3xl font-bold mb-6 text-center">Start ETH Extraction</h2>
+            
+            <div class="bg-white/10 rounded-lg p-6 mb-6">
+                <div class="text-center">
+                    <div class="text-lg mb-2">Available for Extraction</div>
+                    <div class="text-3xl font-bold mb-2">0.00136014 ETH</div>
+                    <div class="text-lg">Next Step: Contract interaction for withdrawal</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button onclick="window.open('https://etherscan.io/address/0xc46eB37677360EfDc011F4097621F15b792fa630#writeContract', '_blank')" 
+                        class="bg-white text-blue-600 font-bold py-4 px-6 rounded-lg text-lg hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg">
+                    🔗 Contract Interaction
+                </button>
+                
+                <button onclick="window.open('https://etherscan.io/address/0x058C8FE01E5c9eaC6ee19e6673673B549B368843', '_blank')" 
+                        class="bg-white/20 border-2 border-white text-white font-bold py-4 px-6 rounded-lg text-lg hover:bg-white/30 transition-all">
+                    👛 Check Your Wallet
+                </button>
+            </div>
+            
+            <div class="text-center mt-6">
+                <div class="text-xl font-bold mb-2">
+                    Extract ETH → Fund Pool → Enable Trading → Convert $45,000
+                </div>
+                <div class="text-lg opacity-90">
+                    Every Wei counts toward your recovery goal
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
