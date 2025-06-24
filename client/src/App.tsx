@@ -70,6 +70,7 @@ import PortfolioActivationReady from "@/pages/portfolio-activation-ready";
 import HoneypotEvidenceStrategy from "@/pages/honeypot-evidence-strategy";
 import HoneypotNeutralization from "@/pages/honeypot-neutralization";
 import EthgrToEthConversion from "@/pages/ethgr-to-eth-conversion";
+import LiquidEthOpportunities from "@/pages/liquid-eth-opportunities";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -592,6 +593,7 @@ function Router() {
         <Route path="/honeypot-evidence-strategy" component={HoneypotEvidenceStrategy} />
         <Route path="/honeypot-neutralization" component={HoneypotNeutralization} />
         <Route path="/ethgr-to-eth-conversion" component={EthgrToEthConversion} />
+        <Route path="/liquid-eth-opportunities" component={LiquidEthOpportunities} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />

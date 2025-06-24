@@ -569,12 +569,11 @@ convertEthgrToEth(amountToConvert).then(result => {
                 </Button>
                 
                 <Button
-                  onClick={() => window.open('/portfolio-activation-ready', '_self')}
+                  onClick={() => window.open('/liquid-eth-opportunities', '_self')}
                   className="foundation-button-secondary h-12"
-                  disabled={!conversionResults?.success}
                 >
                   <CheckCircle className="h-5 w-5 mr-2" />
-                  Foundation Ready
+                  ETH Opportunities
                 </Button>
               </div>
             </div>
