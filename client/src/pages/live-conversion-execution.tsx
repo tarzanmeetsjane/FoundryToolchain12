@@ -20,7 +20,7 @@ export default function LiveConversionExecution() {
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(0);
   const [stepComplete, setStepComplete] = useState<Record<number, boolean>>({});
-  const [conversionActive, setConversionActive] = useState(false);
+  const [conversionActive, setConversionActive] = useState(true);
   const [statusMessage, setStatusMessage] = useState("Initializing conversion process...");
 
   const conversionPlan = {
