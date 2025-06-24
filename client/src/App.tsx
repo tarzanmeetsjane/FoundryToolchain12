@@ -95,6 +95,7 @@ import DelegationSecurityExplanation from "@/pages/delegation-security-explanati
 import ExecutionLaunch from "@/pages/execution-launch";
 import QuantumIntegration from "@/pages/quantum-integration";
 import EthValueCalculator from "@/pages/eth-value-calculator";
+import QuantumExecutionDashboard from "@/pages/quantum-execution-dashboard";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -642,6 +643,7 @@ function Router() {
         <Route path="/execution-launch" component={ExecutionLaunch} />
         <Route path="/quantum-integration" component={QuantumIntegration} />
         <Route path="/eth-value-calculator" component={EthValueCalculator} />
+        <Route path="/quantum-execution-dashboard" component={QuantumExecutionDashboard} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
