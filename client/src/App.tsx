@@ -531,6 +531,7 @@ function Router() {
         <Route path="/sushi-wallet-connector" component={SushiWalletConnector} />
         <Route path="/curve-finance-integration" component={CurveFinanceIntegration} />
         <Route path="/ethgr-token-integration" component={EthgrTokenIntegration} />
+        <Route path="/free-token-submission" component={FreeTokenSubmission} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
