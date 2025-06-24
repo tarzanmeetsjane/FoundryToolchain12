@@ -102,6 +102,9 @@ import TokenValueClarification from "@/pages/token-value-clarification";
 import WalletContentsAnalysis from "@/pages/wallet-contents-analysis";
 import ImmediateConversionExecution from "@/pages/immediate-conversion-execution";
 import CoinbaseCDPIntegration from "@/pages/coinbase-cdp-integration";
+import BaseMiniKitIntegration from "@/pages/base-minikit-integration";
+import VercelMiniKitDeployment from "@/pages/vercel-minikit-deployment";
+import CompleteMiniKitSystem from "@/pages/complete-minikit-system";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -657,6 +660,9 @@ function Router() {
         <Route path="/wallet-contents-analysis" component={WalletContentsAnalysis} />
         <Route path="/immediate-conversion-execution" component={ImmediateConversionExecution} />
         <Route path="/coinbase-cdp-integration" component={CoinbaseCDPIntegration} />
+        <Route path="/base-minikit-integration" component={BaseMiniKitIntegration} />
+        <Route path="/vercel-minikit-deployment" component={VercelMiniKitDeployment} />
+        <Route path="/complete-minikit-system" component={CompleteMiniKitSystem} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
