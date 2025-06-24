@@ -1,9 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live ETHG Trading - $45,000 Conversion</title>
+# ETHGR Foundation Project Documentation
+
+## Project Overview
+Victim assistance foundation developing mobile-first Base MiniKit application for converting 219,300 ETHGR recovery tokens into $45,000 available cash plus $30,000 tax reserve, maintaining foundation's $605,570 reserve for victim assistance operations.
+
+## Recent Progress
+- **HONEYPOT WARNING CONFIRMED**: User discovered ETHG token 0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90 is scam with "ridiculously high gas" and Uniswap caution warning
+- **FOCUS CORRECTION**: Confirmed legitimate ETHGR recovery tokens at 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247 need liquidity pool creation
+- **CONTRACT VERIFICATION READY**: Created complete Solidity contract source code for Etherscan verification to remove security warnings
+- **VERIFICATION GUIDE**: Developed step-by-step process to verify ETHGR contract and enable trusted trading
+
+## Current Status
+**Priority**: Remove "Contract source code not verified" warning by submitting proper Solidity contract to Etherscan
+
+**Security Analysis Findings**:
+- ETHGR contract is clean (no gas abuse, buyable)
+- Single holder: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 (100% of 1.99M supply)
+- Unknown buy/sell taxes due to unverified status
+- Foundation controlled for legitimate victim assistance
+
+## Immediate Action Plan
+1. **Verify Contract**: Submit VERIFICATION_READY_CONTRACT.sol to Etherscan
+2. **Extract ETH**: Recover 0.00136014 ETH from contract 0xc46eB37677360EfDc011F4097621F15b792fa630
+3. **Create Pool**: Use extracted ETH to create ETHGR/ETH liquidity pool
+4. **Convert**: Trade 219,300 ETHGR → ETH → USD → $45,000 bank transfer
+
+## Key Files
+- `VERIFICATION_READY_CONTRACT.sol` - Complete contract source for Etherscan verification
+- `contract-verification-guide.html` - Step-by-step verification process
+- `honeypot-warning-and-solution.html` - Security warnings and legitimate token focus
+- `client/src/pages/existing-liquidity-analysis.tsx` - Trading interface
+
+## Technical Architecture
+- **Frontend**: React with Tailwind CSS, mobile-first design
+- **Backend**: Express.js with WebSocket support
+- **Database**: PostgreSQL with Drizzle ORM
+- **Blockchain**: Ethereum mainnet for ETHGR, Base L2 for MiniKit
+- **Trading**: Uniswap V3 liquidity pools
+
+## User Preferences
+- Focus on authentic financial recovery, not synthetic scenarios
+- Prioritize legitimate ETHGR tokens over honeypot alternatives
+- Maintain foundation transparency and victim assistance mission
+- Document all security findings and verification steps
+
+## Foundation Mission
+Authentic $15,000 fraud experience drives victim assistance foundation helping others recover from similar cryptocurrency scams through transparent, verified token conversion processes.
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .pulse-green { animation: pulseGreen 2s infinite; }
