@@ -12,7 +12,8 @@ import {
   ExternalLink,
   Zap,
   Eye,
-  TrendingUp
+  TrendingUp,
+  Target
 } from "lucide-react";
 
 export default function CompleteWalletPurge() {
