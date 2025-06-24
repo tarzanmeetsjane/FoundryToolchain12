@@ -16,12 +16,12 @@ import {
 export default function ConversionSummary() {
   const conversionPlan = {
     totalTokens: 1990000,
-    tokensToConvert: 146200,
-    remainingTokens: 1843800,
-    grossConversion: 50000,
-    taxReserve: 20000,
-    netCash: 30000,
-    remainingValue: 631196
+    tokensToConvert: 219300,
+    remainingTokens: 1770700,
+    grossConversion: 75000,
+    taxReserve: 30000,
+    netCash: 45000,
+    remainingValue: 605579
   };
 
   return (
@@ -36,7 +36,7 @@ export default function ConversionSummary() {
             Your ETHGR Portfolio Conversion to Immediate Cash Relief
           </p>
           <div className="foundation-status-badge foundation-status-success foundation-fade-in">
-            System Ready - Convert 146,200 ETHGR to $30K Available Cash
+            System Ready - Convert 219,300 ETHGR to $45K Available Cash
           </div>
         </div>
       </div>

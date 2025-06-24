@@ -25,13 +25,13 @@ export default function LiveConversionExecution() {
 
   const conversionPlan = {
     totalTokens: 1990000,
-    targetConversion: 50000,
-    tokensToConvert: 146200,
-    remainingTokens: 1843800,
-    remainingValue: 631196.21,
-    taxReserve: 20000,
-    netCashAvailable: 30000,
-    estimatedETH: 14.6,
+    targetConversion: 75000,
+    tokensToConvert: 219300,
+    remainingTokens: 1770700,
+    remainingValue: 605579.40,
+    taxReserve: 30000,
+    netCashAvailable: 45000,
+    estimatedETH: 21.9,
     gasFeesEstimate: 0.025
   };
 
@@ -53,7 +53,7 @@ export default function LiveConversionExecution() {
     {
       id: 3,
       title: "Token Conversion",
-      description: "Convert 146,200 ETHGR tokens to ETH",
+      description: "Convert 219,300 ETHGR tokens to ETH",
       duration: 5000,
       details: ["Execute swap transaction", "Confirm receipt of ETH", "Verify conversion rate", "Update portfolio balance"]
     },
@@ -67,7 +67,7 @@ export default function LiveConversionExecution() {
     {
       id: 5,
       title: "Bank Withdrawal",
-      description: "Withdraw $30K to bank account for immediate use",
+      description: "Withdraw $45K to bank account for immediate use",
       duration: 3000,
       details: ["Initiate bank transfer", "Set aside $20K tax reserve", "Transfer $30K to checking", "Confirm receipt in 1-3 days"]
     }
@@ -327,7 +327,7 @@ export default function LiveConversionExecution() {
                 <Alert className="border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700">
                   <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
                   <AlertDescription className="text-green-800 dark:text-green-200">
-                    <strong>SUCCESS:</strong> $30,000 available for immediate use! $20,000 safely reserved for taxes. Your remaining portfolio worth $631,196 is ready for foundation operations.
+                    <strong>SUCCESS:</strong> $45,000 available for immediate use! $30,000 safely reserved for taxes. Your remaining portfolio worth $605,579 is ready for foundation operations.
                   </AlertDescription>
                 </Alert>
 
