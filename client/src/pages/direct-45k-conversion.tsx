@@ -10,7 +10,7 @@ import {
   DollarSign,
   Play,
   Target,
-  Bank,
+  Building2,
   CreditCard,
   ArrowRight,
   ExternalLink
@@ -83,7 +83,7 @@ export default function Direct45kConversion() {
       {/* Hero Section */}
       <div className="text-center mb-12">
         <div className="flex items-center justify-center mb-4">
-          <Bank className="h-12 w-12 text-emerald-500 mr-4" />
+          <Building2 className="h-12 w-12 text-emerald-500 mr-4" />
           <h1 className="text-4xl font-bold text-slate-800 dark:text-white">
             Direct $45,000 Conversion
           </h1>
