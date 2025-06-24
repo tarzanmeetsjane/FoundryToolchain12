@@ -73,7 +73,6 @@ import EthgrToEthConversion from "@/pages/ethgr-to-eth-conversion";
 import LiquidEthOpportunities from "@/pages/liquid-eth-opportunities";
 import CleanFoundationContract from "@/pages/clean-foundation-contract";
 import PersonalAllocationPlan from "@/pages/personal-allocation-plan";
-import ImmediateConversionExecution from "@/pages/immediate-conversion-execution";
 import PreExecutionSecurityCheck from "@/pages/pre-execution-security-check";
 import ExecutionRoadmap from "@/pages/execution-roadmap";
 import TaxStrategyPlanning from "@/pages/tax-strategy-planning";
@@ -101,6 +100,7 @@ import ExchangeSetupLive from "@/pages/exchange-setup-live";
 import ExchangePricing from "@/pages/exchange-pricing";
 import TokenValueClarification from "@/pages/token-value-clarification";
 import WalletContentsAnalysis from "@/pages/wallet-contents-analysis";
+import ImmediateConversionExecution from "@/pages/immediate-conversion-execution";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -654,6 +654,7 @@ function Router() {
         <Route path="/exchange-pricing" component={ExchangePricing} />
         <Route path="/token-value-clarification" component={TokenValueClarification} />
         <Route path="/wallet-contents-analysis" component={WalletContentsAnalysis} />
+        <Route path="/immediate-conversion-execution" component={ImmediateConversionExecution} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
