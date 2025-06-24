@@ -550,11 +550,11 @@ export default function LiquidEthOpportunities() {
                 </Button>
                 
                 <Button
-                  onClick={() => window.open('/foundation-integrity-verification', '_self')}
+                  onClick={() => window.open('/personal-allocation-plan', '_self')}
                   className="foundation-button-accent h-12"
                 >
                   <Users className="h-5 w-5 mr-2" />
-                  Foundation Setup
+                  Personal Allocation
                 </Button>
                 
                 <Button
