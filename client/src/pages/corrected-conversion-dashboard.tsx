@@ -302,20 +302,20 @@ export default function CorrectedConversionDashboard() {
           <CardContent>
             <div className="text-center space-y-6">
               <Alert className="foundation-card border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700">
-                <Wallet className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <Target className="h-5 w-5 text-green-600 dark:text-green-400" />
                 <AlertDescription className="foundation-text-body text-green-800 dark:text-green-200">
-                  <strong>CORRECTED PLAN:</strong> $75,000 gross conversion providing $45,000 immediate cash relief plus $30,000 tax reserve for complete financial security.
+                  <strong>READY TO EXECUTE:</strong> Your wallet 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 contains 1,990,000 ETHGR tokens. Converting 219,300 tokens will provide $45,000 immediate cash relief plus $30,000 tax reserve.
                 </AlertDescription>
               </Alert>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button
                   onClick={startCorrectedConversion}
-                  className="foundation-button-primary h-12"
+                  className="foundation-button-primary h-12 text-lg font-bold"
                   disabled={isExecuting}
                 >
                   <Play className="h-5 w-5 mr-2" />
-                  {isExecuting ? 'Converting...' : 'Start $45,000 Conversion'}
+                  {isExecuting ? 'Converting...' : 'START $45,000 CONVERSION'}
                 </Button>
                 
                 <Button
@@ -327,11 +327,11 @@ export default function CorrectedConversionDashboard() {
                 </Button>
                 
                 <Button
-                  onClick={() => window.open('/minikit-mobile-converter', '_blank')}
+                  onClick={() => window.open('/live-45k-execution', '_blank')}
                   className="foundation-button-secondary h-12"
                 >
                   <ExternalLink className="h-5 w-5 mr-2" />
-                  Mobile App
+                  Live Execution
                 </Button>
               </div>
               
