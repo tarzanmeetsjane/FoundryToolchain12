@@ -55,6 +55,8 @@ import AntiHoneypotContract from "@/pages/anti-honeypot-contract";
 import GaslessProtectedContract from "@/pages/gasless-protected-contract";
 import WalletProtectionSystem from "@/pages/wallet-protection-system";
 import EtherscanContractAnalysis from "@/pages/etherscan-contract-analysis";
+import EthRecoveryForLiquidity from "@/pages/eth-recovery-for-liquidity";
+import TransactionTraceAnalysis from "@/pages/transaction-trace-analysis";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";

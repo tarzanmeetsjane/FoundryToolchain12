@@ -200,6 +200,10 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **CONTRACT VERIFIED**: 12 events tracked including successful 1,990,000 token mint to owner address
 - **DEPLOYMENT CONFIRMED**: Contract active on mainnet with verified source code and proper functionality
 - **LIQUIDITY NEEDED**: Critical next step identified - create initial liquidity pool to establish market value
+- **TRANSACTION HASH CONFIRMED**: User requested confirmed ETH transaction 0xf8ce43ec03eb26a221bb18553a808cb7e7587e79ad7d161f1b1868d6d9677c29
+- **ETH TRANSFER VERIFIED**: 0.01819347 ETH from MetaMask Swaps to primary wallet in block 22713150
+- **37 ETH INVESTIGATION**: Using confirmed transaction pattern to trace origins and locate larger ETH amounts
+- **LIQUIDITY POOL REQUIREMENT**: User confirmed need for ETH pair - cannot create pool with only ETHGR tokens
 
 ### Free Token Submission Strategy (June 23, 2025) - COST-EFFECTIVE APPROACH
 - **FREE SUBMISSION CONFIRMED**: User chose free token registration over paid options - longer processing but zero cost
