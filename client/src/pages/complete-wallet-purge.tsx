@@ -79,22 +79,24 @@ export default function CompleteWalletPurge() {
     }
   ];
 
-  const safeAssets = [
+  const strategicAssets = [
     {
-      name: "Ethereum Games",
+      name: "Ethereum Games (ETHG)",
       symbol: "ETHG",
       balance: "2.10M",
       value: "$681,196.21",
-      status: "VERIFIED SAFE",
-      origin: "Your Original Investment"
+      status: "HONEYPOT EVIDENCE - STRATEGIC KEEP",
+      origin: "Original Honeypot Investment - PROOF OF VICTIM STATUS",
+      purpose: "Foundation Credibility & Victim Proof"
     },
     {
       name: "ETHG Recovery",
       symbol: "ETHGR", 
       balance: "1.99M",
-      value: "N/A (Recovery Token)",
-      status: "VERIFIED SAFE",
-      origin: "Your Recovery Contract"
+      value: "Your Recovery Contract - SAFE",
+      status: "RECOVERY SUCCESS - YOURS",
+      origin: "Your Legitimate Recovery Contract",
+      purpose: "Operational Funding for Foundation"
     },
     {
       name: "Ethereum",
@@ -102,7 +104,8 @@ export default function CompleteWalletPurge() {
       balance: "0.014",
       value: "$34.66",
       status: "NATIVE TOKEN",
-      origin: "Primary Holdings"
+      origin: "Primary Holdings",
+      purpose: "Gas and Operations"
     }
   ];
 
@@ -299,8 +302,13 @@ completeWalletPurge().then(result => {
     },
     {
       step: "Hide Unknown Tokens",
-      instruction: "Click 3-dots next to each unknown token > 'Hide token'",
+      instruction: "Click 3-dots next to each unknown token > 'Hide token' (including hidden SHIBA VOUCHER)",
       verification: "Tokens no longer visible"
+    },
+    {
+      step: "Check for Hidden Tokens",
+      instruction: "Look for hidden/collapsed tokens - expand all sections to find SHIBA VOUCHER and other hidden assets",
+      verification: "All hidden tokens found and marked for removal"
     },
     {
       step: "BLOCK ALL AIRDROPS",
@@ -352,7 +360,7 @@ completeWalletPurge().then(result => {
         <Alert className="foundation-card border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700 foundation-slide-up">
           <Trash2 className="h-6 w-6 text-red-600 dark:text-red-400" />
           <AlertDescription className="foundation-text-body text-red-800 dark:text-red-200">
-            <strong className="foundation-text-accent">COMPLETE PURGE + AIRDROP BLOCK:</strong> Removing ALL unknown tokens (AICC $1,657.63, SHIBA VOUCHER, ERC20 spam) and blocking future airdrops before activating $681,196.21 ETHG portfolio. Zero tolerance for unsolicited assets.
+            <strong className="foundation-text-accent">COMPLETE PURGE + AIRDROP BLOCK:</strong> Removing ALL unknown tokens (AICC $1,657.63, hidden SHIBA VOUCHER, ERC20 spam) while protecting YOUR legitimate ETHG ($681K) and ETHGR recovery tokens. Zero tolerance for unsolicited assets.
           </AlertDescription>
         </Alert>
 
@@ -464,35 +472,49 @@ completeWalletPurge().then(result => {
           </CardContent>
         </Card>
 
-        {/* Safe Assets - Keep These */}
-        <Card className="foundation-card border-green-200 dark:border-green-700 foundation-slide-up">
+        {/* Strategic Assets - Foundation Credibility */}
+        <Card className="foundation-card border-blue-200 dark:border-blue-700 foundation-slide-up">
           <CardHeader className="pb-6">
-            <CardTitle className="foundation-heading-3 flex items-center text-green-700 dark:text-green-300">
+            <CardTitle className="foundation-heading-3 flex items-center text-blue-700 dark:text-blue-300">
               <CheckCircle className="h-7 w-7 mr-3" />
-              Safe Assets - KEEP THESE
+              Strategic Assets - Foundation Credibility
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {safeAssets.map((asset, index) => (
-                <div key={index} className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl">
-                  <div className="flex items-center justify-between mb-2">
+              {strategicAssets.map((asset, index) => (
+                <div key={index} className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl">
+                  <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
-                      <h3 className="font-semibold text-green-800 dark:text-green-200">{asset.name} ({asset.symbol})</h3>
-                      <Badge variant="outline" className="border-green-500 text-green-700 dark:text-green-300">
+                      <h3 className="font-semibold text-blue-800 dark:text-blue-200">{asset.name}</h3>
+                      <Badge variant={asset.symbol === 'ETHG' ? 'default' : 'outline'} 
+                             className={asset.symbol === 'ETHG' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'border-blue-500 text-blue-700 dark:text-blue-300'}>
                         {asset.status}
                       </Badge>
                     </div>
                     <div className="text-right">
-                      <div className="text-green-600 dark:text-green-400 font-bold">{asset.balance}</div>
-                      <div className="text-green-500 dark:text-green-400 text-sm">{asset.value}</div>
+                      <div className="text-blue-600 dark:text-blue-400 font-bold">{asset.balance}</div>
+                      <div className="text-blue-500 dark:text-blue-400 text-sm">{asset.value}</div>
                     </div>
                   </div>
                   
-                  <p className="text-green-700 dark:text-green-300 text-sm">Origin: {asset.origin}</p>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-blue-700 dark:text-blue-300">Origin: {asset.origin}</p>
+                    <div className="p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded">
+                      <span className="text-amber-700 dark:text-amber-300 font-semibold">Strategic Purpose: </span>
+                      <span className="text-amber-800 dark:text-amber-200">{asset.purpose}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
+            
+            <Alert className="border-amber-500 bg-amber-50 dark:bg-amber-900/20 mt-4">
+              <Target className="h-4 w-4" />
+              <AlertDescription className="text-amber-800 dark:text-amber-200">
+                <strong>STRATEGIC ADVANTAGE:</strong> Your ETHG honeypot tokens prove authentic victim experience, giving you unmatched credibility when helping other victims. This transforms your loss into foundation strength.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
@@ -635,7 +657,7 @@ completeWalletPurge().then(result => {
               <Alert className="foundation-card border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700">
                 <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
                 <AlertDescription className="foundation-text-body text-red-800 dark:text-red-200">
-                  <strong className="foundation-text-accent">ZERO TOLERANCE PURGE + AIRDROP BLOCK:</strong> Remove ALL unknown tokens (AICC $1,657.63, SHIBA VOUCHER, ERC20 spam) and BLOCK future airdrops before activating $681K ETHG portfolio. Clean wallet = secure operations.
+                  <strong className="foundation-text-accent">ZERO TOLERANCE PURGE + AIRDROP BLOCK:</strong> Remove ALL unknown tokens (AICC $1,657.63, hidden SHIBA VOUCHER, ERC20 spam) while protecting YOUR ETHG ($681K) and ETHGR recovery tokens. Clean wallet = secure operations.
                 </AlertDescription>
               </Alert>
 
