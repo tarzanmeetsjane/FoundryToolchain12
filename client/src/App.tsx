@@ -108,6 +108,8 @@ import CompleteMiniKitSystem from "@/pages/complete-minikit-system";
 import MiniKitMobileConverter from "@/pages/minikit-mobile-converter";
 import CorrectedConversionDashboard from "@/pages/corrected-conversion-dashboard";
 import Live45kExecution from "@/pages/live-45k-execution";
+import RealConversionExecution from "@/pages/real-conversion-execution";
+import Direct45kConversion from "@/pages/direct-45k-conversion";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -670,6 +672,8 @@ function Router() {
         <Route path="/live-conversion-execution-new" component={LiveConversionExecution} />
         <Route path="/corrected-conversion-dashboard" component={CorrectedConversionDashboard} />
         <Route path="/live-45k-execution" component={Live45kExecution} />
+        <Route path="/real-conversion-execution" component={RealConversionExecution} />
+        <Route path="/direct-45k-conversion" component={Direct45kConversion} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
