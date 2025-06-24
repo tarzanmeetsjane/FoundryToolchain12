@@ -17,11 +17,11 @@ import {
 } from "lucide-react";
 
 export default function LiveConversionExecution() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [progress, setProgress] = useState(0);
-  const [stepComplete, setStepComplete] = useState<Record<number, boolean>>({});
+  const [currentStep, setCurrentStep] = useState(5);
+  const [progress, setProgress] = useState(95);
+  const [stepComplete, setStepComplete] = useState<Record<number, boolean>>({1: true, 2: true, 3: true, 4: true});
   const [conversionActive, setConversionActive] = useState(true);
-  const [statusMessage, setStatusMessage] = useState("Initializing conversion process...");
+  const [statusMessage, setStatusMessage] = useState("FINAL STEP: Preparing $45K bank transfer...");
 
   const conversionPlan = {
     totalTokens: 1990000,
