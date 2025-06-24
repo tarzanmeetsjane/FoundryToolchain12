@@ -86,6 +86,7 @@ import OptimizedConversionPlan from "@/pages/optimized-conversion-plan";
 import PreventionStrategy from "@/pages/prevention-strategy";
 import PartnershipCelebration from "@/pages/partnership-celebration";
 import ConversionCompletion from "@/pages/conversion-completion";
+import ExchangeWithdrawalGuide from "@/pages/exchange-withdrawal-guide";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -624,6 +625,7 @@ function Router() {
         <Route path="/prevention-strategy" component={PreventionStrategy} />
         <Route path="/partnership-celebration" component={PartnershipCelebration} />
         <Route path="/conversion-completion" component={ConversionCompletion} />
+        <Route path="/exchange-withdrawal-guide" component={ExchangeWithdrawalGuide} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />

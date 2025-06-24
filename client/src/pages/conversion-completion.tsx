@@ -48,17 +48,17 @@ export default function ConversionCompletion() {
     totalTaxReserve: 30000,
     availableCash: 45000,
     foundationRemaining: 605579,
-    processingTime: "3-5 business days",
-    estimatedArrival: "June 27-29, 2025"
+    processingTime: "Available immediately",
+    estimatedArrival: "Ready for exchange withdrawal"
   };
 
   const nextSteps = [
     {
       priority: "HIGH",
-      task: "Monitor Bank Account",
-      description: "Watch for $45,000 transfer arrival in 3-5 business days",
-      timeline: "June 27-29, 2025",
-      action: "Set up account alerts"
+      task: "Exchange Withdrawal Setup",
+      description: "Transfer ETH to exchange (Coinbase/Kraken) and convert to USD",
+      timeline: "When ready for cash",
+      action: "Choose preferred exchange platform"
     },
     {
       priority: "HIGH", 
@@ -155,7 +155,7 @@ export default function ConversionCompletion() {
                 <Alert className="foundation-card border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700">
                   <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
                   <AlertDescription className="foundation-text-body text-green-800 dark:text-green-200">
-                    <strong>SUCCESS!</strong> Your $75,000 conversion is complete. $45,000 in immediate relief is being transferred to your bank account, with $30,000 safely reserved for taxes. Your foundation has $605,579 available for victim assistance operations.
+                    <strong>SUCCESS!</strong> Your $75,000 conversion is complete. $45,000 worth of ETH is ready in your wallet for exchange withdrawal, with $30,000 safely reserved for taxes. Your foundation has $605,579 available for victim assistance operations.
                   </AlertDescription>
                 </Alert>
               )}
