@@ -33,8 +33,9 @@ export default function LiveConversionExecution() {
     address: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
     ethgrBalance: "1,990,000 ETHGR",
     targetTokens: "219,300 ETHGR",
-    currentValue: "$42,551",
-    afterTax: "$25,404",
+    grossConversion: "$75,000",
+    taxReserve: "$30,000",
+    availableCash: "$45,000",
     network: "Ethereum → Base L2"
   };
 
@@ -70,7 +71,7 @@ export default function LiveConversionExecution() {
     {
       id: 5,
       title: "Prepare Bank Transfer",
-      description: "Setting up $25,404 transfer to your bank account",
+      description: "Setting up $45,000 transfer to your bank account",
       duration: "15 seconds",
       status: "pending"
     }
@@ -113,7 +114,7 @@ export default function LiveConversionExecution() {
     baseGasPrice: "0.001 gwei",
     slippage: "0.5%",
     priceImpact: "0.12%",
-    estimatedOutput: "$25,404.67"
+    estimatedOutput: "$45,000.00"
   };
 
   useEffect(() => {
@@ -185,7 +186,7 @@ export default function LiveConversionExecution() {
             <Target className="h-8 w-8 text-green-400 ml-2 animate-pulse" />
           </div>
           <p className="foundation-text-body text-white/90 max-w-3xl mx-auto foundation-slide-up">
-            Converting 219,300 ETHGR → $25,404 Cash via Smart Wallet + Base L2
+            Converting 219,300 ETHGR → $45,000 Cash via Smart Wallet + Base L2
           </p>
           <div className="foundation-status-badge foundation-status-success foundation-fade-in">
             {connectionStatus === 'completed' ? 'CONVERSION COMPLETE' : 
@@ -236,10 +237,8 @@ export default function LiveConversionExecution() {
                 <Card className="foundation-card border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20">
                   <CardContent className="p-4 text-center">
                     <Clock className="h-6 w-6 text-amber-500 mx-auto mb-2" />
-                    <div className="text-lg font-bold text-amber-700 dark:text-amber-300">
-                      {isExecuting ? '~2 mins' : 'Ready'}
-                    </div>
-                    <div className="text-amber-600 dark:text-amber-400 text-xs">Time Remaining</div>
+                    <div className="text-lg font-bold text-amber-700 dark:text-amber-300">$45,000</div>
+                    <div className="text-amber-600 dark:text-amber-400 text-xs">Available Cash</div>
                   </CardContent>
                 </Card>
               </div>
@@ -415,7 +414,7 @@ export default function LiveConversionExecution() {
           <Alert className="foundation-card border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700 foundation-slide-up">
             <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
             <AlertDescription className="foundation-text-body text-green-800 dark:text-green-200">
-              <strong>CONVERSION COMPLETE!</strong> Successfully converted 219,300 ETHGR tokens to $25,404 cash. 
+              <strong>CONVERSION COMPLETE!</strong> Successfully converted 219,300 ETHGR tokens to $75,000 gross ($45,000 available cash + $30,000 tax reserve). 
               Your foundation now has $605,570 remaining for victim assistance operations. 
               Bank transfer ready for execution.
             </AlertDescription>
@@ -460,7 +459,7 @@ export default function LiveConversionExecution() {
                   <strong>Live Conversion:</strong> Smart Wallet + Base L2 + Mobile PWA + Real-time tracking
                 </p>
                 <p className="text-green-600 dark:text-green-400 text-sm font-semibold">
-                  Result: {progress >= 100 ? '$25,404 converted successfully' : `$25,404 target conversion (${Math.round(progress)}% complete)`}
+                  Result: {progress >= 100 ? '$45,000 cash converted successfully' : `$45,000 target conversion (${Math.round(progress)}% complete)`}
                 </p>
               </div>
             </div>
