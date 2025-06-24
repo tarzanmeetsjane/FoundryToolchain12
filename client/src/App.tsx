@@ -64,6 +64,8 @@ import TotalControlTokenomics from "@/pages/total-control-tokenomics";
 import PreLaunchSecurityAudit from "@/pages/pre-launch-security-audit";
 import FoundationIntegrityVerification from "@/pages/foundation-integrity-verification";
 import SecurityAuditResults from "@/pages/security-audit-results";
+import WalletSecurityCleanup from "@/pages/wallet-security-cleanup";
+import CompleteWalletPurge from "@/pages/complete-wallet-purge";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -580,6 +582,8 @@ function Router() {
         <Route path="/pre-launch-security-audit" component={PreLaunchSecurityAudit} />
         <Route path="/foundation-integrity-verification" component={FoundationIntegrityVerification} />
         <Route path="/security-audit-results" component={SecurityAuditResults} />
+        <Route path="/wallet-security-cleanup" component={WalletSecurityCleanup} />
+        <Route path="/complete-wallet-purge" component={CompleteWalletPurge} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
