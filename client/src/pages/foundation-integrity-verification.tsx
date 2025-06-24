@@ -140,50 +140,60 @@ export default function FoundationIntegrityVerification() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-green-900 to-purple-900 p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
-        
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-white">FOUNDATION INTEGRITY VERIFICATION</h1>
-          <p className="text-xl text-blue-300">Legitimate Victim Assistance & Fraud Recovery Foundation</p>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      {/* Hero Section with Foundation Gradient */}
+      <div className="foundation-hero py-16 lg:py-20">
+        <div className="foundation-container text-center space-y-6">
+          <h1 className="foundation-heading-1 text-white foundation-fade-in">
+            Foundation Integrity Verification
+          </h1>
+          <p className="foundation-text-body text-white/90 max-w-3xl mx-auto foundation-slide-up">
+            Legitimate Victim Assistance & Fraud Recovery Foundation
+          </p>
+          <div className="foundation-status-badge foundation-status-success foundation-fade-in">
+            ✓ Verified Authentic Mission
+          </div>
         </div>
+      </div>
 
-        <Alert className="border-green-500 bg-green-500/20 border-2">
-          <Heart className="h-8 w-8 text-green-500" />
-          <AlertDescription className="text-green-200 text-lg">
-            <strong>VICTIM-FOCUSED MISSION:</strong> Transform personal fraud experience into comprehensive victim assistance foundation, helping others recover funds while building sustainable fraud prevention community.
+      <div className="foundation-container foundation-section space-y-12">
+
+        <Alert className="foundation-card border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-700 foundation-slide-up">
+          <Heart className="h-6 w-6 text-green-600 dark:text-green-400" />
+          <AlertDescription className="foundation-text-body text-green-800 dark:text-green-200">
+            <strong className="foundation-text-accent">VICTIM-FOCUSED MISSION:</strong> Transform personal fraud experience into comprehensive victim assistance foundation, helping others recover funds while building sustainable fraud prevention community.
           </AlertDescription>
         </Alert>
 
         {/* Foundation Mission */}
-        <Card className="bg-gray-800/50 border-blue-500 border-2">
-          <CardHeader>
-            <CardTitle className="text-white text-xl flex items-center">
-              <Target className="h-6 w-6 mr-2" />
+        <Card className="foundation-card foundation-slide-up">
+          <CardHeader className="pb-6">
+            <CardTitle className="foundation-heading-3 flex items-center">
+              <Target className="h-7 w-7 mr-3 text-blue-600 dark:text-blue-400" />
               Foundation Mission & Purpose
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-blue-600/10 border border-blue-600/30 rounded">
-                  <h3 className="text-blue-400 font-bold mb-2">Primary Goal</h3>
-                  <p className="text-gray-300 text-sm">{foundationMission.primaryGoal}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl">
+                  <h3 className="text-blue-700 dark:text-blue-300 font-semibold mb-3 text-lg">Primary Goal</h3>
+                  <p className="foundation-text-body">{foundationMission.primaryGoal}</p>
                 </div>
                 
-                <div className="p-4 bg-green-600/10 border border-green-600/30 rounded">
-                  <h3 className="text-green-400 font-bold mb-2">Approach</h3>
-                  <p className="text-gray-300 text-sm">{foundationMission.approach}</p>
+                <div className="p-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl">
+                  <h3 className="text-green-700 dark:text-green-300 font-semibold mb-3 text-lg">Approach</h3>
+                  <p className="foundation-text-body">{foundationMission.approach}</p>
                 </div>
                 
-                <div className="p-4 bg-purple-600/10 border border-purple-600/30 rounded">
-                  <h3 className="text-purple-400 font-bold mb-2">Revenue Model</h3>
-                  <p className="text-gray-300 text-sm">{foundationMission.revenue}</p>
+                <div className="p-6 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-xl">
+                  <h3 className="text-purple-700 dark:text-purple-300 font-semibold mb-3 text-lg">Revenue Model</h3>
+                  <p className="foundation-text-body">{foundationMission.revenue}</p>
                 </div>
                 
-                <div className="p-4 bg-yellow-600/10 border border-yellow-600/30 rounded">
-                  <h3 className="text-yellow-400 font-bold mb-2">Transparency</h3>
-                  <p className="text-gray-300 text-sm">{foundationMission.transparency}</p>
+                <div className="p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl">
+                  <h3 className="text-amber-700 dark:text-amber-300 font-semibold mb-3 text-lg">Transparency</h3>
+                  <p className="foundation-text-body">{foundationMission.transparency}</p>
                 </div>
               </div>
             </div>
@@ -345,49 +355,49 @@ export default function FoundationIntegrityVerification() {
         </Card>
 
         {/* Action Center */}
-        <Card className="bg-gray-800/50 border-blue-500 border-2">
-          <CardHeader>
-            <CardTitle className="text-white text-xl">Foundation Integrity Action Center</CardTitle>
+        <Card className="foundation-card border-2 border-blue-200 dark:border-blue-700 foundation-pulse-gentle">
+          <CardHeader className="pb-6">
+            <CardTitle className="foundation-heading-3 text-center">Foundation Integrity Action Center</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <Alert className="border-blue-500 bg-blue-500/20">
-                <Heart className="h-4 w-4" />
-                <AlertDescription className="text-blue-200">
-                  <strong>LEGITIMATE FOUNDATION READY:</strong> Complete victim assistance framework with authentic credibility, transparent operations, and gradual trust building through proven results.
+            <div className="space-y-6">
+              <Alert className="foundation-card border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-700">
+                <Heart className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <AlertDescription className="foundation-text-body text-blue-800 dark:text-blue-200">
+                  <strong className="foundation-text-accent">LEGITIMATE FOUNDATION READY:</strong> Complete victim assistance framework with authentic credibility, transparent operations, and gradual trust building through proven results.
                 </AlertDescription>
               </Alert>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Button
                   onClick={() => window.open('/portfolio-value-integration', '_self')}
-                  className="bg-green-600 hover:bg-green-700"
+                  className="foundation-button-secondary h-12"
                 >
-                  <TrendingUp className="h-4 w-4 mr-2" />
+                  <TrendingUp className="h-5 w-5 mr-2" />
                   Fund Operations
                 </Button>
                 
                 <Button
                   onClick={() => window.open('/total-control-tokenomics', '_self')}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="foundation-button-primary h-12"
                 >
-                  <Target className="h-4 w-4 mr-2" />
+                  <Target className="h-5 w-5 mr-2" />
                   Launch Planning
                 </Button>
                 
                 <Button
                   onClick={() => setVerificationStage("documentation")}
-                  className="bg-purple-600 hover:bg-purple-700"
+                  className="foundation-button-accent h-12"
                 >
-                  <FileText className="h-4 w-4 mr-2" />
+                  <FileText className="h-5 w-5 mr-2" />
                   Document Mission
                 </Button>
                 
                 <Button
                   onClick={() => setVerificationStage("community")}
-                  className="bg-yellow-600 hover:bg-yellow-700"
+                  className="foundation-button-secondary h-12"
                 >
-                  <Users className="h-4 w-4 mr-2" />
+                  <Users className="h-5 w-5 mr-2" />
                   Begin Outreach
                 </Button>
               </div>
