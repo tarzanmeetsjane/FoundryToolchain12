@@ -690,6 +690,14 @@ completeWalletPurge().then(result => {
                 </Button>
                 
                 <Button
+                  onClick={() => window.open('/ethgr-to-eth-conversion', '_self')}
+                  className="foundation-button-accent h-12"
+                >
+                  <TrendingUp className="h-5 w-5 mr-2" />
+                  Convert to ETH
+                </Button>
+                
+                <Button
                   onClick={() => window.open('/wallet-security-cleanup', '_self')}
                   className="foundation-button-secondary h-12"
                 >
