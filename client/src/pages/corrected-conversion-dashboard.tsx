@@ -295,9 +295,9 @@ export default function CorrectedConversionDashboard() {
         )}
 
         {/* Action Center */}
-        <Card className="foundation-card border-2 border-green-200 dark:border-green-700 foundation-pulse-gentle">
+        <Card className="foundation-card border-2 border-green-200 dark:border-green-700 foundation-pulse-gentle bg-green-50 dark:bg-green-900/20">
           <CardHeader className="pb-6">
-            <CardTitle className="foundation-heading-3 text-center">Execute Corrected $45,000 Conversion</CardTitle>
+            <CardTitle className="foundation-heading-3 text-center text-green-700 dark:text-green-300">🚀 Execute Corrected $45,000 Conversion</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center space-y-6">
@@ -311,26 +311,26 @@ export default function CorrectedConversionDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button
                   onClick={startCorrectedConversion}
-                  className="foundation-button-primary h-12 text-lg font-bold"
+                  className="foundation-button-primary h-16 text-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
                   disabled={isExecuting}
                 >
-                  <Play className="h-5 w-5 mr-2" />
+                  <Play className="h-6 w-6 mr-3" />
                   {isExecuting ? 'Converting...' : 'START $45,000 CONVERSION'}
                 </Button>
                 
                 <Button
                   onClick={() => window.open('https://wallet.coinbase.com/', '_blank')}
-                  className="foundation-button-accent h-12"
+                  className="foundation-button-accent h-16 text-lg"
                 >
-                  <Wallet className="h-5 w-5 mr-2" />
+                  <Wallet className="h-6 w-6 mr-2" />
                   Connect Wallet
                 </Button>
                 
                 <Button
                   onClick={() => window.open('/live-45k-execution', '_blank')}
-                  className="foundation-button-secondary h-12"
+                  className="foundation-button-secondary h-16 text-lg"
                 >
-                  <ExternalLink className="h-5 w-5 mr-2" />
+                  <ExternalLink className="h-6 w-6 mr-2" />
                   Live Execution
                 </Button>
               </div>
