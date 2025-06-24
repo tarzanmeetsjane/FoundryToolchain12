@@ -92,6 +92,9 @@ import EtherscanGuide from "@/pages/etherscan-guide";
 import EtherscanAnalysis from "@/pages/etherscan-analysis";
 import FoundationReadyDashboard from "@/pages/foundation-ready-dashboard";
 import DelegationSecurityExplanation from "@/pages/delegation-security-explanation";
+import ExecutionLaunch from "@/pages/execution-launch";
+import QuantumIntegration from "@/pages/quantum-integration";
+import EthValueCalculator from "@/pages/eth-value-calculator";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -636,6 +639,9 @@ function Router() {
         <Route path="/etherscan-analysis" component={EtherscanAnalysis} />
         <Route path="/foundation-ready-dashboard" component={FoundationReadyDashboard} />
         <Route path="/delegation-security-explanation" component={DelegationSecurityExplanation} />
+        <Route path="/execution-launch" component={ExecutionLaunch} />
+        <Route path="/quantum-integration" component={QuantumIntegration} />
+        <Route path="/eth-value-calculator" component={EthValueCalculator} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
