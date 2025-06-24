@@ -36,28 +36,43 @@ export default function ExecutionRoadmap() {
     },
     {
       step: 2,
+      title: "Tax Planning & Reserves",
+      description: "Calculate and set aside tax reserves",
+      estimatedTime: "10-15 minutes",
+      priority: "HIGH",
+      actions: [
+        "Calculate 40% tax reserve requirement",
+        "Set up quarterly payment schedule",
+        "Plan client service fee taxation",
+        "Review optimization strategies"
+      ],
+      nextStep: "/tax-strategy-planning",
+      status: "pending"
+    },
+    {
+      step: 3,
       title: "Immediate $50K Conversion",
       description: "Convert 146,200 ETHGR to cash for bills",
       estimatedTime: "15-30 minutes",
       priority: "HIGH",
       actions: [
         "Execute ETHGR to ETH conversion",
+        "Set aside tax reserves (40%)",
         "Convert ETH to USD via exchange",
-        "Withdraw to bank account",
-        "Pay immediate bills and expenses"
+        "Withdraw net amount to bank account"
       ],
       nextStep: "/immediate-conversion-execution",
       status: "pending"
     },
     {
-      step: 3,
+      step: 4,
       title: "Clean Foundation Deployment", 
       description: "Deploy independent foundation contracts",
       estimatedTime: "20-40 minutes",
       priority: "HIGH",
       actions: [
         "Deploy VRFT foundation token",
-        "Setup victim assistance pool",
+        "Setup victim assistance pool with tax accounting",
         "Create foundation treasury",
         "Verify all contracts on Etherscan"
       ],
@@ -65,31 +80,31 @@ export default function ExecutionRoadmap() {
       status: "pending"
     },
     {
-      step: 4,
+      step: 5,
       title: "Foundation Funding",
       description: "Convert additional ETHGR for operations",
       estimatedTime: "30-60 minutes", 
       priority: "MEDIUM",
       actions: [
         "Convert 400K ETHGR for foundation (~$137K)",
+        "Set aside 40% for business taxes",
         "Establish monthly income stream",
-        "Fund victim assistance pool",
-        "Setup DeFi yield strategies"
+        "Fund victim assistance pool"
       ],
       nextStep: "/liquid-eth-opportunities",
       status: "pending"
     },
     {
-      step: 5,
+      step: 6,
       title: "Foundation Operations",
       description: "Begin helping honeypot victims",
       estimatedTime: "Ongoing",
       priority: "MEDIUM",
       actions: [
         "Launch victim assistance program",
+        "Track service fees for tax reporting",
         "Build credibility through successful recoveries",
-        "Expand to help 247 ETHG victims",
-        "Scale foundation operations"
+        "Scale foundation operations with proper accounting"
       ],
       nextStep: "/foundation-integrity-verification",
       status: "pending"

@@ -410,29 +410,37 @@ export default function PersonalAllocationPlan() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Button
                   onClick={() => window.open('/pre-execution-security-check', '_self')}
                   className="foundation-button-primary h-12"
                 >
                   <DollarSign className="h-5 w-5 mr-2" />
-                  Security Check First
+                  Security Check
+                </Button>
+                
+                <Button
+                  onClick={() => window.open('/tax-strategy-planning', '_self')}
+                  className="foundation-button-accent h-12"
+                >
+                  <TrendingUp className="h-5 w-5 mr-2" />
+                  Tax Planning
                 </Button>
                 
                 <Button
                   onClick={() => window.open('/clean-foundation-contract', '_self')}
-                  className="foundation-button-accent h-12"
+                  className="foundation-button-secondary h-12"
                 >
-                  <TrendingUp className="h-5 w-5 mr-2" />
-                  Setup Foundation
+                  <Users className="h-5 w-5 mr-2" />
+                  Foundation Setup
                 </Button>
                 
                 <Button
-                  onClick={() => window.open('/liquid-eth-opportunities', '_self')}
+                  onClick={() => window.open('/execution-roadmap', '_self')}
                   className="foundation-button-secondary h-12"
                 >
                   <Zap className="h-5 w-5 mr-2" />
-                  ETH Strategies
+                  Full Roadmap
                 </Button>
               </div>
             </div>
