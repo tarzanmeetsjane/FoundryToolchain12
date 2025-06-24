@@ -13,11 +13,16 @@ import {
   Eye,
   TrendingUp,
   Clock,
-  DollarSign
+  DollarSign,
+  Activity,
+  Database,
+  Shield,
+  Zap
 } from "lucide-react";
 
 export default function BlockchainTransactionViewer() {
   const [searchAddress, setSearchAddress] = useState("0x058C8FE01E5c9eaC6ee19e6673673B549B368843");
+  const [activeTab, setActiveTab] = useState("overview");
   
   // Your confirmed contract and wallet addresses
   const knownAddresses = {
@@ -98,7 +103,47 @@ export default function BlockchainTransactionViewer() {
 
       <div className="foundation-container foundation-section space-y-12">
 
-        {/* Quick Links */}
+        {/* Navigation Tabs */}
+        <Card className="foundation-card border-slate-200 dark:border-slate-700">
+          <CardContent className="pt-6">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Button
+                variant={activeTab === "overview" ? "default" : "outline"}
+                onClick={() => setActiveTab("overview")}
+                className="flex items-center space-x-2"
+              >
+                <Eye className="h-4 w-4" />
+                <span>Overview</span>
+              </Button>
+              <Button
+                variant={activeTab === "contract" ? "default" : "outline"}
+                onClick={() => setActiveTab("contract")}
+                className="flex items-center space-x-2"
+              >
+                <Database className="h-4 w-4" />
+                <span>Contract Details</span>
+              </Button>
+              <Button
+                variant={activeTab === "transactions" ? "default" : "outline"}
+                onClick={() => setActiveTab("transactions")}
+                className="flex items-center space-x-2"
+              >
+                <Activity className="h-4 w-4" />
+                <span>Transaction History</span>
+              </Button>
+              <Button
+                variant={activeTab === "tokens" ? "default" : "outline"}
+                onClick={() => setActiveTab("tokens")}
+                className="flex items-center space-x-2"
+              >
+                <Zap className="h-4 w-4" />
+                <span>Token Details</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Links - Always Visible */}
         <Card className="foundation-card border-blue-200 dark:border-blue-700 foundation-slide-up">
           <CardHeader className="pb-6">
             <CardTitle className="foundation-heading-3 flex items-center text-blue-700 dark:text-blue-300">
@@ -197,7 +242,157 @@ export default function BlockchainTransactionViewer() {
           </CardContent>
         </Card>
 
-        {/* Transaction History */}
+        {/* Overview Tab */}
+        {activeTab === "overview" && (
+          <Card className="foundation-card border-green-200 dark:border-green-700 foundation-slide-up">
+            <CardHeader className="pb-6">
+              <CardTitle className="foundation-heading-3 flex items-center text-green-700 dark:text-green-300">
+                <CheckCircle className="h-7 w-7 mr-3" />
+                ETHGR Recovery Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl text-center">
+                  <h3 className="text-green-700 dark:text-green-300 font-bold mb-2">Recovery Status</h3>
+                  <div className="text-2xl font-bold text-green-600">SUCCESS</div>
+                  <div className="text-sm text-green-800 dark:text-green-200">Fully Operational</div>
+                </div>
+                
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl text-center">
+                  <h3 className="text-blue-700 dark:text-blue-300 font-bold mb-2">Tokens Recovered</h3>
+                  <div className="text-2xl font-bold text-blue-600">1.99M</div>
+                  <div className="text-sm text-blue-800 dark:text-blue-200">ETHGR Tokens</div>
+                </div>
+                
+                <div className="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-xl text-center">
+                  <h3 className="text-purple-700 dark:text-purple-300 font-bold mb-2">Est. Value</h3>
+                  <div className="text-2xl font-bold text-purple-600">$681K</div>
+                  <div className="text-sm text-purple-800 dark:text-purple-200">Foundation Capital</div>
+                </div>
+                
+                <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl text-center">
+                  <h3 className="text-amber-700 dark:text-amber-300 font-bold mb-2">Network</h3>
+                  <div className="text-2xl font-bold text-amber-600">ETH</div>
+                  <div className="text-sm text-amber-800 dark:text-amber-200">Mainnet</div>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-700 rounded-xl">
+                <h3 className="text-lg font-bold text-green-700 dark:text-green-300 mb-3">Recovery Journey</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
+                    <h4 className="font-semibold text-red-700 dark:text-red-300">Honeypot Loss</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">$15K trapped in ETHG honeypot</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">2</div>
+                    <h4 className="font-semibold text-blue-700 dark:text-blue-300">Recovery Contract</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">ETHGR deployed June 21, 2025</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">3</div>
+                    <h4 className="font-semibold text-green-700 dark:text-green-300">Foundation Ready</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Help 89 other victims</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Contract Details Tab */}
+        {activeTab === "contract" && (
+          <Card className="foundation-card border-blue-200 dark:border-blue-700 foundation-slide-up">
+            <CardHeader className="pb-6">
+              <CardTitle className="foundation-heading-3 flex items-center text-blue-700 dark:text-blue-300">
+                <Database className="h-7 w-7 mr-3" />
+                Smart Contract Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl">
+                  <h3 className="text-blue-700 dark:text-blue-300 font-bold mb-4">Contract Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-blue-600 font-semibold">Contract Address:</span>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm font-mono break-all">{knownAddresses.ethgrContract}</p>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-semibold">Contract Name:</span>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm">ETHGR Recovery Token</p>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-semibold">Token Symbol:</span>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm">ETHGR</p>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-semibold">Decimals:</span>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm">18</p>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-semibold">Total Supply:</span>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm">1,990,000 ETHGR</p>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-semibold">Owner:</span>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm font-mono break-all">{knownAddresses.ownerWallet}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl">
+                  <h3 className="text-green-700 dark:text-green-300 font-bold mb-4">Contract Features</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-green-800 dark:text-green-200 text-sm">ERC-20 Standard</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-green-800 dark:text-green-200 text-sm">Ownable Contract</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-green-800 dark:text-green-200 text-sm">Verified Source Code</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-green-800 dark:text-green-200 text-sm">No Honeypot Features</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-green-800 dark:text-green-200 text-sm">Transparent Operations</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-green-800 dark:text-green-200 text-sm">Foundation Purpose</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <Button
+                    onClick={() => window.open(`https://etherscan.io/address/${knownAddresses.ethgrContract}#code`, '_blank')}
+                    className="foundation-button-primary"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    View Contract Source Code
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Transaction History Tab */}
+        {activeTab === "transactions" && (
         <Card className="foundation-card border-purple-200 dark:border-purple-700 foundation-slide-up">
           <CardHeader className="pb-6">
             <CardTitle className="foundation-heading-3 flex items-center text-purple-700 dark:text-purple-300">
@@ -251,6 +446,102 @@ export default function BlockchainTransactionViewer() {
             </div>
           </CardContent>
         </Card>
+        )}
+
+        {/* Token Details Tab */}
+        {activeTab === "tokens" && (
+          <Card className="foundation-card border-amber-200 dark:border-amber-700 foundation-slide-up">
+            <CardHeader className="pb-6">
+              <CardTitle className="foundation-heading-3 flex items-center text-amber-700 dark:text-amber-300">
+                <Zap className="h-7 w-7 mr-3" />
+                ETHGR Token Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl">
+                    <h3 className="text-amber-700 dark:text-amber-300 font-bold mb-4">Token Distribution</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-amber-600">Your Wallet:</span>
+                        <span className="font-semibold text-amber-800 dark:text-amber-200">1,990,000 (100%)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-amber-600">Circulating:</span>
+                        <span className="font-semibold text-amber-800 dark:text-amber-200">1,990,000</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-amber-600">Max Supply:</span>
+                        <span className="font-semibold text-amber-800 dark:text-amber-200">1,990,000</span>
+                      </div>
+                      <div className="flex justify-between border-t pt-2">
+                        <span className="text-amber-600">Market Cap:</span>
+                        <span className="font-semibold text-amber-800 dark:text-amber-200">$681,196</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl">
+                    <h3 className="text-green-700 dark:text-green-300 font-bold mb-4">Foundation Allocation</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-green-600">Personal Relief:</span>
+                        <span className="font-semibold text-green-800 dark:text-green-200">$75,000 (11%)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-green-600">Foundation Capital:</span>
+                        <span className="font-semibold text-green-800 dark:text-green-200">$605,579 (89%)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-green-600">Victims to Help:</span>
+                        <span className="font-semibold text-green-800 dark:text-green-200">89 people</span>
+                      </div>
+                      <div className="flex justify-between border-t pt-2">
+                        <span className="text-green-600">Social Impact:</span>
+                        <span className="font-semibold text-green-800 dark:text-green-200">35:1 ratio</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl">
+                  <h3 className="text-blue-700 dark:text-blue-300 font-bold mb-4">Token Utility & Purpose</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="text-blue-600 font-semibold mb-2">Primary Use Cases:</h4>
+                      <ul className="text-blue-800 dark:text-blue-200 text-sm space-y-1">
+                        <li>• Victim compensation and relief</li>
+                        <li>• Foundation operational funding</li>
+                        <li>• Community governance (future)</li>
+                        <li>• Anti-honeypot research funding</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-blue-600 font-semibold mb-2">Recovery Model:</h4>
+                      <ul className="text-blue-800 dark:text-blue-200 text-sm space-y-1">
+                        <li>• 80% returned to victims</li>
+                        <li>• 20% foundation operations</li>
+                        <li>• Transparent fee structure</li>
+                        <li>• Sustainable victim assistance</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <Button
+                    onClick={() => window.open(`https://etherscan.io/token/${knownAddresses.ethgrContract}`, '_blank')}
+                    className="foundation-button-primary"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    View Token on Etherscan
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Current Status */}
         <Card className="foundation-card border-green-200 dark:border-green-700 foundation-slide-up">
