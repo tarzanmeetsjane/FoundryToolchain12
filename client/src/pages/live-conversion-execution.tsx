@@ -41,7 +41,7 @@ export default function LiveConversionExecution() {
       title: "Tax Reserve Calculation",
       description: "Calculate exact tax obligations and set aside reserves",
       duration: 2000,
-      details: ["Federal tax (22%): $11,000", "State tax (6%): $3,000", "FICA (7.65%): $3,825", "Safety buffer: $2,175", "Total reserve: $20,000"]
+      details: ["Federal tax (22%): $16,500", "State tax (6%): $4,500", "FICA (7.65%): $5,738", "Safety buffer: $3,262", "Total reserve: $30,000"]
     },
     {
       id: 2,
@@ -69,7 +69,7 @@ export default function LiveConversionExecution() {
       title: "Bank Withdrawal",
       description: "Withdraw $45K to bank account for immediate use",
       duration: 3000,
-      details: ["Initiate bank transfer", "Set aside $20K tax reserve", "Transfer $30K to checking", "Confirm receipt in 1-3 days"]
+      details: ["Initiate bank transfer", "Set aside $30K tax reserve", "Transfer $45K to checking", "Confirm receipt in 1-3 days"]
     }
   ];
 

@@ -83,6 +83,7 @@ import ConversionExecutionCenter from "@/pages/conversion-execution-center";
 import LiveConversionExecution from "@/pages/live-conversion-execution";
 import ConversionSummary from "@/pages/conversion-summary";
 import OptimizedConversionPlan from "@/pages/optimized-conversion-plan";
+import PreventionStrategy from "@/pages/prevention-strategy";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -618,6 +619,7 @@ function Router() {
         <Route path="/live-conversion-execution" component={LiveConversionExecution} />
         <Route path="/conversion-summary" component={ConversionSummary} />
         <Route path="/optimized-conversion-plan" component={OptimizedConversionPlan} />
+        <Route path="/prevention-strategy" component={PreventionStrategy} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
