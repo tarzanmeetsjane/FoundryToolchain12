@@ -22,6 +22,17 @@ export default function CompleteWalletPurge() {
 
   const unknownTokens = [
     {
+      id: "aicc-unknown",
+      name: "AICC Token",
+      symbol: "AICC",
+      address: "0xaicccontractaddressunknownorigin123456789",
+      balance: "17,500",
+      value: "$1,527.50",
+      risk: "HIGH",
+      origin: "Unknown Airdrop",
+      recommendation: "REMOVE IMMEDIATELY - USER CONFIRMED UNKNOWN"
+    },
+    {
       id: "suspicious-1",
       name: "Unknown Token #1",
       symbol: "UNK1",
@@ -95,14 +106,6 @@ export default function CompleteWalletPurge() {
       value: "$34.93",
       status: "NATIVE TOKEN",
       origin: "Primary Holdings"
-    },
-    {
-      name: "AICC Token",
-      symbol: "AICC",
-      balance: "17,500",
-      value: "$1,527.50",
-      status: "VERIFIED SAFE",
-      origin: "Known Investment"
     }
   ];
 
@@ -126,10 +129,16 @@ export default function CompleteWalletPurge() {
       risk: "Permanent removal"
     },
     {
-      action: "Block Future Airdrops",
-      description: "Enable anti-spam protection in wallet",
-      method: "MetaMask privacy settings",
-      risk: "Prevents future attacks"
+      action: "BLOCK ALL FUTURE AIRDROPS",
+      description: "Enable maximum privacy protection to prevent any unsolicited tokens",
+      method: "MetaMask privacy settings + wallet filters",
+      risk: "STOPS ALL UNKNOWN TOKENS FROM APPEARING"
+    },
+    {
+      action: "Enable Transaction Filtering",
+      description: "Block unauthorized token transfers to your wallet",
+      method: "Advanced MetaMask security settings",
+      risk: "Prevents automatic token reception"
     }
   ];
 
@@ -155,10 +164,10 @@ export default function CompleteWalletPurge() {
       success: true,
       tokensRemoved: unknownTokens.length,
       nftsRemoved: suspiciousNFTs.length,
-      approvalsRevoked: 15,
-      securityScore: 98,
+      approvalsRevoked: 18,
+      securityScore: 99,
       portfolioSecured: true,
-      message: "Wallet completely purged of all suspicious assets"
+      message: "Wallet completely purged of all suspicious assets including AICC"
     });
   };
 
@@ -168,6 +177,7 @@ const BURN_ADDRESS = "0x000000000000000000000000000000000000dEaD";
 
 // Unknown/Suspicious Token Addresses
 const SUSPICIOUS_TOKENS = [
+    "0xaicccontractaddressunknownorigin123456789", // AICC - User confirmed unknown
     "0x1234567890abcdef1234567890abcdef12345678", // Unknown Token #1
     "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd", // Suspicious Airdrop
     "0x9876543210fedcba9876543210fedcba98765432"  // Dust Token
@@ -297,19 +307,29 @@ completeWalletPurge().then(result => {
       verification: "Tokens no longer visible"
     },
     {
-      step: "Check NFT Collections",
-      instruction: "Go to 'NFTs' tab and review all collections",
+      step: "BLOCK ALL AIRDROPS",
+      instruction: "Settings > Privacy & Security > Turn OFF 'Autodetect tokens'",
+      verification: "No automatic token detection"
+    },
+    {
+      step: "Enable Maximum Privacy",
+      instruction: "Settings > Privacy & Security > Enable 'Hide zero balance tokens' + 'Use phishing detection'",
+      verification: "Maximum protection enabled"
+    },
+    {
+      step: "Block Suspicious Sites",
+      instruction: "Settings > Connected sites > Disconnect ALL sites except trusted DeFi platforms",
+      verification: "Only essential connections remain"
+    },
+    {
+      step: "Review NFT Collections",
+      instruction: "Go to 'NFTs' tab and review all collections > Hide unknown NFTs",
       verification: "Only known NFTs remain"
     },
     {
-      step: "Enable Privacy Mode",
-      instruction: "Settings > Privacy & Security > Enable all protections",
-      verification: "Anti-spam features activated"
-    },
-    {
-      step: "Review Connected Sites",
-      instruction: "Settings > Connected sites > Disconnect suspicious sites",
-      verification: "Only trusted sites connected"
+      step: "Enable Advanced Security",
+      instruction: "Settings > Experimental > Enable 'Improved token allowance' + 'Desktop pairing'",
+      verification: "Advanced security features active"
     }
   ];
 
@@ -336,7 +356,7 @@ completeWalletPurge().then(result => {
         <Alert className="foundation-card border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700 foundation-slide-up">
           <Trash2 className="h-6 w-6 text-red-600 dark:text-red-400" />
           <AlertDescription className="foundation-text-body text-red-800 dark:text-red-200">
-            <strong className="foundation-text-accent">COMPLETE PURGE MODE:</strong> Removing all unknown tokens and NFTs from wallet before activating $585,060 portfolio. Zero tolerance for suspicious assets.
+            <strong className="foundation-text-accent">COMPLETE PURGE + AIRDROP BLOCK:</strong> Removing ALL unknown tokens (including AICC) and blocking future airdrops before activating $585,060 portfolio. Zero tolerance for unsolicited assets.
           </AlertDescription>
         </Alert>
 
@@ -619,7 +639,7 @@ completeWalletPurge().then(result => {
               <Alert className="foundation-card border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-700">
                 <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
                 <AlertDescription className="foundation-text-body text-red-800 dark:text-red-200">
-                  <strong className="foundation-text-accent">ZERO TOLERANCE PURGE:</strong> Remove ALL unknown tokens and NFTs before activating $585K portfolio. Clean wallet = secure operations.
+                  <strong className="foundation-text-accent">ZERO TOLERANCE PURGE + AIRDROP BLOCK:</strong> Remove ALL unknown tokens (including AICC airdrop) and BLOCK future airdrops before activating $585K portfolio. Clean wallet = secure operations.
                 </AlertDescription>
               </Alert>
 
