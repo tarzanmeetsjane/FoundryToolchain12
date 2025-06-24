@@ -77,6 +77,7 @@ import ImmediateConversionExecution from "@/pages/immediate-conversion-execution
 import PreExecutionSecurityCheck from "@/pages/pre-execution-security-check";
 import ExecutionRoadmap from "@/pages/execution-roadmap";
 import TaxStrategyPlanning from "@/pages/tax-strategy-planning";
+import ImmediateExecutionCenter from "@/pages/immediate-execution-center";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -606,6 +607,7 @@ function Router() {
         <Route path="/pre-execution-security-check" component={PreExecutionSecurityCheck} />
         <Route path="/execution-roadmap" component={ExecutionRoadmap} />
         <Route path="/tax-strategy-planning" component={TaxStrategyPlanning} />
+        <Route path="/immediate-execution-center" component={ImmediateExecutionCenter} />
         <Route path="/etherscan-filter-analyzer" component={EtherscanFilterAnalyzer} />
         <Route path="/instant-value-realization" component={InstantValueRealization} />
         <Route path="/beacon-chain-analyzer" component={BeaconChainAnalyzer} />
