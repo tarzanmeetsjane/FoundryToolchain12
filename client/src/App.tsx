@@ -53,6 +53,7 @@ import EthgrValueCreation from "@/pages/ethgr-value-creation";
 import RemixVmToMainnet from "@/pages/remix-vm-to-mainnet";
 import AntiHoneypotContract from "@/pages/anti-honeypot-contract";
 import GaslessProtectedContract from "@/pages/gasless-protected-contract";
+import WalletProtectionSystem from "@/pages/wallet-protection-system";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
@@ -539,6 +540,9 @@ function Router() {
         <Route path="/free-token-submission" component={FreeTokenSubmission} />
         <Route path="/ethgr-value-creation" component={EthgrValueCreation} />
         <Route path="/remix-vm-to-mainnet" component={RemixVmToMainnet} />
+        <Route path="/anti-honeypot-contract" component={AntiHoneypotContract} />
+        <Route path="/gasless-protected-contract" component={GaslessProtectedContract} />
+        <Route path="/wallet-protection-system" component={WalletProtectionSystem} />
         <Route path="/live-wallet-analysis" component={LiveWalletAnalysis} />
         <Route path="/liquidity-pool-investigation" component={LiquidityPoolInvestigation} />
         <Route path="/live-lp-results" component={LiveLPResults} />
