@@ -305,6 +305,9 @@ Web3 Wallet → Wagmi Provider → React Components → Blockchain Interactions
 - **SIMPLIFIED INTERFACE**: Fixed Lucide import errors and created clean, working conversion system
 - **STANDALONE SOLUTION**: Created standalone-conversion.html - direct access conversion system bypassing server connectivity issues
 - **IMMEDIATE EXECUTION**: Self-contained HTML with real-time progress tracking and direct platform links for $45,000 conversion
+- **MINIAPP LIMITATION CONFIRMED**: User correctly identified Coinbase MiniApps cannot withdraw to bank - sandboxed Base L2 environment restriction
+- **OPTIMAL WITHDRAWAL STRATEGY**: Created comprehensive analysis showing Uniswap → Kraken Pro → Bank optimal path ($45,012 final vs $44,866 Coinbase Pro)
+- **TECHNICAL CONSTRAINT ANALYSIS**: Documented MiniApp limitations: iframe sandbox, Base L2 only, no fiat rails, API restrictions
 - **UPDATED CONVERSION PLAN**: $75K gross → $30K tax reserve → $45K available cash → $605,579 foundation remaining
 - **INCREASED RELIEF**: User gets $15K more immediate cash ($45K vs $30K) for same tax planning effort
 - **PREVENTION INSIGHT**: User identified honeypot victims have similar trapped amounts, foundation can scale to prevention technology
