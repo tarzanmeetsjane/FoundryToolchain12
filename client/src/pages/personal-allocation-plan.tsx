@@ -412,11 +412,11 @@ export default function PersonalAllocationPlan() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button
-                  onClick={() => window.open('/ethgr-to-eth-conversion', '_self')}
+                  onClick={() => window.open('/immediate-conversion-execution', '_self')}
                   className="foundation-button-primary h-12"
                 >
                   <DollarSign className="h-5 w-5 mr-2" />
-                  Convert for Bills
+                  Execute $50K Now
                 </Button>
                 
                 <Button
