@@ -61,6 +61,7 @@ import LiveEthRecoveryExecution from "@/pages/live-eth-recovery-execution";
 import ContractWalletExtraction from "@/pages/contract-wallet-extraction";
 import PortfolioValueIntegration from "@/pages/portfolio-value-integration";
 import TotalControlTokenomics from "@/pages/total-control-tokenomics";
+import PreLaunchSecurityAudit from "@/pages/pre-launch-security-audit";
 import EnhancedContractVerification from "@/pages/enhanced-contract-verification";
 import ExecutionDashboard from "@/pages/execution-dashboard";
 import AlternativeSolutions from "@/pages/alternative-solutions";
