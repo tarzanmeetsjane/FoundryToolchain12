@@ -1,61 +1,81 @@
-# ETHGR Foundation Deployment Makefile
+# ETHGR Foundation - Foundry Build System
+# Production deployment automation for mainnet
 
-# Environment variables
--include .env
+.PHONY: help build test test-gas clean deploy migrate verify setup
 
-# Default network
-NETWORK ?= mainnet
+# Default target
+help:
+	@echo "ETHGR Foundation - Foundry Commands"
+	@echo ""
+	@echo "Setup Commands:"
+	@echo "  setup        Setup Foundry environment"
+	@echo "  build        Compile contracts"
+	@echo "  test         Run test suite"
+	@echo "  test-gas     Run tests with gas reporting"
+	@echo ""
+	@echo "Deployment Commands:"
+	@echo "  deploy       Deploy to mainnet (requires .env)"
+	@echo "  migrate      Execute foundation migration"
+	@echo "  verify       Verify contract on Etherscan"
+	@echo ""
+	@echo "Utility Commands:"
+	@echo "  clean        Clean build artifacts"
 
-# Contract addresses (set after deployment)
-ETHGR_CONTRACT ?= 
+# Environment setup
+export FOUNDRY_DISABLE_NIGHTLY_WARNING=true
+export PATH := $(HOME)/.foundry:$(PATH)
 
-# Commands
-.PHONY: help install test deploy migrate verify clean
+# Build contracts
+build:
+	forge build --sizes
 
-help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
-install: ## Install dependencies
-	forge install
-
-build: ## Build contracts
-	forge build
-
-test: ## Run tests
+# Run tests
+test:
 	forge test -vv
 
-test-gas: ## Run tests with gas reporting
+# Run tests with gas reporting
+test-gas:
 	forge test --gas-report
 
-deploy: ## Deploy ETHGR contract to mainnet
-	forge script script/Deploy.s.sol:DeployScript --rpc-url $(NETWORK) --broadcast --verify
-
-deploy-dry: ## Dry run deployment
-	forge script script/Deploy.s.sol:DeployScript --rpc-url $(NETWORK)
-
-migrate: ## Execute foundation migration
-	@echo "Migrating with contract: $(ETHGR_CONTRACT)"
-	forge script script/Migrate.s.sol:MigrateScript --rpc-url $(NETWORK) --broadcast
-
-verify: ## Verify contract on Etherscan
-	forge verify-contract $(ETHGR_CONTRACT) src/ETHGRecovery.sol:ETHGRecovery --chain $(NETWORK)
-
-clean: ## Clean build artifacts
+# Clean build artifacts
+clean:
 	forge clean
 
-# Development helpers
-dev-deploy: ## Deploy to local testnet
-	anvil & forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --broadcast
+# Setup development environment
+setup:
+	./scripts/install-foundry.sh
 
-# Foundation specific commands
-foundation-check: ## Check foundation wallet balance
-	cast balance 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 --rpc-url $(NETWORK)
+# Deploy to mainnet (requires .env file)
+deploy:
+	@if [ ! -f .env ]; then \
+		echo "Error: .env file not found. Copy .env.example and configure your keys."; \
+		exit 1; \
+	fi
+	forge script script/Deploy.s.sol:DeployScript \
+		--rpc-url $$MAINNET_RPC_URL \
+		--private-key $$PRIVATE_KEY \
+		--broadcast \
+		--verify \
+		--etherscan-api-key $$ETHERSCAN_API_KEY
 
-ethgr-balance: ## Check ETHGR balance
-	cast call $(ETHGR_CONTRACT) "balanceOf(address)" 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 --rpc-url $(NETWORK)
+# Execute foundation migration
+migrate:
+	@if [ ! -f .env ]; then \
+		echo "Error: .env file not found. Configure ETHGR_CONTRACT address."; \
+		exit 1; \
+	fi
+	forge script script/Migrate.s.sol:MigrateScript \
+		--rpc-url $$MAINNET_RPC_URL \
+		--private-key $$PRIVATE_KEY \
+		--broadcast
 
-migration-status: ## Check if foundation has migrated
-	cast call $(ETHGR_CONTRACT) "hasMigrated(address)" 0x058C8FE01E5c9eaC6ee19e6673673B549B368843 --rpc-url $(NETWORK)
-
-total-supply: ## Check total ETHGR supply
-	cast call $(ETHGR_CONTRACT) "totalSupply()" --rpc-url $(NETWORK)
+# Verify contract manually
+verify:
+	@if [ ! -f .env ]; then \
+		echo "Error: .env file not found. Configure ETHERSCAN_API_KEY."; \
+		exit 1; \
+	fi
+	forge verify-contract \
+		$$ETHGR_CONTRACT \
+		src/ETHGRecovery.sol:ETHGRecovery \
+		--etherscan-api-key $$ETHERSCAN_API_KEY
