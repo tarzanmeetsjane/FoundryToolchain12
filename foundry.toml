@@ -11,7 +11,11 @@ optimizer_runs = 1000000
 [rpc_endpoints]
 goerli = "${GOERLI_RPC_URL}"
 mainnet = "${MAINNET_RPC_URL}"
+base = "https://mainnet.base.org"
+base_sepolia = "https://sepolia.base.org"
 
 [etherscan]
 goerli = { key = "${ETHERSCAN_API_KEY}" }
 mainnet = { key = "${ETHERSCAN_API_KEY}" }
+base = { key = "${BASESCAN_API_KEY}", url = "https://api.basescan.org/api" }
+base_sepolia = { key = "${BASESCAN_API_KEY}", url = "https://api-sepolia.basescan.org/api" }
