@@ -11,7 +11,7 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - **PRODUCTION READY**: Both contract versions tested and ready for mainnet deployment
 
 ## Current Status
-**Priority**: Secure deployment funding - targeting multi-step approach for minimal investment ($30-60)
+**URGENT**: Deploy immediately - gas at 5.34 gwei (70% below normal, reduces $60 budget to ~$20 actual cost)
 
 **All-In-One Recovery Contract (Recommended)**:
 - Single transaction handles: verification → minting → conversion → distribution
@@ -43,7 +43,9 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - `script/DeployAllInOne.s.sol` - All-in-one contract deployment script
 - `script/ExecuteRecovery.s.sol` - Single-transaction complete recovery execution
 - `COMPLETE_DEPLOYMENT_COMPARISON.md` - Comparison of deployment approaches
-- `Makefile` - Updated with all-in-one deployment commands
+- `GAS_OPTIMIZATION_GUIDE.md` - $60 budget optimization and timing strategy
+- `FUNDING_STRATEGY.md` - Cost-effective funding approach analysis
+- `Makefile` - Updated with all deployment commands
 - `.env.example` - Environment variables template for both approaches
 
 ## Technical Architecture
