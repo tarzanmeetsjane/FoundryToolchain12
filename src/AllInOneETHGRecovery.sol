@@ -35,7 +35,7 @@ contract AllInOneETHGRecovery is ERC20, Ownable {
     
     // Foundation constants
     address public constant FOUNDATION_WALLET = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
-    address public constant ETHG_TOKEN = 0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90;
+    address public constant ETHG_TOKEN = 0xFA7DE122F5Fba7123cDb4fE6bf75821C2B937c90;
     address public constant UNISWAP_ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     
     // Recovery parameters
@@ -68,7 +68,7 @@ contract AllInOneETHGRecovery is ERC20, Ownable {
         _;
     }
     
-    constructor() ERC20("ETHGR Recovery Token", "ETHGR") {
+    constructor() ERC20("ETHGR Recovery Token", "ETHGR") Ownable(FOUNDATION_WALLET) {
         // Self-verify contract upon deployment
         _selfVerifyContract();
     }

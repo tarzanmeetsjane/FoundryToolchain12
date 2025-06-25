@@ -7,11 +7,10 @@ import "../src/AllInOneETHGRecovery.sol";
 contract AllInOneETHGRecoveryTest is Test {
     AllInOneETHGRecovery public recovery;
     address public constant FOUNDATION = 0x058C8FE01E5c9eaC6ee19e6673673B549B368843;
-    address public constant ETHG_TOKEN = 0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90;
+    address public constant ETHG_TOKEN = 0xFA7DE122F5Fba7123cDb4fE6bf75821C2B937c90;
     
     function setUp() public {
-        // Deploy contract as foundation
-        vm.prank(FOUNDATION);
+        // Deploy contract (constructor sets FOUNDATION as owner)
         recovery = new AllInOneETHGRecovery();
     }
     

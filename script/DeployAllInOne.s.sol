@@ -11,7 +11,7 @@ contract DeployAllInOneScript is Script {
         
         console.log("Deploying AllInOneETHGRecovery contract...");
         console.log("Deployer:", deployer);
-        console.log("Foundation:", AllInOneETHGRecovery(address(0)).FOUNDATION_WALLET());
+        console.log("Foundation:", 0x058C8FE01E5c9eaC6ee19e6673673B549B368843);
         
         vm.startBroadcast(deployerPrivateKey);
         
