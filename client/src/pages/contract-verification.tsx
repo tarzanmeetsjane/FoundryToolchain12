@@ -1,17 +1,48 @@
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, CheckCircle, Copy, ArrowRight } from 'lucide-react';
+import { ExternalLink, CheckCircle, Copy, ArrowRight, RefreshCw } from 'lucide-react';
+import { getETHGRBalance, getETHBalance, getETHPrice, calculateConversion } from '@/lib/blockchain';
 
 export default function ContractVerification() {
+  const [ethgrBalance, setEthgrBalance] = useState(1990000);
+  const [ethBalance, setEthBalance] = useState(0);
+  const [ethPrice, setEthPrice] = useState(2439);
+  const [loading, setLoading] = useState(false);
+  
   const contractAddress = "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308";
   const foundationWallet = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
   const deploymentTx = "0xd03eef8b6bd869b38cd51ce4b37129354642f92f644d5ca8a03b0843c2c80351";
   const migrationTx = "0x7b597b87f4db2cb3a29c50f8d3f6d3de40bea600c2309a04dd5a8f8fe212c9cb";
 
+  const conversionAmount = 219300;
+  const conversion = calculateConversion(conversionAmount, ethPrice);
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
   };
+
+  const refreshBalances = async () => {
+    setLoading(true);
+    try {
+      const [ethgr, eth, price] = await Promise.all([
+        getETHGRBalance(),
+        getETHBalance(),
+        getETHPrice()
+      ]);
+      setEthgrBalance(ethgr);
+      setEthBalance(eth);
+      setEthPrice(price);
+    } catch (error) {
+      console.error("Error refreshing balances:", error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    refreshBalances();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
@@ -75,22 +106,35 @@ export default function ContractVerification() {
                     <span className="font-semibold">ETHGR</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Total Supply:</span>
-                    <span className="font-semibold text-green-600">1,990,000 ETHGR</span>
+                    <span className="text-slate-600">Foundation Balance:</span>
+                    <span className="font-semibold text-green-600">
+                      {ethgrBalance.toLocaleString()} ETHGR
+                    </span>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Owner:</span>
-                    <span className="font-semibold">Foundation</span>
+                    <span className="text-slate-600">ETH Balance:</span>
+                    <span className="font-semibold">{ethBalance.toFixed(4)} ETH</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Migration:</span>
-                    <span className="font-semibold text-green-600">Completed</span>
+                    <span className="text-slate-600">ETH Price:</span>
+                    <span className="font-semibold">${ethPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Deployment Cost:</span>
-                    <span className="font-semibold text-green-600">$14.50</span>
+                    <span className="text-slate-600">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={refreshBalances}
+                        disabled={loading}
+                        className="p-0 h-auto text-slate-600 hover:text-slate-800"
+                      >
+                        <RefreshCw className={`h-3 w-3 mr-1 ${loading ? 'animate-spin' : ''}`} />
+                        Refresh
+                      </Button>
+                    </span>
+                    <span className="font-semibold text-green-600">Live Data</span>
                   </div>
                 </div>
               </div>
@@ -157,8 +201,12 @@ export default function ContractVerification() {
                 <div>
                   <div className="text-sm text-purple-700 font-medium">Foundation Wallet</div>
                   <div className="text-sm font-mono text-purple-800">{foundationWallet}</div>
-                  <div className="text-lg font-bold text-purple-800 mt-2">1,990,000 ETHGR</div>
-                  <div className="text-sm text-purple-600">Ready for conversion</div>
+                  <div className="text-lg font-bold text-purple-800 mt-2">
+                    {ethgrBalance.toLocaleString()} ETHGR
+                  </div>
+                  <div className="text-sm text-purple-600">
+                    Converting {conversionAmount.toLocaleString()} → ${conversion.availableCash.toFixed(0)}
+                  </div>
                 </div>
                 <Button
                   onClick={() => window.open(`https://etherscan.io/address/${foundationWallet}`, '_blank')}
@@ -172,14 +220,25 @@ export default function ContractVerification() {
           </CardContent>
         </Card>
 
-        {/* Next Steps */}
+        {/* Conversion Summary */}
         <Card className="bg-gradient-to-r from-green-500 to-blue-500 text-white">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <h3 className="text-2xl font-bold">Ready for $45,000 Conversion</h3>
-              <p className="text-lg opacity-90">
-                Your contract is deployed and verified. Convert 219,300 ETHGR tokens to relief funding.
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                <div className="bg-white/20 rounded-lg p-4">
+                  <div className="text-2xl font-bold">{conversionAmount.toLocaleString()}</div>
+                  <div className="text-sm opacity-90">ETHGR Converting</div>
+                </div>
+                <div className="bg-white/20 rounded-lg p-4">
+                  <div className="text-2xl font-bold">{conversion.expectedETH.toFixed(1)} ETH</div>
+                  <div className="text-sm opacity-90">Expected Output</div>
+                </div>
+                <div className="bg-white/20 rounded-lg p-4">
+                  <div className="text-2xl font-bold">${conversion.availableCash.toFixed(0)}</div>
+                  <div className="text-sm opacity-90">Available Cash</div>
+                </div>
+              </div>
               <Button
                 onClick={() => window.location.href = '/uniswap'}
                 className="bg-white text-blue-600 font-bold py-3 px-6 hover:bg-gray-100"
