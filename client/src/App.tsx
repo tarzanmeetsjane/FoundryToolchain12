@@ -19,6 +19,8 @@ import {
 
 import ETHExtractionDashboard from './pages/eth-extraction-dashboard';
 import DeploymentInterface from './pages/deployment-interface';
+import ConversionInterface from './pages/conversion-interface';
+import UniswapConversion from './pages/uniswap-conversion';
 
 function Navigation() {
   const [location] = useLocation();
