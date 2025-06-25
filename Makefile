@@ -14,9 +14,11 @@ help:
         @echo "  test-gas     Run tests with gas reporting"
         @echo ""
         @echo "Deployment Commands:"
-        @echo "  deploy       Deploy to mainnet (requires .env)"
-        @echo "  migrate      Execute foundation migration"
-        @echo "  verify       Verify contract on Etherscan"
+        @echo "  deploy-allinone    Deploy all-in-one contract (recommended)"
+        @echo "  execute-recovery   Execute complete recovery (all-in-one)"
+        @echo "  deploy             Deploy multi-step contract"
+        @echo "  migrate            Execute foundation migration"
+        @echo "  verify             Verify contract on Etherscan"
         @echo ""
         @echo "Utility Commands:"
         @echo "  clean        Clean build artifacts"
@@ -45,42 +47,7 @@ clean:
 setup:
         ./scripts/install-foundry.sh
 
-# Deploy to mainnet (requires .env file)
-deploy:
-        @if [ ! -f .env ]; then \
-                echo "Error: .env file not found. Copy .env.example and configure your keys."; \
-                exit 1; \
-        fi
-        forge script script/Deploy.s.sol:DeployScript \
-                --rpc-url $$MAINNET_RPC_URL \
-                --private-key $$PRIVATE_KEY \
-                --broadcast \
-                --verify \
-                --etherscan-api-key $$ETHERSCAN_API_KEY
-
-# Execute foundation migration
-migrate:
-        @if [ ! -f .env ]; then \
-                echo "Error: .env file not found. Configure ETHGR_CONTRACT address."; \
-                exit 1; \
-        fi
-        forge script script/Migrate.s.sol:MigrateScript \
-                --rpc-url $$MAINNET_RPC_URL \
-                --private-key $$PRIVATE_KEY \
-                --broadcast
-
-# Verify contract manually
-verify:
-        @if [ ! -f .env ]; then \
-                echo "Error: .env file not found. Configure ETHERSCAN_API_KEY."; \
-                exit 1; \
-        fi
-        forge verify-contract \
-                $$ETHGR_CONTRACT \
-                src/ETHGRecovery.sol:ETHGRecovery \
-                --etherscan-api-key $$ETHERSCAN_API_KEY
-
-# Deploy all-in-one contract
+# Deploy all-in-one contract (recommended)
 deploy-allinone:
         @if [ ! -f .env ]; then \
                 echo "Error: .env file not found. Copy .env.example and configure your keys."; \
@@ -103,3 +70,38 @@ execute-recovery:
                 --rpc-url $$MAINNET_RPC_URL \
                 --private-key $$PRIVATE_KEY \
                 --broadcast
+
+# Deploy multi-step contract (advanced)
+deploy:
+        @if [ ! -f .env ]; then \
+                echo "Error: .env file not found. Copy .env.example and configure your keys."; \
+                exit 1; \
+        fi
+        forge script script/Deploy.s.sol:DeployScript \
+                --rpc-url $$MAINNET_RPC_URL \
+                --private-key $$PRIVATE_KEY \
+                --broadcast \
+                --verify \
+                --etherscan-api-key $$ETHERSCAN_API_KEY
+
+# Execute foundation migration (multi-step)
+migrate:
+        @if [ ! -f .env ]; then \
+                echo "Error: .env file not found. Configure ETHGR_CONTRACT address."; \
+                exit 1; \
+        fi
+        forge script script/Migrate.s.sol:MigrateScript \
+                --rpc-url $$MAINNET_RPC_URL \
+                --private-key $$PRIVATE_KEY \
+                --broadcast
+
+# Verify contract manually
+verify:
+        @if [ ! -f .env ]; then \
+                echo "Error: .env file not found. Configure ETHERSCAN_API_KEY."; \
+                exit 1; \
+        fi
+        forge verify-contract \
+                $$ETHGR_CONTRACT \
+                src/ETHGRecovery.sol:ETHGRecovery \
+                --etherscan-api-key $$ETHERSCAN_API_KEY
