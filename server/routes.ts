@@ -16,22 +16,6 @@ import { ethgrTransactionAnalyzer } from './ethgr-transaction-analyzer';
 import { etherscanFetcher } from './etherscan-transaction-fetcher';
 import { WebSocketServer } from 'ws';
 
-export function registerRoutes(app: Express): Server {
-  
-  // WebSocket server for real-time updates
-  let wss: WebSocketServer | null = null;
-  
-  // Function to broadcast live data to all connected clients
-  function broadcastLiveData(data: any) {
-    if (wss) {
-      wss.clients.forEach(client => {
-        if (client.readyState === 1) { // WebSocket.OPEN
-          client.send(JSON.stringify(data));
-        }
-      });
-    }
-  }
-
 const router = Router();
 
 // Bot Management Routes
@@ -314,60 +298,4 @@ router.post("/api/initialize-discovered-data", async (req, res) => {
   }
 });
 
-  // Mount all bot dashboard routes
-  app.use(router);
-
-  // Core API endpoints from existing system
-  app.get("/api/alerts", async (req, res) => {
-    res.json({
-      alerts: [],
-      recentTriggers: []
-    });
-  });
-
-  // Original wallet balance checking endpoints
-  app.get("/api/wallet/balance/:address", async (req, res) => {
-    try {
-      const { address } = req.params;
-      const balance = await liveData.getETHBalance(address);
-      
-      res.json({
-        success: true,
-        address,
-        eth: balance,
-        timestamp: new Date().toISOString()
-      });
-    } catch (error) {
-      console.error('Wallet balance error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to fetch wallet balance',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  const httpServer = createServer(app);
-  
-  // Set up WebSocket server
-  wss = new WebSocketServer({ server: httpServer, path: '/ws' });
-  
-  wss.on('connection', (ws) => {
-    console.log('Client connected to WebSocket');
-    
-    ws.on('message', (message) => {
-      try {
-        const data = JSON.parse(message.toString());
-        console.log('Received WebSocket message:', data);
-      } catch (error) {
-        console.error('Invalid WebSocket message:', error);
-      }
-    });
-
-    ws.on('close', () => {
-      console.log('Client disconnected from WebSocket');
-    });
-  });
-
-  return httpServer;
-}
+export default router;

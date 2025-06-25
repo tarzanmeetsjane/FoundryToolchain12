@@ -1,29 +1,9 @@
-import { Route, Router, Link, useLocation } from "wouter";
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { 
-  AlertTriangle,
-  CheckCircle,
-  ExternalLink,
-  Droplets,
-  DollarSign,
-  ArrowRight,
-  Target,
-  Wallet,
-  Home,
-  TrendingUp
-} from "lucide-react";
-
-import ETHExtractionDashboard from './pages/eth-extraction-dashboard';
-import DeploymentInterface from './pages/deployment-interface';
-import ConversionInterface from './pages/conversion-interface';
-import UniswapConversion from './pages/uniswap-conversion';
-import ContractVerification from './pages/contract-verification';
-import ContractDetails from './pages/contract-details';
-import ValueCreation from './pages/value-creation';
+import { Switch, Route } from "wouter";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
+import { Toaster } from "@/components/ui/toaster";
+import HomePage from "./pages/HomePage";
+import BotDashboard from "./pages/BotDashboard";
 
 function Navigation() {
   const [location] = useLocation();
@@ -350,19 +330,15 @@ function LiquidityPoolCreation() {
 
 export default function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-        <Navigation />
-        
-        <Route path="/" component={ContractVerification} />
-        <Route path="/value-creation" component={ValueCreation} />
-        <Route path="/extraction" component={ETHExtractionDashboard} />
-        <Route path="/deployment" component={DeploymentInterface} />
-        <Route path="/conversion" component={ConversionInterface} />
-        <Route path="/uniswap" component={UniswapConversion} />
-        <Route path="/details" component={ContractDetails} />
-        <Route path="/liquidity" component={LiquidityPoolCreation} />
+    <QueryClientProvider client={queryClient}>
+      <div className="min-h-screen bg-background">
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/bot-dashboard" component={BotDashboard} />
+          <Route>404 Page Not Found</Route>
+        </Switch>
+        <Toaster />
       </div>
-    </Router>
+    </QueryClientProvider>
   );
 }

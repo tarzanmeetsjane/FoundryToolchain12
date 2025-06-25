@@ -16,7 +16,7 @@ export default function BotDashboard() {
 
   // Initialize dashboard data
   const initializeMutation = useMutation({
-    mutationFn: () => apiRequest("/api/initialize-discovered-data", { method: "POST" }),
+    mutationFn: () => apiRequest("/api/initialize-discovered-data", "POST"),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/bots"] });
       queryClient.invalidateQueries({ queryKey: ["/api/funding-sources"] });
@@ -24,32 +24,32 @@ export default function BotDashboard() {
   });
 
   // Fetch all data
-  const { data: bots, isLoading: botsLoading } = useQuery({
+  const { data: bots = [], isLoading: botsLoading } = useQuery({
     queryKey: ["/api/bots"],
     queryFn: () => apiRequest("/api/bots")
   });
 
-  const { data: fundingSources } = useQuery({
+  const { data: fundingSources = [] } = useQuery({
     queryKey: ["/api/funding-sources"],
     queryFn: () => apiRequest("/api/funding-sources")
   });
 
-  const { data: lpPositions } = useQuery({
+  const { data: lpPositions = [] } = useQuery({
     queryKey: ["/api/lp-positions"],
     queryFn: () => apiRequest("/api/lp-positions")
   });
 
-  const { data: totalRevenue } = useQuery({
+  const { data: totalRevenue = { totalRevenue: 0 } } = useQuery({
     queryKey: ["/api/analytics/total-revenue"],
     queryFn: () => apiRequest("/api/analytics/total-revenue")
   });
 
-  const { data: fundingSummary } = useQuery({
+  const { data: fundingSummary = { totalValue: 0, liquidationValue: 0, sourceCount: 0 } } = useQuery({
     queryKey: ["/api/analytics/funding-summary"],
     queryFn: () => apiRequest("/api/analytics/funding-summary")
   });
 
-  const { data: botPerformance } = useQuery({
+  const { data: botPerformance = [] } = useQuery({
     queryKey: ["/api/analytics/bot-performance"],
     queryFn: () => apiRequest("/api/analytics/bot-performance")
   });
@@ -123,10 +123,10 @@ export default function BotDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {bots?.filter((bot: BotType) => bot.status === "active").length || 0}
+              {bots.filter((bot: BotType) => bot.status === "active").length}
             </div>
             <p className="text-xs text-muted-foreground">
-              {bots?.length || 0} total bots discovered
+              {bots.length} total bots discovered
             </p>
           </CardContent>
         </Card>
@@ -138,7 +138,7 @@ export default function BotDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${totalRevenue?.totalRevenue?.toFixed(2) || "0.00"}
+              ${totalRevenue.totalRevenue.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground">
               Across all bot operations
@@ -153,7 +153,7 @@ export default function BotDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${fundingSummary?.liquidationValue?.toFixed(2) || "0.00"}
+              ${fundingSummary.liquidationValue.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground">
               Ready for Base L2 deployment
@@ -168,12 +168,10 @@ export default function BotDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {fundingSummary?.liquidationValue ? 
-                Math.min(100, (fundingSummary.liquidationValue / 250) * 100).toFixed(0) : 0}%
+              {Math.min(100, (fundingSummary.liquidationValue / 250) * 100).toFixed(0)}%
             </div>
             <Progress 
-              value={fundingSummary?.liquidationValue ? 
-                Math.min(100, (fundingSummary.liquidationValue / 250) * 100) : 0} 
+              value={Math.min(100, (fundingSummary.liquidationValue / 250) * 100)} 
               className="mt-2"
             />
             <p className="text-xs text-muted-foreground mt-1">
@@ -194,7 +192,7 @@ export default function BotDashboard() {
         {/* Bots Tab */}
         <TabsContent value="bots" className="space-y-4">
           <div className="grid gap-4">
-            {bots?.map((bot: BotType) => (
+            {bots.map((bot: BotType) => (
               <Card key={bot.id}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -255,7 +253,7 @@ export default function BotDashboard() {
               </Card>
             ))}
             
-            {(!bots || bots.length === 0) && (
+            {bots.length === 0 && (
               <Card>
                 <CardContent className="text-center py-8">
                   <Bot className="h-12 w-12 mx-auto mb-4 text-gray-400" />
@@ -289,7 +287,7 @@ export default function BotDashboard() {
                       Total Value
                     </h4>
                     <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
-                      ${fundingSummary?.totalValue?.toFixed(2) || "0.00"}
+                      ${fundingSummary.totalValue.toFixed(2)}
                     </p>
                   </div>
                   <div className="text-center p-4 bg-green-50 dark:bg-green-900 rounded-lg">
@@ -297,7 +295,7 @@ export default function BotDashboard() {
                       Available for Liquidation
                     </h4>
                     <p className="text-2xl font-bold text-green-900 dark:text-green-100">
-                      ${fundingSummary?.liquidationValue?.toFixed(2) || "0.00"}
+                      ${fundingSummary.liquidationValue.toFixed(2)}
                     </p>
                   </div>
                   <div className="text-center p-4 bg-purple-50 dark:bg-purple-900 rounded-lg">
@@ -305,14 +303,14 @@ export default function BotDashboard() {
                       Sources Count
                     </h4>
                     <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">
-                      {fundingSummary?.sourceCount || 0}
+                      {fundingSummary.sourceCount}
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {fundingSources?.map((source: FundingSource) => (
+            {fundingSources.map((source: FundingSource) => (
               <Card key={source.id}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -364,7 +362,7 @@ export default function BotDashboard() {
         {/* LP Positions Tab */}
         <TabsContent value="positions" className="space-y-4">
           <div className="grid gap-4">
-            {lpPositions?.map((position: LpPosition) => (
+            {lpPositions.map((position: LpPosition) => (
               <Card key={position.id}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -419,7 +417,7 @@ export default function BotDashboard() {
               </Card>
             ))}
             
-            {(!lpPositions || lpPositions.length === 0) && (
+            {lpPositions.length === 0 && (
               <Card>
                 <CardContent className="text-center py-8">
                   <TrendingUp className="h-12 w-12 mx-auto mb-4 text-gray-400" />
@@ -444,7 +442,7 @@ export default function BotDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {botPerformance?.map((bot: any) => (
+                {botPerformance.map((bot: any) => (
                   <div key={bot.botId} className="flex items-center justify-between py-3 border-b last:border-b-0">
                     <div>
                       <h4 className="font-semibold">{bot.name}</h4>
@@ -478,7 +476,7 @@ export default function BotDashboard() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span>Current Available Funding</span>
-                  <span className="font-bold">${fundingSummary?.liquidationValue?.toFixed(2) || "0.00"}</span>
+                  <span className="font-bold">${fundingSummary.liquidationValue.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Minimum Required (Bootstrap)</span>
@@ -494,14 +492,14 @@ export default function BotDashboard() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm">Bootstrap Deployment</span>
-                    <Badge variant={fundingSummary?.liquidationValue >= 25 ? "default" : "destructive"}>
-                      {fundingSummary?.liquidationValue >= 25 ? "Ready" : "Insufficient"}
+                    <Badge variant={fundingSummary.liquidationValue >= 25 ? "default" : "destructive"}>
+                      {fundingSummary.liquidationValue >= 25 ? "Ready" : "Insufficient"}
                     </Badge>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm">Optimal Deployment</span>
-                    <Badge variant={fundingSummary?.liquidationValue >= 250 ? "default" : "secondary"}>
-                      {fundingSummary?.liquidationValue >= 250 ? "Ready" : "Pending"}
+                    <Badge variant={fundingSummary.liquidationValue >= 250 ? "default" : "secondary"}>
+                      {fundingSummary.liquidationValue >= 250 ? "Ready" : "Pending"}
                     </Badge>
                   </div>
                 </div>
