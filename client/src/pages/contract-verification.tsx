@@ -239,14 +239,24 @@ export default function ContractVerification() {
                   <div className="text-sm opacity-90">Available Cash</div>
                 </div>
               </div>
-              <Button
-                onClick={() => window.location.href = '/uniswap'}
-                className="bg-white text-blue-600 font-bold py-3 px-6 hover:bg-gray-100"
-                size="lg"
-              >
-                Start Uniswap Conversion
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <div className="flex gap-4 justify-center">
+                <Button
+                  onClick={() => window.location.href = '/uniswap'}
+                  className="bg-white text-blue-600 font-bold py-3 px-6 hover:bg-gray-100"
+                  size="lg"
+                >
+                  Start Conversion
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button
+                  onClick={() => window.location.href = '/details'}
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/10 py-3 px-6"
+                  size="lg"
+                >
+                  Technical Details
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

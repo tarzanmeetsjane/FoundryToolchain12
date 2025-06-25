@@ -22,6 +22,7 @@ import DeploymentInterface from './pages/deployment-interface';
 import ConversionInterface from './pages/conversion-interface';
 import UniswapConversion from './pages/uniswap-conversion';
 import ContractVerification from './pages/contract-verification';
+import ContractDetails from './pages/contract-details';
 
 function Navigation() {
   const [location] = useLocation();
@@ -356,6 +357,7 @@ export default function App() {
         <Route path="/deployment" component={DeploymentInterface} />
         <Route path="/conversion" component={ConversionInterface} />
         <Route path="/uniswap" component={UniswapConversion} />
+        <Route path="/details" component={ContractDetails} />
         <Route path="/liquidity" component={LiquidityPoolCreation} />
       </div>
     </Router>

@@ -163,7 +163,8 @@ export default function UniswapConversion() {
                     <ul className="text-amber-700 text-sm space-y-1">
                       <li>• Ensure your foundation wallet is connected to Uniswap</li>
                       <li>• Have ~$25 ETH for gas fees in your wallet</li>
-                      <li>• Double-check the ETHGR token contract: 0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90</li>
+                      <li>• Verify ETHGR token: 0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90</li>
+                      <li>• Your contract: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308 (holds tokens)</li>
                       <li>• Set slippage to 5% to handle potential market movement</li>
                     </ul>
                   </div>
