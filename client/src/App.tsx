@@ -18,12 +18,14 @@ import {
 } from "lucide-react";
 
 import ETHExtractionDashboard from './pages/eth-extraction-dashboard';
+import DeploymentInterface from './pages/deployment-interface';
 
 function Navigation() {
   const [location] = useLocation();
   
   const navItems = [
     { path: "/", label: "Pool Creation", icon: Droplets },
+    { path: "/deploy", label: "Deploy Contract", icon: Target },
     { path: "/extraction", label: "ETH Extraction", icon: Wallet },
   ];
 
@@ -347,6 +349,7 @@ export default function App() {
         <Navigation />
         
         <Route path="/" component={LiquidityPoolCreation} />
+        <Route path="/deploy" component={DeploymentInterface} />
         <Route path="/extraction" component={ETHExtractionDashboard} />
       </div>
     </Router>
