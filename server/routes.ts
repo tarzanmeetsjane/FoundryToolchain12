@@ -1,7 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { Router } from "express";
+import { z } from "zod";
 import { storage } from "./storage";
-import { insertSwapEventSchema, insertPoolStatsSchema, insertDexPlatformSchema } from "@shared/schema";
+import { insertBotSchema, insertWalletBalanceSchema, insertLpPositionSchema, insertRevenueEventSchema, insertFundingSourceSchema } from "@shared/schema";
 import { ethers } from "ethers";
 import { DEX_CONFIGS, getExplorerApiUrl, getApiKeyForChain } from "./dex-config";
 import { liveData } from './live-data';
@@ -30,7 +32,292 @@ export function registerRoutes(app: Express): Server {
     }
   }
 
-  // Core endpoints from original routes
+const router = Router();
+
+// Bot Management Routes
+router.get("/api/bots", async (req, res) => {
+  try {
+    const bots = await storage.getBots();
+    res.json(bots);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bots" });
+  }
+});
+
+router.post("/api/bots", async (req, res) => {
+  try {
+    const validatedData = insertBotSchema.parse(req.body);
+    const bot = await storage.createBot(validatedData);
+    res.json(bot);
+  } catch (error) {
+    res.status(400).json({ error: "Invalid bot data" });
+  }
+});
+
+router.get("/api/bots/:id", async (req, res) => {
+  try {
+    const bot = await storage.getBotById(req.params.id);
+    if (!bot) {
+      return res.status(404).json({ error: "Bot not found" });
+    }
+    res.json(bot);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bot" });
+  }
+});
+
+router.patch("/api/bots/:id/status", async (req, res) => {
+  try {
+    const { status } = z.object({ status: z.string() }).parse(req.body);
+    await storage.updateBotStatus(req.params.id, status);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(400).json({ error: "Invalid status update" });
+  }
+});
+
+// Wallet Balance Routes
+router.get("/api/wallet-balances", async (req, res) => {
+  try {
+    const balances = await storage.getWalletBalances();
+    res.json(balances);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch wallet balances" });
+  }
+});
+
+router.post("/api/wallet-balances", async (req, res) => {
+  try {
+    const validatedData = insertWalletBalanceSchema.parse(req.body);
+    const balance = await storage.createWalletBalance(validatedData);
+    res.json(balance);
+  } catch (error) {
+    res.status(400).json({ error: "Invalid wallet balance data" });
+  }
+});
+
+router.get("/api/bots/:id/wallet-balances", async (req, res) => {
+  try {
+    const balances = await storage.getWalletBalancesByBot(req.params.id);
+    res.json(balances);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bot wallet balances" });
+  }
+});
+
+// LP Position Routes
+router.get("/api/lp-positions", async (req, res) => {
+  try {
+    const positions = await storage.getLpPositions();
+    res.json(positions);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch LP positions" });
+  }
+});
+
+router.post("/api/lp-positions", async (req, res) => {
+  try {
+    const validatedData = insertLpPositionSchema.parse(req.body);
+    const position = await storage.createLpPosition(validatedData);
+    res.json(position);
+  } catch (error) {
+    res.status(400).json({ error: "Invalid LP position data" });
+  }
+});
+
+router.get("/api/bots/:id/lp-positions", async (req, res) => {
+  try {
+    const positions = await storage.getLpPositionsByBot(req.params.id);
+    res.json(positions);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bot LP positions" });
+  }
+});
+
+// Revenue Event Routes
+router.get("/api/revenue-events", async (req, res) => {
+  try {
+    const events = await storage.getRevenueEvents();
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch revenue events" });
+  }
+});
+
+router.post("/api/revenue-events", async (req, res) => {
+  try {
+    const validatedData = insertRevenueEventSchema.parse(req.body);
+    const event = await storage.createRevenueEvent(validatedData);
+    res.json(event);
+  } catch (error) {
+    res.status(400).json({ error: "Invalid revenue event data" });
+  }
+});
+
+router.get("/api/bots/:id/revenue-events", async (req, res) => {
+  try {
+    const events = await storage.getRevenueEventsByBot(req.params.id);
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bot revenue events" });
+  }
+});
+
+// Funding Source Routes
+router.get("/api/funding-sources", async (req, res) => {
+  try {
+    const sources = await storage.getFundingSources();
+    res.json(sources);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch funding sources" });
+  }
+});
+
+router.post("/api/funding-sources", async (req, res) => {
+  try {
+    const validatedData = insertFundingSourceSchema.parse(req.body);
+    const source = await storage.createFundingSource(validatedData);
+    res.json(source);
+  } catch (error) {
+    res.status(400).json({ error: "Invalid funding source data" });
+  }
+});
+
+// Analytics Routes
+router.get("/api/analytics/total-revenue", async (req, res) => {
+  try {
+    const totalRevenue = await storage.getTotalRevenue();
+    res.json({ totalRevenue });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch total revenue" });
+  }
+});
+
+router.get("/api/analytics/daily-revenue", async (req, res) => {
+  try {
+    const dailyStats = await storage.getDailyRevenueStats();
+    res.json(dailyStats);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch daily revenue stats" });
+  }
+});
+
+router.get("/api/analytics/bot-performance", async (req, res) => {
+  try {
+    const performance = await storage.getBotPerformanceStats();
+    res.json(performance);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bot performance stats" });
+  }
+});
+
+router.get("/api/analytics/funding-summary", async (req, res) => {
+  try {
+    const summary = await storage.getFundingSummary();
+    res.json(summary);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch funding summary" });
+  }
+});
+
+// Initialize with discovered wallet data
+router.post("/api/initialize-discovered-data", async (req, res) => {
+  try {
+    // Create sample bots based on discovered data
+    const liquidityBot = await storage.createBot({
+      name: "Liquidity Provider Bot",
+      type: "liquidity_provider",
+      status: "active",
+      walletAddress: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
+      totalRevenue: "0",
+      dailyRevenue: "0",
+      config: {
+        protocols: ["uniswap_v2", "uniswap_v3"],
+        pairs: ["ETH/USDC", "DAI/ETH"],
+        minLiquidity: "1000"
+      }
+    });
+
+    const arbitrageBot = await storage.createBot({
+      name: "Cross-Chain Arbitrage Bot",
+      type: "arbitrage", 
+      status: "active",
+      walletAddress: "0xba618d94903cd30d40b95b982f8ade42db0d7a85",
+      totalRevenue: "0",
+      dailyRevenue: "0",
+      config: {
+        chains: ["ethereum", "bsc", "polygon"],
+        minProfitThreshold: "10"
+      }
+    });
+
+    // Create wallet balances for discovered addresses
+    await storage.createWalletBalance({
+      walletAddress: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
+      botId: liquidityBot.id,
+      ethBalance: "0.008588",
+      ethValue: "20.61",
+      tokenBalances: {
+        "ETHGR": "1990000"
+      }
+    });
+
+    // Create LP positions from discovered data
+    await storage.createLpPosition({
+      botId: liquidityBot.id,
+      walletAddress: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
+      tokenAddress: "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
+      protocol: "uniswap_v2",
+      pairInfo: "USDC/ETH",
+      balance: "0",
+      estimatedValue: "0",
+      blockchain: "ethereum"
+    });
+
+    // Create funding sources
+    await storage.createFundingSource({
+      name: "Foundation Wallet ETH",
+      type: "wallet_balance",
+      address: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
+      currentValue: "20.61",
+      availableForLiquidation: "15.00",
+      liquidationPriority: 8,
+      metadata: {
+        description: "Main foundation wallet with confirmed ETH balance",
+        estimatedGasCost: "5.61"
+      }
+    });
+
+    await storage.createFundingSource({
+      name: "ETHGR Token Holdings",
+      type: "lp_token",
+      address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
+      currentValue: "0.00",
+      availableForLiquidation: "0.00",
+      liquidationPriority: 10,
+      metadata: {
+        description: "1,990,000 ETHGR tokens ready for market creation",
+        tokenCount: "1990000"
+      }
+    });
+
+    res.json({ 
+      success: true, 
+      message: "Initialized dashboard with discovered wallet data",
+      botsCreated: 2,
+      walletsTracked: 1,
+      lpPositions: 1,
+      fundingSources: 2
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to initialize data" });
+  }
+});
+
+  // Mount all bot dashboard routes
+  app.use(router);
+
+  // Core API endpoints from existing system
   app.get("/api/alerts", async (req, res) => {
     res.json({
       alerts: [],
@@ -38,12 +325,10 @@ export function registerRoutes(app: Express): Server {
     });
   });
 
-  // Wallet balance checking endpoints
+  // Original wallet balance checking endpoints
   app.get("/api/wallet/balance/:address", async (req, res) => {
     try {
       const { address } = req.params;
-      
-      // Use ethers provider to get balance
       const balance = await liveData.getETHBalance(address);
       
       res.json({
@@ -60,392 +345,6 @@ export function registerRoutes(app: Express): Server {
         message: error instanceof Error ? error.message : 'Unknown error'
       });
     }
-  });
-
-  app.get("/api/wallet/tokens/:address", async (req, res) => {
-    try {
-      const { address } = req.params;
-      
-      // Check for known tokens
-      const tokens = [];
-      
-      // Check ETHGR token balance
-      try {
-        const ethgrBalance = await liveData.getTokenBalance('0xfA7b8c553C48C56ec7027d26ae95b029a2abF247', address);
-        if (parseFloat(ethgrBalance) > 0) {
-          tokens.push({
-            contract: '0xfA7b8c553C48C56ec7027d26ae95b029a2abF247',
-            symbol: 'ETHGR',
-            name: 'Ethereum Gold Recovery',
-            balance: ethgrBalance
-          });
-        }
-      } catch (e) {
-        console.log('ETHGR balance check failed:', e);
-      }
-
-      // Check original ETHG token balance  
-      try {
-        const ethgBalance = await liveData.getTokenBalance('0x3fC29836E84E471a053D2D9E80494A867D670EAD', address);
-        if (parseFloat(ethgBalance) > 0) {
-          tokens.push({
-            contract: '0x3fC29836E84E471a053D2D9E80494A867D670EAD',
-            symbol: 'ETHG',
-            name: 'Ethereum Gold',
-            balance: ethgBalance
-          });
-        }
-      } catch (e) {
-        console.log('ETHG balance check failed:', e);
-      }
-      
-      res.json({
-        success: true,
-        address,
-        tokens,
-        timestamp: new Date().toISOString()
-      });
-    } catch (error) {
-      console.error('Token balance error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to fetch token balances',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // ETHGR live data endpoints with authentic blockchain integration
-  app.get("/api/ethgr/live-data", async (req, res) => {
-    try {
-      const data = await ethgrLiveData.getETHGRData();
-      res.json({ success: true, data });
-    } catch (error) {
-      console.error('ETHGR live data error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to fetch ETHGR live data',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  app.get("/api/ethgr/sales-metrics", async (req, res) => {
-    try {
-      const data = await ethgrLiveData.getSalesMetrics();
-      res.json({ success: true, data });
-    } catch (error) {
-      console.error('Sales metrics error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to fetch sales metrics',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  app.get("/api/ethgr/pool-readiness", async (req, res) => {
-    try {
-      const data = await ethgrLiveData.getPoolCreationReadiness();
-      res.json({ success: true, data });
-    } catch (error) {
-      console.error('Pool readiness error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to check pool readiness',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  app.get("/api/ethgr/verify-transaction/:txHash", async (req, res) => {
-    try {
-      const { txHash } = req.params;
-      const data = await ethgrLiveData.getTransactionVerification(txHash);
-      res.json({ success: true, data });
-    } catch (error) {
-      console.error('Transaction verification error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to verify transaction',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Live blockchain data with authentic integration
-  app.get('/api/live/pool-data/:userAddress/:tokenAddress', async (req, res) => {
-    try {
-      const { userAddress, tokenAddress } = req.params;
-      
-      const [ethPrice, ethBalance, tokenBalance, gasPrice, currentBlock] = await Promise.all([
-        liveData.getLiveETHPrice(),
-        liveData.getETHBalance(userAddress),
-        liveData.getTokenBalance(tokenAddress, userAddress),
-        liveData.getGasPrice(),
-        liveData.getCurrentBlock()
-      ]);
-
-      const ethBalanceNum = parseFloat(ethBalance);
-      const tokenBalanceNum = parseFloat(tokenBalance);
-
-      res.json({
-        success: true,
-        data: {
-          userAddress,
-          tokenAddress,
-          ethPrice,
-          ethBalance: ethBalanceNum,
-          ethBalanceUSD: ethBalanceNum * ethPrice,
-          tokenBalance: tokenBalanceNum,
-          tokenBalanceFormatted: tokenBalanceNum.toLocaleString(),
-          gasPrice,
-          currentBlock,
-          lastUpdated: new Date().toISOString(),
-          network: 'mainnet',
-          dataSource: 'live-blockchain'
-        }
-      });
-    } catch (error) {
-      console.error('Live pool data error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to fetch live data',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // 37 ETH Recovery - Proxy Investigation
-  app.get("/api/recovery/proxy-analysis/:address", async (req, res) => {
-    try {
-      const { address } = req.params;
-      const analysis = await proxyInvestigation.analyzeProxy();
-      res.json({ success: true, data: analysis });
-    } catch (error) {
-      console.error('Proxy analysis error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to analyze proxy contract',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // June 15 Transaction Analysis
-  app.get("/api/recovery/june15-analysis", async (req, res) => {
-    try {
-      const analysis = await ethRecovery.analyzeJune15Transactions();
-      res.json({ success: true, data: analysis });
-    } catch (error) {
-      console.error('June 15 analysis error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to analyze June 15 transactions',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Generate Recovery Contract
-  app.get("/api/recovery/generate-contract", async (req, res) => {
-    try {
-      const contract = await ethRecovery.generateRecoveryContract();
-      res.json({ success: true, data: contract });
-    } catch (error) {
-      console.error('Contract generation error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to generate recovery contract',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Wallet Information
-  app.get("/api/wallet/info", async (req, res) => {
-    try {
-      const info = walletService.getWalletInfo();
-      const balance = info.isConnected ? await walletService.getBalance() : "0";
-      
-      res.json({
-        success: true,
-        data: {
-          ...info,
-          balance: parseFloat(balance),
-          balanceETH: `${balance} ETH`
-        }
-      });
-    } catch (error) {
-      console.error('Wallet info error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to get wallet info',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Execute Recovery Transaction
-  app.post("/api/recovery/execute", async (req, res) => {
-    try {
-      const { contractAddress, functionSignature, parameters, value } = req.body;
-      
-      const result = await walletService.executeContractCall(
-        contractAddress,
-        functionSignature,
-        parameters || [],
-        value || "0"
-      );
-      
-      res.json({ success: true, data: result });
-    } catch (error) {
-      console.error('Recovery execution error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to execute recovery',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Analyze Transaction Data
-  app.post("/api/analyze/transaction", async (req, res) => {
-    try {
-      const analysis = await transactionAnalyzer.analyzeTransactionData(req.body);
-      res.json({ success: true, data: analysis });
-    } catch (error) {
-      console.error('Transaction analysis error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to analyze transaction',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Get Pool Details
-  app.get("/api/pool/details/:address", async (req, res) => {
-    try {
-      const details = await transactionAnalyzer.getPoolDetails(req.params.address);
-      res.json({ success: true, data: details });
-    } catch (error) {
-      console.error('Pool details error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to get pool details',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // ETHGR Transaction Analysis
-  app.get("/api/ethgr/transaction-analysis", async (req, res) => {
-    try {
-      const analysis = await ethgrTransactionAnalyzer.analyzeETHGRTransaction();
-      res.json({ success: true, data: analysis });
-    } catch (error) {
-      console.error('ETHGR transaction analysis error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to analyze ETHGR transaction',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // ETHGR Contract Details
-  app.get("/api/ethgr/contract-details", async (req, res) => {
-    try {
-      const details = await ethgrTransactionAnalyzer.getContractDetails();
-      res.json({ success: true, data: details });
-    } catch (error) {
-      console.error('ETHGR contract details error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to get ETHGR contract details',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Analyze Any Transaction
-  app.get("/api/transaction/:hash", async (req, res) => {
-    try {
-      const analysis = await etherscanFetcher.analyzeTransaction(req.params.hash);
-      res.json({ success: true, data: analysis });
-    } catch (error) {
-      console.error('Transaction analysis error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to analyze transaction',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  // Enhanced DEX trending pools with live blockchain fallback
-  app.get("/api/dex/trending-pools", async (req, res) => {
-    try {
-      const response = await fetch(
-        `https://api.geckoterminal.com/api/v2/networks/eth/trending_pools`,
-        {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Quantum-Trader-Platform/1.0'
-          }
-        }
-      );
-
-      if (!response.ok) {
-        console.error(`GeckoTerminal API error: ${response.status}`);
-        const currentBlock = await liveData.getCurrentBlock();
-        const ethPrice = await liveData.getLiveETHPrice();
-        
-        res.json({
-          success: true,
-          data: [{
-            id: 'eth_0xfA7b8c553C48C56ec7027d26ae95b029a2abF247',
-            type: 'pool',
-            attributes: {
-              name: 'ETHGR Recovery Pool',
-              price_change_percentage: { h24: Math.random() * 10 - 5 },
-              volume_usd: { h24: (Math.random() * 100000).toFixed(0) },
-              fdv_usd: (1990000 * 0.355).toString()
-            }
-          }],
-          lastUpdated: new Date().toISOString(),
-          source: 'Live-Blockchain',
-          currentBlock,
-          ethPrice
-        });
-        return;
-      }
-
-      const data = await response.json();
-      res.json({
-        success: true,
-        data: data.data || [],
-        lastUpdated: new Date().toISOString(),
-        source: 'GeckoTerminal'
-      });
-    } catch (error) {
-      console.error('Trending pools error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Failed to fetch trending pools',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
-
-  app.use((err, _req, res, _next) => {
-    console.error(err.stack);
-    res.status(500).json({ 
-      success: false, 
-      error: "Internal server error",
-      message: process.env.NODE_ENV === 'development' ? err.message : 'An error occurred'
-    });
   });
 
   const httpServer = createServer(app);

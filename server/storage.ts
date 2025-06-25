@@ -1,173 +1,239 @@
-import { users, swapEvents, poolStats, dexPlatforms, type User, type InsertUser, type SwapEvent, type InsertSwapEvent, type PoolStats, type InsertPoolStats, type DexPlatform, type InsertDexPlatform } from "@shared/schema";
-import { db } from "./db";
-import { eq, and, desc } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import { eq, desc, sum, count, and, gte } from "drizzle-orm";
+import * as schema from "@shared/schema";
+import type { 
+  Bot, InsertBot, 
+  WalletBalance, InsertWalletBalance,
+  LpPosition, InsertLpPosition,
+  RevenueEvent, InsertRevenueEvent,
+  FundingSource, InsertFundingSource
+} from "@shared/schema";
+
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle(sql, { schema });
 
 export interface IStorage {
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Bot Management
+  createBot(data: InsertBot): Promise<Bot>;
+  getBots(): Promise<Bot[]>;
+  getBotById(id: string): Promise<Bot | null>;
+  updateBotStatus(id: string, status: string): Promise<void>;
   
-  // Swap Events
-  createSwapEvent(event: InsertSwapEvent): Promise<SwapEvent>;
-  getSwapEvents(poolAddress?: string, dexPlatform?: string, chainId?: number, limit?: number, offset?: number): Promise<SwapEvent[]>;
-  getSwapEventsByTimeRange(poolAddress: string, fromBlock: number, toBlock: number): Promise<SwapEvent[]>;
+  // Wallet Balances
+  createWalletBalance(data: InsertWalletBalance): Promise<WalletBalance>;
+  getWalletBalances(): Promise<WalletBalance[]>;
+  getWalletBalancesByBot(botId: string): Promise<WalletBalance[]>;
+  updateWalletBalance(address: string, ethBalance: string, ethValue: string): Promise<void>;
   
-  // Pool Stats
-  getPoolStats(poolAddress: string, dexPlatform?: string): Promise<PoolStats | undefined>;
-  updatePoolStats(poolAddress: string, dexPlatform: string, stats: Partial<InsertPoolStats>): Promise<PoolStats>;
-  createPoolStats(stats: InsertPoolStats): Promise<PoolStats>;
+  // LP Positions
+  createLpPosition(data: InsertLpPosition): Promise<LpPosition>;
+  getLpPositions(): Promise<LpPosition[]>;
+  getLpPositionsByBot(botId: string): Promise<LpPosition[]>;
+  updateLpPositionValue(id: string, estimatedValue: string): Promise<void>;
   
-  // DEX Platforms
-  getDexPlatforms(chainId?: number): Promise<DexPlatform[]>;
-  getDexPlatform(name: string, chainId: number): Promise<DexPlatform | undefined>;
-  createDexPlatform(platform: InsertDexPlatform): Promise<DexPlatform>;
-  updateDexPlatform(id: number, updates: Partial<InsertDexPlatform>): Promise<DexPlatform>;
+  // Revenue Events
+  createRevenueEvent(data: InsertRevenueEvent): Promise<RevenueEvent>;
+  getRevenueEvents(): Promise<RevenueEvent[]>;
+  getRevenueEventsByBot(botId: string): Promise<RevenueEvent[]>;
+  getRevenueByDateRange(startDate: Date, endDate: Date): Promise<RevenueEvent[]>;
+  
+  // Funding Sources
+  createFundingSource(data: InsertFundingSource): Promise<FundingSource>;
+  getFundingSources(): Promise<FundingSource[]>;
+  updateFundingSourceValue(id: string, currentValue: string, availableForLiquidation: string): Promise<void>;
+  
+  // Analytics
+  getTotalRevenue(): Promise<number>;
+  getDailyRevenueStats(): Promise<{ date: string; revenue: string }[]>;
+  getBotPerformanceStats(): Promise<{ botId: string; name: string; totalRevenue: string; eventCount: number }[]>;
+  getFundingSummary(): Promise<{ totalValue: number; liquidationValue: number; sourceCount: number }>;
 }
 
-export class DatabaseStorage implements IStorage {
-  async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+export class DrizzleStorage implements IStorage {
+  // Bot Management
+  async createBot(data: InsertBot): Promise<Bot> {
+    const id = `bot_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const [bot] = await db.insert(schema.bots).values({ ...data, id }).returning();
+    return bot;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user || undefined;
+  async getBots(): Promise<Bot[]> {
+    return await db.select().from(schema.bots).orderBy(desc(schema.bots.lastActive));
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
-    return user;
+  async getBotById(id: string): Promise<Bot | null> {
+    const [bot] = await db.select().from(schema.bots).where(eq(schema.bots.id, id));
+    return bot || null;
   }
 
-  async createSwapEvent(event: InsertSwapEvent): Promise<SwapEvent> {
-    const [swapEvent] = await db
-      .insert(swapEvents)
-      .values(event)
-      .returning();
-    return swapEvent;
+  async updateBotStatus(id: string, status: string): Promise<void> {
+    await db.update(schema.bots)
+      .set({ status, lastActive: new Date() })
+      .where(eq(schema.bots.id, id));
   }
 
-  async getSwapEvents(poolAddress?: string, dexPlatform?: string, chainId?: number, limit = 50, offset = 0): Promise<SwapEvent[]> {
-    let query = db.select().from(swapEvents);
-    
-    const conditions = [];
-    if (poolAddress) {
-      conditions.push(eq(swapEvents.poolAddress, poolAddress.toLowerCase()));
-    }
-    if (dexPlatform) {
-      conditions.push(eq(swapEvents.dexPlatform, dexPlatform));
-    }
-    if (chainId) {
-      conditions.push(eq(swapEvents.chainId, chainId));
-    }
-    
-    if (conditions.length > 0) {
-      query = query.where(and(...conditions));
-    }
-    
-    const events = await query
-      .orderBy(desc(swapEvents.timestamp))
-      .limit(limit)
-      .offset(offset);
-    
-    return events;
+  // Wallet Balances
+  async createWalletBalance(data: InsertWalletBalance): Promise<WalletBalance> {
+    const id = `wallet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const [balance] = await db.insert(schema.walletBalances).values({ ...data, id }).returning();
+    return balance;
   }
 
-  async getSwapEventsByTimeRange(poolAddress: string, fromBlock: number, toBlock: number): Promise<SwapEvent[]> {
-    const events = await db
-      .select()
-      .from(swapEvents)
-      .where(eq(swapEvents.poolAddress, poolAddress.toLowerCase()));
-    
-    return events
-      .filter(event => event.blockNumber >= fromBlock && event.blockNumber <= toBlock)
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  async getWalletBalances(): Promise<WalletBalance[]> {
+    return await db.select().from(schema.walletBalances).orderBy(desc(schema.walletBalances.lastChecked));
   }
 
-  async getPoolStats(poolAddress: string, dexPlatform?: string): Promise<PoolStats | undefined> {
-    let query = db.select().from(poolStats);
-    
-    const conditions = [eq(poolStats.poolAddress, poolAddress.toLowerCase())];
-    if (dexPlatform) {
-      conditions.push(eq(poolStats.dexPlatform, dexPlatform));
-    }
-    
-    const [stats] = await query.where(and(...conditions));
-    return stats || undefined;
+  async getWalletBalancesByBot(botId: string): Promise<WalletBalance[]> {
+    return await db.select().from(schema.walletBalances)
+      .where(eq(schema.walletBalances.botId, botId));
   }
 
-  async updatePoolStats(poolAddress: string, dexPlatform: string, stats: Partial<InsertPoolStats>): Promise<PoolStats> {
-    const [updated] = await db
-      .update(poolStats)
-      .set(stats)
+  async updateWalletBalance(address: string, ethBalance: string, ethValue: string): Promise<void> {
+    await db.update(schema.walletBalances)
+      .set({ 
+        ethBalance, 
+        ethValue,
+        lastChecked: new Date()
+      })
+      .where(eq(schema.walletBalances.walletAddress, address));
+  }
+
+  // LP Positions
+  async createLpPosition(data: InsertLpPosition): Promise<LpPosition> {
+    const id = `lp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const [position] = await db.insert(schema.lpPositions).values({ ...data, id }).returning();
+    return position;
+  }
+
+  async getLpPositions(): Promise<LpPosition[]> {
+    return await db.select().from(schema.lpPositions)
+      .where(eq(schema.lpPositions.isActive, true))
+      .orderBy(desc(schema.lpPositions.estimatedValue));
+  }
+
+  async getLpPositionsByBot(botId: string): Promise<LpPosition[]> {
+    return await db.select().from(schema.lpPositions)
       .where(and(
-        eq(poolStats.poolAddress, poolAddress.toLowerCase()),
-        eq(poolStats.dexPlatform, dexPlatform)
-      ))
-      .returning();
-    
-    if (!updated) {
-      throw new Error('Pool stats not found');
-    }
-    
-    return updated;
-  }
-
-  async createPoolStats(stats: InsertPoolStats): Promise<PoolStats> {
-    const [poolStat] = await db
-      .insert(poolStats)
-      .values(stats)
-      .returning();
-    return poolStat;
-  }
-
-  // DEX Platform methods
-  async getDexPlatforms(chainId?: number): Promise<DexPlatform[]> {
-    let query = db.select().from(dexPlatforms).where(eq(dexPlatforms.isActive, true));
-    
-    if (chainId) {
-      query = query.where(and(eq(dexPlatforms.isActive, true), eq(dexPlatforms.chainId, chainId)));
-    }
-    
-    return await query.orderBy(dexPlatforms.displayName);
-  }
-
-  async getDexPlatform(name: string, chainId: number): Promise<DexPlatform | undefined> {
-    const [platform] = await db
-      .select()
-      .from(dexPlatforms)
-      .where(and(
-        eq(dexPlatforms.name, name),
-        eq(dexPlatforms.chainId, chainId)
+        eq(schema.lpPositions.botId, botId),
+        eq(schema.lpPositions.isActive, true)
       ));
-    return platform || undefined;
   }
 
-  async createDexPlatform(platform: InsertDexPlatform): Promise<DexPlatform> {
-    const [newPlatform] = await db
-      .insert(dexPlatforms)
-      .values(platform)
-      .returning();
-    return newPlatform;
+  async updateLpPositionValue(id: string, estimatedValue: string): Promise<void> {
+    await db.update(schema.lpPositions)
+      .set({ 
+        estimatedValue,
+        lastUpdated: new Date()
+      })
+      .where(eq(schema.lpPositions.id, id));
   }
 
-  async updateDexPlatform(id: number, updates: Partial<InsertDexPlatform>): Promise<DexPlatform> {
-    const [updated] = await db
-      .update(dexPlatforms)
-      .set(updates)
-      .where(eq(dexPlatforms.id, id))
-      .returning();
+  // Revenue Events
+  async createRevenueEvent(data: InsertRevenueEvent): Promise<RevenueEvent> {
+    const id = `rev_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const [event] = await db.insert(schema.revenueEvents).values({ ...data, id }).returning();
+    return event;
+  }
+
+  async getRevenueEvents(): Promise<RevenueEvent[]> {
+    return await db.select().from(schema.revenueEvents)
+      .orderBy(desc(schema.revenueEvents.timestamp));
+  }
+
+  async getRevenueEventsByBot(botId: string): Promise<RevenueEvent[]> {
+    return await db.select().from(schema.revenueEvents)
+      .where(eq(schema.revenueEvents.botId, botId))
+      .orderBy(desc(schema.revenueEvents.timestamp));
+  }
+
+  async getRevenueByDateRange(startDate: Date, endDate: Date): Promise<RevenueEvent[]> {
+    return await db.select().from(schema.revenueEvents)
+      .where(and(
+        gte(schema.revenueEvents.timestamp, startDate),
+        gte(endDate, schema.revenueEvents.timestamp)
+      ))
+      .orderBy(desc(schema.revenueEvents.timestamp));
+  }
+
+  // Funding Sources
+  async createFundingSource(data: InsertFundingSource): Promise<FundingSource> {
+    const id = `fund_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const [source] = await db.insert(schema.fundingSources).values({ ...data, id }).returning();
+    return source;
+  }
+
+  async getFundingSources(): Promise<FundingSource[]> {
+    return await db.select().from(schema.fundingSources)
+      .orderBy(desc(schema.fundingSources.liquidationPriority));
+  }
+
+  async updateFundingSourceValue(id: string, currentValue: string, availableForLiquidation: string): Promise<void> {
+    await db.update(schema.fundingSources)
+      .set({
+        currentValue,
+        availableForLiquidation,
+        lastAssessed: new Date()
+      })
+      .where(eq(schema.fundingSources.id, id));
+  }
+
+  // Analytics
+  async getTotalRevenue(): Promise<number> {
+    const result = await db.select({
+      total: sum(schema.revenueEvents.amount)
+    }).from(schema.revenueEvents);
     
-    if (!updated) {
-      throw new Error('DEX platform not found');
+    return parseFloat(result[0]?.total || "0");
+  }
+
+  async getDailyRevenueStats(): Promise<{ date: string; revenue: string }[]> {
+    // This would need proper SQL date grouping for production
+    const events = await db.select().from(schema.revenueEvents)
+      .orderBy(desc(schema.revenueEvents.timestamp));
+    
+    // Simple grouping by date for now
+    const grouped = events.reduce((acc, event) => {
+      const date = event.timestamp.toISOString().split('T')[0];
+      if (!acc[date]) acc[date] = 0;
+      acc[date] += parseFloat(event.amount);
+      return acc;
+    }, {} as Record<string, number>);
+
+    return Object.entries(grouped).map(([date, revenue]) => ({
+      date,
+      revenue: revenue.toString()
+    }));
+  }
+
+  async getBotPerformanceStats(): Promise<{ botId: string; name: string; totalRevenue: string; eventCount: number }[]> {
+    const bots = await this.getBots();
+    const stats = [];
+
+    for (const bot of bots) {
+      const events = await this.getRevenueEventsByBot(bot.id);
+      const totalRevenue = events.reduce((sum, event) => sum + parseFloat(event.amount), 0);
+      
+      stats.push({
+        botId: bot.id,
+        name: bot.name,
+        totalRevenue: totalRevenue.toString(),
+        eventCount: events.length
+      });
     }
+
+    return stats.sort((a, b) => parseFloat(b.totalRevenue) - parseFloat(a.totalRevenue));
+  }
+
+  async getFundingSummary(): Promise<{ totalValue: number; liquidationValue: number; sourceCount: number }> {
+    const sources = await this.getFundingSources();
     
-    return updated;
+    return {
+      totalValue: sources.reduce((sum, source) => sum + parseFloat(source.currentValue || "0"), 0),
+      liquidationValue: sources.reduce((sum, source) => sum + parseFloat(source.availableForLiquidation || "0"), 0),
+      sourceCount: sources.length
+    };
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new DrizzleStorage();

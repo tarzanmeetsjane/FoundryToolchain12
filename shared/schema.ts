@@ -1,89 +1,107 @@
-import { pgTable, text, serial, integer, boolean, timestamp, numeric } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, decimal, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+// Bot Revenue Dashboard Tables
+export const bots = pgTable("bots", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  type: text("type").notNull(), // 'liquidity_provider', 'arbitrage', 'market_maker'
+  status: text("status").notNull(), // 'active', 'inactive', 'error'
+  walletAddress: text("wallet_address").notNull(),
+  totalRevenue: decimal("total_revenue", { precision: 18, scale: 6 }).default("0"),
+  dailyRevenue: decimal("daily_revenue", { precision: 18, scale: 6 }).default("0"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  lastActive: timestamp("last_active").defaultNow().notNull(),
+  config: jsonb("config").$type<Record<string, any>>(),
 });
 
-export const swapEvents = pgTable("swap_events", {
-  id: serial("id").primaryKey(),
-  poolAddress: text("pool_address").notNull(),
-  transactionHash: text("transaction_hash").notNull(),
-  blockNumber: integer("block_number").notNull(),
-  logIndex: integer("log_index").notNull(),
-  sender: text("sender").notNull(),
-  recipient: text("recipient").notNull(),
-  amount0: text("amount0").notNull(), // Store as string to handle BigInt
-  amount1: text("amount1").notNull(), // Store as string to handle BigInt
-  sqrtPriceX96: text("sqrt_price_x96").notNull(),
-  liquidity: text("liquidity").notNull(),
-  tick: integer("tick").notNull(),
-  tradeType: text("trade_type").notNull(), // "BUY" or "SELL"
-  ethAmount: text("eth_amount").notNull(),
-  usdcAmount: text("usdc_amount").notNull(),
-  price: text("price").notNull(),
-  timestamp: timestamp("timestamp").notNull(),
-  gasUsed: integer("gas_used"),
-  dexPlatform: text("dex_platform").notNull().default("uniswap"), // "uniswap", "sushiswap", "pancakeswap", "1inch"
-  chainId: integer("chain_id").notNull().default(1), // 1 for Ethereum, 56 for BSC, etc.
+export const walletBalances = pgTable("wallet_balances", {
+  id: text("id").primaryKey(),
+  walletAddress: text("wallet_address").notNull(),
+  botId: text("bot_id").references(() => bots.id),
+  ethBalance: decimal("eth_balance", { precision: 18, scale: 6 }).default("0"),
+  ethValue: decimal("eth_value", { precision: 10, scale: 2 }).default("0"),
+  tokenBalances: jsonb("token_balances").$type<Record<string, string>>(),
+  lastChecked: timestamp("last_checked").defaultNow().notNull(),
 });
 
-export const poolStats = pgTable("pool_stats", {
-  id: serial("id").primaryKey(),
-  poolAddress: text("pool_address").notNull(),
-  dexPlatform: text("dex_platform").notNull().default("uniswap"),
-  chainId: integer("chain_id").notNull().default(1),
-  totalVolume: text("total_volume").notNull(),
-  dailyTrades: integer("daily_trades").notNull(),
-  currentPrice: text("current_price").notNull(),
-  buyPressure: integer("buy_pressure").notNull(), // Percentage
-  sellPressure: integer("sell_pressure").notNull(), // Percentage
-  largeVolume: text("large_volume").notNull(),
-  mediumVolume: text("medium_volume").notNull(),
-  smallVolume: text("small_volume").notNull(),
-  lastUpdated: timestamp("last_updated").notNull(),
+export const lpPositions = pgTable("lp_positions", {
+  id: text("id").primaryKey(),
+  botId: text("bot_id").references(() => bots.id),
+  walletAddress: text("wallet_address").notNull(),
+  tokenAddress: text("token_address").notNull(),
+  protocol: text("protocol").notNull(), // 'uniswap_v2', 'uniswap_v3', 'pancakeswap'
+  pairInfo: text("pair_info").notNull(), // 'ETH/USDC', 'DAI/ETH'
+  balance: decimal("balance", { precision: 18, scale: 6 }).default("0"),
+  estimatedValue: decimal("estimated_value", { precision: 10, scale: 2 }).default("0"),
+  blockchain: text("blockchain").notNull().default("ethereum"),
+  isActive: boolean("is_active").default(true),
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
 });
 
-// DEX Platforms table for managing supported platforms
-export const dexPlatforms = pgTable("dex_platforms", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull().unique(), // "uniswap", "sushiswap", "pancakeswap", "1inch"
-  displayName: text("display_name").notNull(), // "Uniswap V3", "SushiSwap", etc.
-  chainId: integer("chain_id").notNull(),
-  chainName: text("chain_name").notNull(), // "Ethereum", "BSC", "Polygon"
-  swapEventTopic: text("swap_event_topic").notNull(),
-  routerAddress: text("router_address"),
-  factoryAddress: text("factory_address"),
-  isActive: boolean("is_active").notNull().default(true),
-  apiEndpoint: text("api_endpoint"), // For platforms with their own APIs
-  explorerUrl: text("explorer_url").notNull(), // etherscan.io, bscscan.com, etc.
+export const revenueEvents = pgTable("revenue_events", {
+  id: text("id").primaryKey(),
+  botId: text("bot_id").references(() => bots.id),
+  transactionHash: text("transaction_hash"),
+  amount: decimal("amount", { precision: 18, scale: 6 }).notNull(),
+  currency: text("currency").notNull(), // 'ETH', 'USDC', etc.
+  eventType: text("event_type").notNull(), // 'trading_fee', 'arbitrage', 'liquidation'
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  gasUsed: decimal("gas_used", { precision: 18, scale: 0 }),
+  gasPrice: decimal("gas_price", { precision: 18, scale: 0 }),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const fundingSources = pgTable("funding_sources", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  type: text("type").notNull(), // 'wallet_balance', 'lp_token', 'yield_farming'
+  address: text("address").notNull(),
+  currentValue: decimal("current_value", { precision: 10, scale: 2 }).default("0"),
+  availableForLiquidation: decimal("available_for_liquidation", { precision: 10, scale: 2 }).default("0"),
+  liquidationPriority: integer("liquidation_priority").default(5), // 1-10 scale
+  lastAssessed: timestamp("last_assessed").defaultNow().notNull(),
+  metadata: jsonb("metadata").$type<Record<string, any>>(),
 });
 
-export const insertSwapEventSchema = createInsertSchema(swapEvents).omit({
+// Insert schemas
+export const insertBotSchema = createInsertSchema(bots).omit({
   id: true,
+  createdAt: true,
 });
 
-export const insertPoolStatsSchema = createInsertSchema(poolStats).omit({
+export const insertWalletBalanceSchema = createInsertSchema(walletBalances).omit({
   id: true,
+  lastChecked: true,
 });
 
-export const insertDexPlatformSchema = createInsertSchema(dexPlatforms).omit({
+export const insertLpPositionSchema = createInsertSchema(lpPositions).omit({
   id: true,
+  lastUpdated: true,
 });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
-export type SwapEvent = typeof swapEvents.$inferSelect;
-export type InsertSwapEvent = z.infer<typeof insertSwapEventSchema>;
-export type PoolStats = typeof poolStats.$inferSelect;
-export type InsertPoolStats = z.infer<typeof insertPoolStatsSchema>;
-export type DexPlatform = typeof dexPlatforms.$inferSelect;
-export type InsertDexPlatform = z.infer<typeof insertDexPlatformSchema>;
+export const insertRevenueEventSchema = createInsertSchema(revenueEvents).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const insertFundingSourceSchema = createInsertSchema(fundingSources).omit({
+  id: true,
+  lastAssessed: true,
+});
+
+// Types
+export type Bot = typeof bots.$inferSelect;
+export type InsertBot = z.infer<typeof insertBotSchema>;
+
+export type WalletBalance = typeof walletBalances.$inferSelect;
+export type InsertWalletBalance = z.infer<typeof insertWalletBalanceSchema>;
+
+export type LpPosition = typeof lpPositions.$inferSelect;
+export type InsertLpPosition = z.infer<typeof insertLpPositionSchema>;
+
+export type RevenueEvent = typeof revenueEvents.$inferSelect;
+export type InsertRevenueEvent = z.infer<typeof insertRevenueEventSchema>;
+
+export type FundingSource = typeof fundingSources.$inferSelect;
+export type InsertFundingSource = z.infer<typeof insertFundingSourceSchema>;
