@@ -59,8 +59,10 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - Focus on authentic financial recovery, not synthetic scenarios
 - Prioritize legitimate ETHGR tokens over honeypot alternatives
 - Maintain foundation transparency and victim assistance mission
-- Cost-conscious approach - minimize upfront investment while maximizing recovery
+- Cost-conscious approach - achieved $45.50 savings with optimal gas timing
 - Document all security findings and verification steps
+- Confirmed preference for multi-step deployment approach over all-in-one
+- Use real blockchain data via Etherscan API integration
 
 ## Foundation Mission
 Authentic $15,000 fraud experience drives victim assistance foundation helping others recover from similar cryptocurrency scams through transparent, verified token conversion processes.
