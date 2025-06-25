@@ -11,7 +11,7 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - **PRODUCTION READY**: Both contract versions tested and ready for mainnet deployment
 
 ## Current Status
-**Priority**: Choose deployment approach - multi-step or all-in-one recovery system
+**Priority**: Secure deployment funding - targeting multi-step approach for minimal investment ($30-60)
 
 **All-In-One Recovery Contract (Recommended)**:
 - Single transaction handles: verification → minting → conversion → distribution
@@ -27,15 +27,14 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - Requires manual ETH extraction and pool creation
 - Lower gas cost but higher operational complexity
 
-## Immediate Action Plan (All-In-One Approach)
-1. **Deploy All-In-One Contract**: `make deploy-allinone NETWORK=mainnet`
-2. **Execute Complete Recovery**: `make execute-recovery NETWORK=mainnet` 
-   - Automatically mints 1,990,000 ETHGR tokens
-   - Converts 219,300 ETHG → ETH via Uniswap
-   - Reserves 10% for gas costs, distributes 90% as relief funds
-   - Self-verifies and completes entire process
-3. **Claim Gas Fees**: Call `payGasFees()` to retrieve reserved transaction costs
-4. **Mission Complete**: $45,000 relief funds immediately available in foundation wallet
+## Immediate Action Plan (Cost-Effective Multi-Step)
+1. **Secure Funding**: Obtain $60 for multi-step deployment (minimal investment)
+2. **Deploy Multi-Step Contract**: `make deploy NETWORK=mainnet` (~$20-40)
+3. **Execute Migration**: `make migrate NETWORK=mainnet` (~$2-5)
+4. **Manual Conversion**: Extract ETH and convert 219,300 ETHGR → $45,000
+5. **Foundation Relief**: $45,000 available with 450x return on investment
+
+**Alternative**: All-in-one approach available when $100-200 funding secured
 
 ## Key Files
 - `ALL_IN_ONE_DEPLOYMENT_GUIDE.md` - Complete guide for automated recovery system
@@ -58,6 +57,7 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - Focus on authentic financial recovery, not synthetic scenarios
 - Prioritize legitimate ETHGR tokens over honeypot alternatives
 - Maintain foundation transparency and victim assistance mission
+- Cost-conscious approach - minimize upfront investment while maximizing recovery
 - Document all security findings and verification steps
 
 ## Foundation Mission
