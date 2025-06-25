@@ -21,6 +21,7 @@ import ETHExtractionDashboard from './pages/eth-extraction-dashboard';
 import DeploymentInterface from './pages/deployment-interface';
 import ConversionInterface from './pages/conversion-interface';
 import UniswapConversion from './pages/uniswap-conversion';
+import ContractVerification from './pages/contract-verification';
 
 function Navigation() {
   const [location] = useLocation();
