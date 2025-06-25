@@ -355,6 +355,7 @@ export default function App() {
         <Navigation />
         
         <Route path="/" component={ContractVerification} />
+        <Route path="/value-creation" component={ValueCreation} />
         <Route path="/extraction" component={ETHExtractionDashboard} />
         <Route path="/deployment" component={DeploymentInterface} />
         <Route path="/conversion" component={ConversionInterface} />
