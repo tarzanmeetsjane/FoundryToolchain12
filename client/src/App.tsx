@@ -33,14 +33,14 @@ function Navigation() {
         <div className="flex space-x-8">
           {navItems.map(({ path, label, icon: Icon }) => (
             <Link key={path} href={path}>
-              <a className={`flex items-center space-x-2 py-4 px-2 border-b-2 transition-colors ${
+              <div className={`flex items-center space-x-2 py-4 px-2 border-b-2 transition-colors cursor-pointer ${
                 location === path 
                   ? 'border-blue-500 text-blue-600 dark:text-blue-400' 
                   : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}>
                 <Icon className="h-5 w-5" />
                 <span className="font-medium">{label}</span>
-              </a>
+              </div>
             </Link>
           ))}
         </div>
