@@ -191,7 +191,11 @@ export default function ETHExtractionDashboard() {
                 
                 <div className="flex items-center justify-between mt-4">
                   <Button
-                    onClick={() => window.open(`https://etherscan.io/address/${source.address}`, '_blank')}
+                    onClick={() => {
+                      const url = `https://etherscan.io/address/${source.address}`;
+                      navigator.clipboard.writeText(url);
+                      window.open(url, '_blank');
+                    }}
                     variant="outline"
                     size="sm"
                     className="flex items-center space-x-2"
@@ -299,7 +303,11 @@ export default function ETHExtractionDashboard() {
             </Button>
             
             <Button
-              onClick={() => window.open('https://etherscan.io/address/0xc46eB37677360EfDc011F4097621F15b792fa630#writeContract', '_blank')}
+              onClick={() => {
+                const url = 'https://etherscan.io/address/0xc46eB37677360EfDc011F4097621F15b792fa630#writeContract';
+                navigator.clipboard.writeText(url);
+                window.open(url, '_blank');
+              }}
               className="h-16 text-lg bg-purple-600 hover:bg-purple-700 text-white"
             >
               <ExternalLink className="h-6 w-6 mr-2" />
@@ -307,7 +315,11 @@ export default function ETHExtractionDashboard() {
             </Button>
             
             <Button
-              onClick={() => window.open('https://app.uniswap.org/pool', '_blank')}
+              onClick={() => {
+                const url = 'https://app.uniswap.org/pool';
+                navigator.clipboard.writeText(url);
+                window.open(url, '_blank');
+              }}
               className="h-16 text-lg bg-green-600 hover:bg-green-700 text-white"
             >
               <TrendingUp className="h-6 w-6 mr-2" />

@@ -1,3 +1,4 @@
+import { Route, Router, Link, useLocation } from "wouter";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,10 +11,45 @@ import {
   Droplets,
   DollarSign,
   ArrowRight,
-  Target
+  Target,
+  Wallet,
+  Home,
+  TrendingUp
 } from "lucide-react";
 
-export default function LiquidityPoolCreation() {
+import ETHExtractionDashboard from './pages/eth-extraction-dashboard';
+
+function Navigation() {
+  const [location] = useLocation();
+  
+  const navItems = [
+    { path: "/", label: "Pool Creation", icon: Droplets },
+    { path: "/extraction", label: "ETH Extraction", icon: Wallet },
+  ];
+
+  return (
+    <nav className="bg-white dark:bg-slate-800 shadow-sm border-b mb-8">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex space-x-8">
+          {navItems.map(({ path, label, icon: Icon }) => (
+            <Link key={path} href={path}>
+              <a className={`flex items-center space-x-2 py-4 px-2 border-b-2 transition-colors ${
+                location === path 
+                  ? 'border-blue-500 text-blue-600 dark:text-blue-400' 
+                  : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}>
+                <Icon className="h-5 w-5" />
+                <span className="font-medium">{label}</span>
+              </a>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function LiquidityPoolCreation() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const poolCreationSteps = [
@@ -71,7 +107,7 @@ export default function LiquidityPoolCreation() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-8">
+    <div className="p-8">
       
       {/* Header */}
       <div className="text-center mb-12">
@@ -257,16 +293,19 @@ export default function LiquidityPoolCreation() {
           </Alert>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <Button
-              onClick={() => window.open('https://etherscan.io/address/0xc46eB37677360EfDc011F4097621F15b792fa630', '_blank')}
-              className="h-16 text-lg bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <ExternalLink className="h-6 w-6 mr-2" />
-              View Contract ETH
-            </Button>
+            <Link href="/extraction">
+              <Button className="h-16 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full">
+                <Wallet className="h-6 w-6 mr-2" />
+                Start ETH Extraction
+              </Button>
+            </Link>
             
             <Button
-              onClick={() => window.open('https://app.uniswap.org/pool', '_blank')}
+              onClick={() => {
+                const url = 'https://app.uniswap.org/pool';
+                navigator.clipboard.writeText(url);
+                window.open(url, '_blank');
+              }}
               className="h-16 text-lg bg-pink-600 hover:bg-pink-700 text-white"
             >
               <Droplets className="h-6 w-6 mr-2" />
@@ -274,7 +313,11 @@ export default function LiquidityPoolCreation() {
             </Button>
             
             <Button
-              onClick={() => window.open('https://etherscan.io/address/0x058C8FE01E5c9eaC6ee19e6673673B549B368843', '_blank')}
+              onClick={() => {
+                const url = 'https://etherscan.io/address/0x058C8FE01E5c9eaC6ee19e6673673B549B368843';
+                navigator.clipboard.writeText(url);
+                window.open(url, '_blank');
+              }}
               className="h-16 text-lg bg-green-600 hover:bg-green-700 text-white"
             >
               <CheckCircle className="h-6 w-6 mr-2" />
@@ -294,5 +337,18 @@ export default function LiquidityPoolCreation() {
       </Card>
 
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <Navigation />
+        
+        <Route path="/" component={LiquidityPoolCreation} />
+        <Route path="/extraction" component={ETHExtractionDashboard} />
+      </div>
+    </Router>
   );
 }
