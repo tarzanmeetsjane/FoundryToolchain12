@@ -25,10 +25,8 @@ export default function UniswapConversion() {
     return () => clearInterval(interval);
   }, []);
 
-  const uniswapUrl = `https://app.uniswap.org/swap?inputCurrency=${ETHG_TOKEN}&outputCurrency=ETH&exactAmount=${conversionAmount}&exactField=input`;
-  
-  // Import contract addresses
   const ETHG_TOKEN = "0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90";
+  const uniswapUrl = `https://app.uniswap.org/swap?inputCurrency=${ETHG_TOKEN}&outputCurrency=ETH&exactAmount=${conversionAmount}&exactField=input`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
