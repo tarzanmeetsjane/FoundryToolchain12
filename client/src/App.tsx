@@ -351,9 +351,12 @@ export default function App() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <Navigation />
         
-        <Route path="/" component={LiquidityPoolCreation} />
-        <Route path="/deploy" component={DeploymentInterface} />
+        <Route path="/" component={ContractVerification} />
         <Route path="/extraction" component={ETHExtractionDashboard} />
+        <Route path="/deployment" component={DeploymentInterface} />
+        <Route path="/conversion" component={ConversionInterface} />
+        <Route path="/uniswap" component={UniswapConversion} />
+        <Route path="/liquidity" component={LiquidityPoolCreation} />
       </div>
     </Router>
   );
