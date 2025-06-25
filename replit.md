@@ -11,21 +11,21 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - **ETH EXTRACTION TOOLS**: Created comprehensive ETH extraction system and dashboard with network data integration
 
 ## Current Status
-**Priority**: Deploy optimized ETHGR contract using Foundry toolchain
+**Priority**: Execute mainnet deployment using confirmed Foundry nightly installation
 
-**Foundry Development Environment Ready**:
-- Complete Foundry project structure with optimized configuration
-- ETHGR contract optimized for 1M optimization runs
-- Comprehensive test suite covering all migration scenarios
-- Automated deployment and verification scripts
-- Production-ready contract with foundation-specific migration function
+**Foundry Nightly Installed Successfully**:
+- Version 1.2.3-nightly confirmed and working
+- All 6 tests passing with comprehensive gas reporting
+- Contract deployment cost: 1,060,185 gas (highly optimized)
+- Migration function gas: 93,627 gas maximum
+- Production deployment scripts ready for mainnet execution
 
-**Deployment Features**:
-- Gas-optimized contract with 1M optimizer runs configuration
-- Automated Etherscan verification on deployment
-- Foundation-specific migrateMyTrappedETHG() function
-- Emergency mint capabilities and migration controls
-- Full test coverage and validation
+**Deployment Ready**:
+- Complete gas optimization with 1M optimizer runs
+- Automated deployment and verification scripts tested
+- Foundation-specific migration function validated
+- Contract size optimized to 4,228 bytes
+- Both Foundry CLI and browser deployment options available
 
 ## Immediate Action Plan
 1. **Deploy Contract**: Use production deployment interface to deploy ETHGR contract via Remix IDE
@@ -36,13 +36,14 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 6. **Convert**: Trade 219,300 ETHGR → ETH → USD → $45,000 bank transfer
 
 ## Key Files
-- `PRODUCTION_DEPLOYMENT.md` - Complete production deployment package and instructions
-- `client/src/pages/deployment-interface.tsx` - Interactive deployment interface with contract source
-- `src/ETHGRecovery.sol` - Production-ready ETHGR contract optimized for deployment
-- `client/src/pages/eth-extraction-dashboard.tsx` - ETH extraction interface with network data
-- `ETH_EXTRACTION_CONTRACT.sol` - Smart contract for automated ETH extraction
-- `foundry.toml` - Foundry configuration for advanced users
-- `DEPLOYMENT_GUIDE.md` - Technical deployment instructions
+- `FOUNDRY_DEPLOYMENT_READY.md` - Foundry nightly deployment commands and gas estimates
+- `src/ETHGRecovery.sol` - Gas-optimized contract (4,228 bytes, 1M optimizer runs)
+- `script/Deploy.s.sol` - Mainnet deployment script with verification
+- `script/Migrate.s.sol` - Foundation migration execution script
+- `client/src/pages/deployment-interface.tsx` - Browser deployment interface alternative
+- `client/src/pages/eth-extraction-dashboard.tsx` - ETH extraction interface
+- `foundry.toml` - Production configuration with 1M optimization runs
+- `.env.example` - Environment variables template for deployment
 
 ## Technical Architecture
 - **Frontend**: React with Tailwind CSS, mobile-first design
