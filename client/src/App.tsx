@@ -23,11 +23,13 @@ import ConversionInterface from './pages/conversion-interface';
 import UniswapConversion from './pages/uniswap-conversion';
 import ContractVerification from './pages/contract-verification';
 import ContractDetails from './pages/contract-details';
+import ValueCreation from './pages/value-creation';
 
 function Navigation() {
   const [location] = useLocation();
   
   const navItems = [
+    { path: "/value-creation", label: "Create Value", icon: TrendingUp },
     { path: "/", label: "Pool Creation", icon: Droplets },
     { path: "/deploy", label: "Deploy Contract", icon: Target },
     { path: "/extraction", label: "ETH Extraction", icon: Wallet },
