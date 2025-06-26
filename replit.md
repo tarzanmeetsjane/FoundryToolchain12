@@ -72,6 +72,8 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 - `README.md` - Complete project overview and quick start guide
 - `GIT_STRATEGY_RECOMMENDATION.md` - Dual repository approach for platform and contracts
 - `REMIX_GIT_SETUP_GUIDE.md` - Step-by-step smart contract version control setup
+- `IMMEDIATE_REMIX_SETUP.md` - Quick action steps for immediate contract backup
+- `COPY_PASTE_CONTRACTS.md` - Ready-to-copy verified contract files for Remix
 
 ## Key Files
 - `client/src/pages/ContractVerification.tsx` - Fix $0.00 value display issue through Etherscan verification
