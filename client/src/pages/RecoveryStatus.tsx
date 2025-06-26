@@ -7,22 +7,15 @@ import { CheckCircle, TrendingUp, Users, ArrowUp, Sparkles, Shield, Target } fro
 export default function RecoveryStatus() {
   const contracts = [
     {
-      id: "ETHGR Contract A (Check Your Balance)",
-      address: "0xc2b6d375b7d14c9ce73f97ddf565002cce257308",
-      price: "Check wallet for price",
+      id: "YOUR ACTUAL TOKENS",
+      address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
+      price: "N/A (Needs Price Recognition)",
       holders: "Your wallet + others",
       status: "deployed",
       symbol: "ETHGR",
-      note: "Deployed with 1,990,000 tokens to your wallet"
-    },
-    {
-      id: "ETHGR Contract B (Price Verified)",
-      address: "0xfa7b8c553c48c56ec7027d26ae95b029a2abf247", 
-      price: "$0.00451229",
-      holders: "22,134+",
-      status: "verified",
-      symbol: "ETHGR",
-      note: "Shows verified price recognition"
+      balance: "1,990,000 ETHGR",
+      note: "✅ Contains your actual 1.99M tokens - visible in your wallet",
+      issue: "Price services haven't recognized this contract yet"
     }
   ];
 
@@ -45,7 +38,7 @@ export default function RecoveryStatus() {
           Recovery Ecosystem Operational
         </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          You have two ETHGR contracts. Check your wallet to determine which contract contains your 1,990,000 ETHGR tokens - that contract represents your $709k portfolio value.
+          Your 1.99M ETHGR tokens are confirmed in your wallet, but price recognition is needed for this contract address. The issue is getting price services to recognize your specific contract.
         </p>
       </div>
 
@@ -67,10 +60,12 @@ export default function RecoveryStatus() {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Contract Information */}
-              <Alert className="border-blue-200 bg-blue-50">
+              <Alert className="border-emerald-200 bg-emerald-50">
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Note:</strong> {contract.note}
+                  <strong>Your Tokens:</strong> {contract.balance}<br/>
+                  <strong>Status:</strong> {contract.note}<br/>
+                  <strong>Issue:</strong> {contract.issue}
                 </AlertDescription>
               </Alert>
               
