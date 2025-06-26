@@ -6,12 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio } from "lucide-react";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
 import QuantumLiquidity from "./pages/QuantumLiquidity";
 import MoneyFrequencyTuner from "./pages/MoneyFrequencyTuner";
+import BlockchainRescue from "./pages/BlockchainRescue";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -36,6 +37,7 @@ function Navigation() {
     { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
     { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
     { path: "/frequency", label: "Frequency Tuner", icon: Radio },
+    { path: "/rescue", label: "Blockchain Rescue", icon: Shield },
     { path: "/pool", label: "Create Pool", icon: Droplets },
   ];
 
@@ -48,14 +50,14 @@ function Navigation() {
             <div className="flex space-x-6">
               {navItems.map(({ path, label, icon: Icon }) => (
                 <Link key={path} href={path}>
-                  <a className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  <span className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                     location === path 
                       ? 'bg-blue-100 text-blue-700' 
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}>
                     <Icon className="w-4 h-4" />
                     <span>{label}</span>
-                  </a>
+                  </span>
                 </Link>
               ))}
             </div>
@@ -247,6 +249,7 @@ export default function App() {
             <Route path="/dashboard" component={BotDashboard} />
             <Route path="/quantum" component={QuantumLiquidity} />
             <Route path="/frequency" component={MoneyFrequencyTuner} />
+            <Route path="/rescue" component={BlockchainRescue} />
             <Route path="/pool" component={LiquidityPoolCreation} />
           </Switch>
         </main>
