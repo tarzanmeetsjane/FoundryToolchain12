@@ -36,7 +36,7 @@ export default function VictimRecovery() {
       victimAddress: 'Original Honeypot Contract',
       amount: '247000',
       fraudType: 'honeypot',
-      status: 'investigating',
+      status: 'analyzing',
       securityScore: 1.2,
       recoveryChance: 15,
       submittedDate: '2024-06-19'
