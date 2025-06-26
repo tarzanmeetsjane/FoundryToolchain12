@@ -9,18 +9,21 @@ import { Shield, CheckCircle, AlertTriangle, Lock, Users, DollarSign, FileText, 
 export default function ContractVerification() {
   const [contractData] = useState({
     address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
-    name: "ETHGR Recovery Token",
+    name: "ETHG Recovery",
     symbol: "ETHGR",
     network: "Ethereum Mainnet",
-    securityScore: 8,
+    securityScore: 8.5,
     honeypotRisk: "LOW",
-    ownershipRisk: "LOW",
+    ownershipRisk: "MEDIUM",
     liquidity: 752792,
-    liquidityStatus: "Locked",
+    liquidityStatus: "Unlocked",
     totalSupply: "1,990,000",
-    holders: 11372,
+    holders: 31250,
     decimals: 18,
-    verified: false
+    verified: true,
+    marketCap: 6558,
+    currentPrice: 0.00884902,
+    volume24h: 60870
   });
 
   const getSecurityColor = (score: number) => {
@@ -102,6 +105,18 @@ export default function ContractVerification() {
                   {contractData.verified ? "Verified" : "Pending Verification"}
                 </Badge>
               </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Market Cap:</span>
+                <span className="font-semibold">${contractData.marketCap.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Current Price:</span>
+                <span className="font-semibold">${contractData.currentPrice.toFixed(8)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">24h Volume:</span>
+                <span className="font-semibold">${contractData.volume24h.toLocaleString()}</span>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -150,6 +165,7 @@ export default function ContractVerification() {
                 ${contractData.liquidity.toLocaleString()}
               </div>
               <div className="text-sm text-amber-600">Liquidity ({contractData.liquidityStatus})</div>
+              <div className="text-xs text-amber-500 mt-1">24h Vol: ${contractData.volume24h.toLocaleString()}</div>
             </div>
           </CardContent>
         </Card>
@@ -173,7 +189,7 @@ export default function ContractVerification() {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  High security score (8/10)
+                  High security score (8.5/10)
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -189,7 +205,15 @@ export default function ContractVerification() {
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  Large holder base (11,372)
+                  Large holder base (31,250)
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  Contract verified on Ethereum
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  Active trading volume ($60k daily)
                 </li>
               </ul>
             </div>
@@ -202,11 +226,11 @@ export default function ContractVerification() {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                  Contract source code not verified
+                  Medium ownership risk (admin privileges)
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                  Limited public audit information
+                  Liquidity not locked (potential risk)
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>

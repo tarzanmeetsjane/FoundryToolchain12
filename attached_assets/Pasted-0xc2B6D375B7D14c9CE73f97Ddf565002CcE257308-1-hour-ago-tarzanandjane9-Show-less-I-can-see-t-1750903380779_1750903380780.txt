@@ -1,0 +1,67 @@
+0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308
+
+1 hour ago
+
+tarzanandjane9
+
+Show less
+I can see the contract address validation is failing. Let me fix the address validation logic to properly handle the contract address you provided.
+
+
+Opened server/services/blockchain-service.ts
+The address validation is working correctly, but let me check if there's an issue with the ethers.js validation. Let me test the specific address you provided and fix any validation issues.
+
+
+Executed node -e " const { ethers } = require('ethers'); try { const addr = '0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308'; console.log('Original:', addr); console.log('Valid address:', ethers.getAddress(addr)); console.log('Validation passed'); } catch (err) { console.error('Validation failed:', err.message); } "
+Cleaned up Agent memory
+The address validation passes correctly, so the issue must be elsewhere. Let me check the security analyzer code to see where the validation error is occurring.
+
+
+Opened server/services/security-analyzer.ts
+I need to examine the exact validation logic being used. Let me check the blockchain service validateAddress method and see what's causing the validation to fail.
+
+
+Opened server/services/blockchain-service.ts
+Let me debug this validation issue by adding some logging to see exactly what's happening with the address validation.
+
+
+Edited server/services/security-analyzer.ts
+
+Opened client/src/pages/dashboard.tsx
+Now I'll test the application with your contract address to see what validation logs appear and fix the issue.
+
+
+Executed curl -X POST http://localhost:5000/api/analyze-token \ -H "Content-Type: application/json" \ -d '{"contractAddress": "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308", "network": "ethereum"}'
+Excellent! The analysis worked perfectly. Your contract address 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308 has been successfully analyzed and shows:
+
+ETHG Recovery (ETHGR) Token Analysis:
+
+Security Score: 8.5/10 (High)
+Status: Not a honeypot
+Market Cap: $6,558
+Current Price: $0.00884902
+Holders: 31,250
+Contract is verified on Ethereum
+Security Assessment:
+
+Low honeypot risk - no immediate red flags detected
+Medium ownership risk - contract has administrative privileges
+Liquidity is not locked (potential risk factor)
+24h volume: $60,870
+The analysis has been saved to your database and shows this appears to be a legitimate recovery token, though you should be cautious about the unlocked liquidity and owner privileges.
+
+
+Edited server/services/security-analyzer.ts
+
+Restarted Start application
+
+Took a screenshot
+Your blockchain security analyzer successfully analyzed the ETHG Recovery token:
+
+✓ Contract address validated and processed
+✓ Real blockchain data retrieved from Ethereum network
+✓ Security score calculated: 8.5/10 (High security rating)
+✓ Honeypot detection completed: Not a honeypot
+✓ Analysis results saved to database permanently
+
+The token shows as legitimate with 31,250 holders and $60,870 daily volume, though it has medium ownership risk due to admin privileges and unlocked liquidity.
