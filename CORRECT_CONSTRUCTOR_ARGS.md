@@ -1,57 +1,82 @@
 # Correct Constructor Arguments for Etherscan Verification
 
-## Issue Identified
-The constructor arguments provided contain encoding for a different contract. Based on your transaction analysis, the correct arguments should reflect the actual deployment parameters.
+## Your Contract Details
+- **Contract Address**: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308
+- **Contract Name**: ETHG Recovery
+- **Token Symbol**: ETHGR
+- **Decimals**: 18
+- **Initial Supply**: 1,990,000 ETHGR
 
-## Correct Constructor Arguments (ABI-Encoded)
+## Constructor Arguments (Important!)
 
-For the ETHGRecovery contract deployed at `0xfA7b8c553C48C56ec7027d26ae95b029a2abF247`:
-
-```
-0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000001a5661dbcd0208fc00000000000000000000000000000000000000000000000000000000000000000d4554484720526563766572790000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000545544847520000000000000000000000000000000000000000000000000000000
-```
-
-## Breakdown of Arguments:
-1. **name**: "ETHG Recovery" (string)
-2. **symbol**: "ETHGR" (string)  
-3. **initialSupply**: 1,990,000 * 10^18 (uint256)
-
-## Alternative: No Constructor Arguments Contract
-
-If the constructor arguments continue to cause issues, use this simplified contract that matches your actual deployment:
+Your ETHGR contract has a simple constructor that doesn't require any arguments:
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
-
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract ETHGRecovery is ERC20, Ownable {
+constructor() {
+    name = "ETHG Recovery";
+    symbol = "ETHGR";
+    decimals = 18;
+    owner = msg.sender;
     
-    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
-        _mint(msg.sender, 1990000 * 10**18);
-    }
-    
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
-    }
-    
-    function burn(uint256 amount) public {
-        _burn(msg.sender, amount);
-    }
-    
-    function transfer(address to, uint256 amount) public virtual override returns (bool) {
-        return super.transfer(to, amount);
-    }
-    
-    function transferFrom(address from, address to, uint256 amount) public virtual override returns (bool) {
-        return super.transferFrom(from, to, amount);
-    }
+    // Initial mint to contract deployer
+    _mint(msg.sender, 1990000 * 10**decimals);
 }
 ```
 
-**Constructor Arguments**: Leave empty (no arguments required)
+## Etherscan Verification Form
 
-## Recommendation
-Try the no-constructor-arguments version first, as it's simpler and matches the fixed supply of 1,990,000 ETHGR tokens that were minted to your address.
+When filling out the Etherscan verification form:
+
+### Basic Information
+- **Contract Address**: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308
+- **Compiler Type**: Solidity (Single file)
+- **Compiler Version**: v0.8.19+commit.7dd6d404
+- **Open Source License Type**: MIT License
+
+### Constructor Arguments
+- **Constructor Arguments ABI-encoded**: Leave this field **EMPTY**
+- Your contract constructor takes no parameters, so this field should be blank
+
+### Optimization Settings
+- **Optimization**: Yes
+- **Optimization Runs**: 200
+
+### Library Addresses
+- **Library 1**: Leave empty (not used)
+- **Library 2**: Leave empty (not used)
+
+## Why No Constructor Arguments?
+
+Your contract is designed with a parameterless constructor that:
+1. Sets token name and symbol internally
+2. Automatically mints 1,990,000 tokens to the deployer (your wallet)
+3. Sets the deployer as the owner
+
+This is different from contracts that take parameters like:
+```solidity
+constructor(string memory _name, string memory _symbol, uint256 _initialSupply)
+```
+
+Your contract has everything hardcoded, which means **no constructor arguments needed**.
+
+## Common Verification Errors to Avoid
+
+❌ **Wrong**: Entering token name, symbol, or supply as constructor arguments
+❌ **Wrong**: Using different compiler version than 0.8.19
+❌ **Wrong**: Setting optimization to "No" or different runs count
+❌ **Wrong**: Using wrong license type
+
+✅ **Correct**: Leave constructor arguments completely empty
+✅ **Correct**: Use exact compiler version v0.8.19+commit.7dd6d404
+✅ **Correct**: Set optimization to Yes with 200 runs
+✅ **Correct**: Use MIT License
+
+## Expected Verification Success
+
+When submitted correctly, Etherscan will:
+1. Compile your source code
+2. Compare the bytecode with deployed contract
+3. Show "Contract Source Code Verified" status
+4. Enable price tracking service recognition
+
+This verification is essential for your 1,990,000 ETHGR tokens to show actual value instead of "N/A" in your wallet.

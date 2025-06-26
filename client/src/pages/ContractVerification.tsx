@@ -191,18 +191,24 @@ export default function ContractVerification() {
               </AlertDescription>
             </Alert>
             
-            <div className="flex space-x-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <Button 
                 onClick={() => window.open('/contract-source', '_blank')}
                 className="bg-blue-600 hover:bg-blue-700"
               >
-                View Complete Source Code
+                View Source Code
+              </Button>
+              <Button 
+                onClick={() => window.open(`https://etherscan.io/verifyContract?a=${contractDetails.address}`, '_blank')}
+                className="bg-emerald-600 hover:bg-emerald-700"
+              >
+                Start Verification
               </Button>
               <Button 
                 variant="outline"
-                onClick={() => copyToClipboard("// Contract source code available in platform", "source")}
+                onClick={() => window.open('/constructor-args', '_blank')}
               >
-                Copy Instructions
+                Constructor Args
               </Button>
             </div>
           </CardContent>

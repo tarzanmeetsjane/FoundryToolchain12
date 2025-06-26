@@ -24,6 +24,8 @@ import AutomatedVerification from "./pages/AutomatedVerification";
 import ContractDetails from "./pages/ContractDetails";
 import VerificationSuccess from "./pages/VerificationSuccess";
 import RecoveryStatus from "./pages/RecoveryStatus";
+import ContractSource from "./pages/ContractSource";
+import ConstructorArgs from "./pages/ConstructorArgs";
 import ContractDecompiler from "./pages/ContractDecompiler";
 import { Route, Switch } from "wouter";
 
@@ -279,6 +281,9 @@ export default function App() {
             <Route path="/contract-details" component={ContractDetails} />
             <Route path="/verification-success" component={VerificationSuccess} />
             <Route path="/recovery-status" component={RecoveryStatus} />
+          <Route path="/contract-verification" component={ContractVerification} />
+          <Route path="/contract-source" component={ContractSource} />
+          <Route path="/constructor-args" component={ConstructorArgs} />
             <Route path="/contract-decompiler" component={ContractDecompiler} />
           </Switch>
         </main>
