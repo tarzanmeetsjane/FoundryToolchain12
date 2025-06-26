@@ -71,6 +71,9 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 ## Key Files
 - `client/src/pages/ContractVerification.tsx` - Fix $0.00 value display issue through Etherscan verification
 - `client/src/pages/AutomatedVerification.tsx` - Automated contract verification system with real-time progress tracking
+- `client/src/pages/ContractDetails.tsx` - Complete contract source code and verification instructions
+- `EXACT_VERIFICATION_CONTRACT.sol` - Correct contract source code for Etherscan verification
+- `CORRECT_CONSTRUCTOR_ARGS.md` - Fixed constructor arguments and verification instructions
 - `ETHG_Recovery_Fixed.sol` - Corrected contract source code with proper ERC20 syntax
 - `ETHGR_Verification_Steps.md` - Complete verification instructions for Etherscan submission
 - `client/src/pages/VerificationProgress.tsx` - Track verification steps for $709k ETHGR portfolio

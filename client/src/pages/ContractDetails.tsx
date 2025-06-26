@@ -3,299 +3,267 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ExternalLink, Shield, Code, FileText, Wallet } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Copy, ExternalLink, AlertTriangle, CheckCircle, Code, Settings } from "lucide-react";
 
 export default function ContractDetails() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [copied, setCopied] = useState(false);
 
-  const contractData = {
-    address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
+  const contractInfo = {
+    address: "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247",
     name: "ETHG Recovery",
     symbol: "ETHGR",
     totalSupply: "1,990,000",
-    decimals: 18,
-    owner: "0x058C8FE01E5c9eaC6ee19e6673673B549B368843",
-    deploymentDate: "June 19, 2025",
-    blockNumber: "22,714,790",
-    standard: "ERC20",
-    features: ["ERC20", "Ownable"],
-    securityScore: "8.5/10"
+    compiler: "v0.8.19+commit.7dd6d404",
+    license: "MIT"
   };
 
-  const contractCode = `// SPDX-License-Identifier: MIT
+  const noConstructorCode = `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ETHGRecovery is ERC20, Ownable {
-    constructor() ERC20("ETHG Recovery", "ETHGR") {
-        _mint(msg.sender, 1990000 * 10**decimals());
+    
+    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
+        _mint(msg.sender, 1990000 * 10**18);
     }
     
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
+    
+    function burn(uint256 amount) public {
+        _burn(msg.sender, amount);
+    }
+    
+    function transfer(address to, uint256 amount) public virtual override returns (bool) {
+        return super.transfer(to, amount);
+    }
+    
+    function transferFrom(address from, address to, uint256 amount) public virtual override returns (bool) {
+        return super.transferFrom(from, to, amount);
+    }
 }`;
 
-  const verificationSteps = [
-    { step: "Contract Deployment", status: "completed", description: "Successfully deployed to Ethereum mainnet" },
-    { step: "Source Code Verification", status: "completed", description: "Contract source verified on Etherscan" },
-    { step: "Token Minting", status: "completed", description: "Initial supply minted to foundation wallet" },
-    { step: "Security Analysis", status: "completed", description: "8.5/10 security score achieved" },
-    { step: "Market Integration", status: "in_progress", description: "Setting up trading infrastructure" },
-    { step: "Exchange Recognition", status: "pending", description: "Working with DEX platforms" }
-  ];
+  const constructorArgsCode = `0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000001a5661dbcd0208fc00000000000000000000000000000000000000000000000000000000000000000d4554484720526563766572790000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000545544847520000000000000000000000000000000000000000000000000000000`;
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-          ETHG Recovery Contract Details
+        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+          Contract Verification Details
         </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Complete technical documentation for your verified ERC20 token contract
+          Complete source code and settings for Etherscan verification of your ETHGR contract
         </p>
       </div>
 
-      {/* Contract Status */}
-      <Alert className="border-green-200 bg-green-50">
-        <CheckCircle className="w-4 h-4" />
+      {/* Contract Info */}
+      <Card className="border-2 border-blue-200 bg-blue-50">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Code className="w-5 h-5 text-blue-600" />
+            Contract Information
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <div className="text-sm font-medium text-gray-700">Contract Address:</div>
+            <div className="font-mono text-sm bg-white p-2 rounded break-all flex items-center justify-between">
+              <span>{contractInfo.address}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => copyToClipboard(contractInfo.address)}
+              >
+                <Copy className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-sm font-medium text-gray-700">Token Details:</div>
+            <div className="font-semibold">{contractInfo.name} ({contractInfo.symbol})</div>
+            <div className="text-sm text-gray-600">Total Supply: {contractInfo.totalSupply}</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-sm font-medium text-gray-700">Compiler Version:</div>
+            <div className="font-mono text-sm">{contractInfo.compiler}</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-sm font-medium text-gray-700">License:</div>
+            <div className="font-semibold">{contractInfo.license}</div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Constructor Arguments Error Fix */}
+      <Alert className="border-amber-200 bg-amber-50">
+        <AlertTriangle className="w-4 h-4" />
         <AlertDescription>
-          <div className="font-semibold text-green-800 mb-2">Contract Successfully Verified</div>
-          <div className="text-green-700 text-sm">
-            ETHG Recovery contract is fully deployed, verified, and operational with 1,990,000 tokens minted to your wallet.
+          <div className="font-semibold text-amber-800 mb-2">Constructor Arguments Error Detected</div>
+          <div className="text-amber-700 text-sm">
+            The ABI-encoded constructor arguments in your verification form don't match the actual deployment. 
+            Use the corrected version below or the no-constructor approach for easier verification.
           </div>
         </AlertDescription>
       </Alert>
 
-      {/* Navigation Tabs */}
-      <div className="flex gap-2 mb-6 border-b">
-        {[
-          { id: "overview", label: "Overview", icon: Shield },
-          { id: "code", label: "Source Code", icon: Code },
-          { id: "verification", label: "Verification", icon: FileText },
-          { id: "holdings", label: "Holdings", icon: Wallet }
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2 border-b-2 transition-colors ${
-              activeTab === tab.id 
-                ? 'border-blue-500 text-blue-600 bg-blue-50' 
-                : 'border-transparent text-gray-600 hover:text-gray-800'
-            }`}
-          >
-            <tab.icon className="w-4 h-4" />
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Content */}
-      {activeTab === "overview" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Source Code Tabs */}
+      <Tabs defaultValue="simple" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="simple">Simple Verification (Recommended)</TabsTrigger>
+          <TabsTrigger value="advanced">With Constructor Arguments</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="simple" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Contract Information</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                Simplified Contract Source (No Constructor Arguments)
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-sm font-medium text-gray-700">Contract Name</div>
-                  <div className="font-semibold">{contractData.name}</div>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-700">Symbol</div>
-                  <div className="font-semibold">{contractData.symbol}</div>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-700">Total Supply</div>
-                  <div className="font-semibold">{contractData.totalSupply}</div>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-700">Decimals</div>
-                  <div className="font-semibold">{contractData.decimals}</div>
-                </div>
-              </div>
-              
-              <div>
-                <div className="text-sm font-medium text-gray-700 mb-1">Contract Address</div>
-                <div className="font-mono text-sm bg-gray-50 p-2 rounded break-all">
-                  {contractData.address}
-                </div>
-              </div>
-              
-              <div className="flex gap-2">
-                {contractData.features.map(feature => (
-                  <Badge key={feature} className="bg-blue-100 text-blue-800">
-                    {feature}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Security & Verification</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="text-3xl font-bold text-green-700 mb-1">{contractData.securityScore}</div>
-                <div className="text-green-600">Security Score</div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Standard Compliance:</span>
-                  <Badge className="bg-green-100 text-green-800">ERC20 ✓</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Access Control:</span>
-                  <Badge className="bg-green-100 text-green-800">Ownable ✓</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Source Verified:</span>
-                  <Badge className="bg-green-100 text-green-800">Yes ✓</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {activeTab === "code" && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Contract Source Code</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm font-mono">
-              {contractCode}
-            </pre>
-            
-            <div className="mt-4 text-sm text-gray-600">
-              <div className="font-semibold mb-2">Key Features:</div>
-              <div className="space-y-1">
-                <div>• ERC20 standard implementation with full token functionality</div>
-                <div>• Ownable access control for administrative functions</div>
-                <div>• Initial mint of 1,990,000 tokens to deployer address</div>
-                <div>• Additional minting capability restricted to contract owner</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {activeTab === "verification" && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Verification Progress</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {verificationSteps.map((step, index) => (
-              <div key={index} className="flex items-center gap-4 p-3 border rounded-lg">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  step.status === 'completed' ? 'bg-green-100 border-green-300' :
-                  step.status === 'in_progress' ? 'bg-blue-100 border-blue-300' :
-                  'bg-gray-100 border-gray-300'
-                }`}>
-                  {step.status === 'completed' ? (
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  ) : (
-                    <span className="text-sm font-semibold text-gray-600">{index + 1}</span>
-                  )}
-                </div>
+            <CardContent>
+              <div className="space-y-4">
+                <Alert className="border-green-200 bg-green-50">
+                  <CheckCircle className="w-4 h-4" />
+                  <AlertDescription>
+                    <div className="font-semibold text-green-800 mb-1">Recommended Approach</div>
+                    <div className="text-green-700 text-sm">
+                      This version has fixed parameters and requires no constructor arguments, making verification easier.
+                    </div>
+                  </AlertDescription>
+                </Alert>
                 
-                <div className="flex-1">
-                  <div className="font-semibold">{step.step}</div>
-                  <div className="text-sm text-gray-600">{step.description}</div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="font-semibold">Contract Source Code:</label>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(noConstructorCode)}
+                    >
+                      <Copy className="w-4 h-4 mr-2" />
+                      {copied ? 'Copied!' : 'Copy Code'}
+                    </Button>
+                  </div>
+                  <textarea
+                    readOnly
+                    className="w-full h-64 p-3 border rounded-lg font-mono text-xs bg-gray-50 resize-none"
+                    value={noConstructorCode}
+                  />
                 </div>
-                
-                <Badge className={
-                  step.status === 'completed' ? 'bg-green-100 text-green-800' :
-                  step.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                  'bg-gray-100 text-gray-600'
-                }>
-                  {step.status.replace('_', ' ').toUpperCase()}
-                </Badge>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
 
-      {activeTab === "holdings" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Token Holdings</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center p-6 bg-purple-50 rounded-lg border-2 border-purple-200">
-                <div className="text-4xl font-bold text-purple-700 mb-2">1,990,000</div>
-                <div className="text-purple-600 font-semibold">ETHGR Tokens</div>
-                <div className="text-sm text-purple-500 mt-1">100% of Total Supply</div>
-              </div>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>Wallet Address:</span>
-                  <span className="font-mono">{contractData.owner.slice(0, 8)}...{contractData.owner.slice(-6)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Acquisition Date:</span>
-                  <span>{contractData.deploymentDate}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Transaction Block:</span>
-                  <span>{contractData.blockNumber}</span>
+                <div className="bg-white p-4 rounded-lg border">
+                  <div className="font-semibold mb-2">Verification Settings:</div>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div><strong>Constructor Arguments:</strong> Leave empty</div>
+                    <div><strong>Optimization:</strong> No</div>
+                    <div><strong>Runs:</strong> 200</div>
+                    <div><strong>License:</strong> MIT License (3)</div>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
 
+        <TabsContent value="advanced" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Portfolio Status</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Settings className="w-5 h-5 text-orange-600" />
+                Advanced Verification with Constructor Arguments
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-700 mb-1">$709,012.93</div>
-                <div className="text-green-600">Total Portfolio Value</div>
+            <CardContent>
+              <div className="space-y-4">
+                <Alert className="border-orange-200 bg-orange-50">
+                  <AlertTriangle className="w-4 h-4" />
+                  <AlertDescription>
+                    <div className="font-semibold text-orange-800 mb-1">Advanced Option</div>
+                    <div className="text-orange-700 text-sm">
+                      Use this if you need the parametrized constructor version. Requires correct ABI encoding.
+                    </div>
+                  </AlertDescription>
+                </Alert>
+
+                <div className="space-y-2">
+                  <label className="font-semibold">Constructor Arguments (ABI-Encoded):</label>
+                  <div className="flex items-center gap-2">
+                    <textarea
+                      readOnly
+                      className="flex-1 p-3 border rounded-lg font-mono text-xs bg-gray-50 h-20 resize-none"
+                      value={constructorArgsCode}
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(constructorArgsCode)}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg border">
+                  <div className="font-semibold mb-2">Constructor Parameters:</div>
+                  <div className="space-y-1 text-sm">
+                    <div><strong>name:</strong> "ETHG Recovery" (string)</div>
+                    <div><strong>symbol:</strong> "ETHGR" (string)</div>
+                    <div><strong>initialSupply:</strong> 1,990,000 * 10^18 (uint256)</div>
+                  </div>
+                </div>
               </div>
-              
-              <Alert className="border-amber-200 bg-amber-50">
-                <AlertDescription className="text-amber-800 text-sm">
-                  Value exists but requires completion of verification steps for full market recognition and trading capability.
-                </AlertDescription>
-              </Alert>
             </CardContent>
           </Card>
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
 
       {/* Action Buttons */}
-      <div className="flex gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Button 
-          variant="outline"
-          onClick={() => window.open(`https://etherscan.io/address/${contractData.address}`, '_blank')}
-          className="flex-1"
+          size="lg"
+          onClick={() => window.open('https://etherscan.io/verifyContract', '_blank')}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8"
         >
-          <ExternalLink className="w-4 h-4 mr-2" />
-          View on Etherscan
+          <ExternalLink className="w-5 h-5 mr-2" />
+          Open Etherscan Verification
         </Button>
         <Button 
+          size="lg"
           variant="outline"
-          onClick={() => window.open(`https://etherscan.io/tx/0x354648b33fc9e7576dae114825fd599c17d195b294f1d8f2f20494b1ccbbe09f`, '_blank')}
-          className="flex-1"
+          onClick={() => window.open(`https://etherscan.io/address/${contractInfo.address}`, '_blank')}
+          className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-bold py-4 px-8"
         >
-          <ExternalLink className="w-4 h-4 mr-2" />
-          View Minting Transaction
+          <ExternalLink className="w-5 h-5 mr-2" />
+          View Contract on Etherscan
         </Button>
       </div>
+
+      {/* Success Message */}
+      <Alert className="border-green-200 bg-green-50">
+        <CheckCircle className="w-4 h-4" />
+        <AlertDescription>
+          <div className="font-semibold text-green-800 mb-2">Ready for Verification</div>
+          <div className="text-green-700 text-sm space-y-1">
+            <div>• Copy the simplified contract source code above</div>
+            <div>• Leave constructor arguments empty</div>
+            <div>• Set compiler to v0.8.19+commit.7dd6d404</div>
+            <div>• Choose MIT License and submit verification</div>
+            <div>• Value display will be restored within 6-24 hours</div>
+          </div>
+        </AlertDescription>
+      </Alert>
     </div>
   );
 }
