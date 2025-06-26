@@ -76,7 +76,9 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 - `COPY_PASTE_CONTRACTS.md` - Ready-to-copy verified contract files for Remix
 
 ## Key Files
-- `client/src/pages/ContractVerification.tsx` - Fix $0.00 value display issue through Etherscan verification
+- `client/src/pages/ContractVerification.tsx` - Complete Etherscan verification system for price recognition
+- `client/src/pages/ContractSource.tsx` - Contract source code ready for verification submission
+- `ETHGR_VERIFICATION_STEPS.md` - Step-by-step verification instructions with exact compiler settings
 - `client/src/pages/AutomatedVerification.tsx` - Automated contract verification system with real-time progress tracking
 - `client/src/pages/ContractDetails.tsx` - Complete contract source code and verification instructions
 - `EXACT_VERIFICATION_CONTRACT.sol` - Correct contract source code for Etherscan verification

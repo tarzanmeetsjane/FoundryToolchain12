@@ -1,327 +1,245 @@
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { CheckCircle, ExternalLink, AlertTriangle, Clock, FileCheck, Globe, Upload } from "lucide-react";
-
-interface VerificationStep {
-  id: string;
-  title: string;
-  description: string;
-  status: 'completed' | 'in_progress' | 'pending';
-  actionUrl?: string;
-  instructions?: string[];
-}
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, ExternalLink, Copy, ArrowRight, Shield, FileText, Clock } from "lucide-react";
+import { useState } from "react";
 
 export default function ContractVerification() {
-  const [verificationSteps] = useState<VerificationStep[]>([
-    {
-      id: 'contract-fix',
-      title: 'Contract Source Code Fix',
-      description: 'Updated contract syntax to proper Solidity standard',
-      status: 'completed',
-      instructions: [
-        'Fixed invalid syntax: contract "ETHG Recovery" with symbol "ETHGR"',
-        'Updated to: contract ETHGRecovery is ERC20, Ownable',
-        'Maintained all recovery functionality while enabling proper recognition'
-      ]
-    },
-    {
-      id: 'etherscan-verify',
-      title: 'Etherscan Contract Verification',
-      description: 'Submit corrected source code for verification on Etherscan',
-      status: 'in_progress',
-      actionUrl: 'https://etherscan.io/address/0xfA7b8c5585E8C4244899d2aE45Ae3e5df9a2abF247',
-      instructions: [
-        'Go to Etherscan contract page',
-        'Click "Contract" → "Verify and Publish"',
-        'Use compiler version 0.8.19 with standard settings',
-        'Upload the corrected source code from ETHG_Recovery_Fixed.sol'
-      ]
-    },
-    {
-      id: 'coingecko-submit',
-      title: 'CoinGecko Price Tracking',
-      description: 'Submit token for price tracking and market data',
-      status: 'pending',
-      actionUrl: 'https://www.coingecko.com/en/coins/new',
-      instructions: [
-        'Submit verified contract address: 0xfA7b8c5585E8C4244899d2aE45Ae3e5df9a2abF247',
-        'Include token details: ETHG Recovery (ETHGR)',
-        'Provide website and documentation links',
-        'Wait for review and approval (24-48 hours)'
-      ]
-    },
-    {
-      id: 'coinmarketcap-submit',
-      title: 'CoinMarketCap Listing Request',
-      description: 'Request listing on CoinMarketCap for broader recognition',
-      status: 'pending',
-      actionUrl: 'https://coinmarketcap.com/request/',
-      instructions: [
-        'Submit listing request with verified contract',
-        'Include project documentation and whitepaper',
-        'Provide social media and community links',
-        'Submit trading volume and liquidity proof'
-      ]
-    }
-  ]);
+  const [copiedField, setCopiedField] = useState<string>("");
 
-  const completedSteps = verificationSteps.filter(step => step.status === 'completed').length;
-  const totalSteps = verificationSteps.length;
-  const overallProgress = (completedSteps / totalSteps) * 100;
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="w-5 h-5 text-green-600" />;
-      case 'in_progress':
-        return <Clock className="w-5 h-5 text-blue-600" />;
-      default:
-        return <AlertTriangle className="w-5 h-5 text-gray-400" />;
-    }
+  const contractDetails = {
+    address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
+    name: "ETHG Recovery",
+    symbol: "ETHGR",
+    compiler: "0.8.19",
+    license: "MIT",
+    optimization: "Yes",
+    runs: 200
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'in_progress':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-600';
-    }
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(""), 2000);
   };
+
+  const verificationSteps = [
+    {
+      step: 1,
+      title: "Go to Etherscan Verification",
+      description: "Navigate to the contract verification page",
+      action: "Open Etherscan",
+      url: `https://etherscan.io/verifyContract?a=${contractDetails.address}`,
+      status: "ready"
+    },
+    {
+      step: 2,
+      title: "Enter Contract Details",
+      description: "Fill in the basic contract information",
+      status: "pending"
+    },
+    {
+      step: 3,
+      title: "Upload Source Code",
+      description: "Paste the corrected contract source code",
+      status: "pending"
+    },
+    {
+      step: 4,
+      title: "Submit for Verification",
+      description: "Wait for Etherscan to process verification",
+      status: "pending"
+    }
+  ];
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-          Fix $0.00 Value Display Issue
-        </h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Complete contract verification to resolve pricing recognition and enable accurate value display
-        </p>
-      </div>
-
-      {/* Critical Issue Alert */}
-      <Alert className="border-red-200 bg-red-50">
-        <AlertTriangle className="w-4 h-4" />
-        <AlertDescription>
-          <div className="font-semibold text-red-800 mb-2">Critical Issue Identified</div>
-          <div className="text-red-700 text-sm">
-            Invalid contract syntax prevents price services from recognizing your ETHGR tokens, causing $0.00 display despite legitimate value. 
-            Verification with corrected source code will restore proper pricing.
-          </div>
-        </AlertDescription>
-      </Alert>
-
-      {/* Fix Progress */}
-      <Card className="border-2 border-orange-200">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FileCheck className="w-6 h-6 text-orange-600" />
-              Value Fix Progress
-            </div>
-            <Badge className="bg-orange-100 text-orange-800">
-              {completedSteps}/{totalSteps} Complete
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+      <div className="max-w-6xl mx-auto space-y-6">
+        
+        {/* Header */}
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center space-x-2">
+            <Shield className="w-8 h-8 text-emerald-600" />
+            <Badge variant="outline" className="px-4 py-2 text-sm">
+              Contract Verification System
             </Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Progress value={overallProgress} className="h-3" />
-          <div className="flex justify-between text-sm text-gray-600">
-            <span>Contract syntax fixed, verification in progress</span>
-            <span>{Math.round(overallProgress)}% Complete</span>
           </div>
-        </CardContent>
-      </Card>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+            Get Your Tokens Price Recognition
+          </h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Verify your ETHGR contract on Etherscan to enable price tracking services and wallet value display
+          </p>
+        </div>
 
-      {/* Verification Steps */}
-      <div className="space-y-4">
-        {verificationSteps.map((step, index) => (
-          <Card key={step.id} className={`border-2 ${
-            step.status === 'completed' ? 'border-green-200 bg-green-50' : 
-            step.status === 'in_progress' ? 'border-blue-200 bg-blue-50' : 
-            'border-gray-200'
-          }`}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border-2">
-                    {getStatusIcon(step.status)}
-                  </div>
-                  <div>
-                    <div className="font-semibold">{step.title}</div>
-                    <div className="text-sm text-gray-600">{step.description}</div>
+        {/* Current Status */}
+        <Alert className="border-amber-200 bg-amber-50">
+          <Clock className="h-4 w-4" />
+          <AlertDescription className="text-amber-800">
+            <strong>Current Issue:</strong> Your 1.99M ETHGR tokens show "N/A" price because tracking services haven't recognized your contract address yet.
+          </AlertDescription>
+        </Alert>
+
+        {/* Contract Details Card */}
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Your Contract Details</span>
+              <Badge className="bg-emerald-600">Ready for Verification</Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                  <span className="font-medium">Contract Address:</span>
+                  <div className="flex items-center space-x-2">
+                    <code className="text-sm bg-gray-100 px-2 py-1 rounded">{contractDetails.address}</code>
+                    <Button 
+                      size="sm" 
+                      variant="ghost"
+                      onClick={() => copyToClipboard(contractDetails.address, "address")}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-                <Badge className={getStatusColor(step.status)}>
-                  {step.status.replace('_', ' ').toUpperCase()}
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {step.instructions && (
-                <div className="space-y-2 mb-4">
-                  <div className="font-semibold text-sm">Instructions:</div>
-                  <ul className="text-sm text-gray-700 space-y-1">
-                    {step.instructions.map((instruction, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-blue-500 mt-1">•</span>
-                        <span>{instruction}</span>
-                      </li>
-                    ))}
-                  </ul>
+                
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                  <span className="font-medium">Token Name:</span>
+                  <span className="font-mono">{contractDetails.name}</span>
                 </div>
-              )}
+                
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                  <span className="font-medium">Symbol:</span>
+                  <span className="font-mono">{contractDetails.symbol}</span>
+                </div>
+              </div>
               
-              {step.actionUrl && (
-                <Button 
-                  variant={step.status === 'in_progress' ? 'default' : 'outline'}
-                  onClick={() => window.open(step.actionUrl, '_blank')}
-                  className="w-full"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  {step.status === 'in_progress' ? 'Start Verification' : 'View Details'}
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Timeline Expectations */}
-      <Card className="border-2 border-blue-200 bg-blue-50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-blue-600" />
-            Expected Timeline for Value Fix
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="font-semibold text-blue-800">Phase 1: Immediate (0-6 hours)</div>
-              <div className="text-blue-700 text-sm space-y-1">
-                <div>• Contract verification on Etherscan</div>
-                <div>• Source code validation and approval</div>
-                <div>• Metadata parsing activation</div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                  <span className="font-medium">Compiler:</span>
+                  <span className="font-mono">{contractDetails.compiler}</span>
+                </div>
+                
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                  <span className="font-medium">License:</span>
+                  <span className="font-mono">{contractDetails.license}</span>
+                </div>
+                
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                  <span className="font-medium">Optimization:</span>
+                  <span className="font-mono">{contractDetails.optimization} ({contractDetails.runs} runs)</span>
+                </div>
               </div>
             </div>
-            
-            <div className="space-y-2">
-              <div className="font-semibold text-blue-800">Phase 2: Short-term (6-48 hours)</div>
-              <div className="text-blue-700 text-sm space-y-1">
-                <div>• Etherscan price data appears</div>
-                <div>• Price tracking services recognition</div>
-                <div>• API endpoints return proper values</div>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="font-semibold text-blue-800">Phase 3: Complete (48-72 hours)</div>
-              <div className="text-blue-700 text-sm space-y-1">
-                <div>• Full pricing propagation</div>
-                <div>• All platforms show correct values</div>
-                <div>• $709k portfolio properly displayed</div>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="font-semibold text-blue-800">Result: Value Restored</div>
-              <div className="text-blue-700 text-sm space-y-1">
-                <div>• $0.00 display issue resolved</div>
-                <div>• Legitimate portfolio value visible</div>
-                <div>• Market recognition achieved</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Technical Explanation */}
-      <Card className="border-2 border-purple-200 bg-purple-50">
-        <CardHeader>
-          <CardTitle className="text-purple-800">Why This Fixes the $0.00 Issue</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="bg-white p-4 rounded-lg">
-            <div className="font-semibold text-purple-800 mb-2">Root Cause:</div>
-            <div className="text-purple-700 text-sm">
-              The original contract used invalid Solidity syntax that prevented metadata parsing by price services and block explorers.
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-red-100 p-3 rounded border-l-4 border-red-400">
-              <div className="font-semibold text-red-800 text-sm">BROKEN (caused $0.00):</div>
-              <code className="text-red-700 text-xs">contract "ETHG Recovery" with symbol "ETHGR"</code>
-            </div>
+        {/* Verification Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {verificationSteps.map((step) => (
+            <Card key={step.step} className={`relative ${
+              step.status === 'ready' ? 'border-emerald-300 bg-emerald-50' : 
+              step.status === 'pending' ? 'border-gray-200 bg-white' : 
+              'border-green-300 bg-green-50'
+            }`}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                    step.status === 'ready' ? 'bg-emerald-600 text-white' :
+                    step.status === 'pending' ? 'bg-gray-300 text-gray-600' :
+                    'bg-green-600 text-white'
+                  }`}>
+                    {step.status === 'completed' ? <CheckCircle className="w-4 h-4" /> : step.step}
+                  </div>
+                  {step.status === 'ready' && (
+                    <Badge variant="secondary" className="text-xs">Start Here</Badge>
+                  )}
+                </div>
+                <CardTitle className="text-lg">{step.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-4">{step.description}</p>
+                {step.url && (
+                  <Button 
+                    onClick={() => window.open(step.url, '_blank')} 
+                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  >
+                    {step.action} <ExternalLink className="w-4 h-4 ml-2" />
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Source Code Preview */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <FileText className="w-5 h-5" />
+              <span>Contract Source Code Ready</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Alert className="border-blue-200 bg-blue-50 mb-4">
+              <CheckCircle className="h-4 w-4" />
+              <AlertDescription>
+                I have your corrected contract source code ready for Etherscan verification. Click the button below to access the complete source code.
+              </AlertDescription>
+            </Alert>
             
-            <div className="bg-green-100 p-3 rounded border-l-4 border-green-400">
-              <div className="font-semibold text-green-800 text-sm">FIXED (enables recognition):</div>
-              <code className="text-green-700 text-xs">contract ETHGRecovery is ERC20, Ownable</code>
+            <div className="flex space-x-4">
+              <Button 
+                onClick={() => window.open('/contract-source', '_blank')}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                View Complete Source Code
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => copyToClipboard("// Contract source code available in platform", "source")}
+              >
+                Copy Instructions
+              </Button>
             </div>
-          </div>
-          
-          <div className="bg-white p-4 rounded-lg">
-            <div className="font-semibold text-purple-800 mb-2">Solution Impact:</div>
-            <div className="text-purple-700 text-sm space-y-1">
-              <div>• Proper ERC20 standard compliance enables automatic recognition</div>
-              <div>• Etherscan and price services can read token metadata correctly</div>
-              <div>• Maintains all existing recovery functionality</div>
-              <div>• Restores accurate value display across all platforms</div>
+          </CardContent>
+        </Card>
+
+        {/* Expected Results */}
+        <Card className="border-green-200 bg-green-50">
+          <CardHeader>
+            <CardTitle className="text-green-800">Expected Results After Verification</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span>Etherscan shows "Contract Source Code Verified"</span>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span>Price tracking services can recognize your contract</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span>Your wallet shows actual dollar value instead of "N/A"</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span>Can submit to CoinGecko and CoinMarketCap for broader recognition</span>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Success Banner */}
-      <Alert className="border-green-200 bg-green-50">
-        <CheckCircle className="w-4 h-4" />
-        <AlertDescription>
-          <div className="font-semibold text-green-800 mb-2">Verification Successfully Completed!</div>
-          <div className="text-green-700 text-sm space-y-1">
-            <div>• ETHGR price now displaying: $0.00451229</div>
-            <div>• Market cap active: $4,201.96</div>
-            <div>• All price services recognizing contract</div>
-            <div>• Platform operational for victim recovery</div>
-          </div>
-        </AlertDescription>
-      </Alert>
+        {/* Support */}
+        <Alert className="border-blue-200 bg-blue-50">
+          <AlertDescription>
+            <strong>Need Help?</strong> The verification process typically takes 1-3 days. Once verified, it may take an additional 1-2 weeks for price services to fully recognize and index your contract.
+          </AlertDescription>
+        </Alert>
 
-      {/* Action Buttons */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Button 
-          size="lg"
-          onClick={() => window.location.href = '/verification-success'}
-          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-4 px-8"
-        >
-          <CheckCircle className="w-5 h-5 mr-2" />
-          View Success Report
-        </Button>
-        <Button 
-          size="lg"
-          onClick={() => window.location.href = '/automated-verification'}
-          className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-bold py-4 px-8"
-        >
-          <Upload className="w-5 h-5 mr-2" />
-          Verification Process
-        </Button>
-        <Button 
-          size="lg"
-          variant="outline"
-          onClick={() => window.open('https://etherscan.io/address/0xfA7b8c5585E8C4244899d2aE45Ae3e5df9a2abF247', '_blank')}
-          className="border-2 border-orange-600 text-orange-600 hover:bg-orange-50 font-bold py-4 px-8"
-        >
-          <Globe className="w-5 h-5 mr-2" />
-          View on Etherscan
-        </Button>
       </div>
     </div>
   );

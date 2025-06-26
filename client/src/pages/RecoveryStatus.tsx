@@ -80,12 +80,18 @@ export default function RecoveryStatus() {
                 </div>
               </div>
               
-              <div className="text-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <Button 
                   onClick={() => window.open(`https://etherscan.io/address/${contract.address}`, '_blank')}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
                   View on Etherscan
+                </Button>
+                <Button 
+                  onClick={() => window.location.href = '/contract-verification'}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Start Verification
                 </Button>
               </div>
             </CardContent>
