@@ -85,7 +85,9 @@ Our current manual process has achieved a 78% success rate in asset recovery. Li
 
 ## Repository / Demo Links
 
-**Live Application:** https://quantum-secure-trader-tarzanandjane9.replit.app/
+**Live Application:** Advanced ETHGR Foundation Platform
+- Professional gradient-based UI with smooth animations for enhanced user trust
+- Multi-modal dashboard optimized for victim assistance accessibility
 
 **Key Modules:**
 - **Bot Dashboard:** Real-time tracking of 1,436 discovered wallet addresses and 171 LP positions

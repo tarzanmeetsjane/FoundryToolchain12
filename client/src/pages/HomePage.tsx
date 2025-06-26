@@ -45,7 +45,7 @@ export default function HomePage() {
         </div>
 
         {/* Current Status Summary */}
-        <div className="bg-white rounded-xl shadow-2xl p-8 mb-8">
+        <div className="bg-white rounded-xl shadow-2xl p-8 mb-8 slide-up">
           <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">Current Foundation Status</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
