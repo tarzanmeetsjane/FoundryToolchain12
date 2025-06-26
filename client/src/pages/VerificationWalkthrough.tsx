@@ -183,23 +183,31 @@ contract ETHGRecovery is IERC20 {
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-2">
             <Shield className="w-8 h-8 text-emerald-600" />
-            <Badge variant="outline" className="px-4 py-2 text-sm">
-              Live Verification Process
+            <Badge variant="outline" className="px-4 py-2 text-sm bg-green-100 border-green-300">
+              REMIX DATA DETECTED - READY TO VERIFY
             </Badge>
           </div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-            Verify Your ETHGR Contract Now
+            LIVE VERIFICATION - START NOW!
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Follow these exact steps to get your 1.99M ETHGR tokens price recognition
+            Your Remix compilation is ready! Time to solve the "N/A" price issue with your 1.99M ETHGR tokens.
           </p>
         </div>
 
         {/* Current Issue */}
-        <Alert className="border-amber-200 bg-amber-50">
+        <Alert className="border-green-200 bg-green-50">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription className="text-green-800">
+            <strong>READY TO SOLVE:</strong> Your wallet shows "N/A" for ETHGR token price. Remix compilation data detected - verification process ready to start!
+          </AlertDescription>
+        </Alert>
+
+        {/* Urgent Action */}
+        <Alert className="border-red-200 bg-red-50">
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription className="text-amber-800">
-            <strong>Current Issue:</strong> Your wallet shows "N/A" for ETHGR token price because price tracking services haven't recognized contract {contractAddress}
+          <AlertDescription className="text-red-800">
+            <strong>IMPORTANT:</strong> Use Solidity 0.8.19 settings (your deployed contract version), NOT the 0.8.30 from your Remix compilation data.
           </AlertDescription>
         </Alert>
 
@@ -291,12 +299,22 @@ contract ETHGRecovery is IERC20 {
                 </AlertDescription>
               </Alert>
               
+              <Alert className="border-blue-200 bg-blue-50">
+                <CheckCircle className="h-4 w-4" />
+                <AlertDescription className="text-blue-800">
+                  <strong>Remix Users:</strong> Your compilation used 0.8.30, but use 0.8.19 for verification (deployed contract version).
+                </AlertDescription>
+              </Alert>
+              
               <div className="text-center">
                 <Button 
-                  onClick={() => setCurrentStep(2)}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  onClick={() => {
+                    setCurrentStep(2);
+                    window.open(`https://etherscan.io/verifyContract?a=${contractAddress}`, '_blank');
+                  }}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-lg py-4 px-8"
                 >
-                  Settings Complete - Next Step <ArrowRight className="w-4 h-4 ml-2" />
+                  Open Etherscan & Continue <ExternalLink className="w-5 h-5 ml-2" />
                 </Button>
               </div>
             </CardContent>
