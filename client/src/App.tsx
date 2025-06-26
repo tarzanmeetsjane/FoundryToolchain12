@@ -6,11 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom } from "lucide-react";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
 import QuantumLiquidity from "./pages/QuantumLiquidity";
+import MoneyFrequencyTuner from "./pages/MoneyFrequencyTuner";
+import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +35,7 @@ function Navigation() {
     { path: "/", label: "Home", icon: Target },
     { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
     { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
+    { path: "/frequency", label: "Frequency Tuner", icon: Radio },
     { path: "/pool", label: "Create Pool", icon: Droplets },
   ];
 
@@ -239,7 +242,13 @@ export default function App() {
         <Navigation />
         
         <main>
-          <HomePage />
+          <Switch>
+            <Route path="/" component={HomePage} />
+            <Route path="/dashboard" component={BotDashboard} />
+            <Route path="/quantum" component={QuantumLiquidity} />
+            <Route path="/frequency" component={MoneyFrequencyTuner} />
+            <Route path="/pool" component={LiquidityPoolCreation} />
+          </Switch>
         </main>
       </div>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Slider } from "@/components/ui/slider";
+// import { Slider } from "@/components/ui/slider";
 import { Radio, Volume2, TrendingUp, Zap, Target, DollarSign } from "lucide-react";
 
 interface FrequencyData {
@@ -199,13 +199,14 @@ export default function MoneyFrequencyTuner() {
               <label className="text-sm font-medium text-gray-700 mb-2 block">
                 Frequency: {frequencyData.frequency} Hz
               </label>
-              <Slider
-                value={[frequencyData.frequency]}
-                onValueChange={updateFrequency}
+              <input
+                type="range"
+                value={frequencyData.frequency}
+                onChange={(e) => updateFrequency([Number(e.target.value)])}
                 min={100}
                 max={1000}
                 step={1}
-                className="w-full"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>100 Hz</span>
@@ -218,13 +219,14 @@ export default function MoneyFrequencyTuner() {
               <label className="text-sm font-medium text-gray-700 mb-2 block">
                 Amplitude: {Math.round(frequencyData.amplitude * 100)}%
               </label>
-              <Slider
-                value={[frequencyData.amplitude * 100]}
-                onValueChange={updateAmplitude}
+              <input
+                type="range"
+                value={frequencyData.amplitude * 100}
+                onChange={(e) => updateAmplitude([Number(e.target.value)])}
                 min={10}
                 max={100}
                 step={1}
-                className="w-full"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
             </div>
 
