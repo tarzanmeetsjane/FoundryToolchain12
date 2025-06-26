@@ -40,6 +40,10 @@ app.use((req, res, next) => {
 // Mount bot dashboard routes
 app.use(botRoutes);
 
+// Import and use verification routes
+import verificationRoutes from './routes/verification';
+app.use('/api/verification', verificationRoutes);
+
 (async () => {
   const server = createServer(app);
 
