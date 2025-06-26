@@ -32,14 +32,14 @@ export default function VictimRecovery() {
   const [cases, setCases] = useState<RecoveryCase[]>([
     {
       id: 'case-001',
-      contractAddress: '0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308',
-      victimAddress: 'Foundation Founder (Denae Duncan)',
-      amount: '15000',
+      contractAddress: '0x0890f93A1fd344B3437Ec10c1C14d1a581142c5f',
+      victimAddress: 'Original Honeypot Contract',
+      amount: '247000',
       fraudType: 'honeypot',
-      status: 'recovered',
-      securityScore: 8.5,
-      recoveryChance: 100,
-      submittedDate: '2024-01-15'
+      status: 'investigating',
+      securityScore: 1.2,
+      recoveryChance: 15,
+      submittedDate: '2024-06-19'
     }
   ]);
 
