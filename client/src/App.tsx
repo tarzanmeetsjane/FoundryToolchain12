@@ -27,6 +27,7 @@ import RecoveryStatus from "./pages/RecoveryStatus";
 import ContractSource from "./pages/ContractSource";
 import ConstructorArgs from "./pages/ConstructorArgs";
 import RemixIntegration from "./pages/RemixIntegration";
+import VerificationWalkthrough from "./pages/VerificationWalkthrough";
 import ContractDecompiler from "./pages/ContractDecompiler";
 import { Route, Switch } from "wouter";
 
@@ -286,6 +287,7 @@ export default function App() {
             <Route path="/contract-source" component={ContractSource} />
             <Route path="/constructor-args" component={ConstructorArgs} />
             <Route path="/remix-integration" component={RemixIntegration} />
+            <Route path="/verification-walkthrough" component={VerificationWalkthrough} />
             <Route path="/contract-decompiler" component={ContractDecompiler} />
           </Switch>
         </main>

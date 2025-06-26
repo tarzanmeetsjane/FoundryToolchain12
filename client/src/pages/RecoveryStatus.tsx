@@ -88,7 +88,7 @@ export default function RecoveryStatus() {
                   View on Etherscan
                 </Button>
                 <Button 
-                  onClick={() => window.location.href = '/contract-verification'}
+                  onClick={() => window.location.href = '/verification-walkthrough'}
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   Start Verification
