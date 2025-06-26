@@ -16,6 +16,7 @@ import BlockchainRescue from "./pages/BlockchainRescue";
 import ContractVerification from "./pages/ContractVerification";
 import VictimRecovery from "./pages/VictimRecovery";
 import HoneypotReversal from "./pages/HoneypotReversal";
+import BlacklistReversal from "./pages/BlacklistReversal";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -37,10 +38,10 @@ function Navigation() {
   
   const navItems = [
     { path: "/", label: "Home", icon: Target },
-    { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
     { path: "/verification", label: "Security Analysis", icon: Shield },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
     { path: "/honeypot-reversal", label: "Honeypot Reversal", icon: CheckCircle },
+    { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
     { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
     { path: "/frequency", label: "Frequency Tuner", icon: Radio },
   ];
@@ -255,7 +256,9 @@ export default function App() {
             <Route path="/frequency" component={MoneyFrequencyTuner} />
             <Route path="/rescue" component={BlockchainRescue} />
             <Route path="/verification" component={ContractVerification} />
-            <Route path="/pool" component={LiquidityPoolCreation} />
+            <Route path="/victim-recovery" component={VictimRecovery} />
+            <Route path="/honeypot-reversal" component={HoneypotReversal} />
+            <Route path="/blacklist-reversal" component={BlacklistReversal} />
           </Switch>
         </main>
       </div>

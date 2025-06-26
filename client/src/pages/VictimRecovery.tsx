@@ -33,7 +33,7 @@ export default function VictimRecovery() {
     {
       id: 'case-001',
       contractAddress: '0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308',
-      victimAddress: 'Foundation Founder',
+      victimAddress: 'Foundation Founder (Denae Duncan)',
       amount: '15000',
       fraudType: 'honeypot',
       status: 'recovered',

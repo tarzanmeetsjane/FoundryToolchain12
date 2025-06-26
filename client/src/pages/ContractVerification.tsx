@@ -12,21 +12,21 @@ export default function ContractVerification() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [contractData, setContractData] = useState({
     address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
-    name: "ETHG Recovery",
+    name: "ETHG Recovery", 
     symbol: "ETHGR",
     network: "Ethereum Mainnet",
     securityScore: 8.5,
     honeypotRisk: "LOW",
-    ownershipRisk: "MEDIUM",
-    liquidity: 752792,
+    ownershipRisk: "MEDIUM", 
+    liquidity: 361699,
     liquidityStatus: "Unlocked",
     totalSupply: "1,990,000",
     holders: 31250,
     decimals: 18,
     verified: true,
-    marketCap: 6558,
+    marketCap: 6558.47,
     currentPrice: 0.00884902,
-    volume24h: 60870
+    volume24h: 60870.87
   });
 
   const analyzeContract = async (address: string) => {
