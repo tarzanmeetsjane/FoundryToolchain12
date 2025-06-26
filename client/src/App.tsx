@@ -37,7 +37,7 @@ function Navigation() {
     { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
     { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
     { path: "/frequency", label: "Frequency Tuner", icon: Radio },
-    { path: "/rescue", label: "Blockchain Rescue", icon: Shield },
+    { path: "/rescue", label: "Blockchain Rescue", icon: AlertTriangle },
     { path: "/pool", label: "Create Pool", icon: Droplets },
   ];
 
