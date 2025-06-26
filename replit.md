@@ -68,6 +68,11 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 
 **Alternative**: All-in-one approach available when $100-200 funding secured
 
+## Repository Structure & Documentation
+- `README.md` - Complete project overview and quick start guide
+- `GIT_STRATEGY_RECOMMENDATION.md` - Dual repository approach for platform and contracts
+- `REMIX_GIT_SETUP_GUIDE.md` - Step-by-step smart contract version control setup
+
 ## Key Files
 - `client/src/pages/ContractVerification.tsx` - Fix $0.00 value display issue through Etherscan verification
 - `client/src/pages/AutomatedVerification.tsx` - Automated contract verification system with real-time progress tracking
