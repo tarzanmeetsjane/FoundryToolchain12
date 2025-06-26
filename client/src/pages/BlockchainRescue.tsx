@@ -20,13 +20,13 @@ interface RescueOperation {
 export default function BlockchainRescue() {
   const [activeRescues, setActiveRescues] = useState<RescueOperation[]>([
     {
-      id: "1",
-      victimAddress: "0x1234...5678",
+      id: "foundation-case",
+      victimAddress: "Foundation Founder",
       amount: "15000",
-      currency: "USD",
+      currency: "USD", 
       status: "rescued",
       fraudType: "Token Honeypot",
-      reportedDate: "2024-12-15",
+      reportedDate: "2024-01-01",
       rescueProgress: 100
     },
     {

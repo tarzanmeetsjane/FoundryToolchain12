@@ -17,7 +17,7 @@
 **Technical Advisory:** Blockchain Security Research Team
 - **Role:** Security Auditors & Recovery Specialists
 - **Background:** Collective experience in analyzing honeypot contracts, rug pull detection, and asset recovery strategies
-- **Track Record:** Assisted in recovery of $127,450 across 89 verified fraud cases with 78% success rate
+- **Track Record:** Active in cryptocurrency fraud victim assistance and recovery strategies
 
 ## Project Category
 
@@ -42,7 +42,7 @@ Our foundation addresses a critical gap in the cryptocurrency ecosystem - system
 - **Cross-Chain Recovery:** AI-driven asset tracking across multiple blockchain networks
 
 **3. Scalability for Impact**
-Our current manual process has achieved a 78% success rate in asset recovery. Lightchain AI's infrastructure would enable automated scaling to help thousands of victims simultaneously while maintaining security and verification standards.
+Our foundation focuses on systematic victim assistance for cryptocurrency fraud recovery. Lightchain AI's infrastructure would enable scaling our victim assistance approach while maintaining security and verification standards.
 
 **4. Technical Innovation Alignment**
 - Real-time blockchain analysis capabilities
