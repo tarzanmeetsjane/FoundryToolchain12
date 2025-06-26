@@ -70,7 +70,8 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 
 ## Key Files
 - `client/src/pages/VerificationProgress.tsx` - Track verification steps for $709k ETHGR portfolio
-- `client/src/pages/TransactionAnalyzer.tsx` - Analyze token minting transaction 0x354648b33fc9e7576dae114825fd599c17d195b294f1d8f2f20494b1ccbbe09f
+- `client/src/pages/TransactionAnalyzer.tsx` - Analyze contract deployment transaction 0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169
+- `client/src/pages/StateChangeAnalyzer.tsx` - Detailed blockchain state changes during contract deployment
 - `client/src/pages/VictimRecovery.tsx` - Automated victim case submission and recovery system
 - `client/src/pages/HoneypotReversal.tsx` - Advanced honeypot contract analysis and fund recovery
 - `LIGHTCHAIN_GRANT_SUBMISSION.txt` - Complete grant application ready for submission

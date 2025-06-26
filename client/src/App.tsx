@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X } from "lucide-react";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
@@ -43,6 +43,7 @@ function Navigation() {
     { path: "/", label: "Home", icon: Target },
     { path: "/verification", label: "Verification Progress", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
+    { path: "/state-analysis", label: "State Change Analysis", icon: Database },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
     { path: "/honeypot-reversal", label: "Honeypot Reversal", icon: CheckCircle },
     { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
