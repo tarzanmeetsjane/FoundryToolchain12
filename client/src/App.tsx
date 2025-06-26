@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck } from "lucide-react";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2 } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
@@ -23,6 +23,8 @@ import StateChangeAnalyzer from "./pages/StateChangeAnalyzer";
 import AutomatedVerification from "./pages/AutomatedVerification";
 import ContractDetails from "./pages/ContractDetails";
 import VerificationSuccess from "./pages/VerificationSuccess";
+import RecoveryStatus from "./pages/RecoveryStatus";
+import ContractDecompiler from "./pages/ContractDecompiler";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -47,6 +49,8 @@ function Navigation() {
     { path: "/contract-verification", label: "Fix $0.00 Value", icon: Shield },
     { path: "/contract-details", label: "Contract Details", icon: FileCheck },
     { path: "/verification-success", label: "Verification Success", icon: CheckCircle },
+    { path: "/recovery-status", label: "Recovery Status", icon: TrendingUp },
+    { path: "/contract-decompiler", label: "Contract Decompiler", icon: Code2 },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
     { path: "/state-analysis", label: "State Change Analysis", icon: Database },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
@@ -274,6 +278,8 @@ export default function App() {
             <Route path="/automated-verification" component={AutomatedVerification} />
             <Route path="/contract-details" component={ContractDetails} />
             <Route path="/verification-success" component={VerificationSuccess} />
+            <Route path="/recovery-status" component={RecoveryStatus} />
+            <Route path="/contract-decompiler" component={ContractDecompiler} />
           </Switch>
         </main>
       </div>
