@@ -20,6 +20,7 @@ import BlacklistReversal from "./pages/BlacklistReversal";
 import VerificationProgress from "./pages/VerificationProgress";
 import TransactionAnalyzer from "./pages/TransactionAnalyzer";
 import StateChangeAnalyzer from "./pages/StateChangeAnalyzer";
+import AutomatedVerification from "./pages/AutomatedVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -266,6 +267,7 @@ export default function App() {
             <Route path="/blacklist-reversal" component={BlacklistReversal} />
             <Route path="/transaction-analyzer" component={TransactionAnalyzer} />
             <Route path="/state-analysis" component={StateChangeAnalyzer} />
+            <Route path="/automated-verification" component={AutomatedVerification} />
           </Switch>
         </main>
       </div>

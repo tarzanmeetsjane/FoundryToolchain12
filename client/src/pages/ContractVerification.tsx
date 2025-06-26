@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, ExternalLink, AlertTriangle, Clock, FileCheck, Globe } from "lucide-react";
+import { CheckCircle, ExternalLink, AlertTriangle, Clock, FileCheck, Globe, Upload } from "lucide-react";
 
 interface VerificationStep {
   id: string;
@@ -281,15 +281,24 @@ export default function ContractVerification() {
         </CardContent>
       </Card>
 
-      {/* Action Button */}
-      <div className="text-center">
+      {/* Action Buttons */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Button 
           size="lg"
+          onClick={() => window.location.href = '/automated-verification'}
+          className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-bold py-4 px-8"
+        >
+          <Upload className="w-5 h-5 mr-2" />
+          Start Automated Verification
+        </Button>
+        <Button 
+          size="lg"
+          variant="outline"
           onClick={() => window.open('https://etherscan.io/address/0xfA7b8c5585E8C4244899d2aE45Ae3e5df9a2abF247', '_blank')}
-          className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-bold py-4 px-8"
+          className="border-2 border-orange-600 text-orange-600 hover:bg-orange-50 font-bold py-4 px-8"
         >
           <Globe className="w-5 h-5 mr-2" />
-          Start Etherscan Verification Now
+          Manual Etherscan Verification
         </Button>
       </div>
     </div>
