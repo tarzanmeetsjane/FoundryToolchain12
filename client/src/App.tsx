@@ -41,7 +41,7 @@ function Navigation() {
   
   const navItems = [
     { path: "/", label: "Home", icon: Target },
-    { path: "/verification", label: "Verification Progress", icon: Shield },
+    { path: "/contract-verification", label: "Fix $0.00 Value", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
     { path: "/state-analysis", label: "State Change Analysis", icon: Database },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
