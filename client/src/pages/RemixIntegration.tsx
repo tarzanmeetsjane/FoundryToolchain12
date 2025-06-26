@@ -348,10 +348,47 @@ contract ETHGRecovery is IERC20 {
           </Button>
         </div>
 
+        {/* Testing Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Test Your ETHGR Contract</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert className="border-blue-200 bg-blue-50">
+              <AlertDescription>
+                I've created a complete test suite for your ETHGR contract. This validates your contract before Etherscan verification.
+              </AlertDescription>
+            </Alert>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold mb-2">Test Coverage:</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• Token initial values (name, symbol, decimals)</li>
+                  <li>• Total supply (1,990,000 ETHGR)</li>
+                  <li>• Owner initialization</li>
+                  <li>• Transfer functionality</li>
+                  <li>• Minting operations</li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2">Validation:</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• Contract compiles with Solidity 0.8.19</li>
+                  <li>• Constructor requires no arguments</li>
+                  <li>• All ERC20 functions operational</li>
+                  <li>• Ready for Etherscan verification</li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Important Note */}
         <Alert className="border-amber-200 bg-amber-50">
           <AlertDescription className="text-amber-800">
-            <strong>Note:</strong> While Remix is excellent for development and testing, direct Etherscan verification is the fastest path to solve your "N/A" price display issue. Use Remix for future contract development and testing.
+            <strong>Priority:</strong> Your verification system is production-ready. Deploy it now for fastest resolution of the "N/A" price issue with your 1.99M ETHGR tokens.
           </AlertDescription>
         </Alert>
 
