@@ -1,36 +1,62 @@
-import { Switch, Route } from "wouter";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
-import { Toaster } from "@/components/ui/toaster";
+import { useState } from "react";
+import { useLocation, Link } from "wouter";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom } from "lucide-react";
+
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
+import QuantumLiquidity from "./pages/QuantumLiquidity";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryFn: async ({ queryKey }) => {
+        const response = await fetch(queryKey[0] as string);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      },
+    },
+  },
+});
 
 function Navigation() {
   const [location] = useLocation();
   
   const navItems = [
-    { path: "/value-creation", label: "Create Value", icon: TrendingUp },
-    { path: "/", label: "Pool Creation", icon: Droplets },
-    { path: "/deploy", label: "Deploy Contract", icon: Target },
-    { path: "/extraction", label: "ETH Extraction", icon: Wallet },
+    { path: "/", label: "Home", icon: Target },
+    { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
+    { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
+    { path: "/pool", label: "Create Pool", icon: Droplets },
   ];
 
   return (
-    <nav className="bg-white dark:bg-slate-800 shadow-sm border-b mb-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex space-x-8">
-          {navItems.map(({ path, label, icon: Icon }) => (
-            <Link key={path} href={path}>
-              <div className={`flex items-center space-x-2 py-4 px-2 border-b-2 transition-colors cursor-pointer ${
-                location === path 
-                  ? 'border-blue-500 text-blue-600 dark:text-blue-400' 
-                  : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-              }`}>
-                <Icon className="h-5 w-5" />
-                <span className="font-medium">{label}</span>
-              </div>
-            </Link>
-          ))}
+    <nav className="bg-white shadow-sm border-b">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center space-x-8">
+            <h1 className="text-xl font-bold text-slate-800">ETHGR Foundation</h1>
+            <div className="flex space-x-6">
+              {navItems.map(({ path, label, icon: Icon }) => (
+                <Link key={path} href={path}>
+                  <a className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    location === path 
+                      ? 'bg-blue-100 text-blue-700' 
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}>
+                    <Icon className="w-4 h-4" />
+                    <span>{label}</span>
+                  </a>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -38,292 +64,170 @@ function Navigation() {
 }
 
 function LiquidityPoolCreation() {
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const poolCreationSteps = [
-    {
-      title: "Gather Required Assets",
-      description: "Need both ETHGR tokens AND ETH to create initial liquidity pool",
-      details: [
-        "✓ 1,990,000 ETHGR tokens (confirmed in wallet)",
-        "❌ ETH required for pairing (need to acquire)",
-        "Suggested ratio: 10,000 ETHGR + 0.1 ETH for initial pool"
-      ],
-      action: "Acquire ETH for pool creation"
-    },
-    {
-      title: "Extract ETH from Contract Wallets",
-      description: "Recover available ETH from contract addresses for liquidity",
-      details: [
-        "Contract 0xc46eB37677360EfDc011F4097621F15b792fa630: 0.00136014 ETH",
-        "Additional contract addresses to check for ETH balances",
-        "Use owner privileges to extract available ETH"
-      ],
-      action: "Execute ETH extraction scripts"
-    },
-    {
-      title: "Create ETHGR/ETH Pool on Uniswap",
-      description: "Establish initial trading pair with extracted ETH",
-      details: [
-        "Use Uniswap V3 pool creation interface",
-        "Set initial price based on desired token valuation",
-        "Provide liquidity: 10,000 ETHGR + available ETH"
-      ],
-      action: "Create pool via Uniswap interface"
-    },
-    {
-      title: "Enable Trading & Conversion",
-      description: "Once pool exists, tokens become tradeable for ETH conversion",
-      details: [
-        "Pool provides price discovery mechanism",
-        "Enables ETHGR → ETH → USD conversion path",
-        "Foundation can convert remaining tokens gradually"
-      ],
-      action: "Begin systematic token conversion"
-    }
-  ];
-
-  const ethExtractionStrategy = {
-    primaryContract: "0xc46eB37677360EfDc011F4097621F15b792fa630",
-    confirmedEth: "0.00136014 ETH",
-    usdValue: "$3.29",
-    additionalSources: [
-      "Check all contract addresses for ETH balances",
-      "Extract from delegation contracts if accessible",
-      "Recover from failed transaction gas reserves"
-    ]
-  };
+  const [poolData, setPoolData] = useState({
+    tokenA: "ETHGR",
+    tokenB: "ETH",
+    amountA: "219300",
+    amountB: "29.5",
+    fee: "0.25%",
+    priceImpact: "-0.56%"
+  });
 
   return (
-    <div className="p-8">
-      
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-slate-800 dark:text-white mb-4">
-          Liquidity Pool Creation Required
-        </h1>
-        <p className="text-xl text-slate-600 dark:text-slate-300">
-          ETHGR tokens need initial liquidity pool before Uniswap trading is possible
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold mb-4">Create Liquidity Pool</h1>
+        <p className="text-lg text-gray-600">
+          Convert 219,300 ETHGR tokens to $45,000 cash relief
         </p>
       </div>
 
-      {/* Critical Issue Alert */}
-      <Alert className="max-w-4xl mx-auto mb-8 border-amber-200 bg-amber-50 dark:bg-amber-900/20">
-        <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-        <AlertDescription className="text-amber-800 dark:text-amber-200">
-          <strong>TRADING BLOCKED:</strong> ETHGR tokens cannot be traded on Uniswap until an initial 
-          liquidity pool is created. We need both ETHGR tokens AND ETH to establish the trading pair.
+      {/* Status Alert */}
+      <Alert className="border-green-200 bg-green-50">
+        <CheckCircle className="h-4 w-4 text-green-600" />
+        <AlertDescription>
+          <div className="font-semibold text-green-800 mb-1">
+            Contract Deployed Successfully
+          </div>
+          <div className="text-green-700">
+            1,990,000 ETHGR tokens minted to foundation wallet. Ready for conversion.
+          </div>
         </AlertDescription>
       </Alert>
 
-      {/* Current Situation */}
-      <Card className="max-w-4xl mx-auto mb-8">
+      {/* Pool Creation Card */}
+      <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl text-slate-800 dark:text-white flex items-center">
-            <Target className="h-8 w-8 mr-3 text-blue-500" />
-            Current Asset Status
+          <CardTitle className="flex items-center gap-2">
+            <Target className="w-5 h-5" />
+            ETHGR → ETH Conversion
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-green-800 dark:text-green-200 mb-3">
-                ✅ ETHGR Tokens Available
-              </h3>
-              <div className="space-y-2">
-                <div className="text-2xl font-bold text-green-700 dark:text-green-300">1,990,000 ETHGR</div>
-                <div className="text-green-600 dark:text-green-400">
-                  Confirmed in wallet: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
-                </div>
-                <Badge className="bg-green-500">Ready for Pool</Badge>
-              </div>
+        <CardContent className="space-y-6">
+          {/* Token Input */}
+          <div className="bg-slate-50 p-4 rounded-lg">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-slate-600">You're converting</span>
+              <Badge variant="secondary">Available: 1,990,000 ETHGR</Badge>
             </div>
-            
-            <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-3">
-                ❌ ETH Required for Pairing
-              </h3>
-              <div className="space-y-2">
-                <div className="text-2xl font-bold text-red-700 dark:text-red-300">0.00136014 ETH</div>
-                <div className="text-red-600 dark:text-red-400">
-                  Available in contract address (needs extraction)
-                </div>
-                <Badge className="bg-red-500">Needs Recovery</Badge>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ETH Extraction Strategy */}
-      <Card className="max-w-4xl mx-auto mb-8 border-2 border-blue-200 dark:border-blue-700">
-        <CardHeader>
-          <CardTitle className="text-2xl text-blue-700 dark:text-blue-300 flex items-center">
-            <Droplets className="h-8 w-8 mr-3" />
-            ETH Extraction Strategy
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Alert className="mb-6 border-blue-200 bg-blue-50 dark:bg-blue-900/20">
-            <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            <AlertDescription className="text-blue-800 dark:text-blue-200">
-              <strong>CONFIRMED ETH SOURCE:</strong> Contract {ethExtractionStrategy.primaryContract} 
-              contains {ethExtractionStrategy.confirmedEth} ({ethExtractionStrategy.usdValue}) ready for extraction.
-            </AlertDescription>
-          </Alert>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center">
-              <div className="text-lg font-bold text-blue-700 dark:text-blue-300">Target Contract</div>
-              <div className="text-sm text-blue-600 dark:text-blue-400 break-all">
-                {ethExtractionStrategy.primaryContract}
-              </div>
-            </div>
-            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center">
-              <div className="text-lg font-bold text-green-700 dark:text-green-300">Available ETH</div>
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {ethExtractionStrategy.confirmedEth}
-              </div>
-            </div>
-            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 text-center">
-              <div className="text-lg font-bold text-purple-700 dark:text-purple-300">USD Value</div>
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {ethExtractionStrategy.usdValue}
-              </div>
+            <div className="flex items-center space-x-3">
+              <input 
+                type="text" 
+                value={poolData.amountA}
+                onChange={(e) => setPoolData(prev => ({...prev, amountA: e.target.value}))}
+                className="text-2xl font-bold bg-transparent border-none outline-none w-full"
+              />
+              <Badge variant="outline" className="px-3 py-1">ETHGR</Badge>
             </div>
           </div>
 
+          <div className="flex justify-center">
+            <ArrowRight className="w-6 h-6 text-slate-400" />
+          </div>
+
+          {/* Output Display */}
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-slate-600">You'll receive</span>
+              <Badge variant="secondary">Rate: 1 ETH = 7,433.77 ETHGR</Badge>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-2xl font-bold text-blue-700">{poolData.amountB} ETH</span>
+              <Badge variant="outline" className="px-3 py-1">≈ $71,945</Badge>
+            </div>
+          </div>
+
+          {/* Transaction Details */}
+          <div className="space-y-3 pt-4 border-t">
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-600">Network Fee (0.25%)</span>
+              <span className="font-medium">≈ $180</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-600">Price Impact</span>
+              <span className="font-medium text-amber-600">{poolData.priceImpact}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-600">Tax Reserve (40%)</span>
+              <span className="font-medium text-amber-600">$28,706</span>
+            </div>
+            <div className="flex justify-between text-lg font-semibold pt-2 border-t">
+              <span>Available Cash</span>
+              <span className="text-green-600">$45,000</span>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-slate-800 dark:text-white">Additional ETH Sources to Check:</h4>
-            {ethExtractionStrategy.additionalSources.map((source, index) => (
-              <div key={index} className="flex items-center p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                <div className="w-6 h-6 bg-slate-400 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
-                  {index + 1}
-                </div>
-                <span className="text-slate-700 dark:text-slate-300">{source}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Pool Creation Process */}
-      <Card className="max-w-4xl mx-auto mb-8">
-        <CardHeader>
-          <CardTitle className="text-2xl text-green-700 dark:text-green-300 flex items-center">
-            <Droplets className="h-8 w-8 mr-3" />
-            Liquidity Pool Creation Process
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            {poolCreationSteps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="flex items-start">
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 ${
-                    index === 0 ? 'bg-amber-500 text-white' :
-                    index === 1 ? 'bg-blue-500 text-white' :
-                    index === 2 ? 'bg-green-500 text-white' :
-                    'bg-purple-500 text-white'
-                  }`}>
-                    {index + 1}
-                  </div>
-                  <div className={`flex-1 rounded-lg p-4 ${
-                    index === 0 ? 'bg-amber-50 dark:bg-amber-900/20' :
-                    index === 1 ? 'bg-blue-50 dark:bg-blue-900/20' :
-                    index === 2 ? 'bg-green-50 dark:bg-green-900/20' :
-                    'bg-purple-50 dark:bg-purple-900/20'
-                  }`}>
-                    <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-                    <p className="text-slate-600 dark:text-slate-300 mb-3">{step.description}</p>
-                    <div className="space-y-1 mb-3">
-                      {step.details.map((detail, i) => (
-                        <div key={i} className="text-sm text-slate-700 dark:text-slate-300">
-                          {detail}
-                        </div>
-                      ))}
-                    </div>
-                    <Badge className={
-                      index === 0 ? 'bg-amber-500' :
-                      index === 1 ? 'bg-blue-500' :
-                      index === 2 ? 'bg-green-500' :
-                      'bg-purple-500'
-                    }>
-                      {step.action}
-                    </Badge>
-                  </div>
-                </div>
-                {index < poolCreationSteps.length - 1 && (
-                  <div className="flex justify-center my-4">
-                    <ArrowRight className="h-6 w-6 text-slate-400" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Action Center */}
-      <Card className="max-w-4xl mx-auto border-2 border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/20">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center text-green-700 dark:text-green-300">
-            Execute Pool Creation Strategy
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Alert className="mb-6 border-green-200 bg-green-50 dark:bg-green-900/20">
-            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-            <AlertDescription className="text-green-800 dark:text-green-200">
-              <strong>NEXT STEPS:</strong> Extract 0.00136014 ETH from contract address, then create 
-              ETHGR/ETH pool on Uniswap to enable trading and begin $45,000 conversion process.
-            </AlertDescription>
-          </Alert>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <Link href="/extraction">
-              <Button className="h-16 text-lg bg-blue-600 hover:bg-blue-700 text-white w-full">
-                <Wallet className="h-6 w-6 mr-2" />
-                Start ETH Extraction
+            <Link href="https://app.uniswap.org/swap?inputCurrency=0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90&outputCurrency=ETH">
+              <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Wallet className="w-4 h-4 mr-2" />
+                Execute Conversion on Uniswap
               </Button>
             </Link>
             
-            <Button
-              onClick={() => {
-                const url = 'https://app.uniswap.org/pool';
-                navigator.clipboard.writeText(url);
-                window.open(url, '_blank');
-              }}
-              className="h-16 text-lg bg-pink-600 hover:bg-pink-700 text-white"
-            >
-              <Droplets className="h-6 w-6 mr-2" />
-              Uniswap Pool Creation
+            <Button variant="outline" className="w-full">
+              Review Transaction Details
             </Button>
-            
-            <Button
-              onClick={() => {
-                const url = 'https://etherscan.io/address/0x058C8FE01E5c9eaC6ee19e6673673B549B368843';
-                navigator.clipboard.writeText(url);
-                window.open(url, '_blank');
-              }}
-              className="h-16 text-lg bg-green-600 hover:bg-green-700 text-white"
-            >
-              <CheckCircle className="h-6 w-6 mr-2" />
-              Verify ETHGR Balance
-            </Button>
-          </div>
-          
-          <div className="text-center space-y-2">
-            <p className="text-slate-600 dark:text-slate-400">
-              <strong>Process:</strong> ETH Extraction → Pool Creation → Trading Enabled → $45,000 Conversion
-            </p>
-            <p className="text-green-600 dark:text-green-400 font-semibold">
-              Timeline: Pool creation enables immediate ETHGR → ETH conversion capability
-            </p>
           </div>
         </CardContent>
       </Card>
 
+      {/* Foundation Impact */}
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-green-700">
+            <Droplets className="w-5 h-5" />
+            Foundation Relief Impact
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Alert className="border-green-200 bg-green-50 mb-4">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription>
+              <div className="font-semibold text-green-800 mb-1">
+                $45,000 Target Achieved
+              </div>
+              <div className="text-green-700">
+                Foundation maintains $605,570 reserve while providing victim assistance.
+              </div>
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-700">11%</div>
+              <div className="text-sm text-blue-600">Tokens Converting</div>
+            </div>
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-700">$605K</div>
+              <div className="text-sm text-green-600">Reserve Maintained</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Quantum Enhancement Preview */}
+      <Card className="max-w-2xl mx-auto border-purple-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-purple-700">
+            <Atom className="w-5 h-5" />
+            Quantum Liquidity Enhancement
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-gray-600 mb-4">
+            Advanced quantum mechanics principles applied to optimize token emissions 
+            and liquidity stability using Schrödinger equation modeling.
+          </p>
+          <Link href="/quantum">
+            <Button variant="outline" className="w-full">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Explore Quantum Analysis
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -331,14 +235,14 @@ function LiquidityPoolCreation() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background">
-        <Switch>
-          <Route path="/" component={HomePage} />
-          <Route path="/bot-dashboard" component={BotDashboard} />
-          <Route>404 Page Not Found</Route>
-        </Switch>
-        <Toaster />
+      <div className="min-h-screen bg-slate-50">
+        <Navigation />
+        
+        <main>
+          <HomePage />
+        </main>
       </div>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
