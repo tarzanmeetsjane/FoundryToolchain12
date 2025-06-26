@@ -191,24 +191,32 @@ export default function ContractVerification() {
               </AlertDescription>
             </Alert>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               <Button 
                 onClick={() => window.open('/contract-source', '_blank')}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-blue-600 hover:bg-blue-700 text-sm"
               >
-                View Source Code
+                Source Code
               </Button>
               <Button 
                 onClick={() => window.open(`https://etherscan.io/verifyContract?a=${contractDetails.address}`, '_blank')}
-                className="bg-emerald-600 hover:bg-emerald-700"
+                className="bg-emerald-600 hover:bg-emerald-700 text-sm"
               >
                 Start Verification
               </Button>
               <Button 
-                variant="outline"
                 onClick={() => window.open('/constructor-args', '_blank')}
+                variant="outline"
+                className="text-sm"
               >
-                Constructor Args
+                Constructor Guide
+              </Button>
+              <Button 
+                onClick={() => window.open('/remix-integration', '_blank')}
+                variant="outline"
+                className="text-sm"
+              >
+                Remix Setup
               </Button>
             </div>
           </CardContent>
