@@ -19,7 +19,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * 
  * Deployed by: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
  * Purpose: Recover 1,990,000 trapped ETHG tokens from honeypot contract
- * Original Contract: 0x3fc29836e84e471a053d2d9e80494a867d670ead (HONEYPOT)
+ * Original Contract: 0x3fC29836E84E471a053D2D9E80494A867D670EAD (HONEYPOT)
  * 
  * VERIFIED CONTRACT - RESOLVED $0.00 DISPLAY ISSUE
  * Address: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
@@ -34,8 +34,8 @@ contract ETHGRecovery is ERC20, Ownable {
     mapping(address => bool) public hasMigrated;
     mapping(address => uint256) public originalETHGBalance;
     
-    // Original honeypot contract address
-    address public constant ORIGINAL_ETHG = 0x3fc29836e84e471a053d2d9e80494a867d670ead;
+    // Original honeypot contract address - CORRECTED CHECKSUM
+    address public constant ORIGINAL_ETHG = 0x3fC29836E84E471a053D2D9E80494A867D670EAD;
     
     // Migration controls
     bool public migrationEnabled = true;
