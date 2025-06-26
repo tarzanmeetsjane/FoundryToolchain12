@@ -22,6 +22,7 @@ import TransactionAnalyzer from "./pages/TransactionAnalyzer";
 import StateChangeAnalyzer from "./pages/StateChangeAnalyzer";
 import AutomatedVerification from "./pages/AutomatedVerification";
 import ContractDetails from "./pages/ContractDetails";
+import VerificationSuccess from "./pages/VerificationSuccess";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -45,6 +46,7 @@ function Navigation() {
     { path: "/", label: "Home", icon: Target },
     { path: "/contract-verification", label: "Fix $0.00 Value", icon: Shield },
     { path: "/contract-details", label: "Contract Details", icon: FileCheck },
+    { path: "/verification-success", label: "Verification Success", icon: CheckCircle },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
     { path: "/state-analysis", label: "State Change Analysis", icon: Database },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
@@ -271,6 +273,7 @@ export default function App() {
             <Route path="/state-analysis" component={StateChangeAnalyzer} />
             <Route path="/automated-verification" component={AutomatedVerification} />
             <Route path="/contract-details" component={ContractDetails} />
+            <Route path="/verification-success" component={VerificationSuccess} />
           </Switch>
         </main>
       </div>
