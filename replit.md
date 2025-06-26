@@ -82,6 +82,10 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - **Blockchain**: Ethereum mainnet for ETHGR, Base L2 for MiniKit
 - **Trading**: Uniswap V3 liquidity pools
 
+## User Information
+- **Real Name:** Denae Duncan
+- **Email:** tarzanandjane9@gmail.com (fun nickname from boyfriend)
+
 ## User Preferences
 - Focus on authentic financial recovery, not synthetic scenarios
 - Prioritize legitimate ETHGR tokens over honeypot alternatives

@@ -8,7 +8,7 @@
 
 ## Team Members & Backgrounds
 
-**Lead Developer & Founder:** Jane Tarzan
+**Lead Developer & Founder:** Denae Duncan
 - **Role:** Full-Stack Developer & Fraud Victim Advocate
 - **Background:** Personal cryptocurrency fraud survivor ($15,000 recovery), blockchain developer with expertise in Solidity smart contracts, React/TypeScript, and DeFi protocols
 - **Experience:** Successfully deployed ETHGR token recovery contract, recovered 1,990,000 ETHGR tokens, and established victim assistance foundation
@@ -130,7 +130,7 @@ Our current manual process has achieved a 78% success rate in asset recovery. Li
 
 ## Contact Information
 
-**Primary Contact:** Jane Tarzan
+**Primary Contact:** Denae Duncan
 **Email:** tarzanandjane9@gmail.com
 **Telegram:** @tarzanandjane9
 **Role:** Founder & Lead Developer
