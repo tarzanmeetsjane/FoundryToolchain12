@@ -4,10 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { Shield, CheckCircle, AlertTriangle, Lock, Users, DollarSign, FileText, ExternalLink } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Shield, CheckCircle, AlertTriangle, Lock, Users, DollarSign, FileText, ExternalLink, Search } from "lucide-react";
 
 export default function ContractVerification() {
-  const [contractData] = useState({
+  const [contractAddress, setContractAddress] = useState("0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [contractData, setContractData] = useState({
     address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
     name: "ETHG Recovery",
     symbol: "ETHGR",
@@ -26,6 +29,43 @@ export default function ContractVerification() {
     volume24h: 60870
   });
 
+  const analyzeContract = async (address: string) => {
+    setIsAnalyzing(true);
+    try {
+      const response = await fetch('/api/analyze-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contractAddress: address, network: 'ethereum' })
+      });
+      
+      if (response.ok) {
+        const analysis = await response.json();
+        setContractData({
+          address: analysis.contractAddress,
+          name: analysis.tokenName || "Unknown Token",
+          symbol: analysis.tokenSymbol || "UNKNOWN", 
+          network: "Ethereum Mainnet",
+          securityScore: analysis.securityScore,
+          honeypotRisk: analysis.honeypotRisk,
+          ownershipRisk: analysis.ownershipRisk,
+          liquidity: analysis.liquidityUsd || 0,
+          liquidityStatus: analysis.liquidityLocked ? "Locked" : "Unlocked",
+          totalSupply: analysis.totalSupply || "0",
+          holders: analysis.holderCount || 0,
+          decimals: analysis.decimals || 18,
+          verified: analysis.isVerified || false,
+          marketCap: analysis.marketCap || 0,
+          currentPrice: analysis.price || 0,
+          volume24h: analysis.volume24h || 0
+        });
+      }
+    } catch (error) {
+      console.error('Analysis failed:', error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   const getSecurityColor = (score: number) => {
     if (score >= 8) return "text-green-600 bg-green-100 border-green-200";
     if (score >= 6) return "text-yellow-600 bg-yellow-100 border-yellow-200";
@@ -41,12 +81,36 @@ export default function ContractVerification() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-          ETHGR Contract Verification
+        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Live Blockchain Security Analyzer
         </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Comprehensive security analysis and verification status for the ETHGR Foundation recovery contract
+          Real-time token verification, honeypot detection, and victim assistance analysis
         </p>
+        
+        {/* Contract Analysis Input */}
+        <div className="mt-6 max-w-2xl mx-auto">
+          <div className="flex gap-3">
+            <Input
+              placeholder="Enter contract address (0x...)"
+              value={contractAddress}
+              onChange={(e) => setContractAddress(e.target.value)}
+              className="flex-1"
+            />
+            <Button 
+              onClick={() => analyzeContract(contractAddress)}
+              disabled={isAnalyzing || !contractAddress}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              {isAnalyzing ? (
+                <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+              ) : (
+                <Search className="w-4 h-4" />
+              )}
+              {isAnalyzing ? "Analyzing..." : "Analyze Token"}
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Contract Overview */}

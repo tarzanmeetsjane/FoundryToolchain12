@@ -99,8 +99,7 @@ Victim assistance foundation developing mobile-first Base MiniKit application fo
 - Use real blockchain data via Etherscan API integration
 - Prefer professional gradient-based aesthetics with smooth animations to build victim trust
 
-## Foundation Mission
-Authentic $15,000 fraud experience drives victim assistance foundation helping others recover from similar cryptocurrency scams through transparent, verified token conversion processes.
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .pulse-green { animation: pulseGreen 2s infinite; }
