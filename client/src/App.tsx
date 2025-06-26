@@ -13,6 +13,7 @@ import BotDashboard from "./pages/BotDashboard";
 import QuantumLiquidity from "./pages/QuantumLiquidity";
 import MoneyFrequencyTuner from "./pages/MoneyFrequencyTuner";
 import BlockchainRescue from "./pages/BlockchainRescue";
+import ContractVerification from "./pages/ContractVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -38,6 +39,7 @@ function Navigation() {
     { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
     { path: "/frequency", label: "Frequency Tuner", icon: Radio },
     { path: "/rescue", label: "Blockchain Rescue", icon: AlertTriangle },
+    { path: "/verification", label: "Contract Verification", icon: Shield },
     { path: "/pool", label: "Create Pool", icon: Droplets },
   ];
 
@@ -250,6 +252,7 @@ export default function App() {
             <Route path="/quantum" component={QuantumLiquidity} />
             <Route path="/frequency" component={MoneyFrequencyTuner} />
             <Route path="/rescue" component={BlockchainRescue} />
+            <Route path="/verification" component={ContractVerification} />
             <Route path="/pool" component={LiquidityPoolCreation} />
           </Switch>
         </main>
