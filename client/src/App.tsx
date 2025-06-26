@@ -38,11 +38,11 @@ function Navigation() {
   const navItems = [
     { path: "/", label: "Home", icon: Target },
     { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
-    { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
-    { path: "/frequency", label: "Frequency Tuner", icon: Radio },
     { path: "/verification", label: "Security Analysis", icon: Shield },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
     { path: "/honeypot-reversal", label: "Honeypot Reversal", icon: CheckCircle },
+    { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
+    { path: "/frequency", label: "Frequency Tuner", icon: Radio },
   ];
 
   return (
