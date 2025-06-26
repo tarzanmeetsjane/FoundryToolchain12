@@ -14,6 +14,8 @@ import QuantumLiquidity from "./pages/QuantumLiquidity";
 import MoneyFrequencyTuner from "./pages/MoneyFrequencyTuner";
 import BlockchainRescue from "./pages/BlockchainRescue";
 import ContractVerification from "./pages/ContractVerification";
+import VictimRecovery from "./pages/VictimRecovery";
+import HoneypotReversal from "./pages/HoneypotReversal";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -38,9 +40,9 @@ function Navigation() {
     { path: "/dashboard", label: "Bot Dashboard", icon: TrendingUp },
     { path: "/quantum", label: "Quantum Liquidity", icon: Atom },
     { path: "/frequency", label: "Frequency Tuner", icon: Radio },
-    { path: "/rescue", label: "Blockchain Rescue", icon: AlertTriangle },
-    { path: "/verification", label: "Contract Verification", icon: Shield },
-    { path: "/pool", label: "Create Pool", icon: Droplets },
+    { path: "/verification", label: "Security Analysis", icon: Shield },
+    { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
+    { path: "/honeypot-reversal", label: "Honeypot Reversal", icon: CheckCircle },
   ];
 
   return (
