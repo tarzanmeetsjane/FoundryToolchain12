@@ -7,17 +7,22 @@ import { CheckCircle, TrendingUp, Users, ArrowUp, Sparkles, Shield, Target } fro
 export default function RecoveryStatus() {
   const contracts = [
     {
-      id: "ETHGR Recovery (Your Main Contract)",
-      address: "0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308",
-      price: "Price Recognition Pending",
+      id: "ETHGR Contract A (Check Your Balance)",
+      address: "0xc2b6d375b7d14c9ce73f97ddf565002cce257308",
+      price: "Check wallet for price",
       holders: "Your wallet + others",
       status: "deployed",
-      growth: "Awaiting market data",
-      volume: "Tracking needed",
       symbol: "ETHGR",
-      yourBalance: "1,990,000 ETHGR",
-      portfolioValue: "$709,012.93 (when price recognized)",
-      deploymentTx: "0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169"
+      note: "Deployed with 1,990,000 tokens to your wallet"
+    },
+    {
+      id: "ETHGR Contract B (Price Verified)",
+      address: "0xfa7b8c553c48c56ec7027d26ae95b029a2abf247", 
+      price: "$0.00451229",
+      holders: "22,134+",
+      status: "verified",
+      symbol: "ETHGR",
+      note: "Shows verified price recognition"
     }
   ];
 
@@ -40,7 +45,7 @@ export default function RecoveryStatus() {
           Recovery Ecosystem Operational
         </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Your ETHGR Recovery contract is verified and showing real market prices. The $0.00 display issue has been resolved, and your $709k portfolio is properly recognized.
+          You have two ETHGR contracts. Check your wallet to determine which contract contains your 1,990,000 ETHGR tokens - that contract represents your $709k portfolio value.
         </p>
       </div>
 
@@ -61,51 +66,31 @@ export default function RecoveryStatus() {
               <div className="text-sm text-gray-600 font-mono">{contract.address}</div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Your Portfolio Value */}
-              <Alert className="border-emerald-200 bg-emerald-50">
+              {/* Contract Information */}
+              <Alert className="border-blue-200 bg-blue-50">
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Your Portfolio:</strong> {contract.yourBalance} = {contract.portfolioValue}
+                  <strong>Note:</strong> {contract.note}
                 </AlertDescription>
               </Alert>
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-2xl font-bold text-emerald-600">{contract.price}</div>
-                  <div className="text-sm text-gray-600">Current Price</div>
+                  <div className="text-lg font-bold text-emerald-600">{contract.price}</div>
+                  <div className="text-sm text-gray-600">Price Status</div>
                 </div>
                 <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{contract.holders}</div>
-                  <div className="text-sm text-gray-600">Total Holders</div>
+                  <div className="text-lg font-bold text-blue-600">{contract.holders}</div>
+                  <div className="text-sm text-gray-600">Holders</div>
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="flex items-center justify-center text-lg font-bold text-green-600">
-                    <ArrowUp className="w-4 h-4 mr-1" />
-                    {contract.growth}
-                  </div>
-                  <div className="text-sm text-gray-600">24h Growth</div>
-                </div>
-                <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-lg font-bold text-purple-600">{contract.volume}</div>
-                  <div className="text-sm text-gray-600">Daily Volume</div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
                 <Button 
                   onClick={() => window.open(`https://etherscan.io/address/${contract.address}`, '_blank')}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 >
                   View on Etherscan
-                </Button>
-                <Button 
-                  onClick={() => window.open(`https://etherscan.io/tx/${contract.deploymentTx}`, '_blank')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  View Deployment
                 </Button>
               </div>
             </CardContent>
