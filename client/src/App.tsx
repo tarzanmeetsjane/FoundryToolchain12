@@ -29,6 +29,7 @@ import ConstructorArgs from "./pages/ConstructorArgs";
 import RemixIntegration from "./pages/RemixIntegration";
 import VerificationWalkthrough from "./pages/VerificationWalkthrough";
 import LiveVerification from "./pages/LiveVerification";
+import OptimismVerification from "./pages/OptimismVerification";
 import DeploymentSuccess from "./pages/DeploymentSuccess";
 import ContractDecompiler from "./pages/ContractDecompiler";
 import { Route, Switch } from "wouter";
@@ -269,7 +270,7 @@ export default function App() {
         
         <main>
           <Switch>
-            <Route path="/" component={LiveVerification} />
+            <Route path="/" component={OptimismVerification} />
             <Route path="/dashboard" component={BotDashboard} />
             <Route path="/quantum" component={QuantumLiquidity} />
             <Route path="/frequency" component={MoneyFrequencyTuner} />
@@ -291,6 +292,7 @@ export default function App() {
             <Route path="/remix-integration" component={RemixIntegration} />
             <Route path="/verification-walkthrough" component={VerificationWalkthrough} />
             <Route path="/live-verification" component={LiveVerification} />
+            <Route path="/optimism-verification" component={OptimismVerification} />
             <Route path="/deployment-success" component={DeploymentSuccess} />
             <Route path="/contract-decompiler" component={ContractDecompiler} />
           </Switch>
