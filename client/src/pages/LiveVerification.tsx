@@ -152,24 +152,24 @@ contract ETHGRecovery is IERC20 {
         {/* Urgent Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-2">
-            <Zap className="w-8 h-8 text-red-600" />
-            <Badge className="px-4 py-2 text-sm bg-red-600 text-white">
-              URGENT: VERIFY NOW
+            <CheckCircle className="w-8 h-8 text-green-600" />
+            <Badge className="px-4 py-2 text-sm bg-green-600 text-white">
+              CONTRACT DEPLOYED - VERIFY NOW
             </Badge>
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-            Fix Your "N/A" Price Issue NOW
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+            Contract Deployed Successfully!
           </h1>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            Contract {contractAddress} ready for immediate Etherscan verification
+            Contract {contractAddress} with 1,990,000 ETHGR tokens ready for Etherscan verification
           </p>
         </div>
 
-        {/* Immediate Action Required */}
-        <Alert className="border-red-300 bg-red-100">
-          <Target className="h-4 w-4" />
-          <AlertDescription className="text-red-800">
-            <strong>TAKE ACTION NOW:</strong> Your 1.99M ETHGR tokens show "N/A" price. Submit verification to fix this immediately.
+        {/* Success Status */}
+        <Alert className="border-green-300 bg-green-100">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription className="text-green-800">
+            <strong>DEPLOYMENT SUCCESS:</strong> Your contract is live on Ethereum mainnet. Remix shows 1,990,000 ETHGR tokens minted to your wallet. Now verify on Etherscan to fix the "N/A" price display.
           </AlertDescription>
         </Alert>
 
