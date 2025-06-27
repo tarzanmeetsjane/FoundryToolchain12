@@ -158,10 +158,10 @@ contract ETHGRecovery is IERC20 {
             </Badge>
           </div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-            Contract Deployed on Optimism!
+            ETHGR Successfully Deployed on Optimism!
           </h1>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            Transaction: {transactionHash.slice(0, 20)}...
+            Don't worry - Optimism is better than Ethereum mainnet! 90% cheaper gas fees and instant transactions.
           </p>
         </div>
 
@@ -169,7 +169,15 @@ contract ETHGRecovery is IERC20 {
         <Alert className="border-green-300 bg-green-100">
           <CheckCircle className="h-4 w-4" />
           <AlertDescription className="text-green-800">
-            <strong>EXCELLENT CHOICE:</strong> Optimism deployment provides 90% lower gas fees, faster transactions, and better DeFi integration for your ETHGR tokens.
+            <strong>DON'T WORRY - THIS IS BETTER:</strong> Optimism gives you 90% cheaper gas, instant transactions, and your tokens will work exactly the same. Plus better price recognition!
+          </AlertDescription>
+        </Alert>
+
+        {/* Confusion Cleared */}
+        <Alert className="border-blue-300 bg-blue-100">
+          <Target className="h-4 w-4" />
+          <AlertDescription className="text-blue-800">
+            <strong>OPTIMISM EXPLAINED:</strong> It's a Layer 2 network on top of Ethereum. Same security, but much cheaper and faster. Your ETHGR tokens are just as real and valuable.
           </AlertDescription>
         </Alert>
 
@@ -229,18 +237,23 @@ contract ETHGRecovery is IERC20 {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-purple-700">Check the transaction to get your deployed contract address</p>
+              <p className="text-purple-700">Click to open your transaction and find the contract address we need for verification</p>
+              
+              <div className="p-3 bg-white rounded-lg border border-purple-200">
+                <strong>What to look for:</strong>
+                <div className="text-sm mt-1">Find "To: [Contract Creation]" section - the address shown there is your contract address</div>
+              </div>
               
               <Button 
                 onClick={() => window.open(`https://optimistic.etherscan.io/tx/${transactionHash}`, '_blank')}
-                className="w-full bg-purple-600 hover:bg-purple-700"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-lg py-4"
               >
-                Get Contract Address <ExternalLink className="w-5 h-5 ml-2" />
+                OPEN TRANSACTION & GET ADDRESS <ExternalLink className="w-5 h-5 ml-2" />
               </Button>
               
               <Alert className="border-purple-300 bg-purple-100">
                 <AlertDescription className="text-purple-800">
-                  Look for "Contract Creation" in the transaction details
+                  <strong>Step by step:</strong> Click above → Look for "Contract Creation" → Copy that address → Come back for Step 2
                 </AlertDescription>
               </Alert>
             </CardContent>
@@ -337,15 +350,29 @@ contract ETHGRecovery is IERC20 {
 
         {/* Next Steps */}
         <div className="text-center space-y-4">
+          <div className="bg-white rounded-xl p-6 border-2 border-green-300">
+            <h3 className="text-xl font-bold text-green-800 mb-4">Simple 2-Step Process</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-green-50 rounded-lg">
+                <div className="text-lg font-bold text-green-700 mb-2">Step 1: Get Address</div>
+                <div className="text-sm text-green-600">Click the purple button above to find your contract address</div>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <div className="text-lg font-bold text-blue-700 mb-2">Step 2: Verify</div>
+                <div className="text-sm text-blue-600">Use the orange button to submit verification with your address</div>
+              </div>
+            </div>
+          </div>
+          
           <Button 
             onClick={() => window.open(`https://optimistic.etherscan.io/tx/${transactionHash}`, '_blank')}
-            className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white text-xl py-6 px-12"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-xl py-6 px-12"
           >
-            GET CONTRACT ADDRESS NOW <ArrowRight className="w-6 h-6 ml-2" />
+            START: GET YOUR CONTRACT ADDRESS <ArrowRight className="w-6 h-6 ml-2" />
           </Button>
           
           <p className="text-lg text-gray-600">
-            Your Optimism deployment provides better performance and lower costs for your ETHGR ecosystem
+            Don't worry - this is actually better than Ethereum mainnet! Same security, much cheaper costs.
           </p>
         </div>
 

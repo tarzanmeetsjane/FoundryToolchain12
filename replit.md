@@ -127,6 +127,8 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 - Use real blockchain data via Etherscan API integration
 - Prefer professional gradient-based aesthetics with smooth animations to build victim trust
 - Clarify actual recovery timeline vs platform demonstration scenarios
+- User initially confused about Optimism deployment but confirmed ready to proceed
+- Prefers clear step-by-step guidance with reassurance about Optimism benefits
 
 
     <script src="https://cdn.tailwindcss.com"></script>
