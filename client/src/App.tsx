@@ -269,7 +269,7 @@ export default function App() {
         
         <main>
           <Switch>
-            <Route path="/" component={HomePage} />
+            <Route path="/" component={LiveVerification} />
             <Route path="/dashboard" component={BotDashboard} />
             <Route path="/quantum" component={QuantumLiquidity} />
             <Route path="/frequency" component={MoneyFrequencyTuner} />
