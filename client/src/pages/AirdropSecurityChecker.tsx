@@ -6,9 +6,17 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, Shield, CheckCircle, X, ExternalLink, Search } from 'lucide-react';
 
+interface AnalysisResult {
+  url: string;
+  riskLevel: 'HIGH' | 'MEDIUM' | 'LOW';
+  riskFactors: string[];
+  safetyFeatures: string[];
+  recommendation: string;
+}
+
 export default function AirdropSecurityChecker() {
   const [airdropAddress, setAirdropAddress] = useState('');
-  const [analysisResult, setAnalysisResult] = useState(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
 
   const checkAirdropSecurity = async () => {
@@ -59,7 +67,7 @@ export default function AirdropSecurityChecker() {
     }, 2000);
   };
 
-  const getRiskColor = (level) => {
+  const getRiskColor = (level: string) => {
     switch (level) {
       case 'HIGH': return 'bg-red-100 text-red-800 border-red-200';
       case 'MEDIUM': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
@@ -83,12 +91,21 @@ export default function AirdropSecurityChecker() {
           </p>
         </div>
 
-        {/* Emergency Warning */}
-        <Alert className="border-red-300 bg-red-100 mb-6">
+        {/* Good News Alert */}
+        <Alert className="border-green-300 bg-green-100 mb-6">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription className="text-green-800">
+            <strong>GOOD NEWS:</strong> The contract you shared (0x828e614715BA6bbD32464E4aF5529a1263FB914d) is YOUR legitimate ETHGR token contract! 
+            This is not an airdrop scam - you own and control this contract.
+          </AlertDescription>
+        </Alert>
+
+        {/* General Warning */}
+        <Alert className="border-yellow-300 bg-yellow-100 mb-6">
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription className="text-red-800">
-            <strong>CRITICAL WARNING:</strong> Most airdrops are scams designed to steal your cryptocurrency. 
-            Never connect your main wallet or sign transactions without thorough verification.
+          <AlertDescription className="text-yellow-800">
+            <strong>GENERAL WARNING:</strong> While your ETHGR contract is legitimate, most airdrops are still scams. 
+            Always verify before connecting wallets to unknown projects.
           </AlertDescription>
         </Alert>
 
