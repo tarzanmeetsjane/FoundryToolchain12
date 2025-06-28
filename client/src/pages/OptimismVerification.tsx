@@ -209,11 +209,11 @@ contract ETHGRecovery is IERC20 {
           </AlertDescription>
         </Alert>
 
-        {/* Safety Reassurance */}
-        <Alert className="border-blue-300 bg-blue-100">
+        {/* Constructor Fix Alert */}
+        <Alert className="border-red-300 bg-red-100">
           <Target className="h-4 w-4" />
-          <AlertDescription className="text-blue-800">
-            <strong>WALLET SAFETY CONFIRMED:</strong> This verification process does NOT connect your wallet or move any tokens. You're just telling Etherscan what your existing contract is. 100% safe - no wallet interaction required.
+          <AlertDescription className="text-red-800">
+            <strong>CONSTRUCTOR ARGS FOUND:</strong> Use this value in the constructor arguments field: 687474703a2f2f697066732e696f2f697066732f516d546774546972784877796e765951613462364b4d323245685672707664784c676b72766b4b754c4262684664
           </AlertDescription>
         </Alert>
 
@@ -298,13 +298,22 @@ contract ETHGRecovery is IERC20 {
                 <input 
                   type="text" 
                   placeholder="0x..." 
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-green-50"
                   value={contractAddress}
-                  onChange={(e) => {
-                    setContractAddress(e.target.value);
-                    setAddressFound(e.target.value.length === 42 && e.target.value.startsWith('0x'));
-                  }}
+                  readOnly
                 />
+                
+                <div className="mt-3 p-3 bg-red-50 rounded border border-red-200">
+                  <label className="block text-sm font-medium mb-2 text-red-700">Constructor Arguments (COPY THIS):</label>
+                  <input 
+                    type="text" 
+                    value="687474703a2f2f697066732e696f2f697066732f516d546774546972784877796e765951613462364b4d323245685672707664784c676b72766b4b754c4262684664"
+                    className="w-full p-2 border rounded bg-white font-mono text-xs"
+                    readOnly
+                    onClick={(e) => e.target.select()}
+                  />
+                  <div className="text-xs text-red-600 mt-1">Click to select, then copy this value to Etherscan</div>
+                </div>
                 {addressFound && (
                   <div className="mt-2 text-green-600 text-sm font-medium">
                     ✅ Valid contract address detected!
