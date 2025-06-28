@@ -177,7 +177,15 @@ contract ETHGRecovery is IERC20 {
         <Alert className="border-blue-300 bg-blue-100">
           <Target className="h-4 w-4" />
           <AlertDescription className="text-blue-800">
-            <strong>OPTIMISM EXPLAINED:</strong> It's a Layer 2 network on top of Ethereum. Same security, but much cheaper and faster. Your ETHGR tokens are just as real and valuable.
+            <strong>SIMPLE EXPLANATION:</strong> Optimism is like the "express lane" version of Ethereum. Same security and tokens, just 90% cheaper and much faster. Your ETHGR is just as real and valuable.
+          </AlertDescription>
+        </Alert>
+
+        {/* Constructor Args Explanation */}
+        <Alert className="border-yellow-300 bg-yellow-100">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription className="text-yellow-800">
+            <strong>ABOUT THAT LONG CODE YOU PASTED:</strong> That's just technical deployment data (constructor arguments). You don't need to understand it - it's proof your contract deployed successfully! We'll handle the verification process for you.
           </AlertDescription>
         </Alert>
 
@@ -351,15 +359,20 @@ contract ETHGRecovery is IERC20 {
         {/* Next Steps */}
         <div className="text-center space-y-4">
           <div className="bg-white rounded-xl p-6 border-2 border-green-300">
-            <h3 className="text-xl font-bold text-green-800 mb-4">Simple 2-Step Process</h3>
+            <h3 className="text-xl font-bold text-green-800 mb-4">Don't Worry - Just 2 Simple Clicks</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 bg-green-50 rounded-lg">
-                <div className="text-lg font-bold text-green-700 mb-2">Step 1: Get Address</div>
-                <div className="text-sm text-green-600">Click the purple button above to find your contract address</div>
+                <div className="text-lg font-bold text-green-700 mb-2">Click 1: Get Address</div>
+                <div className="text-sm text-green-600">Opens your transaction page, find the "Contract Creation" address</div>
               </div>
               <div className="p-4 bg-blue-50 rounded-lg">
-                <div className="text-lg font-bold text-blue-700 mb-2">Step 2: Verify</div>
-                <div className="text-sm text-blue-600">Use the orange button to submit verification with your address</div>
+                <div className="text-lg font-bold text-blue-700 mb-2">Click 2: Verify Contract</div>
+                <div className="text-sm text-blue-600">Submit verification form (we'll guide you through it)</div>
+              </div>
+            </div>
+            <div className="mt-4 p-4 bg-purple-50 rounded-lg">
+              <div className="text-sm text-purple-700">
+                <strong>Result:</strong> Your ETHGR tokens will show real dollar values instead of "N/A"
               </div>
             </div>
           </div>
