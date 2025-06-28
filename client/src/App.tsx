@@ -44,6 +44,7 @@ import OriginalWalletAnalysis from "./pages/OriginalWalletAnalysis";
 import MissingETHInvestigation from "./pages/MissingETHInvestigation";
 import RealWalletStatus from "./pages/RealWalletStatus";
 import LiveBlockchainInvestigation from "./pages/LiveBlockchainInvestigation";
+import SwapTroubleshooting from "./pages/SwapTroubleshooting";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -81,6 +82,7 @@ function Navigation() {
     { path: "/missing-eth", label: "Missing ETH", icon: AlertTriangle },
     { path: "/real-wallet-status", label: "Real Wallet Status", icon: Search },
     { path: "/live-investigation", label: "Live Investigation", icon: CheckCircle },
+    { path: "/swap-troubleshooting", label: "Swap Issues", icon: AlertTriangle },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -333,6 +335,7 @@ export default function App() {
             <Route path="/missing-eth" component={MissingETHInvestigation} />
             <Route path="/real-wallet-status" component={RealWalletStatus} />
             <Route path="/live-investigation" component={LiveBlockchainInvestigation} />
+            <Route path="/swap-troubleshooting" component={SwapTroubleshooting} />
           </Switch>
         </main>
       </div>
