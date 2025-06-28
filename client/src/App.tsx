@@ -49,6 +49,7 @@ import RealPortfolioStatus from "./pages/RealPortfolioStatus";
 import SwapHistoryAnalysis from "./pages/SwapHistoryAnalysis";
 import TransactionAnalysis from "./pages/TransactionAnalysis";
 import ETHGRSwapExecution from "./pages/ETHGRSwapExecution";
+import LiveSwapGuide from "./pages/LiveSwapGuide";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -91,6 +92,7 @@ function Navigation() {
     { path: "/swap-history", label: "Trading History", icon: ArrowRightLeft },
     { path: "/transaction-analysis", label: "Failed TX Analysis", icon: Search },
     { path: "/ethgr-swap", label: "Execute ETHGR Swap", icon: TrendingUp },
+    { path: "/live-swap-guide", label: "Live Swap Assistant", icon: Wallet },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -348,6 +350,7 @@ export default function App() {
             <Route path="/swap-history" component={SwapHistoryAnalysis} />
             <Route path="/transaction-analysis" component={TransactionAnalysis} />
             <Route path="/ethgr-swap" component={ETHGRSwapExecution} />
+            <Route path="/live-swap-guide" component={LiveSwapGuide} />
           </Switch>
         </main>
       </div>
