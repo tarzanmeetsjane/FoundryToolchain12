@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2 } from "lucide-react";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2, DollarSign } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
@@ -34,6 +34,7 @@ import DeploymentSuccess from "./pages/DeploymentSuccess";
 import ContractDecompiler from "./pages/ContractDecompiler";
 import TokenAnalytics from "./pages/TokenAnalytics";
 import AirdropSecurityChecker from "./pages/AirdropSecurityChecker";
+import TokenValueProjection from "./pages/TokenValueProjection";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -61,6 +62,7 @@ function Navigation() {
     { path: "/recovery-status", label: "Recovery Status", icon: TrendingUp },
     { path: "/contract-decompiler", label: "Contract Decompiler", icon: Code2 },
     { path: "/token-analytics", label: "Token Analytics", icon: TrendingUp },
+    { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
     { path: "/state-analysis", label: "State Change Analysis", icon: Database },
@@ -301,6 +303,7 @@ export default function App() {
             <Route path="/contract-decompiler" component={ContractDecompiler} />
             <Route path="/token-analytics" component={TokenAnalytics} />
             <Route path="/airdrop-security" component={AirdropSecurityChecker} />
+            <Route path="/token-value" component={TokenValueProjection} />
           </Switch>
         </main>
       </div>
