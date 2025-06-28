@@ -32,6 +32,7 @@ import LiveVerification from "./pages/LiveVerification";
 import OptimismVerification from "./pages/OptimismVerification";
 import DeploymentSuccess from "./pages/DeploymentSuccess";
 import ContractDecompiler from "./pages/ContractDecompiler";
+import TokenAnalytics from "./pages/TokenAnalytics";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -58,6 +59,7 @@ function Navigation() {
     { path: "/verification-success", label: "Verification Success", icon: CheckCircle },
     { path: "/recovery-status", label: "Recovery Status", icon: TrendingUp },
     { path: "/contract-decompiler", label: "Contract Decompiler", icon: Code2 },
+    { path: "/token-analytics", label: "Token Analytics", icon: TrendingUp },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
     { path: "/state-analysis", label: "State Change Analysis", icon: Database },
     { path: "/victim-recovery", label: "Victim Recovery", icon: AlertTriangle },
@@ -295,6 +297,7 @@ export default function App() {
             <Route path="/optimism-verification" component={OptimismVerification} />
             <Route path="/deployment-success" component={DeploymentSuccess} />
             <Route path="/contract-decompiler" component={ContractDecompiler} />
+            <Route path="/token-analytics" component={TokenAnalytics} />
           </Switch>
         </main>
       </div>

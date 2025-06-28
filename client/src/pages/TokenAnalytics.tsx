@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Activity, DollarSign, TrendingUp, Users } from 'lucide-react';
 
-export function TokenAnalytics() {
+export default function TokenAnalytics() {
   const ethgrAddress = "0x828e614715BA6bbD32464E4aF5529a1263FB914d";
   
   return (
