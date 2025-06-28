@@ -42,6 +42,8 @@ import LivePortfolioStatus from "./pages/LivePortfolioStatus";
 import RemixIntegration from "./pages/RemixIntegration";
 import OriginalWalletAnalysis from "./pages/OriginalWalletAnalysis";
 import MissingETHInvestigation from "./pages/MissingETHInvestigation";
+import RealWalletStatus from "./pages/RealWalletStatus";
+import LiveBlockchainInvestigation from "./pages/LiveBlockchainInvestigation";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -77,6 +79,8 @@ function Navigation() {
     { path: "/remix-integration", label: "Remix IDE", icon: Code2 },
     { path: "/original-wallet", label: "Original Wallet", icon: Wallet },
     { path: "/missing-eth", label: "Missing ETH", icon: AlertTriangle },
+    { path: "/real-wallet-status", label: "Real Wallet Status", icon: Search },
+    { path: "/live-investigation", label: "Live Investigation", icon: CheckCircle },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -327,6 +331,8 @@ export default function App() {
             <Route path="/remix-integration" component={RemixIntegration} />
             <Route path="/original-wallet" component={OriginalWalletAnalysis} />
             <Route path="/missing-eth" component={MissingETHInvestigation} />
+            <Route path="/real-wallet-status" component={RealWalletStatus} />
+            <Route path="/live-investigation" component={LiveBlockchainInvestigation} />
           </Switch>
         </main>
       </div>
