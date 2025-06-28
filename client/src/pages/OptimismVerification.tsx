@@ -310,7 +310,11 @@ contract ETHGRecovery is IERC20 {
                     value="687474703a2f2f697066732e696f2f697066732f516d546774546972784877796e765951613462364b4d323245685672707664784c676b72766b4b754c4262684664"
                     className="w-full p-2 border rounded bg-white font-mono text-xs"
                     readOnly
-                    onClick={(e) => (e.target as HTMLInputElement).select()}
+                    onClick={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      target.select();
+                      navigator.clipboard.writeText(target.value);
+                    }}
                   />
                   <div className="text-xs text-red-600 mt-1">Click to select, then copy this value to Etherscan</div>
                 </div>
