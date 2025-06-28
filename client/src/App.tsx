@@ -47,6 +47,7 @@ import LiveBlockchainInvestigation from "./pages/LiveBlockchainInvestigation";
 import SwapTroubleshooting from "./pages/SwapTroubleshooting";
 import RealPortfolioStatus from "./pages/RealPortfolioStatus";
 import SwapHistoryAnalysis from "./pages/SwapHistoryAnalysis";
+import TransactionAnalysis from "./pages/TransactionAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -87,6 +88,7 @@ function Navigation() {
     { path: "/swap-troubleshooting", label: "Swap Issues", icon: AlertTriangle },
     { path: "/real-portfolio", label: "Real Portfolio", icon: TrendingUp },
     { path: "/swap-history", label: "Trading History", icon: ArrowRightLeft },
+    { path: "/transaction-analysis", label: "Failed TX Analysis", icon: Search },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -342,6 +344,7 @@ export default function App() {
             <Route path="/swap-troubleshooting" component={SwapTroubleshooting} />
             <Route path="/real-portfolio" component={RealPortfolioStatus} />
             <Route path="/swap-history" component={SwapHistoryAnalysis} />
+            <Route path="/transaction-analysis" component={TransactionAnalysis} />
           </Switch>
         </main>
       </div>
