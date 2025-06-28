@@ -36,6 +36,7 @@ import TokenAnalytics from "./pages/TokenAnalytics";
 import AirdropSecurityChecker from "./pages/AirdropSecurityChecker";
 import TokenValueProjection from "./pages/TokenValueProjection";
 import CurrentValueDashboard from "./pages/CurrentValueDashboard";
+import WalletIntegration from "./pages/WalletIntegration";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -64,6 +65,7 @@ function Navigation() {
     { path: "/contract-decompiler", label: "Contract Decompiler", icon: Code2 },
     { path: "/token-analytics", label: "Token Analytics", icon: TrendingUp },
     { path: "/current-values", label: "Current Values", icon: Wallet },
+    { path: "/wallet-integration", label: "Wallet Setup", icon: Wallet },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -307,6 +309,7 @@ export default function App() {
             <Route path="/airdrop-security" component={AirdropSecurityChecker} />
             <Route path="/token-value" component={TokenValueProjection} />
             <Route path="/current-values" component={CurrentValueDashboard} />
+            <Route path="/wallet-integration" component={WalletIntegration} />
           </Switch>
         </main>
       </div>
