@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, AlertTriangle, ExternalLink, Refresh, Search } from 'lucide-react';
+import { CheckCircle, AlertTriangle, ExternalLink, RefreshCw, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface Transaction {
@@ -67,7 +67,7 @@ export default function LiveBlockchainInvestigation() {
   const findLargeTransactions = (transactions: Transaction[]) => {
     return transactions.filter(tx => {
       const ethValue = parseFloat(tx.value) / 1e18;
-      return ethValue > 10; // Look for transactions > 10 ETH
+      return ethValue > 10; // Look for transactions greater than 10 ETH
     });
   };
 
@@ -109,7 +109,7 @@ export default function LiveBlockchainInvestigation() {
                 onClick={investigateWallet}
                 disabled={loading}
               >
-                <Refresh className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
                 Refresh Data
               </Button>
             </CardTitle>
@@ -164,7 +164,7 @@ export default function LiveBlockchainInvestigation() {
                 {/* Large Transactions */}
                 {walletData.transactions.length > 0 && (
                   <div>
-                    <h4 className="font-semibold text-slate-800 mb-4">Large Transactions (>10 ETH)</h4>
+                    <h4 className="font-semibold text-slate-800 mb-4">Large Transactions (&gt;10 ETH)</h4>
                     {(() => {
                       const largeTransactions = findLargeTransactions(walletData.transactions);
                       
@@ -262,7 +262,7 @@ export default function LiveBlockchainInvestigation() {
                   <div className="space-y-2 text-sm text-slate-700">
                     <div>• Current wallet balance: {walletData ? formatETH(walletData.balance) : '0'} ETH</div>
                     <div>• Total transaction count: {walletData?.transactions.length || 0}</div>
-                    <div>• Large transactions (>10 ETH): {walletData ? findLargeTransactions(walletData.transactions).length : 0}</div>
+                    <div>• Large transactions (&gt;10 ETH): {walletData ? findLargeTransactions(walletData.transactions).length : 0}</div>
                     <div>• Expected 37 ETH transfer: {walletData && findLargeTransactions(walletData.transactions).some(tx => 
                       Math.abs(parseFloat(tx.value) / 1e18 - 37) < 1) ? 
                       "FOUND" : "NOT FOUND"}</div>
