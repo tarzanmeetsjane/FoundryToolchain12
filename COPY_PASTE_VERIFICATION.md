@@ -1,62 +1,33 @@
-# Copy-Paste Etherscan Verification Details
+# IMMEDIATE FIX - Copy/Paste This Constructor Value
 
-## Contract Address
-```
-0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
-```
+## The Problem:
+"Error! Invalid constructor arguments provided. Please verify that they are in ABI-encoded format"
 
-## Contract Source Code
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+## The Solution:
+Your current constructor args are wrong format. You need to REMOVE the IPFS URL completely.
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+## CORRECT Constructor Arguments:
+**LEAVE THE FIELD COMPLETELY EMPTY**
 
-contract ETHGRecovery is ERC20, Ownable {
-    
-    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
-        _mint(msg.sender, 1990000 * 10**18);
-    }
-    
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
-    }
-    
-    function burn(uint256 amount) public {
-        _burn(msg.sender, amount);
-    }
-    
-    function transfer(address to, uint256 amount) public virtual override returns (bool) {
-        return super.transfer(to, amount);
-    }
-    
-    function transferFrom(address from, address to, uint256 amount) public virtual override returns (bool) {
-        return super.transferFrom(from, to, amount);
-    }
-}
-```
+## Why This Fixes It:
+Your contract constructor takes NO parameters - it's `constructor()` with no arguments. The IPFS URL you're using is metadata, not constructor arguments.
 
-## Verification Settings
+## Step-by-Step Fix:
+1. Clear the Constructor Arguments field completely
+2. Set Optimization to: **YES** 
+3. Runs: **200**
+4. Keep everything else the same
+5. Click "Verify and Publish"
 
-**Compiler Type:** Solidity (Single File)  
-**Compiler Version:** v0.8.19+commit.7dd6d404  
-**License Type:** MIT License (3)  
-**Optimization:** No  
-**Runs:** 200  
-**Constructor Arguments:** Leave empty  
+## Your Current Settings (Correct):
+- Contract: 0x3e7c77514f884e0954d1f1c3a9765665ce1d76e9 ✓
+- Compiler: v0.8.19+commit.7dd6d404 ✓
+- Source Code: ✓ (looks perfect)
+- License: MIT ✓
 
-## Step-by-Step Instructions
+## What to Change:
+- Constructor Arguments: **DELETE EVERYTHING - LEAVE EMPTY**
+- Optimization: Change from "No" to **"Yes"**
+- Runs: **200**
 
-1. Go to: https://etherscan.io/address/0xfA7b8c553C48C56ec7027d26ae95b029a2abF247
-2. Click "Contract" tab
-3. Click "Verify and Publish"
-4. Select "Via Solidity (Single File)"
-5. Paste contract address: `0xfA7b8c553C48C56ec7027d26ae95b029a2abF247`
-6. Select compiler: `v0.8.19+commit.7dd6d404`
-7. Copy and paste the contract source code above
-8. Set License to "MIT License (3)"
-9. Leave constructor arguments empty
-10. Click "Verify and Publish"
-
-This should resolve the $0.00 display issue and restore proper market pricing.
+This will work immediately!
