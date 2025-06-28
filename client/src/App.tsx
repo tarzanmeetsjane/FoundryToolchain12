@@ -40,6 +40,7 @@ import ExodusImportGuide from "./pages/ExodusImportGuide";
 import ERC20ComplianceChecker from "./pages/ERC20ComplianceChecker";
 import LivePortfolioStatus from "./pages/LivePortfolioStatus";
 import RemixIntegration from "./pages/RemixIntegration";
+import OriginalWalletAnalysis from "./pages/OriginalWalletAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -73,6 +74,7 @@ function Navigation() {
     { path: "/erc20-compliance", label: "ERC20 Analysis", icon: AlertTriangle },
     { path: "/live-portfolio", label: "Live Portfolio", icon: TrendingUp },
     { path: "/remix-integration", label: "Remix IDE", icon: Code2 },
+    { path: "/original-wallet", label: "Original Wallet", icon: Wallet },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
