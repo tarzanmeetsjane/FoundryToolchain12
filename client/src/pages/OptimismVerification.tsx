@@ -209,6 +209,14 @@ contract ETHGRecovery is IERC20 {
           </AlertDescription>
         </Alert>
 
+        {/* Safety Reassurance */}
+        <Alert className="border-blue-300 bg-blue-100">
+          <Target className="h-4 w-4" />
+          <AlertDescription className="text-blue-800">
+            <strong>WALLET SAFETY CONFIRMED:</strong> This verification process does NOT connect your wallet or move any tokens. You're just telling Etherscan what your existing contract is. 100% safe - no wallet interaction required.
+          </AlertDescription>
+        </Alert>
+
         {/* Transaction Details */}
         <Card className="border-2 border-blue-200 bg-blue-50">
           <CardHeader>
