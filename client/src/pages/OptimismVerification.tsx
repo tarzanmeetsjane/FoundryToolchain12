@@ -310,7 +310,7 @@ contract ETHGRecovery is IERC20 {
                     value="687474703a2f2f697066732e696f2f697066732f516d546774546972784877796e765951613462364b4d323245685672707664784c676b72766b4b754c4262684664"
                     className="w-full p-2 border rounded bg-white font-mono text-xs"
                     readOnly
-                    onClick={(e) => e.target.select()}
+                    onClick={(e) => (e.target as HTMLInputElement).select()}
                   />
                   <div className="text-xs text-red-600 mt-1">Click to select, then copy this value to Etherscan</div>
                 </div>
@@ -456,9 +456,9 @@ contract ETHGRecovery is IERC20 {
           <Button 
             onClick={() => {
               window.open(`https://optimistic.etherscan.io/verifyContract?a=${contractAddress}`, '_blank');
-              // Show success message
+              // Show updated instructions
               setTimeout(() => {
-                alert("🎉 Verification form opened! Fill it out with the settings shown on this page. Your 'N/A' price issue will be fixed once verified!");
+                alert("Verification form opened! Use the constructor arguments value shown in the red box above. Don't leave it empty!");
               }, 1500);
             }}
             className="bg-gradient-to-r from-green-600 to-orange-600 hover:from-green-700 hover:to-orange-700 text-white text-xl py-6 px-12 animate-pulse shadow-2xl"
