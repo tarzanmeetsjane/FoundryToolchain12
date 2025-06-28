@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2, DollarSign } from "lucide-react";
+import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2, DollarSign, ArrowRightLeft, BarChart } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import BotDashboard from "./pages/BotDashboard";
@@ -46,6 +46,7 @@ import RealWalletStatus from "./pages/RealWalletStatus";
 import LiveBlockchainInvestigation from "./pages/LiveBlockchainInvestigation";
 import SwapTroubleshooting from "./pages/SwapTroubleshooting";
 import RealPortfolioStatus from "./pages/RealPortfolioStatus";
+import SwapHistoryAnalysis from "./pages/SwapHistoryAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -85,6 +86,7 @@ function Navigation() {
     { path: "/live-investigation", label: "Live Investigation", icon: CheckCircle },
     { path: "/swap-troubleshooting", label: "Swap Issues", icon: AlertTriangle },
     { path: "/real-portfolio", label: "Real Portfolio", icon: TrendingUp },
+    { path: "/swap-history", label: "Trading History", icon: ArrowRightLeft },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -339,6 +341,7 @@ export default function App() {
             <Route path="/live-investigation" component={LiveBlockchainInvestigation} />
             <Route path="/swap-troubleshooting" component={SwapTroubleshooting} />
             <Route path="/real-portfolio" component={RealPortfolioStatus} />
+            <Route path="/swap-history" component={SwapHistoryAnalysis} />
           </Switch>
         </main>
       </div>
