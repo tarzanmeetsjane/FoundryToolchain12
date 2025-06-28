@@ -26,7 +26,6 @@ import VerificationSuccess from "./pages/VerificationSuccess";
 import RecoveryStatus from "./pages/RecoveryStatus";
 import ContractSource from "./pages/ContractSource";
 import ConstructorArgs from "./pages/ConstructorArgs";
-import RemixIntegration from "./pages/RemixIntegration";
 import VerificationWalkthrough from "./pages/VerificationWalkthrough";
 import LiveVerification from "./pages/LiveVerification";
 import OptimismVerification from "./pages/OptimismVerification";
@@ -40,6 +39,7 @@ import WalletIntegration from "./pages/WalletIntegration";
 import ExodusImportGuide from "./pages/ExodusImportGuide";
 import ERC20ComplianceChecker from "./pages/ERC20ComplianceChecker";
 import LivePortfolioStatus from "./pages/LivePortfolioStatus";
+import RemixIntegration from "./pages/RemixIntegration";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -72,6 +72,7 @@ function Navigation() {
     { path: "/exodus-guide", label: "Exodus Import", icon: Wallet },
     { path: "/erc20-compliance", label: "ERC20 Analysis", icon: AlertTriangle },
     { path: "/live-portfolio", label: "Live Portfolio", icon: TrendingUp },
+    { path: "/remix-integration", label: "Remix IDE", icon: Code2 },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -319,6 +320,7 @@ export default function App() {
             <Route path="/exodus-guide" component={ExodusImportGuide} />
             <Route path="/erc20-compliance" component={ERC20ComplianceChecker} />
             <Route path="/live-portfolio" component={LivePortfolioStatus} />
+            <Route path="/remix-integration" component={RemixIntegration} />
           </Switch>
         </main>
       </div>
