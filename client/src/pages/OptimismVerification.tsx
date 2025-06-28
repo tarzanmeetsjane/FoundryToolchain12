@@ -205,7 +205,7 @@ contract ETHGRecovery is IERC20 {
         <Alert className="border-green-300 bg-green-100">
           <CheckCircle className="h-4 w-4" />
           <AlertDescription className="text-green-800">
-            <strong>EXCELLENT! CONTRACT FOUND:</strong> Your contract address 0x3e7c77514f884e0954d1f1c3a9765665ce1d76e9 is ready for verification. Those transaction logs show your contract is working perfectly!
+            <strong>CONTRACT ADDRESS UPDATED:</strong> Now working with 0x828e614715BA6bbD32464E4aF5529a1263FB914d. Let's verify this is the correct contract for your ETHGR tokens.
           </AlertDescription>
         </Alert>
 
