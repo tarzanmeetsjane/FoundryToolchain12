@@ -39,6 +39,7 @@ import CurrentValueDashboard from "./pages/CurrentValueDashboard";
 import WalletIntegration from "./pages/WalletIntegration";
 import ExodusImportGuide from "./pages/ExodusImportGuide";
 import ERC20ComplianceChecker from "./pages/ERC20ComplianceChecker";
+import LivePortfolioStatus from "./pages/LivePortfolioStatus";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -70,6 +71,7 @@ function Navigation() {
     { path: "/wallet-integration", label: "Wallet Setup", icon: Wallet },
     { path: "/exodus-guide", label: "Exodus Import", icon: Wallet },
     { path: "/erc20-compliance", label: "ERC20 Analysis", icon: AlertTriangle },
+    { path: "/live-portfolio", label: "Live Portfolio", icon: TrendingUp },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -316,6 +318,7 @@ export default function App() {
             <Route path="/wallet-integration" component={WalletIntegration} />
             <Route path="/exodus-guide" component={ExodusImportGuide} />
             <Route path="/erc20-compliance" component={ERC20ComplianceChecker} />
+            <Route path="/live-portfolio" component={LivePortfolioStatus} />
           </Switch>
         </main>
       </div>
