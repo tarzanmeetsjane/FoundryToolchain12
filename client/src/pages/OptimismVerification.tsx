@@ -459,15 +459,17 @@ contract ETHGRecovery is IERC20 {
           
           <Button 
             onClick={() => {
-              window.open(`https://optimistic.etherscan.io/verifyContract?a=${contractAddress}`, '_blank');
-              // Show updated instructions
+              window.open(`https://optimistic.etherscan.io/register`, '_blank');
               setTimeout(() => {
-                alert("Verification form opened! Use the constructor arguments value shown in the red box above. Don't leave it empty!");
+                window.open(`https://optimistic.etherscan.io/verifyContract-solc?a=${contractAddress}&c=v0.8.19%2bcommit.7dd6d404&lictype=11`, '_blank');
+              }, 3000);
+              setTimeout(() => {
+                alert("First window: Create Etherscan account. Second window: Verification form (use after login)");
               }, 1500);
             }}
             className="bg-gradient-to-r from-green-600 to-orange-600 hover:from-green-700 hover:to-orange-700 text-white text-xl py-6 px-12 animate-pulse shadow-2xl"
           >
-            🚀 VERIFY CONTRACT & FIX PRICES NOW 🚀 <ArrowRight className="w-6 h-6 ml-2" />
+            🔐 LOGIN TO ETHERSCAN & VERIFY 🔐 <ArrowRight className="w-6 h-6 ml-2" />
           </Button>
           
           <p className="text-lg text-gray-600">
