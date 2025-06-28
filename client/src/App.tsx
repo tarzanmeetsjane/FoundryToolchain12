@@ -37,6 +37,7 @@ import AirdropSecurityChecker from "./pages/AirdropSecurityChecker";
 import TokenValueProjection from "./pages/TokenValueProjection";
 import CurrentValueDashboard from "./pages/CurrentValueDashboard";
 import WalletIntegration from "./pages/WalletIntegration";
+import ExodusImportGuide from "./pages/ExodusImportGuide";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -66,6 +67,7 @@ function Navigation() {
     { path: "/token-analytics", label: "Token Analytics", icon: TrendingUp },
     { path: "/current-values", label: "Current Values", icon: Wallet },
     { path: "/wallet-integration", label: "Wallet Setup", icon: Wallet },
+    { path: "/exodus-guide", label: "Exodus Import", icon: Wallet },
     { path: "/token-value", label: "Value Projection", icon: DollarSign },
     { path: "/airdrop-security", label: "Airdrop Security", icon: Shield },
     { path: "/transaction-analyzer", label: "Transaction Analysis", icon: Search },
@@ -310,6 +312,7 @@ export default function App() {
             <Route path="/token-value" component={TokenValueProjection} />
             <Route path="/current-values" component={CurrentValueDashboard} />
             <Route path="/wallet-integration" component={WalletIntegration} />
+            <Route path="/exodus-guide" component={ExodusImportGuide} />
           </Switch>
         </main>
       </div>
