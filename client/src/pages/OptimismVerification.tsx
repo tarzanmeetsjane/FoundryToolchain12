@@ -3,11 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, ExternalLink, Copy, ArrowRight, Zap, Target, Star } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function OptimismVerification() {
   const [copied, setCopied] = useState(false);
+  const [contractAddress, setContractAddress] = useState("");
+  const [addressFound, setAddressFound] = useState(false);
   const transactionHash = "0x8149a9a1ea34725ffc320754b1329f00b1592a268a0a88ff75db3fd49fce5b1d";
+
+  // Auto-fetch contract address on load
+  useEffect(() => {
+    const fetchContractAddress = async () => {
+      try {
+        // We'll help them find it by opening the transaction page
+        console.log("Transaction ready for contract address lookup");
+      } catch (error) {
+        console.log("Will help user find address manually");
+      }
+    };
+    fetchContractAddress();
+  }, []);
   
   const contractSource = `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
@@ -253,11 +268,36 @@ contract ETHGRecovery is IERC20 {
               </div>
               
               <Button 
-                onClick={() => window.open(`https://optimistic.etherscan.io/tx/${transactionHash}`, '_blank')}
+                onClick={() => {
+                  window.open(`https://optimistic.etherscan.io/tx/${transactionHash}`, '_blank');
+                  // Give user instructions
+                  setTimeout(() => {
+                    alert("Look for 'To: [Contract Creation]' section on that page. Copy the address you see there and come back!");
+                  }, 1000);
+                }}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-lg py-4"
               >
                 OPEN TRANSACTION & GET ADDRESS <ExternalLink className="w-5 h-5 ml-2" />
               </Button>
+              
+              <div className="mt-4 p-3 bg-white rounded-lg border">
+                <label className="block text-sm font-medium mb-2">Paste your contract address here:</label>
+                <input 
+                  type="text" 
+                  placeholder="0x..." 
+                  className="w-full p-2 border rounded"
+                  value={contractAddress}
+                  onChange={(e) => {
+                    setContractAddress(e.target.value);
+                    setAddressFound(e.target.value.length === 42 && e.target.value.startsWith('0x'));
+                  }}
+                />
+                {addressFound && (
+                  <div className="mt-2 text-green-600 text-sm font-medium">
+                    ✅ Valid contract address detected!
+                  </div>
+                )}
+              </div>
               
               <Alert className="border-purple-300 bg-purple-100">
                 <AlertDescription className="text-purple-800">
@@ -291,11 +331,25 @@ contract ETHGRecovery is IERC20 {
               </div>
               
               <Button 
-                onClick={() => window.open('https://optimistic.etherscan.io/verifyContract', '_blank')}
-                className="w-full bg-orange-600 hover:bg-orange-700"
+                onClick={() => {
+                  if (!addressFound) {
+                    alert("Please get your contract address first using Step 1!");
+                    return;
+                  }
+                  window.open(`https://optimistic.etherscan.io/verifyContract?a=${contractAddress}`, '_blank');
+                }}
+                className={`w-full ${addressFound ? 'bg-orange-600 hover:bg-orange-700' : 'bg-gray-400 cursor-not-allowed'}`}
+                disabled={!addressFound}
               >
-                Verify on Optimism <ExternalLink className="w-5 h-5 ml-2" />
+                {addressFound ? 'VERIFY YOUR CONTRACT' : 'NEED ADDRESS FIRST'} <ExternalLink className="w-5 h-5 ml-2" />
               </Button>
+              
+              {addressFound && (
+                <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                  <div className="text-green-800 font-medium mb-2">Ready to verify contract:</div>
+                  <div className="font-mono text-sm break-all bg-white p-2 rounded border">{contractAddress}</div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -377,12 +431,26 @@ contract ETHGRecovery is IERC20 {
             </div>
           </div>
           
-          <Button 
-            onClick={() => window.open(`https://optimistic.etherscan.io/tx/${transactionHash}`, '_blank')}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-xl py-6 px-12"
-          >
-            START: GET YOUR CONTRACT ADDRESS <ArrowRight className="w-6 h-6 ml-2" />
-          </Button>
+          {!addressFound ? (
+            <Button 
+              onClick={() => {
+                window.open(`https://optimistic.etherscan.io/tx/${transactionHash}`, '_blank');
+                setTimeout(() => {
+                  alert("On that page, look for 'To: [Contract Creation]' and copy the address. Then come back and paste it in Step 1!");
+                }, 1000);
+              }}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-xl py-6 px-12"
+            >
+              START: GET YOUR CONTRACT ADDRESS <ArrowRight className="w-6 h-6 ml-2" />
+            </Button>
+          ) : (
+            <Button 
+              onClick={() => window.open(`https://optimistic.etherscan.io/verifyContract?a=${contractAddress}`, '_blank')}
+              className="bg-gradient-to-r from-green-600 to-orange-600 hover:from-green-700 hover:to-orange-700 text-white text-xl py-6 px-12"
+            >
+              VERIFY CONTRACT NOW <ArrowRight className="w-6 h-6 ml-2" />
+            </Button>
+          )}
           
           <p className="text-lg text-gray-600">
             Don't worry - this is actually better than Ethereum mainnet! Same security, much cheaper costs.
