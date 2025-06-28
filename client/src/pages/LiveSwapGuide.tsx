@@ -10,8 +10,11 @@ export default function LiveSwapGuide() {
   const [copied, setCopied] = useState('');
   const [waitingForUser, setWaitingForUser] = useState(false);
 
-  const ethgrContract = "0xc2b6d375b7d14c9ce73f97ddf565002cce257308";
+  const ethgrContract1 = "0x3E7C77514f884E0954d1F1C3a9765665cE1D76E9"; // Active 3 days ago
+  const ethgrContract2 = "0xc2b6d375b7d14c9ce73f97ddf565002cce257308"; // Foundation contract
+  const ethgrContract3 = "0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90"; // Alternative contract
   const foundationWallet = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
+  const [selectedContract, setSelectedContract] = useState(ethgrContract1);
 
   const copyToClipboard = async (text: string, label: string) => {
     await navigator.clipboard.writeText(text);
@@ -33,7 +36,7 @@ export default function LiveSwapGuide() {
       title: "Open Uniswap",
       action: "Click to open Uniswap V3 in new tab",
       buttonText: "Open Uniswap",
-      url: "https://app.uniswap.org/#/swap"
+      url: `https://app.uniswap.org/#/swap?inputCurrency=${selectedContract}&outputCurrency=ETH`
     },
     {
       title: "Connect Your Wallet",
@@ -59,8 +62,8 @@ export default function LiveSwapGuide() {
     {
       title: "Paste ETHGR Contract",
       action: "Paste this contract address in the search field",
-      instruction: "This is your verified ETHGR contract with 1.99M tokens",
-      copyValue: ethgrContract
+      instruction: "Choose from your verified ETHGR contracts",
+      copyValue: selectedContract
     },
     {
       title: "Confirm ETHGR Token",
@@ -109,7 +112,85 @@ export default function LiveSwapGuide() {
           <p className="text-slate-600 text-lg">
             Follow along step-by-step with copy-paste assistance
           </p>
+          <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200 inline-block">
+            <div className="text-green-800 font-semibold">✅ Recent Activity Confirmed!</div>
+            <div className="text-green-700 text-sm">ETHGR transactions working 3 days ago</div>
+          </div>
         </div>
+
+        {/* Contract Selection */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Select ETHGR Contract</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div 
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  selectedContract === ethgrContract1 
+                    ? 'border-green-500 bg-green-50' 
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+                onClick={() => setSelectedContract(ethgrContract1)}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold">Recent Activity ⭐</h4>
+                  {selectedContract === ethgrContract1 && <CheckCircle className="w-5 h-5 text-green-600" />}
+                </div>
+                <div className="text-sm text-gray-600 font-mono break-all mb-2">
+                  {ethgrContract1}
+                </div>
+                <div className="text-sm text-green-600 font-semibold">Used 3 days ago!</div>
+              </div>
+
+              <div 
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  selectedContract === ethgrContract2 
+                    ? 'border-green-500 bg-green-50' 
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+                onClick={() => setSelectedContract(ethgrContract2)}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold">Foundation</h4>
+                  {selectedContract === ethgrContract2 && <CheckCircle className="w-5 h-5 text-green-600" />}
+                </div>
+                <div className="text-sm text-gray-600 font-mono break-all mb-2">
+                  {ethgrContract2}
+                </div>
+                <div className="text-sm text-blue-600">1,990,000 ETHGR</div>
+              </div>
+
+              <div 
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  selectedContract === ethgrContract3 
+                    ? 'border-green-500 bg-green-50' 
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+                onClick={() => setSelectedContract(ethgrContract3)}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold">Alternative</h4>
+                  {selectedContract === ethgrContract3 && <CheckCircle className="w-5 h-5 text-green-600" />}
+                </div>
+                <div className="text-sm text-gray-600 font-mono break-all mb-2">
+                  {ethgrContract3}
+                </div>
+                <div className="text-sm text-blue-600">Check wallet</div>
+              </div>
+            </div>
+            
+            <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
+              <div className="text-sm text-blue-800">
+                <strong>Selected Contract:</strong> {
+                  selectedContract === ethgrContract1 ? 'Recent Activity (Used 3 days ago)' :
+                  selectedContract === ethgrContract2 ? 'Foundation (1.99M tokens)' : 
+                  'Alternative Contract'
+                }
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Progress Bar */}
         <div className="mb-8">
@@ -169,6 +250,11 @@ export default function LiveSwapGuide() {
                       <Copy className="w-4 h-4 mr-2" />
                       {copied === 'contract' ? 'Copied!' : 'Copy'}
                     </Button>
+                  </div>
+                  <div className="text-sm text-green-700 mt-2">
+                    Contract: {selectedContract === ethgrContract1 ? 'Recent Activity (Used 3 days ago)' : 
+                              selectedContract === ethgrContract2 ? 'Foundation (1.99M ETHGR)' : 
+                              'Alternative ETHGR'}
                   </div>
                 </div>
               )}
@@ -235,13 +321,18 @@ export default function LiveSwapGuide() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div className="p-3 bg-gray-50 rounded">
-                <div className="font-semibold mb-1">ETHGR Contract:</div>
-                <div className="font-mono text-xs break-all">{ethgrContract}</div>
+                <div className="font-semibold mb-1">Selected ETHGR Contract:</div>
+                <div className="font-mono text-xs break-all">{selectedContract}</div>
+                <div className="text-xs text-blue-600 mb-2">
+                  {selectedContract === ethgrContract1 ? 'Recent activity (3 days ago)' : 
+                   selectedContract === ethgrContract2 ? '1,990,000 ETHGR tokens' : 
+                   'Alternative contract'}
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
                   className="mt-2"
-                  onClick={() => copyToClipboard(ethgrContract, 'reference')}
+                  onClick={() => copyToClipboard(selectedContract, 'reference')}
                 >
                   <Copy className="w-3 h-3 mr-1" />
                   {copied === 'reference' ? 'Copied!' : 'Copy'}
