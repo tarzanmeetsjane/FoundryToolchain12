@@ -51,6 +51,7 @@ import TransactionAnalysis from "./pages/TransactionAnalysis";
 import ETHGRSwapExecution from "./pages/ETHGRSwapExecution";
 import LiveSwapGuide from "./pages/LiveSwapGuide";
 import ERC1155TokenAnalysis from "./pages/ERC1155TokenAnalysis";
+import PortfolioVolatilityAnalysis from "./pages/PortfolioVolatilityAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -353,6 +354,7 @@ export default function App() {
             <Route path="/ethgr-swap" component={ETHGRSwapExecution} />
             <Route path="/live-swap-guide" component={LiveSwapGuide} />
             <Route path="/erc1155-analysis" component={ERC1155TokenAnalysis} />
+            <Route path="/portfolio-volatility" component={PortfolioVolatilityAnalysis} />
           </Switch>
         </main>
       </div>
