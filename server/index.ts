@@ -1,48 +1,18 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { createServer } from "http";
+import cors from "cors";
+import compression from "compression";
+import rateLimit from "express-rate-limit";
 import botRoutes from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.use(express.json());
 
-// Production CORS settings
+// CORS settings
 if (process.env.NODE_ENV === "production") {
   app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    optionsSuccessStatus: 200
-  }));
-} else {
-  app.use(cors());
-}
-
-// Production CORS settings
-if (process.env.NODE_ENV === "production") {
-  app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    optionsSuccessStatus: 200
-  }));
-} else {
-  app.use(cors());
-}
-
-// Production CORS settings
-if (process.env.NODE_ENV === "production") {
-  app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    optionsSuccessStatus: 200
-  }));
-} else {
-  app.use(cors());
-}
-
-// Production CORS settings
-if (process.env.NODE_ENV === "production") {
-  app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL || true,
     credentials: true,
     optionsSuccessStatus: 200
   }));
@@ -126,7 +96,6 @@ if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1);
   
   // Add compression
-  const compression = require('compression');
   app.use(compression());
   
   // Add security headers
@@ -139,85 +108,6 @@ if (process.env.NODE_ENV === 'production') {
   });
   
   // Rate limiting
-  const rateLimit = require('express-rate-limit');
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-  });
-  app.use(limiter);
-}
-
-// Production optimizations
-if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
-  
-  // Add compression
-  const compression = require('compression');
-  app.use(compression());
-  
-  // Add security headers
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-    next();
-  });
-  
-  // Rate limiting
-  const rateLimit = require('express-rate-limit');
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-  });
-  app.use(limiter);
-}
-
-// Production optimizations
-if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
-  
-  // Add compression
-  const compression = require('compression');
-  app.use(compression());
-  
-  // Add security headers
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-    next();
-  });
-  
-  // Rate limiting
-  const rateLimit = require('express-rate-limit');
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-  });
-  app.use(limiter);
-}
-
-// Production optimizations
-if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
-  
-  // Add compression
-  const compression = require('compression');
-  app.use(compression());
-  
-  // Add security headers
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-    next();
-  });
-  
-  // Rate limiting
-  const rateLimit = require('express-rate-limit');
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100 // limit each IP to 100 requests per windowMs
