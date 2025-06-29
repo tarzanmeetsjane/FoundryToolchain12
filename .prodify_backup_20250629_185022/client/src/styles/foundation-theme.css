@@ -1,0 +1,151 @@
+/* Foundation Theme - Professional Trust Colors */
+:root {
+  /* Core Foundation Colors */
+  --foundation-blue: #0369A1;
+  --foundation-green: #10B981;
+  --foundation-orange: #F59E0B;
+  --foundation-purple: #8B5CF6;
+  --foundation-gray: #64748B;
+  
+  /* Trust Gradient */
+  --trust-gradient: linear-gradient(135deg, #0369A1 0%, #10B981 50%, #F59E0B 100%);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  /* Foundation Dark Custom Colors */
+  --foundation-blue: #0EA5E9;
+  --foundation-green: #10B981;
+  --foundation-orange: #F59E0B;
+  --foundation-purple: #A78BFA;
+  --foundation-gray: #94A3B8;
+  
+  /* Dark Trust Gradient */
+  --trust-gradient: linear-gradient(135deg, #0EA5E9 0%, #10B981 50%, #F59E0B 100%);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Foundation Custom Components */
+.foundation-card {
+  @apply bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all duration-300;
+}
+
+.foundation-gradient {
+  background: var(--trust-gradient);
+}
+
+.foundation-text-gradient {
+  background: var(--trust-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.foundation-button-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.foundation-button-secondary {
+  @apply bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.foundation-button-accent {
+  @apply bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.foundation-status-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.foundation-status-success {
+  @apply bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100;
+}
+
+.foundation-status-warning {
+  @apply bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100;
+}
+
+.foundation-status-error {
+  @apply bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100;
+}
+
+.foundation-status-info {
+  @apply bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100;
+}
+
+/* Animation Classes */
+.foundation-fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.foundation-slide-up {
+  animation: slideUp 0.8s ease-out;
+}
+
+.foundation-pulse-gentle {
+  animation: pulseGentle 2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes pulseGentle {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.02); 
+  }
+}
+
+/* Foundation Layout */
+.foundation-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.foundation-hero {
+  @apply relative overflow-hidden;
+  background: linear-gradient(135deg, #0369A1 0%, #10B981 50%, #F59E0B 100%);
+}
+
+.foundation-section {
+  @apply py-16 lg:py-20;
+}
+
+/* Typography Enhancements */
+.foundation-heading-1 {
+  @apply text-4xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight;
+}
+
+.foundation-heading-2 {
+  @apply text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white leading-tight;
+}
+
+.foundation-heading-3 {
+  @apply text-2xl lg:text-3xl font-semibold text-slate-900 dark:text-white leading-tight;
+}
+
+.foundation-text-body {
+  @apply text-lg text-slate-600 dark:text-slate-300 leading-relaxed;
+}
+
+.foundation-text-accent {
+  @apply text-blue-600 dark:text-blue-400 font-semibold;
+}
