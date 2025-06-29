@@ -1,93 +1,110 @@
-# ETHGR Foundation Deployment Guide
+# 🚀 ETHGR Foundation Deployment Guide
 
-## Prerequisites
+## ✅ Deployment Fixes Applied
 
-1. **Install Foundry**
+All critical deployment issues have been resolved:
+
+### 1. CORS Dependency Fixed
+- **Problem**: `ReferenceError: cors is not defined`
+- **Solution**: Added proper CORS import and installed as production dependency
+- **Status**: ✅ RESOLVED
+
+### 2. Production Build Optimized
+- **Problem**: Complex build process causing timeout and bundle errors
+- **Solution**: Created simplified production build in `dist/` directory
+- **Status**: ✅ RESOLVED
+
+### 3. Server Configuration Fixed
+- **Problem**: Connection refused on port 5000
+- **Solution**: Ensured proper 0.0.0.0 host binding for Cloud Run compatibility
+- **Status**: ✅ RESOLVED
+
+## 🎯 Quick Deployment Steps
+
+### Option 1: Use Pre-built Production Files (Recommended)
 ```bash
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
+# Files are ready in dist/ directory
+cd dist/
+npm install
+npm start
 ```
 
-2. **Set Environment Variables**
+### Option 2: Run Deployment Fix Script
 ```bash
-export PRIVATE_KEY="your_foundation_wallet_private_key"
-export MAINNET_RPC_URL="https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY"
-export ETHERSCAN_API_KEY="your_etherscan_api_key"
+./deploy-fix.sh
+cd dist/
+npm start
 ```
 
-## Deployment Steps
+## 📋 Production Build Contents
 
-### 1. Install Dependencies
-```bash
-forge install OpenZeppelin/openzeppelin-contracts
+The `dist/` directory now contains:
+
+1. **index.js** - Production server with CORS fix
+2. **package.json** - Minimal production dependencies
+3. **node_modules/** - Required dependencies installed
+
+## 🔧 Key Fixes Applied
+
+### CORS Configuration
+```javascript
+import cors from "cors";
+
+if (process.env.NODE_ENV === "production") {
+  app.use(cors({
+    origin: process.env.FRONTEND_URL || true,
+    credentials: true,
+    optionsSuccessStatus: 200
+  }));
+} else {
+  app.use(cors());
+}
 ```
 
-### 2. Run Tests
-```bash
-forge test -v
+### Production Dependencies
+```json
+{
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "compression": "^1.7.4",
+    "express-rate-limit": "^7.4.1"
+  }
+}
 ```
 
-### 3. Deploy to Mainnet
-```bash
-forge script script/Deploy.s.sol:DeployScript --rpc-url mainnet --broadcast --verify
+### Server Binding
+```javascript
+server.listen({
+  port: process.env.PORT || 5000,
+  host: "0.0.0.0",  // Critical for Cloud Run
+  reusePort: true,
+});
 ```
 
-### 4. Execute Migration
-```bash
-export ETHGR_CONTRACT="deployed_contract_address"
-forge script script/Migrate.s.sol:MigrateScript --rpc-url mainnet --broadcast
+## 🌍 Environment Variables
+
+Set these for production deployment:
+
+```env
+NODE_ENV=production
+PORT=5000
+FRONTEND_URL=https://yourdomain.com
 ```
 
-## Contract Functions
+## 🧪 Testing
 
-### migrateMyTrappedETHG()
-- **Purpose**: Recover your 1,990,000 trapped ETHG tokens
-- **Restriction**: Only foundation wallet (0x058C8FE01E5c9eaC6ee19e6673673B549B368843)
-- **Result**: Mints 1,990,000 ETHGR tokens to your wallet
+The production build has been tested and verified:
 
-### emergencyMint(address to, uint256 amount)
-- **Purpose**: Foundation emergency token minting
-- **Restriction**: Only contract owner
-- **Use**: Victim assistance and foundation operations
+- ✅ Server starts without errors
+- ✅ CORS properly configured
+- ✅ Health endpoint responds correctly
+- ✅ Production optimizations active
 
-### toggleMigration()
-- **Purpose**: Enable/disable migration functionality
-- **Restriction**: Only contract owner
-- **Security**: Prevents unauthorized migrations
+## 🚀 Deployment Ready
 
-## Gas Estimates
+Your ETHGR Foundation platform is now ready for deployment to any cloud platform that supports Node.js applications.
 
-- **Contract Deployment**: ~2.5M gas (~$50-100)
-- **Migration Execution**: ~150K gas (~$10-15)
-- **Standard Transfer**: ~21K gas (~$2-5)
+**Status**: 🟢 DEPLOYMENT READY
 
-## Verification
-
-After deployment, the contract will be automatically verified on Etherscan with:
-- Source code
-- Compiler version (0.8.19+)
-- Optimization settings (1M runs)
-- Constructor parameters (none)
-
-## Post-Deployment Checklist
-
-1. ✅ Contract deployed and verified
-2. ✅ Foundation migration executed
-3. ✅ 1,990,000 ETHGR balance confirmed
-4. ✅ Transfer functionality tested
-5. ✅ Ready for liquidity pool creation
-
-## Next Steps
-
-1. **ETH Extraction**: Use extraction tools to recover 0.00136014 ETH
-2. **Pool Creation**: Create ETHGR/ETH liquidity pool on Uniswap
-3. **Trading**: Enable ETHGR → ETH conversion for $45,000 relief
-4. **Foundation Operations**: Use remaining tokens for victim assistance
-
-## Security Notes
-
-- Contract has no honeypot restrictions
-- Full ERC20 standard compliance
-- Owner controls for foundation management
-- Migration tracking prevents double-migration
-- Emergency functions for foundation operations
+All deployment blocking issues have been resolved!
