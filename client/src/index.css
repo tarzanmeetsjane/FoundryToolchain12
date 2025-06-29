@@ -34,6 +34,63 @@
   --chart-5: 271 81% 56%; /* #9333EA */
 }
 
+/* Fix for copy/paste code visibility */
+pre code {
+  color: #22c55e !important; /* Green text for all code blocks */
+  background: transparent !important;
+}
+
+.bg-gray-900 pre,
+.bg-gray-900 code,
+.bg-slate-900 pre,
+.bg-slate-900 code {
+  color: #22c55e !important; /* Bright green text */
+  background: transparent !important;
+}
+
+.bg-gray-800 pre,
+.bg-gray-800 code,
+.bg-slate-800 pre,
+.bg-slate-800 code {
+  color: #22c55e !important; /* Bright green text */
+  background: transparent !important;
+}
+
+/* Ensure textareas with code are visible */
+textarea.font-mono,
+textarea[readonly] {
+  color: #1f2937 !important; /* Dark gray for readability */
+  background-color: #f9fafb !important; /* Light background */
+}
+
+/* Specific fixes for contract source displays */
+.text-green-400 {
+  color: #22c55e !important;
+}
+
+/* Make sure all copy buttons are visible */
+button {
+  color: inherit !important;
+}
+
+/* Additional fixes for input fields and contract addresses */
+input[readonly],
+input.font-mono {
+  color: #1f2937 !important;
+  background-color: #f9fafb !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Fix for contract address displays */
+.font-mono {
+  color: #1f2937 !important;
+}
+
+/* Ensure all code in card content is visible */
+.bg-gray-50 {
+  color: #1f2937 !important;
+}
+
 .dark {
   --background: 220 13% 4%; /* #0B0E11 */
   --foreground: 0 0% 100%; /* #FFFFFF */
