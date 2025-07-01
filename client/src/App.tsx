@@ -58,6 +58,7 @@ import ExistingContractVerification from "./pages/ExistingContractVerification";
 import MetadataGenerationGuide from "./pages/MetadataGenerationGuide";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
+import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -367,6 +368,7 @@ export default function App() {
             <Route path="/metadata-fix" component={MetadataGenerationGuide} />
             <Route path="/simple-copy" component={SimpleContractCopy} />
             <Route path="/foundry-verification" component={FoundryVerification} />
+            <Route path="/verification-dashboard" component={ContractVerificationDashboard} />
           </Switch>
         </main>
       </div>
