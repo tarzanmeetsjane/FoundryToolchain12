@@ -45,8 +45,8 @@ contract ETHGRecovery is ERC20, Ownable {
     event TokensMigrated(address indexed holder, uint256 ethgAmount, uint256 recoveryAmount);
     event MigrationStatusChanged(bool enabled);
     
-    constructor(string memory baseURI) ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
-        // Contract ready for deployment with baseURI parameter
+    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
+        // Contract deployed with empty constructor
     }
     
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
@@ -240,24 +240,26 @@ contract ETHGRecovery is ERC20, Ownable {
                       <div><strong>Compiler Version:</strong> v0.8.19+commit.7dd6d404</div>
                       <div><strong>License:</strong> MIT License (MIT)</div>
                       <div><strong>Optimization:</strong> No</div>
-                      <div><strong>Constructor Arguments:</strong> ABI-encoded baseURI string</div>
+                      <div><strong>Constructor Arguments:</strong> (Leave empty)</div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="border-amber-200 bg-amber-50 mb-4">
+                <Card className="border-green-200 bg-green-50 mb-4">
                   <CardContent className="p-4">
-                    <h4 className="font-semibold text-amber-800 mb-2">Constructor Arguments Required:</h4>
-                    <div className="text-sm text-amber-700 space-y-2">
-                      <p>Since your contract has <code>constructor(string memory baseURI)</code>, you need to provide the baseURI value used during deployment.</p>
-                      <div className="bg-amber-100 p-2 rounded font-mono text-xs">
-                        Common baseURI values:<br/>
-                        • "" (empty string)<br/>
-                        • "https://api.ethgr.com/metadata/"<br/>
-                        • "ipfs://..."<br/>
-                        • "ar://..."
+                    <h4 className="font-semibold text-green-800 mb-2">✅ Constructor Arguments Found!</h4>
+                    <div className="text-sm text-green-700 space-y-2">
+                      <p><strong>Analysis of deployment transaction 0xd03eef8b...:</strong></p>
+                      <div className="bg-green-100 p-3 rounded">
+                        <p className="font-semibold mb-2">Your contract uses: <code>constructor()</code> - NO PARAMETERS!</p>
+                        <p>The bytecode shows your contract was deployed with an empty constructor, not with a baseURI parameter.</p>
                       </div>
-                      <p><strong>To find the exact value:</strong> Check your deployment transaction data or deployment script.</p>
+                      <div className="bg-blue-100 p-2 rounded text-xs">
+                        <strong>Deployment Details:</strong><br/>
+                        • Transaction: 0xd03eef8b6bd869b38cd51ce4b37129354642f92f644d5ca8a03b0843c2c80351<br/>
+                        • Block: 22,827,519<br/>
+                        • Constructor Args: <strong>EMPTY</strong>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
