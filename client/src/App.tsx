@@ -52,6 +52,8 @@ import ETHGRSwapExecution from "./pages/ETHGRSwapExecution";
 import LiveSwapGuide from "./pages/LiveSwapGuide";
 import ERC1155TokenAnalysis from "./pages/ERC1155TokenAnalysis";
 import PortfolioVolatilityAnalysis from "./pages/PortfolioVolatilityAnalysis";
+import RemixContractAnalysis from "./pages/RemixContractAnalysis";
+import SourcifyVerification from "./pages/SourcifyVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -355,6 +357,8 @@ export default function App() {
             <Route path="/live-swap-guide" component={LiveSwapGuide} />
             <Route path="/erc1155-analysis" component={ERC1155TokenAnalysis} />
             <Route path="/portfolio-volatility" component={PortfolioVolatilityAnalysis} />
+            <Route path="/remix-analysis" component={RemixContractAnalysis} />
+            <Route path="/sourcify-verification" component={SourcifyVerification} />
           </Switch>
         </main>
       </div>
