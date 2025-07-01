@@ -66,6 +66,7 @@ import BytecodeDecompiler from "./pages/BytecodeDecompiler";
 import FinalVerificationSteps from "./pages/FinalVerificationSteps";
 import ContractComparisonAnalysis from "./pages/ContractComparisonAnalysis";
 import DirectVerificationGuide from "./pages/DirectVerificationGuide";
+import SuperSimpleVerification from "./pages/SuperSimpleVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -383,6 +384,7 @@ export default function App() {
             <Route path="/final-verification" component={FinalVerificationSteps} />
             <Route path="/contract-comparison" component={ContractComparisonAnalysis} />
             <Route path="/direct-verification" component={DirectVerificationGuide} />
+            <Route path="/super-simple" component={SuperSimpleVerification} />
           </Switch>
         </main>
       </div>
