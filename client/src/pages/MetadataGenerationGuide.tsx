@@ -590,9 +590,14 @@ contract ETHGRecovery is ERC20, Ownable {
                     Copy Flattened Contract
                   </Button>
                 </div>
-                <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-xs max-h-96">
-                  <code>{flattenedContract}</code>
-                </pre>
+                <div className="bg-white border-2 border-gray-300 p-4 rounded-lg">
+                  <textarea 
+                    className="w-full h-96 text-xs font-mono resize-none border-0 outline-none"
+                    value={flattenedContract}
+                    readOnly
+                    onClick={(e) => e.currentTarget.select()}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
