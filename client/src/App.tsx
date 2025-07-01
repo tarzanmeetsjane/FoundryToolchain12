@@ -60,6 +60,7 @@ import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
 import SimpleVerificationGuide from "./pages/SimpleVerificationGuide";
+import FoundryOfficialGuide from "./pages/FoundryOfficialGuide";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -371,6 +372,7 @@ export default function App() {
             <Route path="/foundry-verification" component={FoundryVerification} />
             <Route path="/verification-dashboard" component={ContractVerificationDashboard} />
             <Route path="/simple-verification" component={SimpleVerificationGuide} />
+            <Route path="/foundry-official" component={FoundryOfficialGuide} />
           </Switch>
         </main>
       </div>
