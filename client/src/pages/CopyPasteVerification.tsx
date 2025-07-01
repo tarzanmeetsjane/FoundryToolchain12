@@ -261,6 +261,14 @@ contract ETHGRecovery is ERC20, Ownable {
               Make sure you see "Ethereum Mainnet" at the top - not VM or demo mode
             </AlertDescription>
           </Alert>
+          
+          <div className="mt-4 p-4 bg-red-50 border-2 border-red-300 rounded">
+            <h4 className="font-bold text-red-800 mb-2">CRITICAL: Bytecode Match Required</h4>
+            <p className="text-red-700">
+              This contract code is specifically designed to match your deployed bytecode: 
+              <code className="bg-red-100 px-1 rounded text-xs">60806040526007805460ff1916...</code>
+            </p>
+          </div>
         </CardContent>
       </Card>
 

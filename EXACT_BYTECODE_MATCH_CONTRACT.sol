@@ -1,282 +1,215 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.30;
 
-// OpenZeppelin Contracts (last updated v4.9.0) (utils/Context.sol)
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
-
     function _msgData() internal view virtual returns (bytes calldata) {
         return msg.data;
     }
 }
 
-// OpenZeppelin Contracts (last updated v4.9.0) (access/Ownable.sol)
 abstract contract Ownable is Context {
     address private _owner;
-
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
+    
     constructor(address initialOwner) {
+        if (initialOwner == address(0)) {
+            revert OwnableInvalidOwner(address(0));
+        }
         _transferOwnership(initialOwner);
     }
-
+    
     modifier onlyOwner() {
         _checkOwner();
         _;
     }
-
+    
     function owner() public view virtual returns (address) {
         return _owner;
     }
-
+    
     function _checkOwner() internal view virtual {
-        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+        if (owner() != _msgSender()) {
+            revert OwnableUnauthorizedAccount(_msgSender());
+        }
     }
-
+    
     function renounceOwnership() public virtual onlyOwner {
         _transferOwnership(address(0));
     }
-
+    
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        if (newOwner == address(0)) {
+            revert OwnableInvalidOwner(address(0));
+        }
         _transferOwnership(newOwner);
     }
-
+    
     function _transferOwnership(address newOwner) internal virtual {
         address oldOwner = _owner;
         _owner = newOwner;
         emit OwnershipTransferred(oldOwner, newOwner);
     }
+    
+    error OwnableInvalidOwner(address owner);
+    error OwnableUnauthorizedAccount(address account);
 }
 
-// OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/IERC20.sol)
 interface IERC20 {
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
-
     function totalSupply() external view returns (uint256);
     function balanceOf(address account) external view returns (uint256);
-    function transfer(address to, uint256 amount) external returns (bool);
+    function transfer(address to, uint256 value) external returns (bool);
     function allowance(address owner, address spender) external view returns (uint256);
-    function approve(address spender, uint256 amount) external returns (bool);
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function approve(address spender, uint256 value) external returns (bool);
+    function transferFrom(address from, address to, uint256 value) external returns (bool);
 }
 
-// OpenZeppelin Contracts v4.4.1 (token/ERC20/extensions/IERC20Metadata.sol)
 interface IERC20Metadata is IERC20 {
     function name() external view returns (string memory);
     function symbol() external view returns (string memory);
     function decimals() external view returns (uint8);
 }
 
-// OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/ERC20.sol)
-contract ERC20 is Context, IERC20, IERC20Metadata {
-    mapping(address => uint256) private _balances;
-    mapping(address => mapping(address => uint256)) private _allowances;
+interface IERC20Errors {
+    error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed);
+    error ERC20InvalidSender(address sender);
+    error ERC20InvalidReceiver(address receiver);
+    error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed);
+    error ERC20InvalidApprover(address approver);
+    error ERC20InvalidSpender(address spender);
+}
 
+abstract contract ERC20 is Context, IERC20, IERC20Metadata, IERC20Errors {
+    mapping(address account => uint256) private _balances;
+    mapping(address account => mapping(address spender => uint256)) private _allowances;
     uint256 private _totalSupply;
     string private _name;
     string private _symbol;
-
+    
     constructor(string memory name_, string memory symbol_) {
         _name = name_;
         _symbol = symbol_;
     }
-
-    function name() public view virtual override returns (string memory) {
-        return _name;
-    }
-
-    function symbol() public view virtual override returns (string memory) {
-        return _symbol;
-    }
-
-    function decimals() public view virtual override returns (uint8) {
-        return 18;
-    }
-
-    function totalSupply() public view virtual override returns (uint256) {
-        return _totalSupply;
-    }
-
-    function balanceOf(address account) public view virtual override returns (uint256) {
-        return _balances[account];
-    }
-
-    function transfer(address to, uint256 amount) public virtual override returns (bool) {
+    
+    function name() public view virtual returns (string memory) { return _name; }
+    function symbol() public view virtual returns (string memory) { return _symbol; }
+    function decimals() public view virtual returns (uint8) { return 18; }
+    function totalSupply() public view virtual returns (uint256) { return _totalSupply; }
+    function balanceOf(address account) public view virtual returns (uint256) { return _balances[account]; }
+    
+    function transfer(address to, uint256 value) public virtual returns (bool) {
         address owner = _msgSender();
-        _transfer(owner, to, amount);
+        _transfer(owner, to, value);
         return true;
     }
-
-    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+    
+    function allowance(address owner, address spender) public view virtual returns (uint256) {
         return _allowances[owner][spender];
     }
-
-    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+    
+    function approve(address spender, uint256 value) public virtual returns (bool) {
         address owner = _msgSender();
-        _approve(owner, spender, amount);
+        _approve(owner, spender, value);
         return true;
     }
-
-    function transferFrom(address from, address to, uint256 amount) public virtual override returns (bool) {
+    
+    function transferFrom(address from, address to, uint256 value) public virtual returns (bool) {
         address spender = _msgSender();
-        _spendAllowance(from, spender, amount);
-        _transfer(from, to, amount);
+        _spendAllowance(from, spender, value);
+        _transfer(from, to, value);
         return true;
     }
-
-    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
-        address owner = _msgSender();
-        _approve(owner, spender, allowance(owner, spender) + addedValue);
-        return true;
+    
+    function _transfer(address from, address to, uint256 value) internal {
+        if (from == address(0)) revert ERC20InvalidSender(address(0));
+        if (to == address(0)) revert ERC20InvalidReceiver(address(0));
+        _update(from, to, value);
     }
-
-    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        address owner = _msgSender();
-        uint256 currentAllowance = allowance(owner, spender);
-        require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
-        unchecked {
-            _approve(owner, spender, currentAllowance - subtractedValue);
+    
+    function _update(address from, address to, uint256 value) internal virtual {
+        if (from == address(0)) {
+            _totalSupply += value;
+        } else {
+            uint256 fromBalance = _balances[from];
+            if (fromBalance < value) revert ERC20InsufficientBalance(from, fromBalance, value);
+            unchecked { _balances[from] = fromBalance - value; }
         }
-        return true;
-    }
-
-    function _transfer(address from, address to, uint256 amount) internal virtual {
-        require(from != address(0), "ERC20: transfer from the zero address");
-        require(to != address(0), "ERC20: transfer to the zero address");
-
-        _beforeTokenTransfer(from, to, amount);
-
-        uint256 fromBalance = _balances[from];
-        require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
-        unchecked {
-            _balances[from] = fromBalance - amount;
-            _balances[to] += amount;
+        if (to == address(0)) {
+            unchecked { _totalSupply -= value; }
+        } else {
+            unchecked { _balances[to] += value; }
         }
-
-        emit Transfer(from, to, amount);
-
-        _afterTokenTransfer(from, to, amount);
+        emit Transfer(from, to, value);
     }
-
-    function _mint(address to, uint256 amount) internal virtual {
-        require(to != address(0), "ERC20: mint to the zero address");
-
-        _beforeTokenTransfer(address(0), to, amount);
-
-        _totalSupply += amount;
-        unchecked {
-            _balances[to] += amount;
-        }
-        emit Transfer(address(0), to, amount);
-
-        _afterTokenTransfer(address(0), to, amount);
+    
+    function _mint(address account, uint256 value) internal {
+        if (account == address(0)) revert ERC20InvalidReceiver(address(0));
+        _update(address(0), account, value);
     }
-
-    function _burn(address from, uint256 amount) internal virtual {
-        require(from != address(0), "ERC20: burn from the zero address");
-
-        _beforeTokenTransfer(from, address(0), amount);
-
-        uint256 accountBalance = _balances[from];
-        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        unchecked {
-            _balances[from] = accountBalance - amount;
-            _totalSupply -= amount;
-        }
-
-        emit Transfer(from, address(0), amount);
-
-        _afterTokenTransfer(from, address(0), amount);
+    
+    function _approve(address owner, address spender, uint256 value) internal {
+        _approve(owner, spender, value, true);
     }
-
-    function _approve(address owner, address spender, uint256 amount) internal virtual {
-        require(owner != address(0), "ERC20: approve from the zero address");
-        require(spender != address(0), "ERC20: approve to the zero address");
-
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
+    
+    function _approve(address owner, address spender, uint256 value, bool emitEvent) internal virtual {
+        if (owner == address(0)) revert ERC20InvalidApprover(address(0));
+        if (spender == address(0)) revert ERC20InvalidSpender(address(0));
+        _allowances[owner][spender] = value;
+        if (emitEvent) emit Approval(owner, spender, value);
     }
-
-    function _spendAllowance(address owner, address spender, uint256 amount) internal virtual {
+    
+    function _spendAllowance(address owner, address spender, uint256 value) internal virtual {
         uint256 currentAllowance = allowance(owner, spender);
         if (currentAllowance != type(uint256).max) {
-            require(currentAllowance >= amount, "ERC20: insufficient allowance");
-            unchecked {
-                _approve(owner, spender, currentAllowance - amount);
-            }
+            if (currentAllowance < value) revert ERC20InsufficientAllowance(spender, currentAllowance, value);
+            unchecked { _approve(owner, spender, currentAllowance - value, false); }
         }
     }
-
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {}
-
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual {}
 }
 
-/**
- * @title ETHG Recovery Token (ETHGR) - Optimized Version
- * @dev Gas-optimized version for deployment
- * @author Deployed by: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843
- */
 contract ETHGRecovery is ERC20, Ownable {
-    
-    // Migration tracking
     mapping(address => bool) public hasMigrated;
-    bool public migrationEnabled = true;
-    uint256 public totalMigrated = 0;
+    bool public migrationEnabled;
+    uint256 public totalMigrated;
+    event TokensMigrated(address indexed holder, uint256 amount);
     
-    // Events - EXACT event signature from transaction logs
-    event TokensMigrated(address indexed account, uint256 newTokenAmount, uint256 oldTokenAmount);
+    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
+        migrationEnabled = true;
+        totalMigrated = 0;
+    }
     
-    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {}
-    
-    /**
-     * @dev Migrate trapped ETHG tokens for authorized wallet
-     * Amount: 1,990,000 ETHG tokens
-     */
     function migrateMyTrappedETHG() external {
-        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Unauthorized");
+        require(msg.sender == 0x058C8FE01E5c9eaC6ee19e6673673B549B368843, "Only foundation");
         require(migrationEnabled, "Migration disabled");
         require(!hasMigrated[msg.sender], "Already migrated");
-        
-        uint256 amount = 1990000 * 10**18; // 1,990,000 tokens
-        
+        uint256 amount = 1990000 * 10**18;
         hasMigrated[msg.sender] = true;
         totalMigrated += amount;
         _mint(msg.sender, amount);
-        
-        emit TokensMigrated(msg.sender, amount, amount);
+        emit TokensMigrated(msg.sender, amount);
     }
     
-    /**
-     * @dev Emergency migration for other holders
-     */
-    function migrateTrappedETHG(uint256 amount) external {
-        require(migrationEnabled, "Migration disabled");
-        require(!hasMigrated[msg.sender], "Already migrated");
-        require(amount > 0, "Invalid amount");
-        
-        hasMigrated[msg.sender] = true;
-        totalMigrated += amount;
-        _mint(msg.sender, amount);
-        
-        emit TokensMigrated(msg.sender, amount, amount);
-    }
-    
-    /**
-     * @dev Toggle migration (owner only)
-     */
     function toggleMigration() external onlyOwner {
         migrationEnabled = !migrationEnabled;
     }
     
-    /**
-     * @dev Emergency mint (owner only)
-     */
+    function migrateTrappedETHG(uint256 amount) external {
+        require(migrationEnabled, "Migration disabled");
+        require(!hasMigrated[msg.sender], "Already migrated");
+        require(amount > 0, "Amount must be positive");
+        hasMigrated[msg.sender] = true;
+        totalMigrated += amount;
+        _mint(msg.sender, amount);
+        emit TokensMigrated(msg.sender, amount);
+    }
+    
     function emergencyMint(address to, uint256 amount) external onlyOwner {
+        require(to != address(0), "Invalid address");
+        require(amount > 0, "Amount must be positive");
         _mint(to, amount);
     }
 }
