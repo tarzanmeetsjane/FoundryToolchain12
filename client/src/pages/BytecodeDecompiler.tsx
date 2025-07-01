@@ -45,8 +45,8 @@ contract ETHGRecovery is ERC20, Ownable {
     event TokensMigrated(address indexed holder, uint256 ethgAmount, uint256 recoveryAmount);
     event MigrationStatusChanged(bool enabled);
     
-    constructor() ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
-        // Contract ready for deployment
+    constructor(string memory baseURI) ERC20("ETHG Recovery", "ETHGR") Ownable(msg.sender) {
+        // Contract ready for deployment with baseURI parameter
     }
     
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
@@ -240,7 +240,24 @@ contract ETHGRecovery is ERC20, Ownable {
                       <div><strong>Compiler Version:</strong> v0.8.19+commit.7dd6d404</div>
                       <div><strong>License:</strong> MIT License (MIT)</div>
                       <div><strong>Optimization:</strong> No</div>
-                      <div><strong>Constructor Arguments:</strong> (Leave empty)</div>
+                      <div><strong>Constructor Arguments:</strong> ABI-encoded baseURI string</div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-amber-200 bg-amber-50 mb-4">
+                  <CardContent className="p-4">
+                    <h4 className="font-semibold text-amber-800 mb-2">Constructor Arguments Required:</h4>
+                    <div className="text-sm text-amber-700 space-y-2">
+                      <p>Since your contract has <code>constructor(string memory baseURI)</code>, you need to provide the baseURI value used during deployment.</p>
+                      <div className="bg-amber-100 p-2 rounded font-mono text-xs">
+                        Common baseURI values:<br/>
+                        • "" (empty string)<br/>
+                        • "https://api.ethgr.com/metadata/"<br/>
+                        • "ipfs://..."<br/>
+                        • "ar://..."
+                      </div>
+                      <p><strong>To find the exact value:</strong> Check your deployment transaction data or deployment script.</p>
                     </div>
                   </CardContent>
                 </Card>
