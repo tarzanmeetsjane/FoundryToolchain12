@@ -67,6 +67,7 @@ import FinalVerificationSteps from "./pages/FinalVerificationSteps";
 import ContractComparisonAnalysis from "./pages/ContractComparisonAnalysis";
 import DirectVerificationGuide from "./pages/DirectVerificationGuide";
 import SuperSimpleVerification from "./pages/SuperSimpleVerification";
+import CopyPasteVerification from "./pages/CopyPasteVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -385,6 +386,7 @@ export default function App() {
             <Route path="/contract-comparison" component={ContractComparisonAnalysis} />
             <Route path="/direct-verification" component={DirectVerificationGuide} />
             <Route path="/super-simple" component={SuperSimpleVerification} />
+            <Route path="/copy-paste" component={CopyPasteVerification} />
           </Switch>
         </main>
       </div>
