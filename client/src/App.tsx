@@ -61,6 +61,7 @@ import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
 import SimpleVerificationGuide from "./pages/SimpleVerificationGuide";
 import FoundryOfficialGuide from "./pages/FoundryOfficialGuide";
+import BytecodeMatchFix from "./pages/BytecodeMatchFix";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -373,6 +374,7 @@ export default function App() {
             <Route path="/verification-dashboard" component={ContractVerificationDashboard} />
             <Route path="/simple-verification" component={SimpleVerificationGuide} />
             <Route path="/foundry-official" component={FoundryOfficialGuide} />
+            <Route path="/bytecode-fix" component={BytecodeMatchFix} />
           </Switch>
         </main>
       </div>
