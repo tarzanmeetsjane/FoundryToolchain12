@@ -54,6 +54,7 @@ import ERC1155TokenAnalysis from "./pages/ERC1155TokenAnalysis";
 import PortfolioVolatilityAnalysis from "./pages/PortfolioVolatilityAnalysis";
 import RemixContractAnalysis from "./pages/RemixContractAnalysis";
 import SourcifyVerification from "./pages/SourcifyVerification";
+import ExistingContractVerification from "./pages/ExistingContractVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -359,6 +360,7 @@ export default function App() {
             <Route path="/portfolio-volatility" component={PortfolioVolatilityAnalysis} />
             <Route path="/remix-analysis" component={RemixContractAnalysis} />
             <Route path="/sourcify-verification" component={SourcifyVerification} />
+            <Route path="/existing-contracts" component={ExistingContractVerification} />
           </Switch>
         </main>
       </div>
