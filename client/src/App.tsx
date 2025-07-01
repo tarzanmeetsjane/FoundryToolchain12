@@ -64,6 +64,7 @@ import FoundryOfficialGuide from "./pages/FoundryOfficialGuide";
 import BytecodeMatchFix from "./pages/BytecodeMatchFix";
 import BytecodeDecompiler from "./pages/BytecodeDecompiler";
 import FinalVerificationSteps from "./pages/FinalVerificationSteps";
+import ContractComparisonAnalysis from "./pages/ContractComparisonAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -379,6 +380,7 @@ export default function App() {
             <Route path="/bytecode-fix" component={BytecodeMatchFix} />
             <Route path="/bytecode-analysis" component={BytecodeDecompiler} />
             <Route path="/final-verification" component={FinalVerificationSteps} />
+            <Route path="/contract-comparison" component={ContractComparisonAnalysis} />
           </Switch>
         </main>
       </div>
