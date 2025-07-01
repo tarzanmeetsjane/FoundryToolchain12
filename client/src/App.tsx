@@ -20,7 +20,6 @@ import BlacklistReversal from "./pages/BlacklistReversal";
 import VerificationProgress from "./pages/VerificationProgress";
 import TransactionAnalyzer from "./pages/TransactionAnalyzer";
 import StateChangeAnalyzer from "./pages/StateChangeAnalyzer";
-import AutomatedVerification from "./pages/AutomatedVerification";
 import ContractDetails from "./pages/ContractDetails";
 import VerificationSuccess from "./pages/VerificationSuccess";
 import RecoveryStatus from "./pages/RecoveryStatus";
@@ -68,6 +67,7 @@ import ContractComparisonAnalysis from "./pages/ContractComparisonAnalysis";
 import DirectVerificationGuide from "./pages/DirectVerificationGuide";
 import SuperSimpleVerification from "./pages/SuperSimpleVerification";
 import CopyPasteVerification from "./pages/CopyPasteVerification";
+import AutomatedVerification from "./pages/AutomatedVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -387,6 +387,7 @@ export default function App() {
             <Route path="/direct-verification" component={DirectVerificationGuide} />
             <Route path="/super-simple" component={SuperSimpleVerification} />
             <Route path="/copy-paste" component={CopyPasteVerification} />
+            <Route path="/automated" component={AutomatedVerification} />
           </Switch>
         </main>
       </div>
