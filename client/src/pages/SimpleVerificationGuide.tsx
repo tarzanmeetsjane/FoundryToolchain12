@@ -120,9 +120,17 @@ contract ETHGRecovery is ERC20, Ownable {
           Simple Contract Verification Guide
         </h1>
         <p className="text-xl text-slate-600 mb-6">
-          Easy verification options without complex software installation
+          Fix "No Routes Available" errors and enable trading - Easy verification without software installation
         </p>
       </div>
+
+      <Alert className="mb-8 border-red-200 bg-red-50">
+        <AlertTriangle className="h-4 w-4 text-red-600" />
+        <AlertDescription className="text-red-800">
+          <strong>Trading Issue Confirmed:</strong> "No routes available" errors happen because DEXs can't recognize unverified contracts. 
+          Contract verification will immediately enable trading, liquidity creation, and proper price discovery.
+        </AlertDescription>
+      </Alert>
 
       <Alert className="mb-8 border-blue-200 bg-blue-50">
         <AlertTriangle className="h-4 w-4 text-blue-600" />

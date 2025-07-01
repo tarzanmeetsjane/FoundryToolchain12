@@ -5,6 +5,38 @@
 @tailwind utilities;
 
 :root {
+  /* Light mode (default) */
+  --background: 0 0% 100%; /* #FFFFFF */
+  --foreground: 222.2 84% 4.9%; /* #0F0F0F */
+  --muted: 210 40% 96%; /* #F1F5F9 */
+  --muted-foreground: 215.4 16.3% 46.9%; /* #64748B */
+  --popover: 0 0% 100%; /* #FFFFFF */
+  --popover-foreground: 222.2 84% 4.9%; /* #0F0F0F */
+  --card: 0 0% 100%; /* #FFFFFF */
+  --card-foreground: 222.2 84% 4.9%; /* #0F0F0F */
+  --border: 214.3 31.8% 91.4%; /* #E2E8F0 */
+  --input: 214.3 31.8% 91.4%; /* #E2E8F0 */
+  --primary: 194 100% 50%; /* #00D2FF */
+  --primary-foreground: 0 0% 100%; /* #FFFFFF */
+  --secondary: 210 40% 96%; /* #F1F5F9 */
+  --secondary-foreground: 222.2 84% 4.9%; /* #0F0F0F */
+  --accent: 210 40% 96%; /* #F1F5F9 */
+  --accent-foreground: 222.2 84% 4.9%; /* #0F0F0F */
+  --destructive: 0 84% 60%; /* #FF4757 */
+  --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+  --success: 152 100% 50%; /* #00FF88 */
+  --warning: 46 100% 50%; /* #FFB800 */
+  --ring: 194 100% 50%; /* #00D2FF */
+  --radius: 0.75rem;
+  --chart-1: 194 100% 50%; /* #00D2FF */
+  --chart-2: 152 100% 50%; /* #00FF88 */
+  --chart-3: 0 84% 60%; /* #FF4757 */
+  --chart-4: 46 100% 50%; /* #FFB800 */
+  --chart-5: 271 81% 56%; /* #9333EA */
+}
+
+.dark {
+  /* Dark mode */
   --background: 220 13% 4%; /* #0B0E11 */
   --foreground: 0 0% 100%; /* #FFFFFF */
   --muted: 217 11% 12%; /* #161B22 */
@@ -26,12 +58,6 @@
   --success: 152 100% 50%; /* #00FF88 */
   --warning: 46 100% 50%; /* #FFB800 */
   --ring: 194 100% 50%; /* #00D2FF */
-  --radius: 0.75rem;
-  --chart-1: 194 100% 50%; /* #00D2FF */
-  --chart-2: 152 100% 50%; /* #00FF88 */
-  --chart-3: 0 84% 60%; /* #FF4757 */
-  --chart-4: 46 100% 50%; /* #FFB800 */
-  --chart-5: 271 81% 56%; /* #9333EA */
 }
 
 /* Fix for copy/paste code visibility */
