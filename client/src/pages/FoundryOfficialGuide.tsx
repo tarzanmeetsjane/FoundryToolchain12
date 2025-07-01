@@ -293,7 +293,37 @@ export ALCHEMY_API_KEY="YourAlchemyAPIKey"`)}
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Step 5: Verify Contract</h3>
+                <h3 className="text-lg font-semibold">Step 5: Pre-verification Check (Optional)</h3>
+                <p className="text-sm text-slate-600">Use Foundry utilities to verify contract details before verification:</p>
+                <div className="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm whitespace-pre-wrap">
+{`# Check contract bytecode matches
+cast code 0xc2b6d375b7d14c9ce73f97ddf565002cce257308
+
+# Get contract storage
+cast storage 0xc2b6d375b7d14c9ce73f97ddf565002cce257308
+
+# Verify constructor args are empty
+cast abi-encode "constructor()"`}
+                </div>
+                <Button 
+                  onClick={() => copyToClipboard(`# Check contract bytecode matches
+cast code 0xc2b6d375b7d14c9ce73f97ddf565002cce257308
+
+# Get contract storage
+cast storage 0xc2b6d375b7d14c9ce73f97ddf565002cce257308
+
+# Verify constructor args are empty
+cast abi-encode "constructor()"`)}
+                  variant="outline" 
+                  size="sm"
+                >
+                  <Copy className="h-4 w-4 mr-2" />
+                  Copy Verification Checks
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Step 6: Verify Contract</h3>
                 <div className="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm whitespace-pre-wrap">
 {`forge verify-contract \\
   --chain-id 1 \\
