@@ -55,6 +55,7 @@ import PortfolioVolatilityAnalysis from "./pages/PortfolioVolatilityAnalysis";
 import RemixContractAnalysis from "./pages/RemixContractAnalysis";
 import SourcifyVerification from "./pages/SourcifyVerification";
 import ExistingContractVerification from "./pages/ExistingContractVerification";
+import MetadataGenerationGuide from "./pages/MetadataGenerationGuide";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -361,6 +362,7 @@ export default function App() {
             <Route path="/remix-analysis" component={RemixContractAnalysis} />
             <Route path="/sourcify-verification" component={SourcifyVerification} />
             <Route path="/existing-contracts" component={ExistingContractVerification} />
+            <Route path="/metadata-fix" component={MetadataGenerationGuide} />
           </Switch>
         </main>
       </div>
