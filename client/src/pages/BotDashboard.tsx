@@ -317,7 +317,7 @@ export default function BotDashboard() {
                     <div>
                       <CardTitle className="text-lg">{source.name}</CardTitle>
                       <CardDescription>
-                        {source.type.replace("_", " ").toUpperCase()} • {source.address.slice(0, 12)}...
+                        {source.type.replace("_", " ").toUpperCase()} • {source.address ? source.address.slice(0, 12) + '...' : 'No address'}
                       </CardDescription>
                     </div>
                     <Badge variant="outline">
@@ -407,10 +407,10 @@ export default function BotDashboard() {
                   
                   <div className="mt-4 pt-4 border-t">
                     <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Token: {position.tokenAddress.slice(0, 12)}...
+                      Token: {position.tokenAddress ? position.tokenAddress.slice(0, 12) + '...' : 'No address'}
                     </p>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Wallet: {position.walletAddress.slice(0, 12)}...
+                      Wallet: {position.walletAddress ? position.walletAddress.slice(0, 12) + '...' : 'No address'}
                     </p>
                   </div>
                 </CardContent>

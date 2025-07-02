@@ -1,0 +1,33 @@
+[vite] connected.
+Cannot read properties of undefined (reading 'slice')
+Cannot read properties of undefined (reading 'slice')
+The above error occurred in the <BotDashboard> component:
+
+    at BotDashboard (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/src/pages/BotDashboard.tsx:30:23)
+    at Route (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fbad17a6:265:16)
+    at Switch (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fbad17a6:321:17)
+    at main
+    at div
+    at QueryClientProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-UZAEZAFF.js?v=fbad17a6:2933:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Cannot read properties of undefined (reading 'slice')
+[vite] hot updated: /src/pages/BotDashboard.tsx
+[vite] hot updated: /src/index.css?v=OnHxlOnJDa5hz0VHriTKN
+Cannot read properties of undefined (reading 'slice')
+Cannot read properties of undefined (reading 'slice')
+The above error occurred in the <BotDashboard> component:
+
+    at BotDashboard (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/src/pages/BotDashboard.tsx?t=1751419263043:30:23)
+    at Route (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fbad17a6:265:16)
+    at Switch (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fbad17a6:321:17)
+    at main
+    at div
+    at QueryClientProvider (https://53610c8b-3d30-45fb-ac5b-f67bed3d3032-00-2bp6h4olu4fsd.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-UZAEZAFF.js?v=fbad17a6:2933:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Cannot read properties of undefined (reading 'slice')
