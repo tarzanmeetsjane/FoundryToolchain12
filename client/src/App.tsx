@@ -76,6 +76,7 @@ import LiveNetworkStatus from "./pages/LiveNetworkStatus";
 import TransactionAnalysis from "./pages/TransactionAnalysis";
 import HistoricalWalletTimeline from "./pages/HistoricalWalletTimeline";
 import ContractComparison from "./pages/ContractComparison";
+import BytecodeVerification from "./pages/BytecodeVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -405,6 +406,7 @@ export default function App() {
             <Route path="/transaction" component={TransactionAnalysis} />
             <Route path="/timeline" component={HistoricalWalletTimeline} />
             <Route path="/compare" component={ContractComparison} />
+            <Route path="/bytecode" component={BytecodeVerification} />
           </Switch>
         </main>
       </div>
