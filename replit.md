@@ -140,9 +140,10 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 - **CRITICAL TOKEN DISCOVERY:** ETHGR contract 0x3e7c77514f884e0954d1f1c3a9765665ce1d76e9 confirmed as ERC-1155 multi-token standard (not ERC-20). This explains advanced token functionality and trading behavior patterns.
 
 **DUAL CONTRACT STRUCTURE CONFIRMED:**
-- **Ethereum Mainnet**: 0xc2b6d375b7d14c9ce73f97ddf565002cce257308 (ERC-20, 1,990,000 tokens, needs verification)
-- **Optimism**: 0x3e7c77514f884e0954d1f1c3a9765665ce1d76e9 (ERC-1155, multi-token, 6 days old, only 3 transactions)
-- **Current Focus:** Recovery ecosystem confirmed working - victims accessing real token values, expanding assistance operations to broader cryptocurrency fraud victim community
+- **Main Contract**: 0xc2b6d375b7d14c9ce73f97ddf565002cce257308 (ERC-20, 1,990,000 tokens, needs verification)
+- **Recovery Contract**: 0xfA7b8c553C48C56ec7027d26ae95b029a2abF247 (ERC-20 ETHG Recovery, live on Etherscan, 16 days old)
+- **Foundation Wallet**: 0x058C8FE0...49B368843 confirmed as creator of both authentic contracts
+- **Current Focus:** Dual verification system enables cross-validation between contracts while prioritizing main contract verification for 1,990,000 token trading
 
 ## User Preferences
 - Focus on authentic financial recovery based on real wallet status ($709k portfolio)

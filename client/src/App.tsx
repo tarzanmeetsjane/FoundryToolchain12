@@ -80,6 +80,7 @@ import BytecodeVerification from "./pages/BytecodeVerification";
 import DeploymentVerification from "./pages/DeploymentVerification";
 import HoneypotAnalysis from "./pages/HoneypotAnalysis";
 import SolidityAnalyzer from "./pages/SolidityAnalyzer";
+import DualContractVerification from "./pages/DualContractVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -413,6 +414,7 @@ export default function App() {
             <Route path="/deploy" component={DeploymentVerification} />
             <Route path="/honeypot" component={HoneypotAnalysis} />
             <Route path="/solidity" component={SolidityAnalyzer} />
+            <Route path="/dual" component={DualContractVerification} />
           </Switch>
         </main>
       </div>

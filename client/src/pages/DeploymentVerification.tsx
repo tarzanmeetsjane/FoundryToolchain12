@@ -1,5 +1,8 @@
 export default function DeploymentVerification() {
-  const contractAddress = "0xc2b6d375b7d14c9ce73f97ddf565002cce257308";
+  // Dual ETHGR contracts - both legitimate foundation tokens
+  const mainContract = "0xc2b6d375b7d14c9ce73f97ddf565002cce257308";
+  const recoveryContract = "0xfA7b8c553C48C56ec7027d26ae95b029a2abF247";
+  const contractAddress = mainContract;
   
   // Authentic deployment data from user's compilation output
   const deploymentData = {

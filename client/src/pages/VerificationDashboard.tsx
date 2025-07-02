@@ -482,6 +482,23 @@ contract ETHGRecovery is ERC20, Ownable {
             gap: "20px"
           }}>
             <button
+              onClick={() => window.location.href = '/dual'}
+              style={{
+                background: "linear-gradient(135deg, #22c55e, #16a34a)",
+                color: "white",
+                border: "none",
+                padding: "20px",
+                borderRadius: "15px",
+                fontSize: "16px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                transition: "transform 0.3s"
+              }}
+            >
+              🏛️ DUAL CONTRACT VIEW
+            </button>
+
+            <button
               onClick={() => window.location.href = '/honeypot'}
               style={{
                 background: "linear-gradient(135deg, #dc2626, #b91c1c)",
