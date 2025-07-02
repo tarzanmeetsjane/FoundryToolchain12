@@ -73,6 +73,7 @@ import RemixVerification from "./pages/RemixVerification";
 import FinalVerificationSystem from "./pages/FinalVerificationSystem";
 import VerificationStatus from "./pages/VerificationStatus";
 import VerificationDashboard from "./pages/VerificationDashboard";
+import LiveNetworkStatus from "./pages/LiveNetworkStatus";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -398,6 +399,7 @@ export default function App() {
             <Route path="/final" component={FinalVerificationSystem} />
             <Route path="/status" component={VerificationStatus} />
             <Route path="/dashboard" component={VerificationDashboard} />
+            <Route path="/network" component={LiveNetworkStatus} />
           </Switch>
         </main>
       </div>
