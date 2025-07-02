@@ -70,6 +70,7 @@ import CopyPasteVerification from "./pages/CopyPasteVerification";
 import AutomatedVerification from "./pages/AutomatedVerification";
 import QuickVerification from "./pages/QuickVerification";
 import RemixVerification from "./pages/RemixVerification";
+import FinalVerificationSystem from "./pages/FinalVerificationSystem";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -392,6 +393,7 @@ export default function App() {
             <Route path="/automated" component={AutomatedVerification} />
             <Route path="/quick" component={QuickVerification} />
             <Route path="/remix" component={RemixVerification} />
+            <Route path="/final" component={FinalVerificationSystem} />
           </Switch>
         </main>
       </div>
