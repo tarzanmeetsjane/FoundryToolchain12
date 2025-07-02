@@ -201,7 +201,7 @@ export default function BotDashboard() {
                       <div>
                         <CardTitle className="text-lg">{bot.name}</CardTitle>
                         <CardDescription>
-                          {bot.type.replace("_", " ").toUpperCase()} • {bot.walletAddress.slice(0, 8)}...
+                          {bot.type.replace("_", " ").toUpperCase()} • {bot.walletAddress ? bot.walletAddress.slice(0, 8) + '...' : 'No address'}
                         </CardDescription>
                       </div>
                     </div>
