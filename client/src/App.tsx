@@ -46,7 +46,6 @@ import LiveBlockchainInvestigation from "./pages/LiveBlockchainInvestigation";
 import SwapTroubleshooting from "./pages/SwapTroubleshooting";
 import RealPortfolioStatus from "./pages/RealPortfolioStatus";
 import SwapHistoryAnalysis from "./pages/SwapHistoryAnalysis";
-import TransactionAnalysis from "./pages/TransactionAnalysis";
 import ETHGRSwapExecution from "./pages/ETHGRSwapExecution";
 import LiveSwapGuide from "./pages/LiveSwapGuide";
 import ERC1155TokenAnalysis from "./pages/ERC1155TokenAnalysis";
@@ -74,6 +73,7 @@ import FinalVerificationSystem from "./pages/FinalVerificationSystem";
 import VerificationStatus from "./pages/VerificationStatus";
 import VerificationDashboard from "./pages/VerificationDashboard";
 import LiveNetworkStatus from "./pages/LiveNetworkStatus";
+import TransactionAnalysis from "./pages/TransactionAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -400,6 +400,7 @@ export default function App() {
             <Route path="/status" component={VerificationStatus} />
             <Route path="/dashboard" component={VerificationDashboard} />
             <Route path="/network" component={LiveNetworkStatus} />
+            <Route path="/transaction" component={TransactionAnalysis} />
           </Switch>
         </main>
       </div>
