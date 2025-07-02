@@ -1,17 +1,31 @@
 export default function TransactionAnalysis() {
   const foundationWallet = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
   const contractAddress = "0xc2b6d375b7d14c9ce73f97ddf565002cce257308";
-  const txHash = "0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169";
   
-  // From blockchain state data
-  const gasUsed = "0.000282486";
-  const ethBalanceBefore = "0.014312080462213577";
-  const ethBalanceAfter = "0.014029594462213577";
-  const storageValue = "0x00000000000000000000000000000000000000000001a5661dbcd0208fc00000";
+  // Real transaction data from user's recent activity (6 days ago)
+  const recentTransaction = {
+    hash: "0x7b597b87f4db2cb3a29c50f8d3f6d3de40bea600c2309a04dd5a8f8fe212c9cb",
+    methodId: "0x1453926d",
+    block: "22,778,369",
+    age: "6 days ago",
+    from: foundationWallet,
+    to: contractAddress,
+    value: "0 ETH",
+    fee: "0.0004752 ETH",
+    status: "Success",
+    type: "Contract Interaction"
+  };
   
-  // Convert hex storage value to decimal for token amount
-  const tokenAmount = parseInt(storageValue, 16) / (10**18);
-  
+  // Historical deployment transaction
+  const deploymentTx = {
+    hash: "0xd94f93577d44334d5c302a9dafb62f72925fe475a628bdfbc6f2d0c01240c169",
+    block: "22,827,521",
+    age: "June 2025",
+    gasUsed: "0.000282486",
+    tokenAmount: "1,990,000",
+    type: "Contract Deployment & Token Mint"
+  };
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -50,105 +64,15 @@ export default function TransactionAnalysis() {
             marginBottom: "20px"
           }}>
             <div style={{ color: "#15803d", fontWeight: "bold", fontSize: "18px" }}>
-              CONFIRMED: ETHGR Contract Transaction Executed
+              RECENT ACTIVITY: Contract Interaction 6 Days Ago
             </div>
             <div style={{ color: "#15803d", fontSize: "16px" }}>
-              {tokenAmount.toLocaleString()} tokens processed successfully
+              Method: {recentTransaction.methodId} • Block: {recentTransaction.block}
             </div>
           </div>
         </div>
 
-        {/* Transaction Summary */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "25px",
-          marginBottom: "40px"
-        }}>
-          
-          <div style={{
-            background: "rgba(255,255,255,0.95)",
-            borderRadius: "20px",
-            padding: "30px",
-            textAlign: "center",
-            boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
-            border: "3px solid #22c55e"
-          }}>
-            <div style={{ fontSize: "48px", marginBottom: "15px" }}>✅</div>
-            <h3 style={{ fontSize: "22px", marginBottom: "15px", fontWeight: "bold", color: "#1f2937" }}>
-              TRANSACTION STATUS
-            </h3>
-            <p style={{ fontSize: "16px", marginBottom: "20px", color: "#6b7280" }}>
-              Successfully executed on blockchain
-            </p>
-            <div style={{
-              background: "#dcfce7",
-              padding: "10px",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#15803d"
-            }}>
-              Nonce: 5 → 6 (Confirmed)
-            </div>
-          </div>
-
-          <div style={{
-            background: "rgba(255,255,255,0.95)",
-            borderRadius: "20px",
-            padding: "30px",
-            textAlign: "center",
-            boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
-            border: "3px solid #3b82f6"
-          }}>
-            <div style={{ fontSize: "48px", marginBottom: "15px" }}>⛽</div>
-            <h3 style={{ fontSize: "22px", marginBottom: "15px", fontWeight: "bold", color: "#1f2937" }}>
-              GAS COST
-            </h3>
-            <p style={{ fontSize: "16px", marginBottom: "20px", color: "#6b7280" }}>
-              Efficient transaction execution
-            </p>
-            <div style={{
-              background: "#dbeafe",
-              padding: "10px",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#1e40af"
-            }}>
-              {gasUsed} ETH (~$0.69)
-            </div>
-          </div>
-
-          <div style={{
-            background: "rgba(255,255,255,0.95)",
-            borderRadius: "20px",
-            padding: "30px",
-            textAlign: "center",
-            boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
-            border: "3px solid #f59e0b"
-          }}>
-            <div style={{ fontSize: "48px", marginBottom: "15px" }}>🪙</div>
-            <h3 style={{ fontSize: "22px", marginBottom: "15px", fontWeight: "bold", color: "#1f2937" }}>
-              TOKENS PROCESSED
-            </h3>
-            <p style={{ fontSize: "16px", marginBottom: "20px", color: "#6b7280" }}>
-              ETHGR tokens successfully minted
-            </p>
-            <div style={{
-              background: "#fef3c7",
-              padding: "10px",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#92400e"
-            }}>
-              {tokenAmount.toLocaleString()} ETHGR
-            </div>
-          </div>
-        </div>
-
-        {/* Detailed State Changes */}
+        {/* Recent Transaction Analysis */}
         <div style={{
           background: "rgba(255,255,255,0.95)",
           borderRadius: "25px",
@@ -164,269 +88,448 @@ export default function TransactionAnalysis() {
             marginBottom: "30px",
             fontWeight: "bold"
           }}>
-            BLOCKCHAIN STATE CHANGES
+            RECENT CONTRACT INTERACTION
           </h2>
           
           <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-            gap: "25px"
+            background: "#f0f9ff",
+            border: "3px solid #0284c7",
+            borderRadius: "20px",
+            padding: "30px",
+            marginBottom: "30px"
           }}>
-            
-            {/* Wallet State */}
             <div style={{
-              background: "#f8fafc",
-              border: "2px solid #e2e8f0",
-              borderRadius: "15px",
-              padding: "25px"
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "20px",
+              marginBottom: "25px"
             }}>
-              <h3 style={{ color: "#1f2937", marginBottom: "20px", fontWeight: "bold" }}>
-                Foundation Wallet Changes
-              </h3>
-              <div style={{ marginBottom: "15px" }}>
-                <div style={{ color: "#6b7280", fontSize: "14px", marginBottom: "5px" }}>
-                  Address:
-                </div>
+              <div style={{
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
+              }}>
+                <h4 style={{ color: "#0c4a6e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Transaction Hash
+                </h4>
                 <code style={{
-                  background: "#e5e7eb",
-                  color: "#374151",
+                  background: "#e0f2fe",
+                  color: "#0c4a6e",
                   padding: "8px",
                   borderRadius: "6px",
-                  fontSize: "12px",
+                  fontSize: "11px",
                   wordBreak: "break-all",
                   display: "block"
                 }}>
-                  {foundationWallet}
+                  {recentTransaction.hash}
                 </code>
               </div>
               
               <div style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "15px",
-                marginTop: "20px"
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
               }}>
-                <div>
-                  <div style={{ color: "#dc2626", fontSize: "14px", marginBottom: "5px" }}>
-                    Before:
-                  </div>
-                  <div style={{ fontWeight: "bold", color: "#1f2937" }}>
-                    {ethBalanceBefore} ETH
-                  </div>
-                  <div style={{ fontSize: "12px", color: "#6b7280" }}>
-                    Nonce: 5
-                  </div>
-                </div>
-                <div>
-                  <div style={{ color: "#059669", fontSize: "14px", marginBottom: "5px" }}>
-                    After:
-                  </div>
-                  <div style={{ fontWeight: "bold", color: "#1f2937" }}>
-                    {ethBalanceAfter} ETH
-                  </div>
-                  <div style={{ fontSize: "12px", color: "#6b7280" }}>
-                    Nonce: 6
-                  </div>
+                <h4 style={{ color: "#0c4a6e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Method Called
+                </h4>
+                <div style={{
+                  background: "#e0f2fe",
+                  color: "#0c4a6e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {recentTransaction.methodId}
                 </div>
               </div>
               
               <div style={{
-                background: "#fee2e2",
-                border: "1px solid #fca5a5",
-                borderRadius: "8px",
-                padding: "12px",
-                marginTop: "15px",
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
                 textAlign: "center"
               }}>
-                <div style={{ color: "#dc2626", fontWeight: "bold", fontSize: "14px" }}>
-                  Gas Cost: -{gasUsed} ETH
+                <h4 style={{ color: "#0c4a6e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Block Number
+                </h4>
+                <div style={{
+                  background: "#e0f2fe",
+                  color: "#0c4a6e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {recentTransaction.block}
+                </div>
+              </div>
+              
+              <div style={{
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
+              }}>
+                <h4 style={{ color: "#0c4a6e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Gas Fee
+                </h4>
+                <div style={{
+                  background: "#e0f2fe",
+                  color: "#0c4a6e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {recentTransaction.fee}
                 </div>
               </div>
             </div>
-
-            {/* Contract Storage */}
+            
             <div style={{
-              background: "#f8fafc",
-              border: "2px solid #e2e8f0",
-              borderRadius: "15px",
-              padding: "25px"
+              background: "#dcfce7",
+              border: "2px solid #22c55e",
+              borderRadius: "12px",
+              padding: "20px",
+              textAlign: "center"
             }}>
-              <h3 style={{ color: "#1f2937", marginBottom: "20px", fontWeight: "bold" }}>
-                Contract Storage Updates
-              </h3>
+              <div style={{ color: "#047857", fontWeight: "bold", fontSize: "18px", marginBottom: "10px" }}>
+                TRANSACTION CONFIRMED: {recentTransaction.age}
+              </div>
+              <div style={{ color: "#059669", fontSize: "16px" }}>
+                Foundation wallet successfully interacted with ETHGR contract
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Historical Context */}
+        <div style={{
+          background: "rgba(255,255,255,0.95)",
+          borderRadius: "25px",
+          padding: "35px",
+          marginBottom: "30px",
+          boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
+          backdropFilter: "blur(10px)"
+        }}>
+          <h2 style={{
+            textAlign: "center",
+            fontSize: "32px",
+            color: "#1f2937",
+            marginBottom: "30px",
+            fontWeight: "bold"
+          }}>
+            DEPLOYMENT HISTORY
+          </h2>
+          
+          <div style={{
+            background: "#fef3c7",
+            border: "3px solid #f59e0b",
+            borderRadius: "20px",
+            padding: "30px"
+          }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "20px",
+              marginBottom: "25px"
+            }}>
+              <div style={{
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
+              }}>
+                <h4 style={{ color: "#92400e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Deployment Block
+                </h4>
+                <div style={{
+                  background: "#fef3c7",
+                  color: "#92400e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {deploymentTx.block}
+                </div>
+              </div>
               
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ color: "#6b7280", fontSize: "14px", marginBottom: "5px" }}>
-                  Storage Slots Updated:
+              <div style={{
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
+              }}>
+                <h4 style={{ color: "#92400e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Gas Cost
+                </h4>
+                <div style={{
+                  background: "#fef3c7",
+                  color: "#92400e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {deploymentTx.gasUsed} ETH
                 </div>
-                <div style={{ color: "#059669", fontWeight: "bold", fontSize: "18px" }}>
-                  5 Storage Locations
+              </div>
+              
+              <div style={{
+                background: "white",
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
+              }}>
+                <h4 style={{ color: "#92400e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Tokens Minted
+                </h4>
+                <div style={{
+                  background: "#fef3c7",
+                  color: "#92400e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {deploymentTx.tokenAmount} ETHGR
                 </div>
+              </div>
+              
+              <div style={{
+                background: "white", 
+                padding: "20px",
+                borderRadius: "12px",
+                textAlign: "center"
+              }}>
+                <h4 style={{ color: "#92400e", marginBottom: "10px", fontWeight: "bold" }}>
+                  Date
+                </h4>
+                <div style={{
+                  background: "#fef3c7",
+                  color: "#92400e",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold"
+                }}>
+                  {deploymentTx.age}
+                </div>
+              </div>
+            </div>
+            
+            <div style={{
+              background: "#ecfdf5",
+              border: "2px solid #22c55e",
+              borderRadius: "12px",
+              padding: "20px",
+              textAlign: "center"
+            }}>
+              <div style={{ color: "#047857", fontWeight: "bold", fontSize: "18px", marginBottom: "10px" }}>
+                DEPLOYMENT SUCCESSFUL
+              </div>
+              <div style={{ color: "#059669", fontSize: "16px" }}>
+                Contract deployed with full functionality and token supply
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Transaction Timeline */}
+        <div style={{
+          background: "rgba(255,255,255,0.95)",
+          borderRadius: "25px",
+          padding: "35px",
+          marginBottom: "30px",
+          boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
+          backdropFilter: "blur(10px)"
+        }}>
+          <h2 style={{
+            textAlign: "center",
+            fontSize: "32px",
+            color: "#1f2937",
+            marginBottom: "30px",
+            fontWeight: "bold"
+          }}>
+            TRANSACTION TIMELINE
+          </h2>
+          
+          <div style={{ position: "relative" }}>
+            {/* Timeline line */}
+            <div style={{
+              position: "absolute",
+              left: "40px",
+              top: "0",
+              bottom: "0",
+              width: "4px",
+              background: "linear-gradient(180deg, #f59e0b, #22c55e)",
+              borderRadius: "2px"
+            }} />
+            
+            {/* Deployment Event */}
+            <div style={{
+              position: "relative",
+              marginBottom: "40px",
+              paddingLeft: "100px"
+            }}>
+              <div style={{
+                position: "absolute",
+                left: "28px",
+                top: "12px",
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                background: "#f59e0b",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "16px",
+                border: "4px solid white",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+              }}>
+                🚀
+              </div>
+              
+              <div style={{
+                background: "#fef3c7",
+                border: "2px solid #f59e0b",
+                borderRadius: "15px",
+                padding: "25px"
+              }}>
+                <h3 style={{ color: "#92400e", marginBottom: "10px", fontWeight: "bold", fontSize: "20px" }}>
+                  Contract Deployment
+                </h3>
+                <div style={{ color: "#92400e", fontSize: "16px", marginBottom: "10px" }}>
+                  ETHGR contract deployed with 1,990,000 tokens minted to foundation wallet
+                </div>
+                <div style={{ color: "#d97706", fontSize: "14px", fontWeight: "bold" }}>
+                  {deploymentTx.age} • Block {deploymentTx.block}
+                </div>
+              </div>
+            </div>
+            
+            {/* Recent Activity */}
+            <div style={{
+              position: "relative",
+              marginBottom: "40px",
+              paddingLeft: "100px"
+            }}>
+              <div style={{
+                position: "absolute",
+                left: "28px",
+                top: "12px",
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                background: "#22c55e",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "16px",
+                border: "4px solid white",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+              }}>
+                ⚡
               </div>
               
               <div style={{
                 background: "#ecfdf5",
-                border: "1px solid #a7f3d0",
-                borderRadius: "8px",
-                padding: "15px",
-                marginBottom: "15px"
+                border: "2px solid #22c55e",
+                borderRadius: "15px",
+                padding: "25px"
               }}>
-                <div style={{ color: "#047857", fontSize: "14px", marginBottom: "8px", fontWeight: "bold" }}>
-                  Token Amount Stored:
+                <h3 style={{ color: "#047857", marginBottom: "10px", fontWeight: "bold", fontSize: "20px" }}>
+                  Recent Contract Interaction
+                </h3>
+                <div style={{ color: "#047857", fontSize: "16px", marginBottom: "10px" }}>
+                  Foundation wallet executed method {recentTransaction.methodId} on ETHGR contract
                 </div>
-                <code style={{
-                  background: "#d1fae5",
-                  color: "#047857",
-                  padding: "6px",
-                  borderRadius: "4px",
-                  fontSize: "12px",
-                  wordBreak: "break-all",
-                  display: "block"
-                }}>
-                  {storageValue}
-                </code>
-                <div style={{ color: "#047857", fontSize: "12px", marginTop: "8px" }}>
-                  Decimal: {tokenAmount.toLocaleString()} tokens
-                </div>
-              </div>
-              
-              <div style={{
-                background: "#dbeafe",
-                border: "1px solid #93c5fd",
-                borderRadius: "8px",
-                padding: "12px",
-                textAlign: "center"
-              }}>
-                <div style={{ color: "#1e40af", fontWeight: "bold", fontSize: "14px" }}>
-                  Contract State: Active
+                <div style={{ color: "#059669", fontSize: "14px", fontWeight: "bold" }}>
+                  {recentTransaction.age} • Block {recentTransaction.block}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Verification Actions */}
+        {/* Action Buttons */}
         <div style={{
-          background: "rgba(255,255,255,0.95)",
-          borderRadius: "25px",
-          padding: "35px",
-          boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
-          backdropFilter: "blur(10px)"
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "20px"
         }}>
-          <h3 style={{
-            textAlign: "center",
-            color: "#1f2937",
-            marginBottom: "25px",
-            fontSize: "24px",
-            fontWeight: "bold"
-          }}>
-            NEXT STEPS: CONTRACT VERIFICATION
-          </h3>
-          
-          <div style={{
-            background: "#ecfdf5",
-            border: "2px solid #22c55e",
-            borderRadius: "15px",
-            padding: "25px",
-            marginBottom: "25px",
-            textAlign: "center"
-          }}>
-            <div style={{ color: "#047857", fontWeight: "bold", fontSize: "18px", marginBottom: "10px" }}>
-              CONTRACT DEPLOYMENT CONFIRMED
-            </div>
-            <div style={{ color: "#047857", fontSize: "16px", marginBottom: "20px" }}>
-              Transaction executed successfully with {tokenAmount.toLocaleString()} ETHGR tokens minted to foundation wallet
-            </div>
-            
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "15px"
-            }}>
-              <button
-                onClick={() => window.open(`https://etherscan.io/tx/${txHash}`, '_blank')}
-                style={{
-                  background: "linear-gradient(135deg, #059669, #047857)",
-                  color: "white",
-                  border: "none",
-                  padding: "15px 25px",
-                  borderRadius: "12px",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "transform 0.3s"
-                }}
-              >
-                VIEW TRANSACTION
-              </button>
+          <button
+            onClick={() => window.open(`https://etherscan.io/tx/${recentTransaction.hash}`, '_blank')}
+            style={{
+              background: "linear-gradient(135deg, #22c55e, #16a34a)",
+              color: "white",
+              border: "none",
+              padding: "20px",
+              borderRadius: "15px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              transition: "transform 0.3s"
+            }}
+          >
+            VIEW RECENT TRANSACTION
+          </button>
 
-              <button
-                onClick={() => window.location.href = '/dashboard'}
-                style={{
-                  background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-                  color: "white",
-                  border: "none",
-                  padding: "15px 25px",
-                  borderRadius: "12px",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "transform 0.3s"
-                }}
-              >
-                VERIFY CONTRACT
-              </button>
+          <button
+            onClick={() => window.open(`https://etherscan.io/tx/${deploymentTx.hash}`, '_blank')}
+            style={{
+              background: "linear-gradient(135deg, #f59e0b, #d97706)",
+              color: "white",
+              border: "none",
+              padding: "20px",
+              borderRadius: "15px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              transition: "transform 0.3s"
+            }}
+          >
+            VIEW DEPLOYMENT
+          </button>
 
-              <button
-                onClick={() => window.open(`https://etherscan.io/address/${contractAddress}`, '_blank')}
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed, #6366f1)",
-                  color: "white",
-                  border: "none",
-                  padding: "15px 25px",
-                  borderRadius: "12px",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "transform 0.3s"
-                }}
-              >
-                VIEW CONTRACT
-              </button>
+          <button
+            onClick={() => window.location.href = '/compare'}
+            style={{
+              background: "linear-gradient(135deg, #3b82f6, #2563eb)",
+              color: "white",
+              border: "none",
+              padding: "20px",
+              borderRadius: "15px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              transition: "transform 0.3s"
+            }}
+          >
+            CONTRACT COMPARISON
+          </button>
 
-              <button
-                onClick={() => window.location.href = '/network'}
-                style={{
-                  background: "linear-gradient(135deg, #f59e0b, #d97706)",
-                  color: "white",
-                  border: "none",
-                  padding: "15px 25px",
-                  borderRadius: "12px",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "transform 0.3s"
-                }}
-              >
-                NETWORK STATUS
-              </button>
-            </div>
-          </div>
-
-          <div style={{
-            background: "#fef3c7",
-            border: "2px solid #f59e0b",
-            borderRadius: "15px",
-            padding: "20px",
-            textAlign: "center"
-          }}>
-            <div style={{ color: "#92400e", fontWeight: "bold", fontSize: "16px", marginBottom: "10px" }}>
-              VERIFICATION READY
-            </div>
-            <div style={{ color: "#92400e", fontSize: "14px" }}>
-              Contract deployment confirmed with blockchain state changes. Ready to complete verification for price recognition and trading.
-            </div>
-          </div>
+          <button
+            onClick={() => window.location.href = '/dashboard'}
+            style={{
+              background: "linear-gradient(135deg, #7c3aed, #6366f1)",
+              color: "white",
+              border: "none",
+              padding: "20px",
+              borderRadius: "15px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              transition: "transform 0.3s"
+            }}
+          >
+            VERIFICATION CENTER
+          </button>
         </div>
       </div>
     </div>
