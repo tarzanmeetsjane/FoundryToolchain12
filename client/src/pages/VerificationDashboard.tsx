@@ -482,6 +482,23 @@ contract ETHGRecovery is ERC20, Ownable {
             gap: "20px"
           }}>
             <button
+              onClick={() => window.location.href = '/honeypot'}
+              style={{
+                background: "linear-gradient(135deg, #dc2626, #b91c1c)",
+                color: "white",
+                border: "none",
+                padding: "20px",
+                borderRadius: "15px",
+                fontSize: "16px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                transition: "transform 0.3s"
+              }}
+            >
+              ⚠️ HONEYPOT ANALYSIS
+            </button>
+
+            <button
               onClick={copyCode}
               style={{
                 background: "linear-gradient(135deg, #6366f1, #4f46e5)",

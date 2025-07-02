@@ -78,6 +78,8 @@ import HistoricalWalletTimeline from "./pages/HistoricalWalletTimeline";
 import ContractComparison from "./pages/ContractComparison";
 import BytecodeVerification from "./pages/BytecodeVerification";
 import DeploymentVerification from "./pages/DeploymentVerification";
+import HoneypotAnalysis from "./pages/HoneypotAnalysis";
+import SolidityAnalyzer from "./pages/SolidityAnalyzer";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -409,6 +411,8 @@ export default function App() {
             <Route path="/compare" component={ContractComparison} />
             <Route path="/bytecode" component={BytecodeVerification} />
             <Route path="/deploy" component={DeploymentVerification} />
+            <Route path="/honeypot" component={HoneypotAnalysis} />
+            <Route path="/solidity" component={SolidityAnalyzer} />
           </Switch>
         </main>
       </div>
