@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export default function TransactionAnalyzer() {
-  const [txHash, setTxHash] = useState("0x25d770597d6e446666b63712b6fdbc31e66a6587463e66caa8b19246d1256855");
+  const [txHash, setTxHash] = useState("0x7b597b87f4db2cb3a29c50f8d3f6d3de40bea600c2309a04dd5a8f8fe212c9cb");
   const [analysis, setAnalysis] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -34,7 +34,7 @@ export default function TransactionAnalyzer() {
     try {
       // Simulate real transaction analysis
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Mock analysis based on the provided hash
       const mockAnalysis = {
         hash: hash,
@@ -52,7 +52,11 @@ export default function TransactionAnalyzer() {
         isContractInteraction: false,
         relatedContracts: [],
         potentialRecovery: parseFloat("37.245") > 30,
-        analysis: "Large ETH transfer to your wallet - POTENTIAL 37 ETH RECOVERY!"
+        analysis: "Large ETH transfer to your wallet - POTENTIAL 37 ETH RECOVERY!",
+        isRecoveryTransaction: true,
+        functionCall: "migrateTokens",
+        tokensMinted: "1000",
+        tokenValue: "$500"
       };
 
       setAnalysis(mockAnalysis);
