@@ -216,14 +216,14 @@ router.post("/api/discover-wallets", async (req, res) => {
 router.post("/api/frequency-tune", async (req, res) => {
   try {
     const { frequency, amplitude, waveType } = req.body;
-    
+
     // Calculate funding impact based on frequency alignment
     const baseValue = 20.61;
     const frequencyMultiplier = frequency === 528 ? 1.15 : frequency === 639 ? 1.12 : frequency === 417 ? 1.08 : 1.0;
     const amplitudeMultiplier = 1 + (amplitude * 0.1);
-    
+
     const enhancedFunding = baseValue * frequencyMultiplier * amplitudeMultiplier;
-    
+
     res.json({
       originalFunding: baseValue,
       enhancedFunding: Math.round(enhancedFunding * 100) / 100,
@@ -235,6 +235,26 @@ router.post("/api/frequency-tune", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to process frequency tuning" });
+  }
+});
+
+// Routescan Analysis Route
+router.get("/api/routescan/erc20-transfers", async (req, res) => {
+  try {
+    const address = "0x058C8FE01E5c9eaC6ee19e6673673B549B368843";
+    const excludedChainIds = "1682324,2061,80002,4202,1234";
+    const ecosystem = "all";
+    const sort = "desc";
+    const limit = "50";
+
+    const apiUrl = `https://cdn-canary.routescan.io/api/evm/all/address/${address}/erc20-transfers?excludedChainIds=${excludedChainIds}&ecosystem=${ecosystem}&sort=${sort}&limit=${limit}`;
+
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from Routescan:", error);
+    res.status(500).json({ error: "Failed to fetch ERC20 transfers from Routescan" });
   }
 });
 
