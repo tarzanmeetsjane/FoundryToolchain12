@@ -82,6 +82,7 @@ import HoneypotAnalysis from "./pages/HoneypotAnalysis";
 import SolidityAnalyzer from "./pages/SolidityAnalyzer";
 import DualContractVerification from "./pages/DualContractVerification";
 import { Route, Switch } from "wouter";
+import TokenValueProof from "./pages/TokenValueProof";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -99,7 +100,7 @@ const queryClient = new QueryClient({
 
 function Navigation() {
   const [location] = useLocation();
-  
+
   const navItems = [
     { path: "/", label: "Home", icon: Target },
     { path: "/contract-verification", label: "Fix $0.00 Value", icon: Shield },
@@ -263,7 +264,7 @@ function LiquidityPoolCreation() {
                 Execute Conversion on Uniswap
               </Button>
             </Link>
-            
+
             <Button variant="outline" className="w-full">
               Review Transaction Details
             </Button>
@@ -304,7 +305,7 @@ function LiquidityPoolCreation() {
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Quantum Enhancement Preview */}
       <Card className="max-w-2xl mx-auto border-purple-200">
         <CardHeader>
@@ -335,7 +336,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-slate-50">
         <Navigation />
-        
+
         <main>
           <Switch>
             <Route path="/" component={OptimismVerification} />
@@ -415,6 +416,7 @@ export default function App() {
             <Route path="/honeypot" component={HoneypotAnalysis} />
             <Route path="/solidity" component={SolidityAnalyzer} />
             <Route path="/dual" component={DualContractVerification} />
+          <Route path="/token-value-proof" component={TokenValueProof} />
           </Switch>
         </main>
       </div>
