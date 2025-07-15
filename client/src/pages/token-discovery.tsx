@@ -1,4 +1,8 @@
-import { useState } from 'react';
+# Deploy
+npx hardhat run scripts/hardhat-deploy.ts --network routescan
+
+# Verify (replace with actual deployed address)
+npx hardhat verify --network routescan 0x[NEW_CONTRACT_ADDRESS]npx hardhat verify --network routescan 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308import { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
