@@ -1,0 +1,65 @@
+~/workspace$ ./verify-contract.sh
+bash: ./verify-contract.sh: Permission denied
+~/workspace$ chmod +x verify-contract.sh
+~/workspace$ ./verify-contract.sh
+=== ETHGR Contract Verification ===
+Contract: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308
+Using exact deployed contract source
+
+Attempting verification with exact deployed contract source...
+./verify-contract.sh: line 10: forge: command not found
+
+If that fails, trying with different constructor args...
+./verify-contract.sh: line 23: forge: command not found
+
+Verification commands executed!
+~/workspace$ foundryup
+bash: foundryup: command not found
+~/workspace$ curl -L https://foundry.paradigm.xyz | bashcurl -L https://foundry.paradigm.xyz | bash
+foundryup
+bash: bashcurl: command not found
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   167  100   167    0     0   2835      0 --:--:-- --:--:-- --:--:--  2879
+100  2196  100  2196    0     0  22705      0 --:--:-- --:--:-- --:--:-- 22705
+curl: Failed writing body
+bash: foundryup: command not found
+~/workspace$ ./verify-contract.sh
+=== ETHGR Contract Verification ===
+Contract: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308
+Installing Foundry...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   167  100   167    0     0   2175      0 --:--:-- --:--:-- --:--:--  2197
+100  2196  100  2196    0     0  10202      0 --:--:-- --:--:-- --:--:-- 22639
+Installing foundryup...
+/nix/store/0nxvi9r5ymdlr2p24rjj9qzyms72zld1-bash-interactive-5.2p37/bin/bash: line 52: /home/runner/.bashrc: Permission denied
+
+Detected your preferred shell is bash and added foundryup to PATH.
+Run 'source /home/runner/.bashrc' or start a new terminal session to use foundryup.
+Then, simply run 'foundryup' to install Foundry.
+Using exact deployed contract source
+
+Attempting verification with exact deployed contract source...
+./verify-contract.sh: line 23: forge: command not found
+
+If that fails, trying with different constructor args...
+./verify-contract.sh: line 36: forge: command not found
+
+Verification commands executed!
+~/workspace$ curl -L https://foundry.paradigm.xyz | bash
+foundryup
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   167  100   167    0     0   2268      0 --:--:-- --:--:-- --:--:--  2287
+100  2196  100  2196    0     0  19480      0 --:--:-- --:--:-- --:--:-- 19480
+Installing foundryup...
+/nix/store/0nxvi9r5ymdlr2p24rjj9qzyms72zld1-bash-interactive-5.2p37/bin/bash: line 52: /home/runner/.bashrc: Permission denied
+
+Detected your preferred shell is bash and added foundryup to PATH.
+Run 'source /home/runner/.bashrc' or start a new terminal session to use foundryup.
+Then, simply run 'foundryup' to install Foundry.
+bash: foundryup: command not found
+~/workspace$ Run 'source /home/runner/.bashrc'
+bash: Run: command not found
+~/workspace$ 
