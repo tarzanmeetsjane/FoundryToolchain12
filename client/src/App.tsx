@@ -83,6 +83,7 @@ import SolidityAnalyzer from "./pages/SolidityAnalyzer";
 import DualContractVerification from "./pages/DualContractVerification";
 import OptimismContractFix from "./pages/OptimismContractFix";
 import TokenLocationStatus from "./pages/TokenLocationStatus";
+import TokenDiscoveryResults from "./pages/TokenDiscoveryResults";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -419,6 +420,7 @@ export default function App() {
             <Route path="/dual" component={DualContractVerification} />
             <Route path="/optimism-fix" component={OptimismContractFix} />
             <Route path="/token-status" component={TokenLocationStatus} />
+            <Route path="/discovery" component={TokenDiscoveryResults} />
 
           </Switch>
         </main>
