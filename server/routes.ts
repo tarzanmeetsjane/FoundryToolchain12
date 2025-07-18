@@ -258,4 +258,20 @@ router.get("/api/routescan/erc20-transfers", async (req, res) => {
   }
 });
 
+// Placeholder for ETH Recovery Execution Route
+router.post("/api/execute-recovery", async (req, res) => {
+    try {
+        // Assuming ethRecoveryExecution is defined elsewhere and handles the actual execution
+        // This is a placeholder; you'll need to implement the ethRecoveryExecution service.
+        // const result = await ethRecoveryExecution.executeRecovery();
+        // res.json(result);
+
+        // Replace the above with your actual logic to interact with the ethRecoveryExecution service
+        res.status(500).json({ error: "ETH recovery execution not implemented. Implement `ethRecoveryExecution.executeRecovery()`" });
+    } catch (error) {
+        console.error("Error executing ETH recovery:", error);
+        res.status(500).json({ error: "Failed to execute ETH recovery" });
+    }
+});
+
 export default router;
