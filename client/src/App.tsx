@@ -85,6 +85,7 @@ import OptimismContractFix from "./pages/OptimismContractFix";
 import TokenLocationStatus from "./pages/TokenLocationStatus";
 import TokenDiscoveryResults from "./pages/TokenDiscoveryResults";
 import LiveBlockchainAnalysis from "./pages/LiveBlockchainAnalysis";
+import EthRecoverySystem from "./pages/EthRecoverySystem";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -423,6 +424,7 @@ export default function App() {
             <Route path="/token-status" component={TokenLocationStatus} />
             <Route path="/discovery" component={TokenDiscoveryResults} />
             <Route path="/live-analysis" component={LiveBlockchainAnalysis} />
+            <Route path="/eth-recovery" component={EthRecoverySystem} />
 
           </Switch>
         </main>

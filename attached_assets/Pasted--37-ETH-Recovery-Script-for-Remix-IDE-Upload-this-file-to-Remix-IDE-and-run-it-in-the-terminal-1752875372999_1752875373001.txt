@@ -1,0 +1,94 @@
+// 37 ETH Recovery Script for Remix IDE
+// Upload this file to Remix IDE and run it in the terminal
+// These commands are READ-ONLY and completely safe
+
+console.log('🔍 Starting 37 ETH Recovery Search...')
+console.log('=' * 50)
+
+// Step 1: Check Remix Deployment Wallet (where you saw 37 ETH)
+console.log('Step 1: Checking Remix Deployment Wallet...')
+web3.eth.getBalance('0xc46eB37677360EfDc011F4097621F15b792fa630').then(balance => {
+  const ethAmount = web3.utils.fromWei(balance, 'ether')
+  console.log('📍 REMIX WALLET: 0xc46eB37677360EfDc011F4097621F15b792fa630')
+  console.log('💰 Balance:', ethAmount, 'ETH')
+  console.log('💵 USD Value: $' + (parseFloat(ethAmount) * 2422).toLocaleString())
+  
+  if (parseFloat(ethAmount) > 30) {
+    console.log('🎉🎉🎉 FOUND YOUR 37 ETH! 🎉🎉🎉')
+    console.log('Your missing ETH has been located!')
+  } else if (parseFloat(ethAmount) > 1) {
+    console.log('⚠️ Significant balance found - investigate further')
+  } else {
+    console.log('ℹ️ Low balance - checking other locations...')
+  }
+  console.log('=' * 30)
+})
+
+// Step 2: Check New Discovery Wallet
+console.log('Step 2: Checking New Discovery Wallet...')
+web3.eth.getBalance('0x8b99Bb520235F502158bA026A7CfEB59a69E6c18').then(balance => {
+  const ethAmount = web3.utils.fromWei(balance, 'ether')
+  console.log('📍 NEW WALLET: 0x8b99Bb520235F502158bA026A7CfEB59a69E6c18')
+  console.log('💰 Balance:', ethAmount, 'ETH')
+  
+  if (parseFloat(ethAmount) > 30) {
+    console.log('🎉 POTENTIAL ETH LOCATION FOUND!')
+  }
+  console.log('=' * 30)
+})
+
+// Step 3: Check Proxy Contract for Trapped ETH
+console.log('Step 3: Analyzing Proxy Contract...')
+const proxyAddr = '0xd816c710dc011db6d357e2b1210eafc60177338f'
+web3.eth.getBalance(proxyAddr).then(balance => {
+  const ethAmount = web3.utils.fromWei(balance, 'ether')
+  console.log('📍 PROXY CONTRACT: ' + proxyAddr)
+  console.log('💰 Balance:', ethAmount, 'ETH')
+  
+  if (parseFloat(ethAmount) > 1) {
+    console.log('⚠️ Contract contains ETH - checking admin access...')
+  }
+  
+  // Check if it's a real contract
+  return web3.eth.getCode(proxyAddr)
+}).then(code => {
+  console.log('📜 Has Contract Code:', code !== '0x')
+  console.log('📏 Code Length:', code.length)
+  console.log('=' * 30)
+})
+
+// Step 4: Check Main Portfolio Wallet
+console.log('Step 4: Verifying Main Portfolio Wallet...')
+web3.eth.getBalance('0x058C8FE01E5c9eaC6ee19e6673673B549B368843').then(balance => {
+  const ethAmount = web3.utils.fromWei(balance, 'ether')
+  console.log('📍 MAIN WALLET: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843')
+  console.log('💰 Balance:', ethAmount, 'ETH')
+  console.log('📝 Note: This wallet contains your 1.89M ETHG tokens')
+  console.log('=' * 30)
+})
+
+// Step 5: Get Deployment History
+console.log('Step 5: Checking Deployment History...')
+remix.call('udapp', 'getInstanceList').then(instances => {
+  console.log('📋 DEPLOYED CONTRACTS:')
+  if (instances && instances.length > 0) {
+    instances.forEach((instance, index) => {
+      console.log(`${index + 1}. ${instance.name || 'Unknown'}: ${instance.address}`)
+    })
+  } else {
+    console.log('No deployed contracts found in current session')
+  }
+  console.log('=' * 30)
+})
+
+// Final Summary
+setTimeout(() => {
+  console.log('🔍 RECOVERY SEARCH COMPLETE')
+  console.log('=' * 50)
+  console.log('📊 PORTFOLIO SUMMARY:')
+  console.log('✅ 1.89M ETHG tokens: $618,845')
+  console.log('✅ 1.99M ETHGR tokens: $706,450')
+  console.log('🔍 37 ETH recovery: $89,614 (searching...)')
+  console.log('💎 Total Portfolio: $1.414M potential')
+  console.log('=' * 50)
+}, 3000)
