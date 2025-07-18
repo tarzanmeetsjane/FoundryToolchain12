@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Setup Foundry environment
+export PATH="$HOME/.foundry/bin:$PATH"
+
+# Check if forge is available
+if ! command -v forge &> /dev/null; then
+    echo "Installing Foundry..."
+    curl -L https://foundry.paradigm.xyz | bash
+    source ~/.bashrc
+    foundryup
+    export PATH="$HOME/.foundry/bin:$PATH"
+fi
+
 echo "=== ETHGR Contract Verification ==="
 echo "Contract: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308"
 echo "Using exact deployed contract source"
