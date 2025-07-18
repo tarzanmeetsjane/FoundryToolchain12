@@ -82,7 +82,6 @@ import HoneypotAnalysis from "./pages/HoneypotAnalysis";
 import SolidityAnalyzer from "./pages/SolidityAnalyzer";
 import DualContractVerification from "./pages/DualContractVerification";
 import { Route, Switch } from "wouter";
-import TokenValueProof from "./pages/TokenValueProof";
 
 const queryClient = new QueryClient({
   defaultOptions: {
