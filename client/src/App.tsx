@@ -415,7 +415,7 @@ export default function App() {
             <Route path="/honeypot" component={HoneypotAnalysis} />
             <Route path="/solidity" component={SolidityAnalyzer} />
             <Route path="/dual" component={DualContractVerification} />
-          <Route path="/token-value-proof" component={TokenValueProof} />
+
           </Switch>
         </main>
       </div>
