@@ -274,4 +274,16 @@ router.post("/api/execute-recovery", async (req, res) => {
     }
 });
 
+// ETH recovery execution endpoint
+router.post('/api/execute-eth-recovery', async (req, res) => {
+  try {
+    const { ETHRecoveryExecution } = await import('./eth-recovery-execution');
+    const ethRecovery = new ETHRecoveryExecution();
+    const result = await ethRecovery.executeCompleteRecoveryToETH();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 export default router;
