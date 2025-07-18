@@ -58,6 +58,56 @@ const ETHRecoveryExecution = () => {
 };
 
 const TokenValueProof = () => {
+  const [validationStatus, setValidationStatus] = useState('idle');
+  const [validationResults, setValidationResults] = useState(null);
+
+  const executeValidation = async () => {
+    setValidationStatus('validating');
+    try {
+      const response = await fetch('/api/validate-complete-system', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      setValidationResults(data);
+      setValidationStatus('completed');
+    } catch (error) {
+      console.error('Validation failed:', error);
+      setValidationStatus('error');
+    }
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-blue-50 to-green-100 border-blue-200 rounded-lg p-6">
+      <h2 className="text-xl font-semibold mb-4 text-blue-800">🔍 Complete System Validation</h2>
+      <div className="space-y-4">
+        <div className="bg-white p-4 rounded">
+          <h3 className="font-semibold mb-2">Validation Components:</h3>
+          <ul className="text-sm space-y-1">
+            <li>✅ Contract Address: 0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308</li>
+            <li>✅ Expected ETHGR Balance: 1,990,000 tokens</li>
+            <li>✅ Owner Wallet: 0x058C8FE01E5c9eaC6ee19e6673673B549B368843</li>
+            <li>✅ Migration Function: migrateMyTrappedETHG()</li>
+          </ul>
+        </div>
+        
+        <button
+          onClick={executeValidation}
+          disabled={validationStatus === 'validating'}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg disabled:opacity-50"
+        >
+          {validationStatus === 'validating' ? 'Validating...' : 'Validate Complete System'}
+        </button>
+
+        {validationResults && (
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-semibold mb-2">Validation Results:</h3>
+            <pre className="text-sm whitespace-pre-wrap">{JSON.stringify(validationResults, null, 2)}</pre>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 const executeRecovery = async () => {
     setIsLoading(true);

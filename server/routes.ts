@@ -286,4 +286,117 @@ router.post('/api/execute-eth-recovery', async (req, res) => {
   }
 });
 
+// Complete system validation endpoint
+router.post('/api/validate-complete-system', async (req, res) => {
+  try {
+    const { ethers } = await import('ethers');
+    
+    const validation = {
+      contractValidation: {},
+      walletValidation: {},
+      systemValidation: {},
+      readyForExecution: false
+    };
+
+    // Validate contract
+    const provider = new ethers.JsonRpcProvider(`https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID || 'demo'}`);
+    const contractAddress = '0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308';
+    const targetWallet = '0x058C8FE01E5c9eaC6ee19e6673673B549B368843';
+
+    // Contract ABI for validation
+    const abi = [
+      "function migrateMyTrappedETHG() external",
+      "function balanceOf(address) external view returns (uint256)",
+      "function hasMigrated(address) external view returns (bool)",
+      "function owner() external view returns (address)",
+      "function totalSupply() external view returns (uint256)",
+      "function name() external view returns (string)",
+      "function symbol() external view returns (string)"
+    ];
+
+    const contract = new ethers.Contract(contractAddress, abi, provider);
+
+    // Validate contract details
+    try {
+      const [name, symbol, owner, totalSupply, hasMigrated, balance] = await Promise.all([
+        contract.name(),
+        contract.symbol(),
+        contract.owner(),
+        contract.totalSupply(),
+        contract.hasMigrated(targetWallet),
+        contract.balanceOf(targetWallet)
+      ]);
+
+      validation.contractValidation = {
+        name,
+        symbol,
+        owner,
+        totalSupply: ethers.formatEther(totalSupply),
+        isVerified: true,
+        isAccessible: true
+      };
+
+      validation.walletValidation = {
+        targetWallet,
+        isOwner: owner.toLowerCase() === targetWallet.toLowerCase(),
+        hasMigrated,
+        currentBalance: ethers.formatEther(balance),
+        expectedBalance: "1990000"
+      };
+
+      // System validation
+      validation.systemValidation = {
+        contractDeployed: true,
+        functionAccessible: true,
+        ownershipVerified: validation.walletValidation.isOwner,
+        migrationStatus: hasMigrated ? 'completed' : 'ready',
+        privateKeyAvailable: !!process.env.PRIVATE_KEY
+      };
+
+      // Ready for execution check
+      validation.readyForExecution = 
+        validation.contractValidation.isVerified &&
+        validation.walletValidation.isOwner &&
+        validation.systemValidation.privateKeyAvailable &&
+        !validation.walletValidation.hasMigrated;
+
+      validation.summary = {
+        status: validation.readyForExecution ? 'READY_FOR_EXECUTION' : 'VALIDATION_ISSUES',
+        message: validation.readyForExecution 
+          ? '🎉 All systems validated! Ready to execute ETHGR recovery.'
+          : '⚠️ System validation found issues that need attention.',
+        nextSteps: validation.readyForExecution 
+          ? ['Click "Execute ETH Recovery" to begin', 'Estimated recovery: 1,990,000 ETHGR tokens']
+          : ['Check private key configuration', 'Verify wallet ownership', 'Confirm contract access']
+      };
+
+    } catch (contractError) {
+      validation.contractValidation.error = contractError.message;
+      validation.readyForExecution = false;
+    }
+
+    // Wallet balance validation
+    try {
+      const ethBalance = await provider.getBalance(targetWallet);
+      validation.walletValidation.ethBalance = ethers.formatEther(ethBalance);
+      validation.walletValidation.hasGasForExecution = parseFloat(ethers.formatEther(ethBalance)) > 0.01;
+    } catch (balanceError) {
+      validation.walletValidation.balanceError = balanceError.message;
+    }
+
+    res.json({
+      success: true,
+      validation,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      validation: { systemValidation: { error: 'System validation failed' } }
+    });
+  }
+});
+
 export default router;

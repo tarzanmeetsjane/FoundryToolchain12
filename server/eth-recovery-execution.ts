@@ -5,6 +5,7 @@ export class ETHRecoveryExecution {
   private targetWallet: string;
   private ethgrContract: string;
   private uniswapRouter: string;
+  private contractAddress = '0xc2B6D375B7D14c9CE73f97Ddf565002CcE257308';
 
   constructor() {
     this.provider = new ethers.JsonRpcProvider(`https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID || 'demo'}`);
