@@ -345,15 +345,15 @@ setTimeout(() => {
               <div className="text-green-300">// 37 ETH Recovery Script for Remix IDE</div>
               <div className="text-green-300">// These commands are READ-ONLY and completely safe</div>
               <br/>
-              <div className="text-yellow-400">console.log('🔍 Starting 37 ETH Recovery Search...')</div>
+              <div className="text-yellow-400">console.log('Starting 37 ETH Recovery Search...')</div>
               <br/>
-              <div className="text-blue-400">web3.eth.getBalance('{walletAddresses.remix}').then(balance => {'{'}</div>
+              <div className="text-blue-400">web3.eth.getBalance('wallet_address').then(balance)</div>
               <div className="text-white ml-4">const ethAmount = web3.utils.fromWei(balance, 'ether')</div>
-              <div className="text-white ml-4">console.log('📍 REMIX WALLET:', ethAmount, 'ETH')</div>
-              <div className="text-white ml-4">if (parseFloat(ethAmount) > 30) {'{'}</div>
-              <div className="text-green-400 ml-8">console.log('🎉🎉🎉 FOUND YOUR 37 ETH! 🎉🎉🎉')</div>
-              <div className="text-white ml-4">{'}'}</div>
-              <div className="text-blue-400">{'}'}</div>
+              <div className="text-white ml-4">console.log('REMIX WALLET:', ethAmount, 'ETH')</div>
+              <div className="text-white ml-4">if (parseFloat(ethAmount) greater than 30)</div>
+              <div className="text-green-400 ml-8">console.log('FOUND YOUR 37 ETH!')</div>
+              <div className="text-white ml-4">end if</div>
+              <div className="text-blue-400">end function</div>
               <br/>
               <div className="text-gray-400">// ... continues for all 4 wallet addresses</div>
             </div>
