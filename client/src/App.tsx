@@ -88,6 +88,7 @@ import LiveBlockchainAnalysis from "./pages/LiveBlockchainAnalysis";
 import EthRecoverySystem from "./pages/EthRecoverySystem";
 import ContractLookup from "./pages/ContractLookup";
 import DownloadAnalyzer from "./pages/DownloadAnalyzer";
+import JavaScriptAnalysis from "./pages/JavaScriptAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -429,6 +430,7 @@ export default function App() {
             <Route path="/eth-recovery" component={EthRecoverySystem} />
             <Route path="/contract-lookup" component={ContractLookup} />
             <Route path="/download-analysis" component={DownloadAnalyzer} />
+            <Route path="/js-analysis" component={JavaScriptAnalysis} />
 
           </Switch>
         </main>
