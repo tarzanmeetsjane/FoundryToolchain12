@@ -89,6 +89,7 @@ import EthRecoverySystem from "./pages/EthRecoverySystem";
 import ContractLookup from "./pages/ContractLookup";
 import DownloadAnalyzer from "./pages/DownloadAnalyzer";
 import JavaScriptAnalysis from "./pages/JavaScriptAnalysis";
+import DelegationAnalysis from "./pages/DelegationAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -431,6 +432,7 @@ export default function App() {
             <Route path="/contract-lookup" component={ContractLookup} />
             <Route path="/download-analysis" component={DownloadAnalyzer} />
             <Route path="/js-analysis" component={JavaScriptAnalysis} />
+            <Route path="/delegation" component={DelegationAnalysis} />
 
           </Switch>
         </main>
