@@ -90,6 +90,7 @@ import ContractLookup from "./pages/ContractLookup";
 import DownloadAnalyzer from "./pages/DownloadAnalyzer";
 import JavaScriptAnalysis from "./pages/JavaScriptAnalysis";
 import DelegationAnalysis from "./pages/DelegationAnalysis";
+import ActionPlan from "./pages/ActionPlan";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -433,6 +434,7 @@ export default function App() {
             <Route path="/download-analysis" component={DownloadAnalyzer} />
             <Route path="/js-analysis" component={JavaScriptAnalysis} />
             <Route path="/delegation" component={DelegationAnalysis} />
+            <Route path="/action-plan" component={ActionPlan} />
 
           </Switch>
         </main>
