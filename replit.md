@@ -159,8 +159,8 @@ Advanced blockchain security platform for analyzing cryptocurrency fraud contrac
 - Use real blockchain data via Etherscan API integration
 - Prefer professional gradient-based aesthetics with smooth animations to build victim trust
 - Clarify actual recovery timeline vs platform demonstration scenarios
-- User initially confused about Optimism deployment but confirmed ready to proceed
-- Prefers clear step-by-step guidance with reassurance about Optimism benefits
+- User reports Optimism sign-in issues, preferring direct Ethereum mainnet conversion
+- Prefers clear step-by-step guidance focusing on ETH conversion over L2 alternatives
 - Extremely excited about verification process and appreciative of assistance
 - Ready to submit Etherscan verification to fix "N/A" price display issue
 - Confirmed understanding of wallet safety and contract ownership

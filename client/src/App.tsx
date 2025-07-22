@@ -94,6 +94,7 @@ import ActionPlan from "./pages/ActionPlan";
 import VerificationHelper from "./pages/VerificationHelper";
 import FoundryVerificationGuide from "./pages/FoundryVerificationGuide";
 import VerificationFix from "./pages/VerificationFix";
+import EthConversion from "./pages/EthConversion";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -442,6 +443,7 @@ export default function App() {
             <Route path="/foundry-guide" component={FoundryVerificationGuide} />
             <Route path="/verification-progress" component={VerificationProgress} />
             <Route path="/verification-error" component={VerificationFix} />
+            <Route path="/eth-conversion" component={EthConversion} />
 
           </Switch>
         </main>
