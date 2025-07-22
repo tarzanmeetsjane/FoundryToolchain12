@@ -92,6 +92,7 @@ import JavaScriptAnalysis from "./pages/JavaScriptAnalysis";
 import DelegationAnalysis from "./pages/DelegationAnalysis";
 import ActionPlan from "./pages/ActionPlan";
 import VerificationHelper from "./pages/VerificationHelper";
+import FoundryVerificationGuide from "./pages/FoundryVerificationGuide";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -437,6 +438,7 @@ export default function App() {
             <Route path="/delegation" component={DelegationAnalysis} />
             <Route path="/action-plan" component={ActionPlan} />
             <Route path="/verification-fix" component={VerificationHelper} />
+            <Route path="/foundry-guide" component={FoundryVerificationGuide} />
 
           </Switch>
         </main>
