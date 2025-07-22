@@ -70,7 +70,6 @@ import AutomatedVerification from "./pages/AutomatedVerification";
 import QuickVerification from "./pages/QuickVerification";
 import RemixVerification from "./pages/RemixVerification";
 import FinalVerificationSystem from "./pages/FinalVerificationSystem";
-import VerificationStatus from "./pages/VerificationStatus";
 import VerificationDashboard from "./pages/VerificationDashboard";
 import LiveNetworkStatus from "./pages/LiveNetworkStatus";
 import TransactionAnalysis from "./pages/TransactionAnalysis";
