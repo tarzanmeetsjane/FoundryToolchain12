@@ -439,6 +439,7 @@ export default function App() {
             <Route path="/action-plan" component={ActionPlan} />
             <Route path="/verification-fix" component={VerificationHelper} />
             <Route path="/foundry-guide" component={FoundryVerificationGuide} />
+            <Route path="/verification-progress" component={VerificationProgress} />
 
           </Switch>
         </main>
