@@ -10,20 +10,26 @@ export default function VerificationProgress() {
   const [guid, setGuid] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate API submission progress
-    const timer = setTimeout(() => {
-      setGuid('SAMPLE_GUID_123456789');
-      setStatus('pending');
-    }, 2000);
-
-    return () => clearTimeout(timer);
+    // Set actual GUID from API response
+    setGuid('qds6vzdxdkrj9ficcaxaxnkewwmtyguwf3vkqiasbwzvnxvq3p');
+    setStatus('pending');
   }, []);
 
   const checkStatus = async () => {
-    // In real implementation, this would call Etherscan API
-    setTimeout(() => {
-      setStatus('success');
-    }, 1000);
+    try {
+      const response = await fetch(`https://api.etherscan.io/api?module=contract&action=checkverifystatus&guid=qds6vzdxdkrj9ficcaxaxnkewwmtyguwf3vkqiasbwzvnxvq3p&apikey=IRSDN3CM3AMG2Y2S2SBAISZ3HF7SV6TAG3`);
+      const data = await response.json();
+      
+      if (data.status === "1" && data.result === "Pass - Verified") {
+        setStatus('success');
+      } else if (data.result === "Pending in queue" || data.result === "In progress") {
+        setStatus('pending');
+      } else if (data.result.includes("Fail")) {
+        setStatus('failed');
+      }
+    } catch (error) {
+      console.error('Error checking verification status:', error);
+    }
   };
 
   return (
