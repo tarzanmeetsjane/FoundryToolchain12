@@ -10,14 +10,48 @@ export default function VerificationProgress() {
   const [guid, setGuid] = useState<string | null>(null);
 
   useEffect(() => {
-    // Set actual GUID from API response
-    setGuid('qds6vzdxdkrj9ficcaxaxnkewwmtyguwf3vkqiasbwzvnxvq3p');
-    setStatus('pending');
+    // Monitor latest verification attempt
+    const checkLatestStatus = async () => {
+      try {
+        // Check multiple recent GUIDs
+        const guids = [
+          'sqf5ajr6ddmdxc7fkpiejbiqg4myqyv3bp73hmzumfqb7ecwuy', // Latest v0.8.20 attempt
+          'sxxgmi13zthgctpipsufdqtmluvaaf5dkn9z9fhxuwsxzxeeqh',
+          'n6wc9saygi7u4teaptjxt89yvrncmuktncx7aj9adjfjlvzws3',
+          '5rwcq2grdrgkkbkj4brvucgqv8vnmjd6mitprvtsq3p5d2m3zb'
+        ];
+        
+        for (const guid of guids) {
+          const response = await fetch(`https://api.etherscan.io/api?module=contract&action=checkverifystatus&guid=${guid}&apikey=${process.env.ETHERSCAN_API_KEY || 'IRSDN3CM3AMG2Y2S2SBAISZ3HF7SV6TAG3'}`);
+          const data = await response.json();
+          
+          if (data.status === "1" && data.result === "Pass - Verified") {
+            setGuid(guid);
+            setStatus('success');
+            return;
+          } else if (data.result === "Pending in queue" || data.result === "In progress") {
+            setGuid(guid);
+            setStatus('pending');
+            return;
+          }
+        }
+        
+        // If no success found, set to pending for new attempt
+        setStatus('pending');
+      } catch (error) {
+        console.error('Error checking verification status:', error);
+        setStatus('pending');
+      }
+    };
+    
+    checkLatestStatus();
   }, []);
 
   const checkStatus = async () => {
+    if (!guid) return;
+    
     try {
-      const response = await fetch(`https://api.etherscan.io/api?module=contract&action=checkverifystatus&guid=qds6vzdxdkrj9ficcaxaxnkewwmtyguwf3vkqiasbwzvnxvq3p&apikey=IRSDN3CM3AMG2Y2S2SBAISZ3HF7SV6TAG3`);
+      const response = await fetch(`https://api.etherscan.io/api?module=contract&action=checkverifystatus&guid=${guid}&apikey=${process.env.ETHERSCAN_API_KEY || 'IRSDN3CM3AMG2Y2S2SBAISZ3HF7SV6TAG3'}`);
       const data = await response.json();
       
       if (data.status === "1" && data.result === "Pass - Verified") {

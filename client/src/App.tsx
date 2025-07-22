@@ -97,6 +97,7 @@ import VerificationFix from "./pages/VerificationFix";
 import EthConversion from "./pages/EthConversion";
 import MetaMaskSwap from "./pages/MetaMaskSwap";
 import DirectEthSwap from "./pages/DirectEthSwap";
+import VerificationStatus from "./pages/VerificationStatus";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -448,6 +449,7 @@ export default function App() {
             <Route path="/eth-conversion" component={EthConversion} />
             <Route path="/metamask-swap" component={MetaMaskSwap} />
             <Route path="/direct-eth-swap" component={DirectEthSwap} />
+            <Route path="/verification-status" component={VerificationStatus} />
 
           </Switch>
         </main>
