@@ -97,6 +97,7 @@ import EthConversion from "./pages/EthConversion";
 import MetaMaskSwap from "./pages/MetaMaskSwap";
 import DirectEthSwap from "./pages/DirectEthSwap";
 import VerificationStatus from "./pages/VerificationStatus";
+import TokenTrackingDiscovery from "./pages/TokenTrackingDiscovery";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -449,6 +450,8 @@ export default function App() {
             <Route path="/metamask-swap" component={MetaMaskSwap} />
             <Route path="/direct-eth-swap" component={DirectEthSwap} />
             <Route path="/verification-status" component={VerificationStatus} />
+            <Route path="/transaction-analyzer" component={TransactionAnalyzer} />
+            <Route path="/token-tracking" component={TokenTrackingDiscovery} />
 
           </Switch>
         </main>
