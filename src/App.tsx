@@ -1,3 +1,10 @@
+import React, { useState, useEffect } from 'react';
+
+import HomePage from '../client/src/pages/HomePage';
+import LiveVerification from '../client/src/pages/LiveVerification';
+import ContractVerification from '../client/src/pages/ContractVerification';
+import AdditionalETHGDiscovery from '../client/src/pages/additional-ethg-discovery';
+
 const ETHRecoveryExecution = () => {
   const [status, setStatus] = useState('idle');
   const [result, setResult] = useState(null);
@@ -90,7 +97,7 @@ const TokenValueProof = () => {
             <li>✅ Migration Function: migrateMyTrappedETHG()</li>
           </ul>
         </div>
-        
+
         <button
           onClick={executeValidation}
           disabled={validationStatus === 'validating'}
