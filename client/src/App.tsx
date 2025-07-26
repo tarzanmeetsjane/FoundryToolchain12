@@ -83,6 +83,7 @@ import DualContractVerification from "./pages/DualContractVerification";
 import OptimismContractFix from "./pages/OptimismContractFix";
 import TokenLocationStatus from "./pages/TokenLocationStatus";
 import TokenDiscoveryResults from "./pages/TokenDiscoveryResults";
+import Interact from './pages/interact';
 import LiveBlockchainAnalysis from "./pages/LiveBlockchainAnalysis";
 import EthRecoverySystem from "./pages/EthRecoverySystem";
 import ContractLookup from "./pages/ContractLookup";
@@ -452,6 +453,7 @@ export default function App() {
             <Route path="/verification-status" component={VerificationStatus} />
             <Route path="/transaction-analyzer" component={TransactionAnalyzer} />
             <Route path="/token-tracking" component={TokenTrackingDiscovery} />
+            <Route path="/interact" component={Interact} />
 
           </Switch>
         </main>
