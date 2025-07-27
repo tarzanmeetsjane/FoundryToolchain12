@@ -681,4 +681,68 @@ router.post('/api/analyze-transaction', async (req, res) => {
     }
 });
 
+// Transaction status checker endpoint
+router.post('/api/check-transaction-status', async (req, res) => {
+    try {
+        const { txHash } = req.body;
+        const etherscanKey = process.env.ETHERSCAN_API_KEY;
+        
+        // Get transaction details and receipt
+        const txUrl = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=${txHash}&apikey=${etherscanKey}`;
+        const receiptUrl = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=${txHash}&apikey=${etherscanKey}`;
+        
+        const [txResponse, receiptResponse] = await Promise.all([
+            fetch(txUrl),
+            fetch(receiptUrl)
+        ]);
+        
+        const txData = await txResponse.json();
+        const receiptData = await receiptResponse.json();
+        
+        if (!txData.result) {
+            return res.json({
+                status: 'not_found',
+                message: 'Transaction not found or still pending'
+            });
+        }
+        
+        const tx = txData.result;
+        const receipt = receiptData.result;
+        
+        // Determine transaction type
+        let transactionType = 'Contract Interaction';
+        if (tx.to && tx.to.toLowerCase().includes('router')) {
+            transactionType = 'Uniswap Router';
+        } else if (tx.input.startsWith('0x38ed1739')) {
+            transactionType = 'Uniswap Swap';
+        } else if (tx.input.startsWith('0x095ea7b3')) {
+            transactionType = 'Token Approval';
+        }
+        
+        const result = {
+            status: receipt ? (receipt.status === '0x1' ? 'success' : 'failed') : 'pending',
+            details: {
+                hash: txHash,
+                from: tx.from,
+                to: tx.to,
+                blockNumber: tx.blockNumber ? parseInt(tx.blockNumber, 16) : null,
+                nonce: parseInt(tx.nonce, 16)
+            },
+            value: (parseInt(tx.value, 16) / 1e18).toString(),
+            gasLimit: parseInt(tx.gas, 16),
+            gasPrice: (parseInt(tx.gasPrice, 16) / 1e9).toFixed(2),
+            gasUsed: receipt ? parseInt(receipt.gasUsed, 16) : null,
+            transactionFee: receipt ? ((parseInt(receipt.gasUsed, 16) * parseInt(receipt.effectiveGasPrice, 16)) / 1e18).toFixed(6) : null,
+            transactionType: transactionType,
+            eventCount: receipt ? receipt.logs.length : 0,
+            timestamp: new Date().toISOString()
+        };
+        
+        res.json(result);
+        
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;
