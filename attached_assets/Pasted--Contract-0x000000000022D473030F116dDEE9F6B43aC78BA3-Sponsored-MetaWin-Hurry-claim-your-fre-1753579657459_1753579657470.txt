@@ -1,0 +1,224 @@
+
+Contract
+0x000000000022D473030F116dDEE9F6B43aC78BA3 
+Sponsored:   MetaWin: Hurry, claim your free shot at $50k+. Draw Ends Soon! Enter now.
+ 
+Uniswap Protocol: Permit2
+Source Code
+Uniswap
+DeFi
+Overview
+ETH Balance
+0 ETH
+Eth Value
+$0.00
+Token Holdings
+More Info
+Private Name Tags
+ContractCreator
+Uniswap: Permit2 Deployer
+|
+2 yrs 252 days ago
+Multichain Info
+3 addresses found via
+
+Transactions
+Internal Transactions
+Token Transfers (ERC-20)
+NFT Transfers
+Contract
+Events
+Analytics
+Assets
+Cards
+New
+Info
+ Latest 25 from a total of 291,773 transactions
+
+Transaction Hash	
+Action 
+Block
+Age
+From
+To
+Amount
+Txn Fee
+0x5b85014b4d611d8303a78a4592614c4728d6ec57ec4557904423c05ab96e2fd4
+Lockdown
+23007179	2 mins ago	
+0xB729dBF1b0DcE96ed77453E5F2c6b49525ae7929
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00004678
+0xdeff188c195a11b1dee678d87198e83861fa8efb2b83618e6ec5a75e138964fb
+Permit Transfer ...
+23007178	2 mins ago	
+0xcfdcCe1D0f0cd83cdF3419E813240a639C791a42
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.0000157
+0x142726ee73a27f8612b78868f60107aa4d10d5c844ece14a92d9c534dc0ebb79
+Approve
+23007101	17 mins ago	
+0x221E253233a16f032a74B29836e4812D848C9fa3
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.0000671
+0xb39df6d6f178f02e8c614d5061c75a7011fa974227c25ce002113931f43ae82e
+Lockdown
+23007065	24 mins ago	
+0x875fFA2862f1fbb5D10Dd592A7598BE35034966B
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.000006
+0x3319d70be436ebae3a53b2820634926d21e5e75ce04d431e6b8760f77d52eb5f
+Lockdown
+23007056	26 mins ago	
+0x7B72606b61Ee16Bbe4ff7906cA91E9Eed6e72841
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000704
+0x62bada868300a2a9b6cd3e3429732c0dc3ebfff719eda5f3170f54c20d80f21d
+Approve
+23007048	28 mins ago	
+0x327345A3E4395C39838331062023006bB23E4440
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00006722
+0x409d251156dcec7d74d9834bcea4a2969bc25be934da5190b913162aeef12951
+Approve
+23007026	32 mins ago	
+0xB0DF9cd12DD7cdC78Ee947cEed2d8c1c7051eD62
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00003328
+0xc22f5b7291df6419186c15065307e7f97ec6fa9c700502ae43df65bdcbd3bd24
+Approve
+23007009	36 mins ago	
+0xB0DF9cd12DD7cdC78Ee947cEed2d8c1c7051eD62
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00003384
+0xd39d70331c03d31a5f6ed6e254a71771757c24f6c85b2c3b1986169148e2a8f3
+Permit Transfer ...
+23006989	40 mins ago	
+0xcfdcCe1D0f0cd83cdF3419E813240a639C791a42
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00001602
+0xf566d4d2e8d0c935826387070e349e75f2c0210251bf3b5506678667c8537373
+Lockdown
+23006911	56 mins ago	
+0x2802C4451544C25550bEc6C0Ba493a043024526a
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000746
+0xc5346a600f76799d2152b8490f861e336d134a2d51d0260272d4f09b98882258
+Lockdown
+23006909	56 mins ago	
+0x2802C4451544C25550bEc6C0Ba493a043024526a
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000933
+0x9e4c9268ada34d8377bbd766c03eaad2e03f165916d9ea6773911ab13c963463
+Invalidate Unord...
+23006865	1 hr ago	
+0x7763e6A6361Bc90c14213D17A86C1BEf95dBBBbA
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00003184
+0x91ccbba0a892ea0d1ee39db1c13055f0d02b12f9a770fd1bd3085745db75d932
+Invalidate Unord...
+23006859	1 hr ago	
+0x7763e6A6361Bc90c14213D17A86C1BEf95dBBBbA
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00003653
+0x3bfa27cbe00e91856288312e061a15939329436912ed750e34ef078feef6352c
+Invalidate Unord...
+23006859	1 hr ago	
+0x7763e6A6361Bc90c14213D17A86C1BEf95dBBBbA
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00006444
+0x822637e83ba17bc0bdc551dc607a4e9513854d3655c9c12fe39142f9a3cd6384
+Invalidate Unord...
+23006841	1 hr ago	
+0x7763e6A6361Bc90c14213D17A86C1BEf95dBBBbA
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00004369
+0x65dd95702fd5f25d20db4687318a0864f704f632f2114dd05cc94bc1bf8f23ed
+Lockdown
+23006833	1 hr ago	
+0x39Cdc8738970cd096E72EA3B47aA82FA989Fdee9
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000671
+0x40e17af953fd0ec45fde129b9fdddeae6c3515e20f02a9d9e34c85981826b85c
+Invalidate Unord...
+23006813	1 hr ago	
+ENS Name
+fuckwar.eth
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00005708
+0x6515248837aec9b2ea73a6a1d93e8f321801c26a2363db05d3b8bd56414151fa
+Invalidate Unord...
+23006750	1 hr ago	
+0xFdb246ab54b4A4f61827f9cb0fB950db71273Ab2
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00006337
+0x8ec273e582b784f3f27fc208dd0e7c89d0d213c3c1e55c7cd1fb5492cff8abfe
+Permit Transfer ...
+23006730	1 hr ago	
+0xcfdcCe1D0f0cd83cdF3419E813240a639C791a42
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00001416
+0xfe7ad87a0bc927db9ac7a267a4ab16212c095f47161d852a8dc833b84a3c213e
+Lockdown
+23006729	1 hr ago	
+0x84249ad306A0385011eDd3D6065cEf3fD59126d9
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000787
+0xf0ce17126a68fad1ff6a3116eaea92b688aad1a1214532dd57536174bae6b226
+Invalidate Unord...
+23006679	1 hr ago	
+0xFdb246ab54b4A4f61827f9cb0fB950db71273Ab2
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00006398
+0x9d5dd8fecddcc08c85dfa2657bb89dd211a5c5b3395b669520dface080759e31
+Lockdown
+23006645	1 hr ago	
+ENS Name
+barocco.eth
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000841
+0x5c1e6f8316efb36d6782754eeee0a6f348915c5b251e0909041f0532a446768b
+Lockdown
+23006642	1 hr ago	
+ENS Name
+barocco.eth
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000863
+0x230439ab2429130fc652556dc96621266bb8db5961e88c2baae6ceb7b795a3e9
+Lockdown
+23006555	2 hrs ago	
+0x4483bA61c5494C834F4658aD9726Ac1cBc047821
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000626
+0x6bfe2c428ed66ed527b8dcf2d78f18aae485e5d08455075e608313a58bec997b
+Invalidate Unord...
+23006549	2 hrs ago	
+0x1031705A5DD7DE0965c6F0516Eb2a60260c4D05f
+IN	
+Uniswap Protocol: Permit2
+0 ETH	0.00000777
+View all transactions 
