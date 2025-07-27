@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocation, Link } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -108,6 +107,7 @@ import FixValueDisplay from "./pages/FixValueDisplay";
 import ImmediateVerificationGuide from "./pages/ImmediateVerificationGuide";
 import SourceifyVerification from "./pages/SourceifyVerification";
 import SourceifyV2Verification from "./pages/SourceifyV2Verification";
+import DeployNow from "./pages/DeployNow";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -129,6 +129,7 @@ function Navigation() {
 
   const navItems = [
     { path: "/", label: "Home", icon: Target },
+    { path: "/safe-deploy", label: "Deploy Contract", icon: Target },
     { path: "/contract-verification", label: "Fix $0.00 Value", icon: Shield },
     { path: "/contract-details", label: "Contract Details", icon: FileCheck },
     { path: "/verification-success", label: "Verification Success", icon: CheckCircle },
@@ -189,14 +190,7 @@ function Navigation() {
 }
 
 function LiquidityPoolCreation() {
-  const [poolData, setPoolData] = useState({
-    tokenA: "ETHGR",
-    tokenB: "ETH",
-    amountA: "219300",
-    amountB: "29.5",
-    fee: "0.25%",
-    priceImpact: "-0.56%"
-  });
+
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -236,12 +230,7 @@ function LiquidityPoolCreation() {
               <Badge variant="secondary">Available: 1,990,000 ETHGR</Badge>
             </div>
             <div className="flex items-center space-x-3">
-              <input 
-                type="text" 
-                value={poolData.amountA}
-                onChange={(e) => setPoolData(prev => ({...prev, amountA: e.target.value}))}
-                className="text-2xl font-bold bg-transparent border-none outline-none w-full"
-              />
+              <span className="text-2xl font-bold">219,300</span>
               <Badge variant="outline" className="px-3 py-1">ETHGR</Badge>
             </div>
           </div>
@@ -257,7 +246,7 @@ function LiquidityPoolCreation() {
               <Badge variant="secondary">Rate: 1 ETH = 7,433.77 ETHGR</Badge>
             </div>
             <div className="flex items-center space-x-3">
-              <span className="text-2xl font-bold text-blue-700">{poolData.amountB} ETH</span>
+              <span className="text-2xl font-bold text-blue-700">29.5 ETH</span>
               <Badge variant="outline" className="px-3 py-1">≈ $71,945</Badge>
             </div>
           </div>
@@ -270,7 +259,7 @@ function LiquidityPoolCreation() {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-600">Price Impact</span>
-              <span className="font-medium text-amber-600">{poolData.priceImpact}</span>
+              <span className="font-medium text-amber-600">-0.56%</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-600">Tax Reserve (40%)</span>
@@ -472,6 +461,7 @@ export default function App() {
             <Route path="/immediate-verification" component={ImmediateVerificationGuide} />
             <Route path="/sourcify-verification" component={SourceifyVerification} />
             <Route path="/sourcify-v2" component={SourceifyV2Verification} />
+            <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
