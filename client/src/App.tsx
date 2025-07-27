@@ -65,6 +65,7 @@ import FailedTransactionAnalysis from "./pages/FailedTransactionAnalysis";
 import GasFreeAccessSolution from "./pages/GasFreeAccessSolution";
 import WalletVerificationSafety from "./pages/WalletVerificationSafety";
 import MassiveTransactionAnalysis from "./pages/MassiveTransactionAnalysis";
+import ContractVerificationFix from "./pages/ContractVerificationFix";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -487,6 +488,7 @@ export default function App() {
           <Route path="/gas-free-access" component={GasFreeAccessSolution} />
           <Route path="/wallet-safety" component={WalletVerificationSafety} />
           <Route path="/massive-transaction" component={MassiveTransactionAnalysis} />
+          <Route path="/contract-verification-fix" component={ContractVerificationFix} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
