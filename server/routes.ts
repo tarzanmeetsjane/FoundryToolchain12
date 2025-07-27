@@ -497,15 +497,23 @@ router.post('/api/blockchain-data', async (req, res) => {
         );
         const tokenData = await tokenResponse.json();
         
-        // Fetch ETH price from CoinGecko
+        // Fetch ETH price from CoinGecko with API key
         let ethPrice = 3783; // current fallback
+        let marketData: any = {};
         try {
+            const coinGeckoKey = process.env.COINGECKO_API_KEY || 'CG-ejrXNUCvXzu9qW8xQoazk4ZF';
             const priceResponse = await fetch(
-                'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd'
+                `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&x_cg_demo_api_key=${coinGeckoKey}`
             );
             const priceData = await priceResponse.json();
-            if (priceData.ethereum && priceData.ethereum.usd) {
-                ethPrice = priceData.ethereum.usd;
+            if (priceData.ethereum) {
+                ethPrice = priceData.ethereum.usd || ethPrice;
+                marketData = {
+                    price: priceData.ethereum.usd,
+                    marketCap: priceData.ethereum.usd_market_cap,
+                    volume24h: priceData.ethereum.usd_24h_vol,
+                    change24h: priceData.ethereum.usd_24h_change
+                };
             }
         } catch (error) {
             console.log('CoinGecko API unavailable, using fallback price');
@@ -514,10 +522,17 @@ router.post('/api/blockchain-data', async (req, res) => {
         const result = {
             ethBalance: balanceData.status === '1' ? (parseFloat(balanceData.result) / 1e18).toFixed(6) : '0',
             ethPrice: ethPrice,
+            marketData: marketData,
             transactions: txData.status === '1' ? txData.result : [],
             contractVerified: contractData.status === '1',
             tokenBalance: tokenData.status === '1' ? (parseFloat(tokenData.result) / 1e18).toFixed(0) : '0',
             timestamp: new Date().toISOString(),
+            network: 'Ethereum Mainnet',
+            apiStatus: {
+                etherscan: balanceData.status === '1' ? 'operational' : 'error',
+                coingecko: marketData.price ? 'operational' : 'fallback',
+                alchemy: process.env.ALCHEMY_API_KEY ? 'available' : 'not_configured'
+            },
             apiResponses: {
                 balance: balanceData,
                 contract: contractData,

@@ -4,9 +4,22 @@ import { useQuery } from '@tanstack/react-query';
 interface BlockchainData {
     ethBalance: string;
     ethPrice: number;
+    marketData: {
+        price: number;
+        marketCap: number;
+        volume24h: number;
+        change24h: number;
+    };
     transactions: any[];
     contractVerified: boolean;
     tokenBalance: string;
+    timestamp: string;
+    network: string;
+    apiStatus: {
+        etherscan: string;
+        coingecko: string;
+        alchemy: string;
+    };
 }
 
 export default function BlockchainExplorer() {
@@ -197,7 +210,7 @@ export default function BlockchainExplorer() {
                             </div>
                         </div>
 
-                        {/* Market Data */}
+                        {/* Enhanced Market Data */}
                         <div style={{ 
                             background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%)',
                             border: '1px solid rgba(245, 158, 11, 0.3)',
@@ -215,20 +228,58 @@ export default function BlockchainExplorer() {
                             
                             <div style={{ marginBottom: '12px' }}>
                                 <div style={{ color: '#94a3b8', fontSize: '14px' }}>ETH Price:</div>
-                                <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#f59e0b' }}>
+                                <div style={{ 
+                                    fontSize: '24px', 
+                                    fontWeight: 'bold', 
+                                    color: '#f59e0b',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px'
+                                }}>
                                     ${liveData.ethPrice.toLocaleString()}
+                                    {liveData.marketData?.change24h && (
+                                        <span style={{ 
+                                            fontSize: '14px',
+                                            color: liveData.marketData.change24h > 0 ? '#10b981' : '#ef4444',
+                                            background: liveData.marketData.change24h > 0 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                            padding: '2px 6px',
+                                            borderRadius: '4px'
+                                        }}>
+                                            {liveData.marketData.change24h > 0 ? '+' : ''}{liveData.marketData.change24h.toFixed(2)}%
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                             
-                            <div style={{ marginBottom: '12px' }}>
-                                <div style={{ color: '#94a3b8', fontSize: '14px' }}>Data Source:</div>
-                                <div style={{ fontSize: '16px' }}>CoinGecko API</div>
-                            </div>
+                            {liveData.marketData?.marketCap && (
+                                <div style={{ marginBottom: '12px' }}>
+                                    <div style={{ color: '#94a3b8', fontSize: '14px' }}>Market Cap:</div>
+                                    <div style={{ fontSize: '16px' }}>
+                                        ${(liveData.marketData.marketCap / 1e9).toFixed(2)}B
+                                    </div>
+                                </div>
+                            )}
+                            
+                            {liveData.marketData?.volume24h && (
+                                <div style={{ marginBottom: '12px' }}>
+                                    <div style={{ color: '#94a3b8', fontSize: '14px' }}>24h Volume:</div>
+                                    <div style={{ fontSize: '16px' }}>
+                                        ${(liveData.marketData.volume24h / 1e9).toFixed(2)}B
+                                    </div>
+                                </div>
+                            )}
                             
                             <div>
-                                <div style={{ color: '#94a3b8', fontSize: '14px' }}>Last Updated:</div>
-                                <div style={{ fontSize: '14px' }}>
-                                    {new Date().toLocaleString()}
+                                <div style={{ color: '#94a3b8', fontSize: '14px' }}>Data Source:</div>
+                                <div style={{ fontSize: '16px' }}>
+                                    CoinGecko Pro API
+                                    <span style={{ 
+                                        marginLeft: '8px',
+                                        fontSize: '12px',
+                                        color: '#10b981'
+                                    }}>
+                                        ✓ LIVE
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -308,19 +359,36 @@ export default function BlockchainExplorer() {
                     </h3>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-                        <div style={{ color: '#10b981' }}>
-                            ✅ Etherscan API Connected
+                        <div style={{ 
+                            color: liveData?.apiStatus?.etherscan === 'operational' ? '#10b981' : '#ef4444'
+                        }}>
+                            {liveData?.apiStatus?.etherscan === 'operational' ? '✅' : '❌'} Etherscan API
+                        </div>
+                        <div style={{ 
+                            color: liveData?.apiStatus?.coingecko === 'operational' ? '#10b981' : '#f59e0b'
+                        }}>
+                            {liveData?.apiStatus?.coingecko === 'operational' ? '✅' : '⚠️'} CoinGecko Pro API
+                        </div>
+                        <div style={{ 
+                            color: liveData?.apiStatus?.alchemy === 'available' ? '#10b981' : '#94a3b8'
+                        }}>
+                            {liveData?.apiStatus?.alchemy === 'available' ? '✅' : '○'} Alchemy API
                         </div>
                         <div style={{ color: '#10b981' }}>
-                            ✅ CoinGecko API Connected
-                        </div>
-                        <div style={{ color: '#10b981' }}>
-                            ✅ Live Blockchain Data
-                        </div>
-                        <div style={{ color: '#10b981' }}>
-                            ✅ Real-time Market Prices
+                            ✅ Real-time Portfolio Tracking
                         </div>
                     </div>
+                    
+                    {liveData && (
+                        <div style={{ 
+                            marginTop: '16px',
+                            textAlign: 'center',
+                            color: '#64748b',
+                            fontSize: '14px'
+                        }}>
+                            Last updated: {new Date(liveData.timestamp).toLocaleString()} • Network: {liveData.network}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
