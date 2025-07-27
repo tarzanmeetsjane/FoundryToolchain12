@@ -50,8 +50,8 @@ contract ETHGRecoverySimple {
         return true;
     }
     
-    function allowance(address owner, address spender) public view returns (uint256) {
-        return _allowances[owner][spender];
+    function allowance(address tokenOwner, address spender) public view returns (uint256) {
+        return _allowances[tokenOwner][spender];
     }
     
     function transferFrom(address from, address to, uint256 value) public returns (bool) {
