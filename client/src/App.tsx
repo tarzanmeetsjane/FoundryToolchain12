@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2, DollarSign, ArrowRightLeft, BarChart } from "lucide-react";
@@ -283,12 +284,13 @@ function LiquidityPoolCreation() {
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <Link href="https://app.uniswap.org/swap?inputCurrency=0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90&outputCurrency=ETH">
-              <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                <Wallet className="w-4 h-4 mr-2" />
-                Execute Conversion on Uniswap
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => window.open("https://app.uniswap.org/swap?inputCurrency=0xfa7de122f5fba7123cdb4fe6bf75821c2b937c90&outputCurrency=ETH", "_blank")}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            >
+              <Wallet className="w-4 h-4 mr-2" />
+              Execute Conversion on Uniswap
+            </Button>
 
             <Button variant="outline" className="w-full">
               Review Transaction Details
