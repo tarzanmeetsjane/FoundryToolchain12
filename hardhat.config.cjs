@@ -35,6 +35,7 @@ const config = {
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || 'https://eth-rpc.gateway.pokt.network',
+      accounts: process.env.PRIVATE_KEY ? [`0x${process.env.PRIVATE_KEY.replace('0x', '')}`] : [],
     },
   },
   gasReporter: {
