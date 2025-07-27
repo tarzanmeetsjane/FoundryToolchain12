@@ -105,6 +105,7 @@ import TradingBotAnalysis from "./pages/TradingBotAnalysis";
 import ComprehensiveIntegration from "./pages/ComprehensiveIntegration";
 import FixValueDisplay from "./pages/FixValueDisplay";
 import ImmediateVerificationGuide from "./pages/ImmediateVerificationGuide";
+import SourceifyVerification from "./pages/SourceifyVerification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -466,6 +467,7 @@ export default function App() {
             <Route path="/comprehensive-integration" component={ComprehensiveIntegration} />
             <Route path="/fix-value-display" component={FixValueDisplay} />
             <Route path="/immediate-verification" component={ImmediateVerificationGuide} />
+            <Route path="/sourcify-verification" component={SourceifyVerification} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
