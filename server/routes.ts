@@ -463,4 +463,73 @@ router.post('/api/validate-complete-system', async (req, res) => {
   }
 });
 
+// Blockchain data endpoint with real APIs
+router.post('/api/blockchain-data', async (req, res) => {
+    try {
+        const { wallet, contract } = req.body;
+        const etherscanKey = process.env.ETHERSCAN_API_KEY;
+        
+        if (!etherscanKey) {
+            return res.status(400).json({ error: 'Etherscan API key required' });
+        }
+        
+        // Fetch ETH balance
+        const balanceResponse = await fetch(
+            `https://api.etherscan.io/api?module=account&action=balance&address=${wallet}&tag=latest&apikey=${etherscanKey}`
+        );
+        const balanceData = await balanceResponse.json();
+        
+        // Fetch transaction history
+        const txResponse = await fetch(
+            `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${etherscanKey}`
+        );
+        const txData = await txResponse.json();
+        
+        // Fetch contract verification
+        const contractResponse = await fetch(
+            `https://api.etherscan.io/api?module=contract&action=getabi&address=${contract}&apikey=${etherscanKey}`
+        );
+        const contractData = await contractResponse.json();
+        
+        // Fetch token balance
+        const tokenResponse = await fetch(
+            `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${contract}&address=${wallet}&tag=latest&apikey=${etherscanKey}`
+        );
+        const tokenData = await tokenResponse.json();
+        
+        // Fetch ETH price from CoinGecko
+        let ethPrice = 3783; // current fallback
+        try {
+            const priceResponse = await fetch(
+                'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd'
+            );
+            const priceData = await priceResponse.json();
+            if (priceData.ethereum && priceData.ethereum.usd) {
+                ethPrice = priceData.ethereum.usd;
+            }
+        } catch (error) {
+            console.log('CoinGecko API unavailable, using fallback price');
+        }
+        
+        const result = {
+            ethBalance: balanceData.status === '1' ? (parseFloat(balanceData.result) / 1e18).toFixed(6) : '0',
+            ethPrice: ethPrice,
+            transactions: txData.status === '1' ? txData.result : [],
+            contractVerified: contractData.status === '1',
+            tokenBalance: tokenData.status === '1' ? (parseFloat(tokenData.result) / 1e18).toFixed(0) : '0',
+            timestamp: new Date().toISOString(),
+            apiResponses: {
+                balance: balanceData,
+                contract: contractData,
+                token: tokenData
+            }
+        };
+        
+        res.json(result);
+        
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;

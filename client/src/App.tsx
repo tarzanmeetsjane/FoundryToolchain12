@@ -53,6 +53,7 @@ import RemixContractAnalysis from "./pages/RemixContractAnalysis";
 import SourcifyVerification from "./pages/SourcifyVerification";
 import ExistingContractVerification from "./pages/ExistingContractVerification";
 import MetadataGenerationGuide from "./pages/MetadataGenerationGuide";
+import BlockchainExplorer from "./pages/BlockchainExplorer";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -463,6 +464,7 @@ export default function App() {
             <Route path="/immediate-verification" component={ImmediateVerificationGuide} />
             <Route path="/sourcify-verification" component={SourceifyVerification} />
             <Route path="/sourcify-v2" component={SourceifyV2Verification} />
+          <Route path="/blockchain-explorer" component={BlockchainExplorer} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
