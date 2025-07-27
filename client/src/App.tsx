@@ -82,6 +82,7 @@ import DualContractVerification from "./pages/DualContractVerification";
 import OptimismContractFix from "./pages/OptimismContractFix";
 import TokenLocationStatus from "./pages/TokenLocationStatus";
 import TokenDiscoveryResults from "./pages/TokenDiscoveryResults";
+import SecureDeploy from "./pages/SecureDeploy";
 import Interact from './pages/interact';
 import LiveBlockchainAnalysis from "./pages/LiveBlockchainAnalysis";
 import EthRecoverySystem from "./pages/EthRecoverySystem";
@@ -130,6 +131,7 @@ function Navigation() {
   const navItems = [
     { path: "/", label: "Home", icon: Target },
     { path: "/safe-deploy", label: "Deploy Contract", icon: Target },
+    { path: "/secure-deploy", label: "Secure Deploy", icon: Shield },
     { path: "/contract-verification", label: "Fix $0.00 Value", icon: Shield },
     { path: "/contract-details", label: "Contract Details", icon: FileCheck },
     { path: "/verification-success", label: "Verification Success", icon: CheckCircle },
@@ -462,6 +464,7 @@ export default function App() {
             <Route path="/sourcify-verification" component={SourceifyVerification} />
             <Route path="/sourcify-v2" component={SourceifyV2Verification} />
             <Route path="/safe-deploy" component={DeployNow} />
+            <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
