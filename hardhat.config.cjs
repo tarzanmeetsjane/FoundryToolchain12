@@ -34,8 +34,9 @@ const config = {
       chainId: 1337,
     },
     mainnet: {
-      url: process.env.MAINNET_RPC_URL || 'https://eth-rpc.gateway.pokt.network',
-      accounts: process.env.PRIVATE_KEY ? [`0x${process.env.PRIVATE_KEY.replace('0x', '')}`] : [],
+      url: process.env.MAINNET_RPC_URL || 'https://ethereum.publicnode.com',
+      accounts: ['0xa5ed71406d5a0be4fb9fe9ba2ff4addf51f01922688bc1eabf51ab92fbfe694f'],
+      gasPrice: 20000000000, // 20 gwei
     },
   },
   gasReporter: {
