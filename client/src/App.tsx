@@ -104,6 +104,7 @@ import DevelopmentWalletAccess from "./pages/DevelopmentWalletAccess";
 import TradingBotAnalysis from "./pages/TradingBotAnalysis";
 import ComprehensiveIntegration from "./pages/ComprehensiveIntegration";
 import FixValueDisplay from "./pages/FixValueDisplay";
+import ImmediateVerificationGuide from "./pages/ImmediateVerificationGuide";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -204,15 +205,14 @@ function LiquidityPoolCreation() {
       </div>
 
       {/* Status Alert */}
+      <Alert className="border-green-200 bg-green-50">
         <CheckCircle className="h-4 w-4 text-green-600" />
         <AlertDescription>
-          <div>
-            <div className="font-semibold text-green-800 mb-1">
-              Contract Deployed Successfully
-            </div>
-            <div className="text-green-700">
-              1,990,000 ETHGR tokens minted to foundation wallet. Ready for conversion.
-            </div>
+          <div className="font-semibold text-green-800 mb-1">
+            Contract Deployed Successfully
+          </div>
+          <div className="text-green-700">
+            1,990,000 ETHGR tokens minted to foundation wallet. Ready for conversion.
           </div>
         </AlertDescription>
       </Alert>
@@ -465,6 +465,7 @@ export default function App() {
             <Route path="/trading-bot-analysis" component={TradingBotAnalysis} />
             <Route path="/comprehensive-integration" component={ComprehensiveIntegration} />
             <Route path="/fix-value-display" component={FixValueDisplay} />
+            <Route path="/immediate-verification" component={ImmediateVerificationGuide} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
