@@ -5,7 +5,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { TrendingUp, Droplets, Target, Wallet, AlertTriangle, CheckCircle, ArrowRight, Atom, Radio, Shield, Search, Menu, X, Database, FileCheck, Code2, DollarSign, ArrowRightLeft, BarChart } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
@@ -101,6 +100,9 @@ import VerificationStatus from "./pages/VerificationStatus";
 import TokenTrackingDiscovery from "./pages/TokenTrackingDiscovery";
 import WalletDiscoveryAnalysis from "./pages/WalletDiscoveryAnalysis";
 import MultiWalletTokenSearch from "./pages/MultiWalletTokenSearch";
+import DevelopmentWalletAccess from "./pages/DevelopmentWalletAccess";
+import TradingBotAnalysis from "./pages/TradingBotAnalysis";
+import ComprehensiveIntegration from "./pages/ComprehensiveIntegration";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -457,6 +459,9 @@ export default function App() {
             <Route path="/token-tracking" component={TokenTrackingDiscovery} />
             <Route path="/wallet-discovery" component={WalletDiscoveryAnalysis} />
             <Route path="/multi-wallet-search" component={MultiWalletTokenSearch} />
+            <Route path="/development-wallet-access" component={DevelopmentWalletAccess} />
+            <Route path="/trading-bot-analysis" component={TradingBotAnalysis} />
+            <Route path="/comprehensive-integration" component={ComprehensiveIntegration} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
