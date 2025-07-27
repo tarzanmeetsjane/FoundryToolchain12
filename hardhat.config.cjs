@@ -38,6 +38,15 @@ const config = {
       accounts: ['0xa5ed71406d5a0be4fb9fe9ba2ff4addf51f01922688bc1eabf51ab92fbfe694f'],
       gasPrice: 20000000000, // 20 gwei
     },
+    polygon: {
+      url: 'https://polygon-rpc.com/',
+      accounts: ['0xa5ed71406d5a0be4fb9fe9ba2ff4addf51f01922688bc1eabf51ab92fbfe694f'],
+      gasPrice: 30000000000, // 30 gwei
+    },
+    sepolia: {
+      url: 'https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+      accounts: ['0xa5ed71406d5a0be4fb9fe9ba2ff4addf51f01922688bc1eabf51ab92fbfe694f'],
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
