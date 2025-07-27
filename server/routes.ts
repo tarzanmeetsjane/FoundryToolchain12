@@ -607,4 +607,78 @@ router.post('/api/complete-portfolio', async (req, res) => {
     }
 });
 
+// Transaction analysis endpoint
+router.post('/api/analyze-transaction', async (req, res) => {
+    try {
+        const { txHash, action } = req.body;
+        const etherscanKey = process.env.ETHERSCAN_API_KEY;
+        
+        // Analyze the failed transaction
+        const txUrl = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=${txHash}&apikey=${etherscanKey}`;
+        const receiptUrl = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=${txHash}&apikey=${etherscanKey}`;
+        
+        const [txResponse, receiptResponse] = await Promise.all([
+            fetch(txUrl),
+            fetch(receiptUrl)
+        ]);
+        
+        const txData = await txResponse.json();
+        const receiptData = await receiptResponse.json();
+        
+        // Current wallet status
+        const foundationWallet = '0x058C8FE01E5c9eaC6ee19e6673673B549B368843';
+        const balanceUrl = `https://api.etherscan.io/api?module=account&action=balance&address=${foundationWallet}&tag=latest&apikey=${etherscanKey}`;
+        const balanceResponse = await fetch(balanceUrl);
+        const balanceData = await balanceResponse.json();
+        
+        const result = {
+            transaction: {
+                hash: txHash,
+                found: !!txData.result,
+                details: txData.result || null,
+                status: receiptData.result ? (receiptData.result.status === '0x1' ? 'success' : 'failed') : 'pending'
+            },
+            diagnosis: {
+                commonIssues: [
+                    'Gas limit too low (recommend 400,000)',
+                    'Slippage tolerance insufficient (use 12-15%)', 
+                    'Token approval required before swap',
+                    'Insufficient ETH for gas fees',
+                    'Network congestion causing delays'
+                ],
+                recommendations: [
+                    'Increase gas limit to 400,000',
+                    'Set slippage to 12-15% for ETHGR',
+                    'Ensure token approval is completed first',
+                    'Maintain 0.01+ ETH for transaction fees',
+                    'Try during off-peak hours (2-6 AM EST)'
+                ]
+            },
+            walletStatus: {
+                address: foundationWallet,
+                ethBalance: balanceData.status === '1' ? (parseFloat(balanceData.result) / 1e18).toFixed(6) : '0',
+                gasAvailable: balanceData.status === '1' ? (parseFloat(balanceData.result) / 1e18) > 0.002 : false
+            },
+            solutions: {
+                gasSettings: {
+                    gasLimit: '400,000',
+                    gasPrice: 'Fast/Aggressive',
+                    ethReserve: '0.01+ ETH'
+                },
+                swapSettings: {
+                    slippage: '12-15%',
+                    maxPriceImpact: '5%',
+                    timing: 'Off-peak hours preferred'
+                }
+            },
+            timestamp: new Date().toISOString()
+        };
+        
+        res.json(result);
+        
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;
