@@ -57,6 +57,7 @@ import BlockchainExplorer from "./pages/BlockchainExplorer";
 import SwapTroubleshooter from "./pages/SwapTroubleshooter";
 import TransactionStatusChecker from "./pages/TransactionStatusChecker";
 import OptimismSuccessAnalysis from "./pages/OptimismSuccessAnalysis";
+import RealMoneyConversion from "./pages/RealMoneyConversion";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -471,6 +472,7 @@ export default function App() {
           <Route path="/swap-troubleshooter" component={SwapTroubleshooter} />
           <Route path="/transaction-status" component={TransactionStatusChecker} />
           <Route path="/optimism-success" component={OptimismSuccessAnalysis} />
+          <Route path="/real-money" component={RealMoneyConversion} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />

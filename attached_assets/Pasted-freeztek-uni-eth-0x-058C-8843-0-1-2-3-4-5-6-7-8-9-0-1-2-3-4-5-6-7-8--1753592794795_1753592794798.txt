@@ -1,0 +1,337 @@
+freeztek
+.uni.eth
+
+0x​058C...8843
+$
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+,
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+,
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+.
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+$1,071,725.11
+$12,650.16 (1.19%)
+Today
+Failed to confirm
+0x0000...0000
+Failed to confirm
+0x0000...0000
+Transaction confirmed
+10:58 PM
+0x5b4f...da0C
+Transaction confirmed
+10:58 PM
+0x5b4f...da0C
+Transaction confirmed
+10:58 PM
+0x5b4f...da0C
+Transaction confirmed
+10:57 PM
+0x0000...0000
+Transaction confirmed
+10:57 PM
+0x0000...0000
+Yesterday
+Transaction confirmed
+Jul 25
+0x7D1A...eBB0
+July
+
+
+Minted
+Jul 22
+"Content" Condor
+
+
+Minted
+Jul 22
+"Content" Condor
+Transaction confirmed
+Jul 22
+0x811b...ccD9
+
+Approved
+Jul 22
+1.00 MATIC
+Failed to confirm
+0xc2B6...7308
+Failed to confirm
+0x7540...A788
+Failed to confirm
+0x7540...A788
+Transaction confirmed
+Jul 17
+0x0000...0000
+
+
+Minted
+Jul 17
+"Content" Condor
+ETH
+Sent
+Jul 17
+1.99M ETHGR to 0xc2B6...7308
+Failed to confirm
+0xc2B6...7308
+Failed to confirm
+0xc2B6...7308
+
+
+Received
+Jul 5
+"Content" Condor from 0x770E...b404
+
+
+Received
+Jul 5
+"Content" Condor from 0x770E...b404
+
+
+Received
+Jul 5
+"Content" Condor from 0x770E...b404
+
+
+Received
+Jul 5
+Ethereum Community Recognition from 0x8D8f...c16D
+ETH
+Sent
+Jul 5
+1,000.00 ETHGR to freqd
+
+June
+
+
+Received
+Jun 30
+"Content" Condor from 0xB2F9...5429
+
+
+Received
+Jun 30
+"Content" Condor from 0xB2F9...5429
+
+
+Received
+Jun 30
+"Content" Condor from 0xB2F9...5429
+
+Approved
+Jun 30
+2.00 UNI
+
+
+Received
+Jun 28
+TRUMP Victory NFT Pass from 0x4985...2b2b
+
+
+Received
+Jun 24
+"Content" Condor from 0x828e...914d
+
+
+Received
+Jun 24
+"Content" Condor from 0x828e...914d
+
+
+Received
+Jun 24
+"Content" Condor from 0x828e...914d
+Transaction confirmed
+Jun 24
+0xc2B6...7308
+Transaction confirmed
+Jun 24
+0x0000...0000
+
+Purchased on Stripe
+
+Jun 19
+0.005 ETH for $12.00
+
+Received
+Jun 19
+0.001 ETH from freqd
+
+
+Purchased on Stripe
+
+Jun 19
+0.005 ETH for $12.00
+
+Failed to confirm
+Uniswap V2
+
+Transaction confirmed
+Jun 19
+Uniswap V2
+
+
+Minted
+Jun 19
+"Content" Condor
+
+
+Minted
+Jun 19
+"Content" Condor
+
+
+Minted
+Jun 19
+"Content" Condor
+Transaction confirmed
+Jun 19
+0x058C...8843
+
+Received
+Jun 18
+0.002 ETH from freqd
+
+ЕRС
+Sent
+Jun 18
+<0.001 ЕRС20 to 0x0583...8843
+ETH
+Received
+Jun 18
+100,000.00 ETHG from freqd
+
+Swa
+
+Received
+Jun 18
+Swap … from 0xe780...e245
+
+
+Received
+Jun 18
+"Content" Condor from 0xacD0...435A
+
+Sent
+Jun 18
+0.010 ETH to freqd
+
+Transaction confirmed
+Jun 15
+0xfA7b...F247
+Transaction confirmed
+Jun 15
+0x0000...0000
+Transaction confirmed
+Jun 15
+0xd914...9138
+Transaction confirmed
+Jun 15
+0xd914...9138
+AIC
+Received
+Jun 15
+17,500.00 AICC from 0x11Bf...7e26
+
+Approved
+Jun 15
+>999T USDC
+
+Received
+Jun 15
+<0.001 ETH from 0xB01c...9C2E
+
+
+Swapped
+Jun 15
+47.91 USDC → 0.018 ETH
+
+Received
+Jun 15
+47.91 USDC from 0xe54c...28A9
