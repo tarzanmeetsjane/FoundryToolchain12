@@ -99,6 +99,7 @@ import MetaMaskSwap from "./pages/MetaMaskSwap";
 import DirectEthSwap from "./pages/DirectEthSwap";
 import VerificationStatus from "./pages/VerificationStatus";
 import TokenTrackingDiscovery from "./pages/TokenTrackingDiscovery";
+import WalletDiscoveryAnalysis from "./pages/WalletDiscoveryAnalysis";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -453,6 +454,7 @@ export default function App() {
             <Route path="/verification-status" component={VerificationStatus} />
             <Route path="/transaction-analyzer" component={TransactionAnalyzer} />
             <Route path="/token-tracking" component={TokenTrackingDiscovery} />
+            <Route path="/wallet-discovery" component={WalletDiscoveryAnalysis} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
