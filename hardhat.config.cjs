@@ -1,9 +1,9 @@
 
-import { HardhatUserConfig } from 'hardhat/config';
-import '@nomicfoundation/hardhat-toolbox';
-import '@nomicfoundation/hardhat-verify';
+const { HardhatUserConfig } = require('hardhat/config');
+require('@nomicfoundation/hardhat-toolbox');
+require('@nomicfoundation/hardhat-verify');
 
-const config: HardhatUserConfig = {
+const config = {
   solidity: {
     version: "0.8.19",
     settings: {
@@ -35,12 +35,6 @@ const config: HardhatUserConfig = {
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || 'https://eth-rpc.gateway.pokt.network',
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-    },
-    routescan: {
-      url: 'https://eth-rpc.gateway.pokt.network',
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      chainId: 1,
     },
   },
   gasReporter: {
@@ -49,4 +43,4 @@ const config: HardhatUserConfig = {
   },
 };
 
-export default config;
+module.exports = config;
