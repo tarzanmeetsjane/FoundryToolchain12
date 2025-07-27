@@ -61,6 +61,7 @@ import RealMoneyConversion from "./pages/RealMoneyConversion";
 import TransactionSuccess from "./pages/TransactionSuccess";
 import GasPricingAnalysis from "./pages/GasPricingAnalysis";
 import LatestTransactionAnalysis from "./pages/LatestTransactionAnalysis";
+import FailedTransactionAnalysis from "./pages/FailedTransactionAnalysis";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -479,6 +480,7 @@ export default function App() {
           <Route path="/success" component={TransactionSuccess} />
           <Route path="/gas-analysis" component={GasPricingAnalysis} />
           <Route path="/latest-transaction" component={LatestTransactionAnalysis} />
+          <Route path="/failed-transaction" component={FailedTransactionAnalysis} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
