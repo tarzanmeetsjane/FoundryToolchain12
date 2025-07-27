@@ -56,6 +56,7 @@ import MetadataGenerationGuide from "./pages/MetadataGenerationGuide";
 import BlockchainExplorer from "./pages/BlockchainExplorer";
 import SwapTroubleshooter from "./pages/SwapTroubleshooter";
 import TransactionStatusChecker from "./pages/TransactionStatusChecker";
+import OptimismSuccessAnalysis from "./pages/OptimismSuccessAnalysis";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -469,6 +470,7 @@ export default function App() {
           <Route path="/blockchain-explorer" component={BlockchainExplorer} />
           <Route path="/swap-troubleshooter" component={SwapTroubleshooter} />
           <Route path="/transaction-status" component={TransactionStatusChecker} />
+          <Route path="/optimism-success" component={OptimismSuccessAnalysis} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
