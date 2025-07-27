@@ -106,6 +106,7 @@ import ComprehensiveIntegration from "./pages/ComprehensiveIntegration";
 import FixValueDisplay from "./pages/FixValueDisplay";
 import ImmediateVerificationGuide from "./pages/ImmediateVerificationGuide";
 import SourceifyVerification from "./pages/SourceifyVerification";
+import SourceifyV2Verification from "./pages/SourceifyV2Verification";
 import { Route, Switch } from "wouter";
 
 const queryClient = new QueryClient({
@@ -468,6 +469,7 @@ export default function App() {
             <Route path="/fix-value-display" component={FixValueDisplay} />
             <Route path="/immediate-verification" component={ImmediateVerificationGuide} />
             <Route path="/sourcify-verification" component={SourceifyVerification} />
+            <Route path="/sourcify-v2" component={SourceifyV2Verification} />
             <Route path="/interact" component={Interact} />
 
           </Switch>
