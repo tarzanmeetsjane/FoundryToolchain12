@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Target,
-  DollarSign,
-  Zap,
-  ExternalLink,
-  Download,
-  CheckCircle,
-  TrendingUp,
-  Rocket
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+    CheckCircle,
+    DollarSign,
+    Download,
+    ExternalLink,
+    Rocket,
+    Target,
+    TrendingUp,
+    Zap
 } from "lucide-react";
+import { useState } from "react";
 
 export default function UltimateRecoveryCenter() {
   const [missionProgress, setMissionProgress] = useState(75); // 75% complete based on progress so far
@@ -22,8 +22,7 @@ export default function UltimateRecoveryCenter() {
 
   const ethPrice = 2422; // Current ETH price
   const recoveryTargetUSD = (37 * ethPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  const totalPortfolioUSD = "$1,414,000+";
-
+  const [targetETHAmount, setTargetETHAmount] = useState();
   const missionSteps = [
     { 
       id: 1, 
@@ -89,11 +88,11 @@ export default function UltimateRecoveryCenter() {
   const downloadUltimateScript = () => {
     const script = `// ULTIMATE 37 ETH RECOVERY & USD CONVERSION SCRIPT
 // MISSION: LOCATE 37 ETH AND CONVERT TO $${recoveryTargetUSD.replace('$', '').replace(',', '')}
-// Total Portfolio Target: ${totalPortfolioUSD}
+// Total Portfolio Target: $1,414,000+
 
 console.log('🚀 ULTIMATE RECOVERY MISSION STARTING...')
 console.log('Target: 37 ETH = ${recoveryTargetUSD}')
-console.log('Total Portfolio: ${totalPortfolioUSD}')
+console.log('Total Portfolio: $1,414,000+')
 console.log('Mission Status: ACTIVE RECOVERY')
 
 // Verify Ethereum Mainnet connection
@@ -205,7 +204,7 @@ if (recoverySuccess) {
   console.log('4. Continue mainnet monitoring')
 }
 
-console.log('\\nTotal Portfolio Value: ${totalPortfolioUSD}')
+console.log('\\nTotal Portfolio Value: $1,414,000+')
 console.log('Recovery Mission: ONGOING 🚀')`;
 
     const blob = new Blob([script], { type: 'text/javascript' });
@@ -251,7 +250,7 @@ console.log('Recovery Mission: ONGOING 🚀')`;
             MISSION ACTIVE
           </Badge>
           <Badge className="bg-green-500 text-white text-lg px-4 py-2">
-            {totalPortfolioUSD} PORTFOLIO
+            {"$1,414,000+"} PORTFOLIO
           </Badge>
         </div>
       </div>
@@ -370,7 +369,7 @@ console.log('Recovery Mission: ONGOING 🚀')`;
                   <div className="text-sm text-muted-foreground">After 0.5% Exchange Fee</div>
                 </div>
                 <div className="p-4 border rounded-lg text-center">
-                  <div className="text-2xl font-bold text-purple-600">{totalPortfolioUSD}</div>
+                  <div className="text-2xl font-bold text-purple-600">{"$1,414,000+"}</div>
                   <div className="text-sm text-muted-foreground">Total Portfolio</div>
                 </div>
               </div>

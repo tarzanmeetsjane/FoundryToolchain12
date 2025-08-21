@@ -35,8 +35,7 @@ contract ETHExtractor is Ownable, ReentrancyGuard {
         authorizedContracts[TARGET_CONTRACT] = true;
     }
     
-    /**
-     * @dev Extract ETH from target contract using withdraw function
+    //@dev Extract ETH from target contract using withdraw function
      */
     function extractFromContract(address contractAddr) external onlyOwner nonReentrant {
         require(authorizedContracts[contractAddr], "Contract not authorized");

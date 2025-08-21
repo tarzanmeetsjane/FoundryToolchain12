@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETHG Recovery via Uniswap</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+    <script src="https://unpkg.com/@uniswap/sdk@3.0.3/dist/uniswap-sdk.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-white mb-4">🚀 ETHG Recovery System</h1>
+            <p class="text-xl text-blue-200">Swap your trapped ETHG tokens for ETH directly on Uniswap</p>
+            <p class="text-lg text-blue-300 mt-2">No new contracts needed - Use trusted Uniswap infrastructure</p>
+        </div>
+
+        <!-- Connection Status -->
+        <div id="connectionStatus" class="bg-gray-800 rounded-lg p-6 mb-8 text-center">
+            <div class="text-2xl text-yellow-400 mb-2">🔌 Wallet Not Connected</div>
+            <button id="connectWallet" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
+                Connect Wallet
+            </button>
+        </div>
+
+        <!-- Main Recovery Interface -->
+        <div id="recoveryInterface" class="hidden">
+            <!-- Wallet Info -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4">👛 Wallet Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="text-blue-300 text-sm">Connected Address</div>
+                        <div id="walletAddress" class="text-white font-mono text-sm break-all"></div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="text-blue-300 text-sm">ETH Balance</div>
+                        <div id="ethBalance" class="text-white font-bold"></div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="text-blue-300 text-sm">ETHG Balance</div>
+                        <div id="ethgBalance" class="text-white font-bold"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ETHG Recovery Form -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4">💱 ETHG → ETH Recovery</h2>
+                
+                <!-- Token Selection -->
+                <div class="mb-6">
+                    <label class="block text-blue-300 text-sm font-bold mb-2">ETHG Amount to Recover</label>
+                    <div class="flex space-x-4">
+                        <input type="number" id="ethgAmount" placeholder="0.0" 
+                               class="flex-1 bg-gray-700 text-white rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="maxButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                            MAX
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recovery Options -->
+                <div class="mb-6">
+                    <label class="block text-blue-300 text-sm font-bold mb-2">Recovery Method</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-700 rounded-lg p-4 border-2 border-blue-500">
+                            <div class="text-white font-bold mb-2">🚀 Quick Swap</div>
+                            <div class="text-blue-300 text-sm">Fastest recovery, higher slippage</div>
+                            <div class="text-green-400 text-sm mt-2">~$5-10 gas</div>
+                        </div>
+                        <div class="bg-gray-700 rounded-lg p-4 border-2 border-gray-600">
+                            <div class="text-white font-bold mb-2">⚡ Optimized Swap</div>
+                            <div class="text-blue-300 text-sm">Best price, lower slippage</div>
+                            <div class="text-green-400 text-sm mt-2">~$10-20 gas</div>
+                        </div>
+                        <div class="bg-gray-700 rounded-lg p-4 border-2 border-gray-600">
+                            <div class="text-white font-bold mb-2">🎯 Meta-Transaction</div>
+                            <div class="text-blue-300 text-sm">No gas fees for victims</div>
+                            <div class="text-green-400 text-sm mt-2">~$15-25 gas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Swap Preview -->
+                <div id="swapPreview" class="bg-gray-700 rounded-lg p-4 mb-6 hidden">
+                    <h3 class="text-lg font-bold text-white mb-3">📊 Swap Preview</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="text-blue-300">ETHG Input:</div>
+                        <div id="previewEthgInput" class="text-white"></div>
+                        <div class="text-blue-300">ETH Output:</div>
+                        <div id="previewEthOutput" class="text-white"></div>
+                        <div class="text-blue-300">Price Impact:</div>
+                        <div id="previewPriceImpact" class="text-white"></div>
+                        <div class="text-blue-300">Slippage:</div>
+                        <div id="previewSlippage" class="text-white"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-4">
+                    <button id="previewSwap" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
+                        🔍 Preview Swap
+                    </button>
+                    <button id="executeSwap" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors hidden">
+                        🚀 Execute Recovery
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recovery History -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-white mb-4">📈 Recovery History</h2>
+                <div id="recoveryHistory" class="text-gray-400 text-center py-8">
+                    No recoveries yet. Complete your first swap to see history here.
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-lg p-8 text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                <div class="text-white text-xl" id="loadingMessage">Processing...</div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-lg p-8 text-center max-w-md">
+                <div class="text-6xl mb-4">🎉</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Recovery Successful!</h3>
+                <p class="text-blue-300 mb-6">Your ETHG has been successfully swapped for ETH!</p>
+                <button id="closeSuccessModal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+

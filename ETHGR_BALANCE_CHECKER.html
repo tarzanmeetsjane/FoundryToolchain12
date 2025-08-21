@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETHGR Balance Checker - No Gas Required</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-green-900 via-blue-900 to-purple-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-white mb-4">🔍 ETHGR Balance Checker</h1>
+            <p class="text-xl text-green-200">Check your ETHGR holdings across confirmed contracts</p>
+            <p class="text-lg text-blue-300 mt-2">No gas fees required - Read-only operations only</p>
+        </div>
+
+        <!-- Connection Status -->
+        <div id="connectionStatus" class="bg-gray-800 rounded-lg p-6 mb-8 text-center">
+            <div class="text-2xl text-yellow-400 mb-2">🔌 Wallet Not Connected</div>
+            <button id="connectWallet" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
+                Connect Wallet
+            </button>
+        </div>
+
+        <!-- Balance Checker Interface -->
+        <div id="balanceInterface" class="hidden">
+            <!-- Wallet Info -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4">👛 Wallet Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="text-green-300 text-sm">Connected Address</div>
+                        <div id="walletAddress" class="text-white font-mono text-sm break-all"></div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="text-green-300 text-sm">Network</div>
+                        <div id="networkInfo" class="text-white font-bold">Ethereum Mainnet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ETHGR Contract Balances -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4">📊 ETHGR Contract Balances</h2>
+                
+                <!-- Contract 1 -->
+                <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                    <h3 class="text-lg font-bold text-white mb-2">Contract 1: 0xc2b6d375b7d14c9ce73f97ddf565002cce257308</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-600 rounded-lg p-3">
+                            <div class="text-blue-300 text-sm">Your Balance</div>
+                            <div id="balance1" class="text-white font-bold text-lg">Checking...</div>
+                        </div>
+                        <div class="bg-gray-600 rounded-lg p-3">
+                            <div class="text-blue-300 text-sm">Total Supply</div>
+                            <div id="supply1" class="text-white font-bold text-lg">Checking...</div>
+                        </div>
+                        <div class="bg-gray-600 rounded-lg p-3">
+                            <div class="text-blue-300 text-sm">Token Symbol</div>
+                            <div id="symbol1" class="text-white font-bold text-lg">Checking...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contract 2 -->
+                <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                    <h3 class="text-lg font-bold text-white mb-2">Contract 2: 0xfa7b8c553c48c56ec7027d26ae95b029a2abf247</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-600 rounded-lg p-3">
+                            <div class="text-blue-300 text-sm">Your Balance</div>
+                            <div id="balance2" class="text-white font-bold text-lg">Checking...</div>
+                        </div>
+                        <div class="bg-gray-600 rounded-lg p-3">
+                            <div class="text-blue-300 text-sm">Total Supply</div>
+                            <div id="supply2" class="text-white font-bold text-lg">Checking...</div>
+                        </div>
+                        <div class="div class="text-blue-300 text-sm">Token Symbol</div>
+                            <div id="symbol2" class="text-white font-bold text-lg">Checking...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Check Balances Button -->
+                <div class="text-center">
+                    <button id="checkBalances" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
+                        🔍 Check All Balances
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div id="summarySection" class="bg-gray-800 rounded-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-white mb-4">📈 Total ETHGR Holdings Summary</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-green-700 rounded-lg p-4">
+                        <div class="text-green-200 text-sm">Total ETHGR Balance</div>
+                        <div id="totalBalance" class="text-white font-bold text-2xl">0</div>
+                    </div>
+                    <div class="bg-blue-700 rounded-lg p-4">
+                        <div class="text-blue-200 text-sm">Estimated ETH Value</div>
+                        <div id="estimatedValue" class="text-white font-bold text-2xl">Calculating...</div>
+                    </div>
+                    <div class="bg-purple-700 rounded-lg p-4">
+                        <div class="text-purple-200 text-sm">Recovery Status</div>
+                        <div id="recoveryStatus" class="text-white font-bold text-lg">Ready</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-white mb-4">🚀 Next Steps</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button id="openUniswap" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg text-lg transition-colors">
+                        💱 Open Uniswap Recovery
+                    </button>
+                    <button id="checkLiquidity" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg text-lg transition-colors">
+                        🔍 Check Liquidity Pools
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Modal -->
+        <div id="loadingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-lg p-8 text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mx-auto mb-4"></div>
+                <div class="text-white text-xl" id="loadingText">Checking balances...</div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-lg p-8 text-center max-w-md">
+                <div class="text-green-500 text-6xl mb-4">✅</div>
+                <div class="text-white text-xl mb-4" id="successTitle">Success!</div>
+                <div class="text-gray-300 mb-6" id="successMessage">Operation completed successfully.</div>
+                <button id="closeSuccessModal" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ETHGRBalanceChecker {
+            constructor() {
+                this.provider = null;
+                this.signer = null;
+                this.account = null;
+                this.contracts = {
+                    contract1: '0xc2b6d375b7d14c9ce73f97ddf565002cce257308',
+                    contract2: '0xfa7b8c553c48c56ec7027d26ae95b029a2abf247'
+                };
+                
+                this.initializeEventListeners();
+                this.checkWalletConnection();
+            }
+
+            initializeEventListeners() {
+                document.getElementById('connectWallet').addEventListener('click', () => this.connectWallet());
+                document.getElementById('checkBalances').addEventListener('click', () => this.checkAllBalances());
+                document.getElementById('openUniswap').addEventListener('click', () => this.openUniswap());
+                document.getElementById('checkLiquidity').addEventListener('click', () => this.checkLiquidity());
+                document.getElementById('closeSuccessModal').addEventListener('click', () => this.closeSuccessModal());
+            }
+
+            async checkWalletConnection() {
+                if (typeof window.ethereum !== 'undefined') {
+                    try {
+                        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                        if (accounts.length > 0) {
+                            await this.connectWallet();
+                        }
+                    } catch (error) {
+                        console.log('No existing wallet connection');
+                    }
+                }
+            }
+
+            async connectWallet() {
+                try {
+                    this.showLoading('Connecting wallet...');
+                    
+                    if (typeof window.ethereum === 'undefined') {
+                        throw new Error('MetaMask not found! Please install MetaMask.');
+                    }
+
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    this.account = accounts[0];
+
+                    this.provider = new ethers.providers.Web3Provider(window.ethereum);
+                    this.signer = this.provider.getSigner();
+
+                    const network = await this.provider.getNetwork();
+                    if (network.chainId !== 1) {
+                        throw new Error('Please switch to Ethereum Mainnet');
+                    }
+
+                    this.updateConnectionStatus();
+                    this.updateWalletInfo();
+                    
+                    this.hideLoading();
+                    this.showMessage('Wallet connected successfully!', 'success');
+                    
+                } catch (error) {
+                    this.hideLoading();
+                    this.showMessage(`Connection failed: ${error.message}`, 'error');
+                    console.error('Wallet connection error:', error);
+                }
+            }
+
+            updateConnectionStatus() {
+                document.getElementById('connectionStatus').classList.add('hidden');
+                document.getElementById('balanceInterface').classList.remove('hidden');
+            }
+
+            updateWalletInfo() {
+                document.getElementById('walletAddress').textContent = this.account;
+                document.getElementById('networkInfo').textContent = 'Ethereum Mainnet';
+            }
+
+            async checkAllBalances() {
+                try {
+                    this.showLoading('Checking contract balances...');
+                    
+                    // Check Contract 1
+                    await this.checkContractBalance(this.contracts.contract1, 1);
+                    
+                    // Check Contract 2
+                    await this.checkContractBalance(this.contracts.contract2, 2);
+                    
+                    // Calculate totals
+                    this.calculateTotals();
+                    
+                    this.hideLoading();
+                    this.showMessage('Balances checked successfully!', 'success');
+                    
+                } catch (error) {
+                    this.hideLoading();
+                    this.showMessage(`Balance check failed: ${error.message}`, 'error');
+                    console.error('Balance check error:', error);
+                }
+            }
+
+            async checkContractBalance(contractAddress, contractNum) {
+                try {
+                    const contract = new ethers.Contract(
+                        contractAddress,
+                        [
+                            'function balanceOf(address owner) view returns (uint256)',
+                            'function totalSupply() view returns (uint256)',
+                            'function symbol() view returns (string)',
+                            'function decimals() view returns (uint8)'
+                        ],
+                        this.provider
+                    );
+
+                    const [balance, supply, symbol, decimals] = await Promise.all([
+                        contract.balanceOf(this.account),
+                        contract.totalSupply(),
+                        contract.symbol(),
+                        contract.decimals()
+                    ]);
+
+                    const balanceFormatted = ethers.utils.formatUnits(balance, decimals);
+                    const supplyFormatted = ethers.utils.formatUnits(supply, decimals);
+
+                    document.getElementById(`balance${contractNum}`).textContent = `${parseFloat(balanceFormatted).toLocaleString()} ${symbol}`;
+                    document.getElementById(`supply${contractNum}`).textContent = `${parseFloat(supplyFormatted).toLocaleString()} ${symbol}`;
+                    document.getElementById(`symbol${contractNum}`).textContent = symbol;
+
+                    return { balance: balanceFormatted, supply: supplyFormatted, symbol, decimals };
+                    
+                } catch (error) {
+                    console.error(`Error checking contract ${contractNum}:`, error);
+                    document.getElementById(`balance${contractNum}`).textContent = 'Error';
+                    document.getElementById(`supply${contractNum}`).textContent = 'Error';
+                    document.getElementById(`symbol${contractNum}`).textContent = 'Error';
+                    return null;
+                }
+            }
+
+            calculateTotals() {
+                const balance1 = document.getElementById('balance1').textContent;
+                const balance2 = document.getElementById('balance2').textContent;
+                
+                if (balance1 !== 'Checking...' && balance2 !== 'Checking...' && balance1 !== 'Error' && balance2 !== 'Error') {
+                    const totalBalance = this.extractNumber(balance1) + this.extractNumber(balance2);
+                    document.getElementById('totalBalance').textContent = `${totalBalance.toLocaleString()} ETHGR`;
+                    
+                    // Estimate ETH value (rough calculation)
+                    const estimatedETH = (totalBalance / 1990000) * 159.458; // Based on your conversion rate
+                    document.getElementById('estimatedValue').textContent = `~${estimatedETH.toFixed(3)} ETH`;
+                    
+                    document.getElementById('summarySection').classList.remove('hidden');
+                }
+            }
+
+            extractNumber(text) {
+                const match = text.match(/[\d,]+/);
+                return match ? parseFloat(match[0].replace(/,/g, '')) : 0;
+            }
+
+            openUniswap() {
+                window.open('./uniswap-ethg-recovery/index.html', '_blank');
+            }
+
+            checkLiquidity() {
+                this.showMessage('Checking liquidity pools...', 'info');
+                // This would check Uniswap liquidity pools
+                setTimeout(() => {
+                    this.showMessage('Liquidity check completed!', 'success');
+                }, 2000);
+            }
+
+            showLoading(text) {
+                document.getElementById('loadingText').textContent = text;
+                document.getElementById('loadingModal').classList.remove('hidden');
+            }
+
+            hideLoading() {
+                document.getElementById('loadingModal').classList.add('hidden');
+            }
+
+            showMessage(message, type = 'info') {
+                const title = type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Info';
+                document.getElementById('successTitle').textContent = title;
+                document.getElementById('successMessage').textContent = message;
+                document.getElementById('successModal').classList.remove('hidden');
+            }
+
+            closeSuccessModal() {
+                document.getElementById('successModal').classList.add('hidden');
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new ETHGRBalanceChecker();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

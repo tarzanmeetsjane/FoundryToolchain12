@@ -5,8 +5,9 @@ require('@nomicfoundation/hardhat-verify');
 
 const config = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.20",
     settings: {
+      viaIR: true,
       optimizer: {
         enabled: true,
         runs: 200,

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Network ETHGR Checker</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .network-card { border: 2px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; }
+        .ethereum { border-color: #3c3c3d; background: #f8f9fa; }
+        .optimism { border-color: #ff0420; background: #fff5f5; }
+        .polygon { border-color: #8247e5; background: #f8f5ff; }
+        .arbitrum { border-color: #28a0f0; background: #f0f9ff; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .button:hover { background: #0056b3; }
+        .button:disabled { background: #6c757d; cursor: not-allowed; }
+        .input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; }
+        .token-info { background: #e9ecef; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .highlight { background: #fff3cd; padding: 5px; border-radius: 3px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Multi-Network ETHGR Token Checker</h1>
+        
+        <div class="status info">
+            <strong>Checking for ETHGR tokens across multiple networks...</strong><br>
+            Your wallet: <code>0x058C8FE01E5c9eaC6ee19e6673673B549B368843</code>
+        </div>
+
+        <input type="text" id="walletAddress" class="input" value="0x058C8FE01E5c9eaC6ee19e6673673B549B368843" placeholder="Wallet Address">
+        
+        <button class="button" onclick="checkAllNetworks()">🔍 Check All Networks</button>
+        <button class="button" onclick="checkOptimismOnly()">🚀 Check Optimism Only</button>
+
+        <div id="results"></div>
+
+        <!-- Ethereum Mainnet -->
+        <div class="network-card ethereum">
+            <h3>🔷 Ethereum Mainnet</h3>
+            <p><strong>Contract:</strong> <code>0xfa7b8c553c48c56ec7027d26ae95b029a2abf247</code></p>
+            <div id="ethereum-status">⏳ Not checked yet</div>
+        </div>
+
+        <!-- Optimism -->
+        <div class="network-card optimism">
+            <h3>🚀 Optimism</h3>
+            <p><strong>RPC:</strong> <code>https://mainnet.optimism.io</code></p>
+            <div id="optimism-status">⏳ Not checked yet</div>
+        </div>
+
+        <!-- Polygon -->
+        <div class="network-card polygon">
+            <h3>💜 Polygon</h3>
+            <p><strong>RPC:</strong> <code>https://polygon-rpc.com</code></p>
+            <div id="polygon-status">⏳ Not checked yet</div>
+        </div>
+
+        <!-- Arbitrum -->
+        <div class="network-card arbitrum">
+            <h3>🔵 Arbitrum</h3>
+            <p><strong>RPC:</strong> <code>https://arb1.arbitrum.io/rpc</code></p>
+            <div id="arbitrum-status">⏳ Not checked yet</div>
+        </div>
+
+        <div id="summary"></div>
+    </div>
+
+    <script>
+        const NETWORKS = {
+            ethereum: {
+                name: "Ethereum Mainnet",
+                rpc: "https://eth-mainnet.g.alchemy.com/v2/demo",
+                chainId: 1,
+                color: "#3c3c3d"
+            },
+            optimism: {
+                name: "Optimism",
+                rpc: "https://mainnet.optimism.io",
+                chainId: 10,
+                color: "#ff0420"
+            },
+            polygon: {
+                name: "Polygon",
+                rpc: "https://polygon-rpc.com",
+                chainId: 137,
+                color: "#8247e5"
+            },
+            arbitrum: {
+                name: "Arbitrum",
+                rpc: "https://arb1.arbitrum.io/rpc",
+                chainId: 42161,
+                color: "#28a0f0"
+            }
+        };
+
+        // Common ETHGR contract addresses (you might have deployed on multiple networks)
+        const ETHGR_CONTRACTS = {
+            ethereum: "0xfa7b8c553c48c56ec7027d26ae95b029a2abf247",
+            optimism: "0x0000000000000000000000000000000000000000", // We'll search for this
+            polygon: "0x0000000000000000000000000000000000000000", // We'll search for this
+            arbitrum: "0x0000000000000000000000000000000000000000"  // We'll search for this
+        };
+
+        const ETHGR_ABI = [
+            {
+                "inputs": [{"name": "owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "totalSupply",
+                "outputs": [{"name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "name",
+                "outputs": [{"name": "", "type": "string"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "symbol",
+                "outputs": [{"name": "", "type": "string"}],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        async function checkAllNetworks() {
+            document.getElementById('results').innerHTML = '<div class="status info">🔍 Checking all networks...</div>';
+            
+            for (const [network, config] of Object.entries(NETWORKS)) {
+                await checkNetwork(network, config);
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Delay between checks
+            }
+            
+            generateSummary();
+        }
+
+        async function checkOptimismOnly() {
+            document.getElementById('results').innerHTML = '<div class="status info">🚀 Checking Optimism network...</div>';
+            await checkNetwork('optimism', NETWORKS.optimism);
+            generateSummary();
+        }
+
+        async function checkNetwork(network, config) {
+            const statusElement = document.getElementById(`${network}-status`);
+            statusElement.innerHTML = '⏳ Checking...';
+            
+            try {
+                const provider = new ethers.providers.JsonRpcProvider(config.rpc);
+                const walletAddress = document.getElementById('walletAddress').value;
+                
+                // First, let's check ETH balance
+                const ethBalance = await provider.getBalance(walletAddress);
+                
+                // Now let's search for ETHGR tokens
+                let ethgrBalance = ethers.constants.Zero;
+                let contractAddress = "Not found";
+                let tokenName = "Unknown";
+                let tokenSymbol = "Unknown";
+                
+                // Try to find ETHGR tokens by checking common patterns
+                const possibleContracts = await findETHGRContracts(provider, walletAddress);
+                
+                if (possibleContracts.length > 0) {
+                    const bestMatch = possibleContracts[0];
+                    contractAddress = bestMatch.address;
+                    ethgrBalance = bestMatch.balance;
+                    tokenName = bestMatch.name;
+                    tokenSymbol = bestMatch.symbol;
+                }
+                
+                statusElement.innerHTML = `
+                    <div class="token-info">
+                        <strong>✅ Network Connected</strong><br>
+                        <strong>ETH Balance:</strong> ${ethers.utils.formatEther(ethBalance)} ETH<br>
+                        <strong>ETHGR Contract:</strong> <code>${contractAddress}</code><br>
+                        <strong>Token Name:</strong> ${tokenName}<br>
+                        <strong>Token Symbol:</strong> ${tokenSymbol}<br>
+                        <strong>ETHGR Balance:</strong> <span class="highlight">${ethers.utils.formatUnits(ethgrBalance, 18)} ${tokenSymbol}</span>
+                    </div>
+                `;
+                
+                // Store results for summary
+                window[`${network}_results`] = {
+                    ethBalance: ethBalance,
+                    ethgrBalance: ethgrBalance,
+                    contractAddress: contractAddress,
+                    tokenName: tokenName,
+                    tokenSymbol: tokenSymbol
+                };
+                
+            } catch (error) {
+                statusElement.innerHTML = `
+                    <div class="status warning">
+                        ❌ Error: ${error.message}
+                    </div>
+                `;
+                window[`${network}_results`] = { error: error.message };
+            }
+        }
+
+        async function findETHGRContracts(provider, walletAddress) {
+            const contracts = [];
+            
+            // Try some common contract patterns
+            const commonPatterns = [
+                // Your known contract address
+                "0xfa7b8c553c48c56ec7027d26ae95b029a2abf247",
+                // Common ETHGR patterns
+                "0x0000000000000000000000000000000000000000", // Placeholder
+            ];
+            
+            for (const address of commonPatterns) {
+                if (address === "0x0000000000000000000000000000000000000000") continue;
+                
+                try {
+                    const contract = new ethers.Contract(address, ETHGR_ABI, provider);
+                    const balance = await contract.balanceOf(walletAddress);
+                    
+                    if (balance.gt(0)) {
+                        const name = await contract.name();
+                        const symbol = await contract.symbol();
+                        
+                        contracts.push({
+                            address: address,
+                            balance: balance,
+                            name: name,
+                            symbol: symbol
+                        });
+                    }
+                } catch (error) {
+                    // Contract doesn't exist or error, continue
+                }
+            }
+            
+            // Also check for any ERC20 tokens with "ETHG" or "ETHGR" in the name
+            // This is a simplified approach - in practice you'd use an indexer like Covalent or The Graph
+            
+            return contracts;
+        }
+
+        function generateSummary() {
+            let summary = '<h2>📊 Summary of Findings</h2>';
+            let totalETHGR = ethers.constants.Zero;
+            let networksWithTokens = [];
+            
+            for (const [network, config] of Object.entries(NETWORKS)) {
+                const results = window[`${network}_results`];
+                
+                if (results && !results.error && results.ethgrBalance) {
+                    totalETHGR = totalETHGR.add(results.ethgrBalance);
+                    networksWithTokens.push({
+                        network: config.name,
+                        balance: results.ethgrBalance,
+                        symbol: results.tokenSymbol
+                    });
+                }
+            }
+            
+            if (networksWithTokens.length > 0) {
+                summary += `
+                    <div class="status success">
+                        🎉 <strong>ETHGR Tokens Found!</strong><br>
+                        <strong>Total ETHGR across all networks:</strong> ${ethers.utils.formatUnits(totalETHGR, 18)}<br>
+                        <strong>Networks with tokens:</strong> ${networksWithTokens.map(n => `${n.network} (${ethers.utils.formatUnits(n.balance, 18)} ${n.symbol})`).join(', ')}
+                    </div>
+                `;
+                
+                if (totalETHGR.gt(ethers.utils.parseUnits("1000000", 18))) {
+                    summary += `
+                        <div class="status info">
+                            🚀 <strong>You have significant ETHGR holdings!</strong><br>
+                            This could be worth substantial value once liquidity is established.
+                        </div>
+                    `;
+                }
+            } else {
+                summary += `
+                    <div class="status warning">
+                        ⚠️ <strong>No ETHGR tokens found yet.</strong><br>
+                        This means we need to deploy and mint tokens on one of the networks.
+                    </div>
+                `;
+            }
+            
+            document.getElementById('summary').innerHTML = summary;
+        }
+    </script>
+</body>
+</html>

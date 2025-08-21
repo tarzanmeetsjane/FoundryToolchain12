@@ -233,7 +233,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 contract ETHGRecovery is ERC20, Ownable {
     
     mapping(address => bool) public hasMigrated;
-    bool public migrationEnabled = true;
+    bool pubAAClic migrationEnabled = true;
     uint256 public totalMigrated = 0;
     
     event TokensMigrated(address indexed holder, uint256 amount);
