@@ -53,7 +53,7 @@ export default function RemixGasFreeDeployment() {
                     
                     <div style={{ 
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minMax(300px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                         gap: '24px'
                     }}>
                         <div style={{ 
@@ -139,7 +139,7 @@ export default function RemixGasFreeDeployment() {
                     
                     <div style={{ 
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minSize(250px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
                         gap: '16px'
                     }}>
                         <div style={{ 
@@ -232,7 +232,7 @@ export default function RemixGasFreeDeployment() {
                     
                     <div style={{ 
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minMax(300px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                         gap: '20px'
                     }}>
                         <div style={{ 
@@ -326,7 +326,7 @@ export default function RemixGasFreeDeployment() {
                     
                     <div style={{ 
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minMax(250px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
                         gap: '16px'
                     }}>
                         <div style={{ 
@@ -479,7 +479,7 @@ export default function RemixGasFreeDeployment() {
                     
                     <div style={{ 
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minMax(200px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
                         gap: '16px',
                         textAlign: 'center'
                     }}>
@@ -552,7 +552,7 @@ export default function RemixGasFreeDeployment() {
                 {/* Action Buttons */}
                 <div style={{ 
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minMax(200px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
                     gap: '16px',
                     marginBottom: '32px'
                 }}>

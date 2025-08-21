@@ -69,6 +69,7 @@ import ContractVerificationFix from "./pages/ContractVerificationFix";
 import CriticalContractInspection from "./pages/CriticalContractInspection";
 import EmergencyETHRecovery from "./pages/EmergencyETHRecovery";
 import RemixGasFreeDeployment from "./pages/RemixGasFreeDeployment";
+import InstantContractDeployment from "./pages/InstantContractDeployment";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -495,6 +496,7 @@ export default function App() {
           <Route path="/contract-inspection" component={CriticalContractInspection} />
           <Route path="/emergency-recovery" component={EmergencyETHRecovery} />
           <Route path="/remix-gas-free" component={RemixGasFreeDeployment} />
+          <Route path="/instant-deploy" component={InstantContractDeployment} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
