@@ -74,6 +74,7 @@ import AlchemyGasSponsoredDeployment from "./pages/AlchemyGasSponsoredDeployment
 import AlchemyIntegratedDeployment from "./pages/AlchemyIntegratedDeployment";
 import TokenValueAnalysis from "./pages/TokenValueAnalysis";
 import ExecuteDeploymentNow from "./pages/ExecuteDeploymentNow";
+import SecureWalletDeployment from "./pages/SecureWalletDeployment";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -505,6 +506,7 @@ export default function App() {
           <Route path="/alchemy-integrated" component={AlchemyIntegratedDeployment} />
           <Route path="/token-analysis" component={TokenValueAnalysis} />
           <Route path="/execute-now" component={ExecuteDeploymentNow} />
+          <Route path="/secure-wallet" component={SecureWalletDeployment} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
