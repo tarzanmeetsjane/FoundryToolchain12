@@ -376,7 +376,7 @@ export default function SecureTransactionSigning() {
                                 ✅ ETH Value = 0
                             </div>
                             <div style={{ color: '#fecaca', fontSize: '12px' }}>
-                                If you see any ETH amount > 0, REJECT the transaction
+                                If you see any ETH amount greater than 0, REJECT the transaction
                             </div>
                         </div>
 

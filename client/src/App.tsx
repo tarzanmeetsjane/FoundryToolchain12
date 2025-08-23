@@ -76,6 +76,7 @@ import TokenValueAnalysis from "./pages/TokenValueAnalysis";
 import ExecuteDeploymentNow from "./pages/ExecuteDeploymentNow";
 import SecureWalletDeployment from "./pages/SecureWalletDeployment";
 import SecureTransactionSigning from "./pages/SecureTransactionSigning";
+import DisableSmartWallet from "./pages/DisableSmartWallet";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -509,6 +510,7 @@ export default function App() {
           <Route path="/execute-now" component={ExecuteDeploymentNow} />
           <Route path="/secure-wallet" component={SecureWalletDeployment} />
           <Route path="/secure-signing" component={SecureTransactionSigning} />
+          <Route path="/disable-smart-wallet" component={DisableSmartWallet} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
