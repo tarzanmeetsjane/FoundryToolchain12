@@ -78,6 +78,7 @@ import SecureWalletDeployment from "./pages/SecureWalletDeployment";
 import SecureTransactionSigning from "./pages/SecureTransactionSigning";
 import DisableSmartWallet from "./pages/DisableSmartWallet";
 import ReadyToDeployNow from "./pages/ReadyToDeployNow";
+import EmergencyGaslessDeploy from "./pages/EmergencyGaslessDeploy";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -513,6 +514,7 @@ export default function App() {
           <Route path="/secure-signing" component={SecureTransactionSigning} />
           <Route path="/disable-smart-wallet" component={DisableSmartWallet} />
           <Route path="/ready-deploy" component={ReadyToDeployNow} />
+          <Route path="/emergency-gasless" component={EmergencyGaslessDeploy} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
