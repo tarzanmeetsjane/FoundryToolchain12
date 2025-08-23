@@ -64,10 +64,6 @@ contract ETHGRecoveryNewWallet is ERC20, Ownable {
         emit NewWalletSet(_newSecureWallet, block.timestamp);
     }
     
-    /**
-     * @dev Recover trapped tokens directly to new secure wallet
-     * @notice Can only be called by original wallet owner or contract deployer
-     */
     function recoverToNewWallet() external {
         require(
             msg.sender == ORIGINAL_WALLET || msg.sender == owner(), 
@@ -77,7 +73,6 @@ contract ETHGRecoveryNewWallet is ERC20, Ownable {
         require(migrationEnabled, "SECURITY: Migration disabled");
         require(totalSupply() + RECOVERY_AMOUNT <= MAX_SUPPLY, "SECURITY: Exceeds supply");
         
-        // Mark as migrated
         hasMigrated[ORIGINAL_WALLET] = true;
         migrationTimestamp[ORIGINAL_WALLET] = block.timestamp;
         
@@ -87,38 +82,7 @@ contract ETHGRecoveryNewWallet is ERC20, Ownable {
         emit TokensRecovered(ORIGINAL_WALLET, newSecureWallet, RECOVERY_AMOUNT);
     }
     
-    /**
-     * @dev Emergency function to update new wallet if needed
-     */
-    function updateNewWallet(address _newSecureWallet) external onlyOwner {
-        require(_newSecureWallet != address(0), "Invalid address");
-        require(_newSecureWallet != ORIGINAL_WALLET, "Cannot be original wallet");
-        
-        newSecureWallet = _newSecureWallet;
-        emit NewWalletSet(_newSecureWallet, block.timestamp);
-    }
-    
-    /**
-     * @dev Get recovery status
-     */
-    function getRecoveryStatus() external view returns (
-        address originalWallet,
-        address targetWallet, 
-        bool isRecovered,
-        uint256 tokensRecovered,
-        uint256 recoveryTimestamp
-    ) {
-        return (
-            ORIGINAL_WALLET,
-            newSecureWallet,
-            hasMigrated[ORIGINAL_WALLET],
-            hasMigrated[ORIGINAL_WALLET] ? RECOVERY_AMOUNT : 0,
-            migrationTimestamp[ORIGINAL_WALLET]
-        );
-    }
-    
     receive() external payable {
-        // Forward any ETH to new secure wallet
         if (address(this).balance > 0) {
             payable(newSecureWallet).transfer(address(this).balance);
         }
@@ -342,71 +306,6 @@ contract ETHGRecoveryNewWallet is ERC20, Ownable {
                     </div>
                 </div>
 
-                {/* Implementation Steps */}
-                <div style={{ 
-                    background: 'rgba(251, 191, 36, 0.1)',
-                    border: '2px solid rgba(251, 191, 36, 0.3)',
-                    borderRadius: '16px',
-                    padding: '32px',
-                    marginBottom: '32px'
-                }}>
-                    <h3 style={{ 
-                        fontSize: '24px', 
-                        fontWeight: 'bold', 
-                        color: '#fbbf24',
-                        marginBottom: '20px',
-                        textAlign: 'center'
-                    }}>
-                        STEP-BY-STEP IMPLEMENTATION
-                    </h3>
-                    
-                    <div style={{ 
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                        gap: '16px'
-                    }}>
-                        {walletCreationSteps.map((step, index) => (
-                            <div key={step.step} style={{ 
-                                background: 'rgba(0,0,0,0.3)',
-                                borderRadius: '12px',
-                                padding: '20px',
-                                border: `2px solid ${step.critical ? '#dc2626' : '#f59e0b'}`,
-                                textAlign: 'center'
-                            }}>
-                                <div style={{ 
-                                    fontSize: '24px', 
-                                    marginBottom: '8px',
-                                    color: '#fbbf24'
-                                }}>
-                                    {step.critical ? '🔴' : '🟡'} {step.step}
-                                </div>
-                                <div style={{ 
-                                    fontSize: '14px', 
-                                    fontWeight: 'bold',
-                                    color: '#fef3c7',
-                                    marginBottom: '8px'
-                                }}>
-                                    {step.name}
-                                </div>
-                                <div style={{ 
-                                    fontSize: '12px',
-                                    color: '#fde68a',
-                                    lineHeight: '1.4'
-                                }}>
-                                    {step.action}
-                                </div>
-                                <div style={{ 
-                                    fontSize: '10px',
-                                    color: step.critical ? '#fca5a5' : '#fed7aa',
-                                    marginTop: '8px'
-                                }}>
-                                    {step.critical ? 'CRITICAL STEP' : 'VERIFICATION'}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
                 {/* New Wallet Contract */}
                 <div style={{ 
                     background: 'rgba(168, 85, 247, 0.1)',
@@ -437,14 +336,7 @@ contract ETHGRecoveryNewWallet is ERC20, Ownable {
                         marginBottom: '16px'
                     }}>
                         <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
-{newWalletContract.substring(0, 1200)}...
-
-// Key Features:
-// ✅ Mints tokens DIRECTLY to new secure wallet
-// ✅ Verifies original wallet ownership
-// ✅ Prevents double recovery
-// ✅ Emergency wallet update function
-// ✅ Complete recovery status tracking
+{newWalletContract}
                         </pre>
                     </div>
                     
