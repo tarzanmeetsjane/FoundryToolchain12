@@ -80,6 +80,7 @@ import DisableSmartWallet from "./pages/DisableSmartWallet";
 import ReadyToDeployNow from "./pages/ReadyToDeployNow";
 import EmergencyGaslessDeploy from "./pages/EmergencyGaslessDeploy";
 import CompleteWalletRenewal from "./pages/CompleteWalletRenewal";
+import DelegateAddressHunter from "./pages/DelegateAddressHunter";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -517,6 +518,7 @@ export default function App() {
           <Route path="/ready-deploy" component={ReadyToDeployNow} />
           <Route path="/emergency-gasless" component={EmergencyGaslessDeploy} />
           <Route path="/wallet-renewal" component={CompleteWalletRenewal} />
+          <Route path="/delegate-hunter" component={DelegateAddressHunter} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />

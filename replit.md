@@ -31,6 +31,8 @@ The ETHGR Foundation project is an advanced blockchain security platform focused
 - EMERGENCY: User reports $0.29 gas fee required but ETH access blocked/controlled by something
 - Confirms delegate address concerns - something is preventing normal ETH usage
 - Requires emergency gasless deployment alternatives (testnet, L2 networks, external funding)
+- User wants to hunt down delegate address contracts stealing ETH and reverse them directly
+- Prefers offensive approach to reclaim control rather than creating new wallet
 
 ## System Architecture
 The platform is designed with a focus on robust blockchain interaction, security analysis, and user experience.
