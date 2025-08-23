@@ -81,6 +81,7 @@ import ReadyToDeployNow from "./pages/ReadyToDeployNow";
 import EmergencyGaslessDeploy from "./pages/EmergencyGaslessDeploy";
 import CompleteWalletRenewal from "./pages/CompleteWalletRenewal";
 import DelegateAddressHunter from "./pages/DelegateAddressHunter";
+import LiveBlockchainScanner from "./pages/LiveBlockchainScanner";
 import SimpleContractCopy from "./pages/SimpleContractCopy";
 import FoundryVerification from "./pages/FoundryVerification";
 import ContractVerificationDashboard from "./pages/ContractVerificationDashboard";
@@ -519,6 +520,7 @@ export default function App() {
           <Route path="/emergency-gasless" component={EmergencyGaslessDeploy} />
           <Route path="/wallet-renewal" component={CompleteWalletRenewal} />
           <Route path="/delegate-hunter" component={DelegateAddressHunter} />
+          <Route path="/live-scanner" component={LiveBlockchainScanner} />
             <Route path="/safe-deploy" component={DeployNow} />
             <Route path="/secure-deploy" component={SecureDeploy} />
             <Route path="/interact" component={Interact} />
