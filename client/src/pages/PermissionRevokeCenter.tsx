@@ -6,15 +6,15 @@ export default function PermissionRevokeCenter() {
             domain: 'aa984399-029d-4c37-acfc-3d5b3cfd9fc0-00-x6lu47jyvtv5.janeway.replit.dev',
             accounts: 1,
             networks: 3,
-            risk: 'HIGH',
-            type: 'Development Platform'
+            risk: 'SAFE',
+            type: 'Current Platform (This App)'
         },
         {
             domain: 'fdfe4dba-4a2a-4344-a48e-450e261aea62-00-3jnfe7hyhu4yd.riker.replit.dev',
             accounts: 1,
             networks: 3,
-            risk: 'HIGH',
-            type: 'Development Platform'
+            risk: 'CRITICAL',
+            type: 'Unknown Delegate Controller'
         },
         {
             domain: 'opensea.io',
@@ -46,7 +46,7 @@ export default function PermissionRevokeCenter() {
         }
     ]);
 
-    const [revokeStatus, setRevokeStatus] = useState({});
+    const [revokeStatus, setRevokeStatus] = useState<Record<string, string>>({});
 
     const revokePermission = (domain: string) => {
         setRevokeStatus(prev => ({ ...prev, [domain]: 'processing' }));
@@ -113,11 +113,11 @@ export default function PermissionRevokeCenter() {
                             DELEGATE ADDRESSES DETECTED:
                         </div>
                         <div style={{ fontFamily: 'monospace', fontSize: '14px', lineHeight: '1.6' }}>
-                            <div style={{ color: '#fbbf24', marginBottom: '8px' }}>
-                                HIGH RISK: aa984399-029d-4c37-acfc-3d5b3cfd9fc0-00-x6lu47jyvtv5.janeway.replit.dev
+                            <div style={{ color: '#34d399', marginBottom: '8px' }}>
+                                CURRENT PLATFORM: aa984399...janeway.replit.dev (This platform - SAFE)
                             </div>
-                            <div style={{ color: '#fbbf24', marginBottom: '8px' }}>
-                                HIGH RISK: fdfe4dba-4a2a-4344-a48e-450e261aea62-00-3jnfe7hyhu4yd.riker.replit.dev
+                            <div style={{ color: '#dc2626', marginBottom: '8px' }}>
+                                🚨 UNKNOWN DELEGATE: fdfe4dba...riker.replit.dev (SUSPICIOUS - REVOKE!)
                             </div>
                             <div style={{ color: '#60a5fa', marginBottom: '8px' }}>
                                 MEDIUM RISK: remix.ethereum.org (Development access)
@@ -248,7 +248,7 @@ export default function PermissionRevokeCenter() {
                                     </div>
                                     
                                     <div style={{ 
-                                        background: permission.risk === 'HIGH' ? '#dc2626' : 
+                                        background: permission.risk === 'CRITICAL' ? '#dc2626' : 
                                                    permission.risk === 'MEDIUM' ? '#f59e0b' : '#10b981',
                                         color: 'white',
                                         fontSize: '10px',
@@ -279,7 +279,8 @@ export default function PermissionRevokeCenter() {
                                         width: '100%',
                                         background: revokeStatus[permission.domain] === 'revoked' ? '#10b981' :
                                                    revokeStatus[permission.domain] === 'processing' ? '#f59e0b' :
-                                                   permission.risk === 'HIGH' ? '#dc2626' : '#6b7280',
+                                                   permission.risk === 'CRITICAL' ? '#dc2626' : 
+                                                   permission.risk === 'SAFE' ? '#10b981' : '#6b7280',
                                         color: 'white',
                                         border: 'none',
                                         borderRadius: '8px',
@@ -292,7 +293,8 @@ export default function PermissionRevokeCenter() {
                                 >
                                     {revokeStatus[permission.domain] === 'revoked' ? '✅ REVOKED' :
                                      revokeStatus[permission.domain] === 'processing' ? '⏳ REVOKING...' :
-                                     permission.risk === 'HIGH' ? '🚨 REVOKE NOW' :
+                                     permission.risk === 'CRITICAL' ? '🚨 REVOKE NOW' :
+                                     permission.risk === 'SAFE' ? '✅ KEEP SAFE' :
                                      permission.risk === 'MEDIUM' ? '⚠️ REVOKE' : 'ℹ️ REVOKE'}
                                 </button>
                             </div>
